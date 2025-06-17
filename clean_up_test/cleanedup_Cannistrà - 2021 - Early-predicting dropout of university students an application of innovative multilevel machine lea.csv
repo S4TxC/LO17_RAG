@@ -1,0 +1,1717 @@
+source,page_content,cleaned_page_content
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Full Terms & Conditions of access and use can be found at
+https://www.tandfonline.com/action/journalInformation?journalCode=cshe20
+Studies in Higher Education
+ISSN: (Print) (Online) Journal homepage: www.tandfonline.com/journals/cshe20
+Early-predicting dropout of university students:
+an application of innovative multilevel machine
+learning and statistical techniques
+Marta Cannistrà, Chiara Masci, Francesca Ieva, Tommaso Agasisti & Anna
+Maria Paganoni
+To cite this article: Marta Cannistrà, Chiara Masci, Francesca Ieva, Tommaso Agasisti & Anna
+Maria Paganoni (2022) Early-predicting dropout of university students: an application of
+innovative multilevel machine learning and statistical techniques, Studies in Higher Education,
+47:9, 1935-1956, DOI: 10.1080/03075079.2021.2018415
+To link to this article:  https://doi.org/10.1080/03075079.2021.2018415
+Published online: 22 Dec 2021.
+Submit your article to this journal 
+Article views: 1078
+View related articles 
+View Crossmark data
+Citing articles: 17 View citing articles","Early-predicting dropout of university students:
+an application of innovative multilevel machine
+learning and statistical techniques
+Marta Cannistrà, Chiara Masci, Francesca Ieva, Tommaso Agasisti & Anna
+Maria Paganoni"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Early-predicting dropout of university students: an application of
+innovative multilevel machine learning and statistical techniques
+Marta Cannistràa, Chiara Mascib, Francesca Ieva b, Tommaso Agasisti a and
+Anna Maria Paganonib
+aSchool of Management, Politecnico di Milano, Milano, Italy;bDepartment of Mathematics, Politecnico di Milano,
+Milano, Italy
+ABSTRACT
+This paper combines a theoretical-based model with a data-driven
+approach to develop an Early Warning System that detects students
+who are more likely to dropout. The model uses innovative multilevel
+statistical and machine learning methods. The paper demonstrates the
+validity of the approach by applying it to administrative data from a
+leading Italian university.
+KEYWORDS
+Learning analytics; early
+warning systems; student
+dropout; machine learning
+multilevel models; HE
+students
+‘Universities should use data regularly and systematically to identify high-risk students, target them with inter-
+ventions, and evaluate those interventions’ eﬀectiveness’
+von Hippel and Hoﬄinger 2020
+1. Introduction
+The Italian Higher Education (HE) system is plagued by a high level of dropout, with many students
+abandoning their Bachelor courses during theﬁrst or second year. According to the Italian National
+Agency for the Evaluation of Universities and Research Institutes (ANVUR2018), the dropout rate for
+the cohort of students from whom complete data are available is around 28.2%, with almost two-
+thirds of them (20%) dropping out in theﬁrst two years (ANVUR 2018). OECD (2019) indicates
+that the percentage of 25– 34 years old adults with higher education was 28%, with the same
+share being 19% for the adults 25–64 years old (reference year: 2018): both indicators are well
+below the OECD average.
+A high incidence of dropout rates in the functioning of the HE system generates equity and
+eﬃciency problems. On the equity side, various students demonstrate how there is a correlation
+between socioeconomic background and dropout, and the academic literature conﬁrms that disad-
+vantaged students are more at-risk of dropping out. Unfortunately, reforms and interventions for
+expanding the access to HE were not successful in reducing the socioeconomic gradient of the
+dropout (Bratti, Checchi, and De Blasio2008; Brunori, Peragine, and Serlenga2012; Oppedisano
+2011). When considering eﬃciency, dropout represents a net waste of resources. Indeed, educating
+students is a costly activity, which generates returns in the long run due to the credentials acquired
+and the human capital accumulated. When students do not conclude their courses with a degree,
+these beneﬁts are not realised.
+1
+Given the problems associated with dropout, a key policy issue isﬁnding ways to understand,
+predict and prevent this phenomon. A recent trend in this area is the use of Learning Analytics
+© 2021 Society for Research into Higher Education
+*CONTACT Tommaso Agasisti School of Management, Politecnico di Milano, Milano 20133 Italy
+STUDIES IN HIGHER EDUCATION
+2022, VOL. 47, NO. 9, 1935– 1956
+https://doi.org/10.1080/03075079.2021.2018415","ABSTRACT
+This paper combines a theoretical-based model with a data-driven
+approach to develop an Early Warning System that detects students
+who are more likely to dropout. The model uses innovative multilevel
+statistical and machine learning methods. The paper demonstrates the
+validity of the approach by applying it to administrative data from a
+leading Italian university.
+KEYWORDS
+Learning analytics; early
+warning systems; student
+dropout; machine learning
+multilevel models; HE
+students
+1. Introduction
+The Italian Higher Education (HE) system is plagued by a high level of dropout, with many students
+abandoning their Bachelor courses during theﬁrst or second year. According to the Italian National
+Agency for the Evaluation of Universities and Research Institutes (ANVUR2018), the dropout rate for
+the cohort of students from whom complete data are available is around 28.2%, with almost two-
+thirds of them (20%) dropping out in theﬁrst two years (ANVUR 2018). OECD (2019) indicates
+that the percentage of 25– 34 years old adults with higher education was 28%, with the same
+share being 19% for the adults 25–64 years old (reference year: 2018): both indicators are well
+below the OECD average.
+A high incidence of dropout rates in the functioning of the HE system generates equity and
+eﬃciency problems. On the equity side, various students demonstrate how there is a correlation
+between socioeconomic background and dropout, and the academic literature conﬁrms that disad-
+vantaged students are more at-risk of dropping out. Unfortunately, reforms and interventions for
+expanding the access to HE were not successful in reducing the socioeconomic gradient of the
+dropout (Bratti, Checchi, and De Blasio2008; Brunori, Peragine, and Serlenga2012; Oppedisano
+2011). When considering eﬃciency, dropout represents a net waste of resources. Indeed, educating
+students is a costly activity, which generates returns in the long run due to the credentials acquired
+and the human capital accumulated. When students do not conclude their courses with a degree,
+these beneﬁts are not realised.
+Given the problems associated with dropout, a key policy issue isﬁnding ways to understand,
+predict and prevent this phenomon. A recent trend in this area is the use of Learning Analytics"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"(LA) tools (De Freitas et al.2015). Advanced techniques, rooted in both the statistical and Machine
+Learning (ML) domains, can be used to predict the students who are more at-risk of dropping out. If
+algorithms demonstrate to be eﬀective in predicting students’ performance, the early identiﬁcation
+of students at-risk can be used to design targeted interventions for improving their chances of reten-
+tion (Burgos et al.2018). While a growing number of studies starts considering the speciﬁc use of
+predictions for remedial education, the debate about the best models to be employed for predic-
+tions is far from being concluded, and the empirical solutions proposed are not widely accepted.
+The potential consequences of using LA for practitioners are immediate and relevant. Indeed, if
+the algorithms work well in early predicting dropout, then HEIs’ managers can deﬁne interventions
+and courses targeted to speciﬁc individuals who are more at risk of leaving the studies without a
+degree, with the aim of improving their retention.
+This paper contributes to this new literature stream and institutional development. We develop
+innovative methods to formulate predictions of at-risk students early in their academic career, and
+we test them using administrative data from Politecnico di Milano (PoliMi), Italy. The database
+gathers various cohorts ofﬁrst-year Bachelor students (in Engineering) and covers 9 years (from
+2010 to 2019); overall, it includes more than 110,000 students, with associated 10,000,000 entries,
+each of which is a speciﬁc event related to the student journey (her initial administrative record,
+exams, etc.).
+This paper answers the following research question: How do alternative algorithms’ types (ML vs
+Generalised Linear Models) perform in predicting actual dropout and how do we interpret their
+results? This paper considers answering this research question a condition paving the way for sub-
+sequent interventions to be realized in supporting students who are at-risk of dropping out
+university.
+This study innovates the current state-of-the-art of theﬁeld in two main directions. First, we
+develop a comprehensive approach for studying dropout in a data analysis perspective, comple-
+menting the application of techniques to the existing data with a conceptual framework for
+exploring the determinants of dropout. The current approaches based on Learning Analytics
+are indeed very much data-driven, while paying less attention to the theoretical foundations
+of the models developed for the empirical analyses (Li, Rusk, and Song2013; Seidel and Kutie-
+leh 2017; Vicario et al.2018; Korhonen and Rautopuro2019; Sothan 2019; Barbu et al.2019). We
+build a bridge between the literature about university dropout/success (Aljohani2016) and the
+one about the use of Learning Analytics techniques in theﬁeld (De Freitas et al. 2015; Leitner,
+Khalil, and Ebner 2017). In practical terms, we exploit all the available administrative data about
+students (demographic, academic performance, prior achievement, a proxy for the socioeco-
+nomic status, etc.) for identifying the variables that are mostly correlated to the precision of
+predicting students’ dropout. While we do not select the variables to be used in the algorithms,
+we use the lenses of a speciﬁc conceptual framework about dropout to interpret their validity
+and conceptual soundness. Second, we compare diﬀerent algorithms, built following alternative
+hypotheses and speciﬁcations, to test the validity and robustness of a number of statistical and
+ML methods. In so doing, we rely upon a set of newly developed methods (within the family of
+mixed models) that take into account the nested structure of data. In particular, the new
+methods adopted here consider the students within di ﬀerent degree courses, a feature that
+is decisive if dropout probability depends on the speciﬁc course chosen. The results provide evi-
+dence about the accuracy and robustness of predictions about the probability that a speciﬁc
+student would actually drop out.
+The remainder of the paper is organised as follows. In Section2, we develop the conceptual fra-
+mework for deriving the empirical models in the Learning Analytics perspective. Section3 describes
+the
+methods and data. Section4 reports the main results. Lastly, Section5 discusses the main impli-
+cations and general suggestions towards implementing future interventions for helping at-risk
+students.
+1936 M. CANNISTRÀ ET AL.","(LA) tools. Advanced techniques, rooted in both the statistical and Machine
+Learning (ML) domains, can be used to predict the students who are more at-risk of dropping out. If
+algorithms demonstrate to be eﬀective in predicting students’ performance, the early identiﬁcation
+of students at-risk can be used to design targeted interventions for improving their chances of reten-
+tion. While a growing number of studies starts considering the speciﬁc use of
+predictions for remedial education, the debate about the best models to be employed for predic-
+tions is far from being concluded, and the empirical solutions proposed are not widely accepted.
+The potential consequences of using LA for practitioners are immediate and relevant. Indeed, if
+the algorithms work well in early predicting dropout, then HEIs’ managers can deﬁne interventions
+and courses targeted to speciﬁc individuals who are more at risk of leaving the studies without a
+degree, with the aim of improving their retention.
+This paper contributes to this new literature stream and institutional development. We develop
+innovative methods to formulate predictions of at-risk students early in their academic career, and
+we test them using administrative data from Politecnico di Milano (PoliMi), Italy. The database
+gathers various cohorts ofﬁrst-year Bachelor students (in Engineering) and covers 9 years (from
+2010 to 2019); overall, it includes more than 110,000 students, with associated 10,000,000 entries,
+each of which is a speciﬁc event related to the student journey (her initial administrative record,
+exams, etc.).
+This paper answers the following research question: How do alternative algorithms’ types (ML vs
+Generalised Linear Models) perform in predicting actual dropout and how do we interpret their
+results? This paper considers answering this research question a condition paving the way for sub-
+sequent interventions to be realized in supporting students who are at-risk of dropping out
+university.
+This study innovates the current state-of-the-art of theﬁeld in two main directions. First, we
+develop a comprehensive approach for studying dropout in a data analysis perspective, comple-
+menting the application of techniques to the existing data with a conceptual framework for
+exploring the determinants of dropout. The current approaches based on Learning Analytics
+are indeed very much data-driven, while paying less attention to the theoretical foundations
+of the models developed for the empirical analyses. We
+build a bridge between the literature about university dropout/success and the
+one about the use of Learning Analytics techniques in theﬁeld. In practical terms, we exploit all the available administrative data about
+students (demographic, academic performance, prior achievement, a proxy for the socioeco-
+nomic status, etc.) for identifying the variables that are mostly correlated to the precision of
+predicting students’ dropout. While we do not select the variables to be used in the algorithms,
+we use the lenses of a speciﬁc conceptual framework about dropout to interpret their validity
+and conceptual soundness. Second, we compare diﬀerent algorithms, built following alternative
+hypotheses and speciﬁcations, to test the validity and robustness of a number of statistical and
+ML methods. In so doing, we rely upon a set of newly developed methods (within the family of
+mixed models) that take into account the nested structure of data. In particular, the new
+methods adopted here consider the students within di ﬀerent degree courses, a feature that
+is decisive if dropout probability depends on the speciﬁc course chosen. The results provide evi-
+dence about the accuracy and robustness of predictions about the probability that a speciﬁc
+student would actually drop out.
+The remainder of the paper is organised as follows. In Section2, we develop the conceptual fra-
+mework for deriving the empirical models in the Learning Analytics perspective. Section3 describes
+the
+methods and data. Section4 reports the main results. Lastly, Section5 discusses the main impli-
+cations and general suggestions towards implementing future interventions for helping at-risk
+students."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"2. Academic literature and conceptual framework
+2.1. Related literature
+The academic literature distinguishes between two approaches investigating the features of stu-
+dents’ dropout: theory-driven and data-driven.
+The ﬁrst stream deepens the reasons and the psychological constructs behind withdrawing
+decisions, identifying theoretical fundamentals and drawing a conceptual model to guide the
+inquiry. Di ﬀerent authors (Spady 1970; Tinto 1975; Pascarella and Terenzini 1980; Cabrera,
+Stampen, and Lee Hansen1990; St John, Paulsen, and Starkey1996) propose models to show the
+processes of interactions between students, their characteristics and the institutions that lead to
+dropout (Tinto1975). These approaches consider the interaction between the student and the uni-
+versity environment in which individual attributes are exposed to inﬂuences, expectations, and
+demands from a variety of sources (such as courses, faculty members, administrators, and peers).
+The interaction between these two aspects allows the student to have success or failure in both
+the academic and social system (Spady1970).
+An alternative approach deals with data-driven studies, in which students’ characteristics are ana-
+lysed longitudinally to predict dropout or graduation (Kotsiantis, Pierrakeas, and Pintelas2003; Li,
+Rusk, and Song2013; Seidel and Kutieleh2017; Vicario et al.2018; Solís et al.2018; Nagy and Molontay
+2018; Mayra and Mauricio2018; Korhonen and Rautopuro2019; Sothan2019; Barbu et al.2019; Alban
+and Mauricio2019; Silva et al.2020; Heredia-Jiménez et al.2020). The methodological approach to
+study dropout in HE described in these works is innovative. Indeed, as highlighted by Agrusti, Bona-
+volontà, and Mezzini2019, researches on university dropout prediction increased considerably start-
+ing from 2017. The applications proposed in literature are various. Starting from the models adopted,
+ranging from the more traditional logistic regression (Mayra and Mauricio2018) to the innovative
+Machine Learning algorithms (Alban and Mauricio2019; Nagy and Molontay2018), also the university
+considered may be one (Heredia-Jiménez et al.2020) or more (Silva et al.2020) or with open courses
+(Kotsiantis, Pierrakeas, and Pintelas2003). Moreover, the information considered for predictions may
+relate to speciﬁc students’features, such as only demographics and pre-college information (Heredia-
+Jiménez et al.2020; Nagy and Molontay2018), or they exploit all possible knowledge about students
+(Silva et al.2020). Results show that Machine Learning models often provide accurate predictions,
+leaving room for further interventions aiming at retaining potential dropout students. Anyway, in
+the cited cases, researchers are less interested in explaining the phenomenonper se, while the
+focus
+is on predicting withdrawing students with the highest level of accuracy.
+Placing at the mid-way between theory and data-driven studies, some research papers show how
+the Machine Learning approach may be valuable to support the understanding of dropout (Berens
+et al.2018; Rodríguez-Muñiz et al.2019; Del Bonifro et al.2020; Sandoval-Palis et al.2020). Del Bonifro
+et al. (2020) concentrates on the on-time prediction to detect and then help at risk students as early
+as possible. On practical strand, they consider only the information acquired at the moment of the
+students’ enrolment. Sandoval-Palis et al. (2020) and Rodríguez-Muñiz et al. (2019) enrich the predic-
+tion of dropout students with a deep interpretation of the main determinants of withdrawal, with the
+aim of arriving to the root causes of the problem. Sandoval-Palis et al. (2020) ﬁnd that students with
+the highest risk of dropping out are those in vulnerable situations, with low application grades,
+enrolled in the levelling course for technical degrees. Results of Rodríguez-Muñiz et al. (2019)
+work show that the inﬂuence of personal and contextual variables and the academic performance
+in theﬁrst year represent the main predictors of dropout. Further, this model highlights other inter-
+esting factors: the importance of dedication (part or full time), and the vulnerability of the students
+with respect to their age. Lastly, Berens et al. (2018) supplement traditional administrative data with
+approximations of learning behavior and student-teacher interactions recalling the Tinto’s inte-
+gration model. Indeed, they adopted registration in online learning platforms, use of the university
+library, reading behavior data from the online library as well as online activity level.
+STUDIES IN HIGHER EDUCATION 1937","2. Academic literature and conceptual framework
+2.1. Related literature
+The academic literature distinguishes between two approaches investigating the features of stu-
+dents’ dropout: theory-driven and data-driven.
+The ﬁrst stream deepens the reasons and the psychological constructs behind withdrawing
+decisions, identifying theoretical fundamentals and drawing a conceptual model to guide the
+inquiry. Di ﬀerent authors propose models to show the
+processes of interactions between students, their characteristics and the institutions that lead to
+dropout. These approaches consider the interaction between the student and the uni-
+versity environment in which individual attributes are exposed to inﬂuences, expectations, and
+demands from a variety of sources (such as courses, faculty members, administrators, and peers).
+The interaction between these two aspects allows the student to have success or failure in both
+the academic and social system.
+An alternative approach deals with data-driven studies, in which students’ characteristics are ana-
+lysed longitudinally to predict dropout or graduation. The methodological approach to
+study dropout in HE described in these works is innovative. Indeed, as highlighted by Agrusti, Bona-
+volontà, and Mezzini2019, researches on university dropout prediction increased considerably start-
+ing from 2017. The applications proposed in literature are various. Starting from the models adopted,
+ranging from the more traditional logistic regression to the innovative
+Machine Learning algorithms, also the university
+considered may be one or more or with open courses. Moreover, the information considered for predictions may
+relate to speciﬁc students’features, such as only demographics and pre-college information, or they exploit all possible knowledge about students. Results show that Machine Learning models often provide accurate predictions,
+leaving room for further interventions aiming at retaining potential dropout students. Anyway, in
+the cited cases, researchers are less interested in explaining the phenomenonper se, while the focus
+is on predicting withdrawing students with the highest level of accuracy.
+Placing at the mid-way between theory and data-driven studies, some research papers show how
+the Machine Learning approach may be valuable to support the understanding of dropout. Del Bonifro
+et al. (2020) concentrates on the on-time prediction to detect and then help at risk students as early
+as possible. On practical strand, they consider only the information acquired at the moment of the
+students’ enrolment. Sandoval-Palis et al. (2020) and Rodríguez-Muñiz et al. (2019) enrich the predic-
+tion of dropout students with a deep interpretation of the main determinants of withdrawal, with the
+aim of arriving to the root causes of the problem. Sandoval-Palis et al. (2020) ﬁnd that students with
+the highest risk of dropping out are those in vulnerable situations, with low application grades,
+enrolled in the levelling course for technical degrees. Results of Rodríguez-Muñiz et al. (2019)
+work show that the inﬂuence of personal and contextual variables and the academic performance
+in theﬁrst year represent the main predictors of dropout. Further, this model highlights other inter-
+esting factors: the importance of dedication (part or full time), and the vulnerability of the students
+with respect to their age. Lastly, Berens et al. (2018) supplement traditional administrative data with
+approximations of learning behavior and student-teacher interactions recalling the Tinto’s inte-
+gration model. Indeed, they adopted registration in online learning platforms, use of the university
+library, reading behavior data from the online library as well as online activity level."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"2.2. Conceptual framework
+The present paper develops a clear conceptual framework for the comprehesion and interpretation
+of dropout at university. It considers both the educational process and the need of predicting stu-
+dents’ outcome as early as possible. In particular, the data-driven approach is substituted with an
+information-driven modelling, since the data mining approach to education is fastly becoming an
+important ﬁeld of research due to its ability to extract new knowledge about this aspect from a
+huge amount of students’ data (Wook, Yusof, and Ahmad Nazri2017).
+With the aim ofﬁlling the gaps within the two approaches, the conceptual framework proposed
+here poses its basis on a student’s ‘educational journey’. This concept lays its foundation on Cunha
+and Heckman (2007), where the formation of individual skills (both cognitive and non-cognitive) is
+the result of a cumulative process where diﬀerent factors (e.g. investments, environments and
+genes) intervene. The technology that governs this process is formed by sequential periods inﬂuen-
+cing each others and resulting in the educational formation of the individual. Contextualizing this
+framework into our research, we consider educational stages as school cycles: childhood, primary
+school, middle school, high school (we use‘K12’ to refer to all school’s grades until the 12th) and
+university. During each stage, it is possible to gather diﬀerent types of information about students’
+characteristics and performance. The collected information deal with educational path, such as
+grades or school data, or with personal and demographic information, for instance the citizenship
+or family’s income. The key feature of this model is that individual experiences enrich students’ per-
+sonal timeline. The milestone of the proposed framework relies on the possibility to predict student’s
+dropout, considering the previous educational stages as input. This conception brings to deal with
+an optimization problem, facing the trade-oﬀ between prediction accuracy, which normally
+improves when adding more features, and the potential timing to intervene, that needs to be
+reduced as much as possible, so with early predictions. This trade-oﬀ lays behind the managerial
+and policy implications of this research: the timing of the prediction is equally important to its accu-
+racy. The incorrect prediction about possible dropouts may lead institutions to promote targeted
+remedial interventions for wrong students, risking to esclude the real dropouts. On the other side,
+intuitively, the more information is available, the more accurate is the prediction. Anyway, collecting
+data on students’ educational path require time, during which students may decide to leave the uni-
+versity. Hence, balancing time of prediction and information collected is an optimization problem for
+dropout detection. Further, the critical choice is not only related to the time of prediction, but also to
+the model adopted, which needs to be the one which better optimize the trade-oﬀ between accu-
+racy and timing.
+From an operational standpoint, areduced view of the proposed conceptual framework needs to
+contextualise it into real-world practice. Our main assumption related to the optimization problem
+states that the ﬁrst moment where we are able to predict, with satisfying accuracy, students’
+outcome (graduation or dropout) is the end of theﬁrst semester of theirﬁrst year. So, the complete
+timeline from HE’s perspective comprises students’ information, grouped according to educational
+path stages, as illustrated in the previous paragraph: (i) demographic characteristics, (ii) previous
+studies information (K12 information) and (iii) academic performance (related toﬁrst semester of
+ﬁrst year).
+3. Methodology and data
+3.1. The methodological approach for the empirical analysis: overview
+When developing a sound methodology for an accurate and timely prediction of student dropout,
+this paper considers two main methodological challenges and issues.
+First, we must take into account that students are nested within diﬀerent engineering degree
+courses. This induces a natural source of dependence among students due to the fact that they
+1938 M. CANNISTRÀ ET AL.","2.2. Conceptual framework
+The present paper develops a clear conceptual framework for the comprehesion and interpretation
+of dropout at university. It considers both the educational process and the need of predicting stu-
+dents’ outcome as early as possible. In particular, the data-driven approach is substituted with an
+information-driven modelling, since the data mining approach to education is fastly becoming an
+important ﬁeld of research due to its ability to extract new knowledge about this aspect from a
+huge amount of students’ data.
+With the aim ofﬁlling the gaps within the two approaches, the conceptual framework proposed
+here poses its basis on a student’s ‘educational journey’. This concept lays its foundation on Cunha
+and Heckman (2007), where the formation of individual skills (both cognitive and non-cognitive) is
+the result of a cumulative process where diﬀerent factors (e.g. investments, environments and
+genes) intervene. The technology that governs this process is formed by sequential periods inﬂuen-
+cing each others and resulting in the educational formation of the individual. Contextualizing this
+framework into our research, we consider educational stages as school cycles: childhood, primary
+school, middle school, high school (we use‘K12’ to refer to all school’s grades until the 12th) and
+university. During each stage, it is possible to gather diﬀerent types of information about students’
+characteristics and performance. The collected information deal with educational path, such as
+grades or school data, or with personal and demographic information, for instance the citizenship
+or family’s income. The key feature of this model is that individual experiences enrich students’ per-
+sonal timeline. The milestone of the proposed framework relies on the possibility to predict student’s
+dropout, considering the previous educational stages as input. This conception brings to deal with
+an optimization problem, facing the trade-oﬀ between prediction accuracy, which normally
+improves when adding more features, and the potential timing to intervene, that needs to be
+reduced as much as possible, so with early predictions. This trade-oﬀ lays behind the managerial
+and policy implications of this research: the timing of the prediction is equally important to its accu-
+racy. The incorrect prediction about possible dropouts may lead institutions to promote targeted
+remedial interventions for wrong students, risking to esclude the real dropouts. On the other side,
+intuitively, the more information is available, the more accurate is the prediction. Anyway, collecting
+data on students’ educational path require time, during which students may decide to leave the uni-
+versity. Hence, balancing time of prediction and information collected is an optimization problem for
+dropout detection. Further, the critical choice is not only related to the time of prediction, but also to
+the model adopted, which needs to be the one which better optimize the trade-oﬀ between accu-
+racy and timing.
+From an operational standpoint, areduced view of the proposed conceptual framework needs to
+contextualise it into real-world practice. Our main assumption related to the optimization problem
+states that the ﬁrst moment where we are able to predict, with satisfying accuracy, students’
+outcome (graduation or dropout) is the end of theﬁrst semester of theirﬁrst year. So, the complete
+timeline from HE’s perspective comprises students’ information, grouped according to educational
+path stages, as illustrated in the previous paragraph: (i) demographic characteristics, (ii) previous
+studies information (K12 information) and (iii) academic performance (related toﬁrst semester of
+ﬁrst year).
+3. Methodology and data
+3.1. The methodological approach for the empirical analysis: overview
+When developing a sound methodology for an accurate and timely prediction of student dropout,
+this paper considers two main methodological challenges and issues.
+First, we must take into account that students are nested within diﬀerent engineering degree
+courses. This induces a natural source of dependence among students due to the fact that they"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"are enrolled in the same degree course. Since classical regression models assume all observations to
+be independent and do not take into account any type of latent structure, multilevel regression
+models (Pinheiro and Bates2006; Goldstein 2011; Agresti 2018) are adopted. This class of models
+are suited to handle the hierarchical structure of data, taking into account the induced dependence
+among observations. Besides modelling this intrinsic data structure, these models disentangle the
+variability explained by each level of grouping, helping the analyst in understanding the contri-
+bution given by each diﬀerent level to the response.
+A second methodological aspect concerns models’ assumptions. Generalised linear models are
+the most frequently used techniques in the literature to predict student dropout. Nonetheless,
+they impose a parametric functional form on the association between the covariates and the
+response that sometimes results to be too restrictive or unrealistic for describing complex data.
+For this reason, we compare the results of generalised linear models with the ones obtained applying
+ML techniques, such as Classiﬁcation and Regression Trees (CARTs) and Random Forest (RF) (Hastie,
+Tibshirani, and Friedman2009; Breiman 2001). These areﬂexible methods able to investigate non
+linear associations among the covariates and the response and to model interactions among
+them. Recent developments in this context allow classiﬁcation trees to handle hierarchical data: in
+Fontana et al. (2021), the authors propose a method toﬁt generalised mixed-eﬀects regression
+trees (GMET), while, in Pellagatti et al. (2021), the authors develop a new method toﬁt generalised
+mixed-eﬀects random forest (GMERF). These methods have the strength and theﬂexibility of ML
+techniques, still maintaing the ability to model the nested structure of data. Moreover, although
+the literature already investigates the main determinants of student dropout (Li, Rusk, and Song
+2013; Seidel and Kutieleh2017; Vicario et al.2018; Korhonen and Rautopuro2019; Sothan 2019;
+Barbu et al.2019), their estimated eﬀects might vary across methods (i.e. parametric and nonpara-
+metric methods). Linear models provide a coeﬃcient for each covariate, that measures the increase
+in the response for one unit increase in the covariate. Tree-based methods provide a diﬀerent type of
+result that consists in the quantiﬁcation of each covariate’s importance (measured adopting diﬀerent
+criteria) and in the estimation of the functional form that marginally links each covariate to the
+response. In this perspective, we are interested in comparing the predicive power and the interpret-
+ative potential of the aforementioned types of methods, considering these two methodological
+reﬂections in the analyses of results.
+3.2. The methodological approach: mathematical details
+We recall now the basics of multilevel models, specifying their modelling both for generalised linear
+models and tree-based methods. LetY
+ij be the binary variable that is equal to 1 if thejth student
+within theith degree course, forj = 1, ..., ni and i = 1, ... , N, dropped his/her studies and equal
+to 0 otherwise.ni is the total number of students who concluded their career (either dropped or
+graduated) enrolled in the ith degree course and N = 20 is the total number of engineering
+degree courses at PoliMi. Being Yij a Bernoulli variable where Yij = 1 with probability pij and
+Yij = 0 with probability (1− pij), the classical logistic regression model (Agresti2018) takes the form:
+mij = E[Yij] j = 1, ... , ni, i = 1, ..., N
+g(mij) = hij
+hij =
+∑K+1
+k=1
+bkxijk (1)
+where mij = pij. pij is the probability that studentj within degree coursei drops, g(mij) is the logit link
+function, i.e.g(mij) = log it(mij) = log it(pij) = log pij
+1−pij
+()
+. K is the total number of predictors,b is the
+(K + 1)-dimensional vector of coeﬃcients and⃗xij is the (K + 1)-dimensional vector of the covariates
+STUDIES IN HIGHER EDUCATION 1939","are enrolled in the same degree course. Since classical regression models assume all observations to
+be independent and do not take into account any type of latent structure, multilevel regression
+models are adopted. This class of models
+are suited to handle the hierarchical structure of data, taking into account the induced dependence
+among observations. Besides modelling this intrinsic data structure, these models disentangle the
+variability explained by each level of grouping, helping the analyst in understanding the contri-
+bution given by each diﬀerent level to the response.
+A second methodological aspect concerns models’ assumptions. Generalised linear models are
+the most frequently used techniques in the literature to predict student dropout. Nonetheless,
+they impose a parametric functional form on the association between the covariates and the
+response that sometimes results to be too restrictive or unrealistic for describing complex data.
+For this reason, we compare the results of generalised linear models with the ones obtained applying
+ML techniques, such as Classiﬁcation and Regression Trees (CARTs) and Random Forest (RF). These areﬂexible methods able to investigate non
+linear associations among the covariates and the response and to model interactions among
+them. Recent developments in this context allow classiﬁcation trees to handle hierarchical data: in
+Fontana et al. (2021), the authors propose a method toﬁt generalised mixed-eﬀects regression
+trees (GMET), while, in Pellagatti et al. (2021), the authors develop a new method toﬁt generalised
+mixed-eﬀects random forest (GMERF). These methods have the strength and theﬂexibility of ML
+techniques, still maintaing the ability to model the nested structure of data. Moreover, although
+the literature already investigates the main determinants of student dropout , their estimated eﬀects might vary across methods (i.e. parametric and nonpara-
+metric methods). Linear models provide a coeﬃcient for each covariate, that measures the increase
+in the response for one unit increase in the covariate. Tree-based methods provide a diﬀerent type of
+result that consists in the quantiﬁcation of each covariate’s importance (measured adopting diﬀerent
+criteria) and in the estimation of the functional form that marginally links each covariate to the
+response. In this perspective, we are interested in comparing the predicive power and the interpret-
+ative potential of the aforementioned types of methods, considering these two methodological
+reﬂections in the analyses of results.
+3.2. The methodological approach: mathematical details"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"(including 1 for the intercept) relative to the (ij)th observation. This modelling assumes that all obser-
+vations Yij (i.e. single students) are independent, that is to say, the production process of the
+outcome (dropout or not) is not aﬀected by common factors across students.
+If we now take into account the nested structure of data (i.e. students being enrolled into degree
+courses), the Generalised (logistic) Linear Multilevel Model, GLMM (Agresti2018), considering two
+levels, takes the following form:
+mij = E[Yij|⃗bi] j = 1, ..., ni, i = 1, ..., N
+g(mij) = hij
+hij =
+∑K+1
+k=1
+bkxijk +
+∑Q+1
+q=1
+biqzijq
+⃗bi ≏N (0, C). (2)
+Conditionally on the random eﬀects coeﬃcients denoted by⃗bi, the multilevel logistic regression
+model assumes that the elements of⃗Yi are independent.⃗zij is the (Q + 1)-dimensional vector of pre-
+dictors for the random eﬀects, ⃗bi is the (Q + 1)-dimensional vector of their coeﬃcients andC is the
+(Q + 1) × (Q + 1) within-group covariance matrix of the random eﬀects coeﬃcients. In multilevel
+models, ﬁxed eﬀects are identiﬁed by parameters associated to the entire population, while
+random ones are identiﬁed by group-speciﬁc parameters. In our case study,⃗bi are the coeﬃcients
+relative to the ith degree course. To verify whether the hierarchical structure taken into account
+by multilevel models improves dropout predictions, we compare multilevel models’ performances
+with the ones of models not considering degree courses and of models including the degree
+courses information as a categorical student-level covariate (see Tables A1 and A2 in Annex).
+Moving now to an ML setting, the GMET modelling (Fontana et al.2021) basically substitutes the
+linear ﬁxed-eﬀects part in Equation (2) with a tree structure:
+mij = E[Yij|⃗bi] j = 1, ..., ni, i = 1, ..., N
+g(mij) = hij
+hij = f(⃗xij) +
+∑Q+1
+q=1
+biqzijq
+⃗bi ≏N (0, C) (3)
+where f(⃗xij) is not a linear combination of the coeﬃcients b but it is a partition of the covariates space
+into boxes (or rectangles) and the prediction within each box is the mode of all the observations that
+belong to that box. The boxes are automatically built by tree in order to minimize the variability
+within them and maximize the variabilty between them. The absence of a speciﬁc functional form
+makes this method very ﬂexible and able to better model interactions among the covariates.
+GMET, as standard CARTs, makes an intrinsic selection of the covariates: not all covariates are
+used in the splits that deﬁne the tree, but only the ones that result to be relevant. The covariate
+used in theﬁrst split is the most relevant one and so on. Moreover, diﬀerent branches of the tree
+can be deﬁned by diﬀerent subsets of covariates and this building process reveals the interaction
+structure among covariates.
+2
+Similarly, GMERF (Pellagatti et al.2021) substitues the standard treef(⃗xij) in Equation (3) with a RF,
+that is an ensemble of trees. RF basically works taking many training sets from the entire population,
+building a separate prediction model using each training set, and averaging the resulting predic-
+tions. Moreover, during this process, it considers diﬀerent subsets of covariates for each training
+set, in order to give all variables the possibility to be taken into account in the tree splits– avoiding
+1940 M. CANNISTRÀ ET AL.","(including 1 for the intercept) relative to the (ij)th observation. This modelling assumes that all obser-
+vations Yij (i.e. single students) are independent, that is to say, the production process of the
+outcome (dropout or not) is not aﬀected by common factors across students.
+If we now take into account the nested structure of data (i.e. students being enrolled into degree
+courses), the Generalised (logistic) Linear Multilevel Model, GLMM (Agresti2018), considering two
+levels, takes the following form:
+Conditionally on the random eﬀects coeﬃcients denoted by⃗bi, the multilevel logistic regression
+model assumes that the elements of⃗Yi are independent.⃗zij is the (Q + 1)-dimensional vector of pre-
+dictors for the random eﬀects, ⃗bi is the (Q + 1)-dimensional vector of their coeﬃcients andC is the
+(Q + 1) × (Q + 1) within-group covariance matrix of the random eﬀects coeﬃcients. In multilevel
+models, ﬁxed eﬀects are identiﬁed by parameters associated to the entire population, while
+random ones are identiﬁed by group-speciﬁc parameters. In our case study,⃗bi are the coeﬃcients
+relative to the ith degree course. To verify whether the hierarchical structure taken into account
+by multilevel models improves dropout predictions, we compare multilevel models’ performances
+with the ones of models not considering degree courses and of models including the degree
+courses information as a categorical student-level covariate (see Tables A1 and A2 in Annex).
+Moving now to an ML setting, the GMET modelling (Fontana et al.2021) basically substitutes the
+linear ﬁxed-eﬀects part in Equation (2) with a tree structure:
+where f(⃗xij) is not a linear combination of the coeﬃcients b but it is a partition of the covariates space
+into boxes (or rectangles) and the prediction within each box is the mode of all the observations that
+belong to that box. The boxes are automatically built by tree in order to minimize the variability
+within them and maximize the variabilty between them. The absence of a speciﬁc functional form
+makes this method very ﬂexible and able to better model interactions among the covariates.
+GMET, as standard CARTs, makes an intrinsic selection of the covariates: not all covariates are
+used in the splits that deﬁne the tree, but only the ones that result to be relevant. The covariate
+used in theﬁrst split is the most relevant one and so on. Moreover, diﬀerent branches of the tree
+can be deﬁned by diﬀerent subsets of covariates and this building process reveals the interaction
+structure among covariates.
+Similarly, GMERF (Pellagatti et al.2021) substitues the standard treef(⃗xij) in Equation (3) with a RF,
+that is an ensemble of trees. RF basically works taking many training sets from the entire population,
+building a separate prediction model using each training set, and averaging the resulting predic-
+tions. Moreover, during this process, it considers diﬀerent subsets of covariates for each training
+set, in order to give all variables the possibility to be taken into account in the tree splits– avoiding"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"the risk that some variables cover the eﬀect of other signiﬁcant and correlated ones (Hastie, Tibshir-
+ani, and Friedman2009). Therefore, the advantage of RFs is twofold: they reduce the model variance
+and they handle the presence of highly correlated covariates, disentangling their associations with
+the response variable. RFs provide the importance ranking of the covariates in predicting the
+response, measured as the mean decrease in Gini index – obtained by adding up the total
+amount that the Gini index is decreased by splits over a given predictor, averaged over all trees
+of the ensemble (Raileanu and Stoﬀel 2004). Moreover, related partial plots displays the marginal
+association, estimated by GMERF, between each covariate and the response, averaging out the
+eﬀect of all other covariates.
+In the light of these methodological aspects, we expect tree-based methods to identify a similar
+set of signiﬁcant covariates. Nonetheless, our main interest is not this one, but it regards two other
+aspects. The former is the quantiﬁcation and the qualiﬁcation of the estimated associations between
+relevant covariates and the response, compared across diﬀerent methods. In particuar, we compare
+results interpretability and releasability. The latter is the quantiﬁcation of the eﬀect that diﬀerent
+assumptions onﬁxed eﬀects have on the models predictive power.
+In this light, standing on the proposed methods and on the diﬀerent usages we propose about
+the degree courses information, we run six diﬀerent empirical methods, listed inTable 1.
+3.3. Application– data about Politecnico di Milano
+Politecnico di Milano (PoliMi) is the best-ranked Italian public university, and trains students in Engin-
+eering, Architecture and Design majors. PoliMi counts around 46,000 students in 2019/2020 in
+Bachelor and Master courses, among which almost 35,000 in Engineering. This study investigates
+the phenomenon of student dropout at PoliMi (with speciﬁc reference to Engineering bachelor stu-
+dents) and develops a method to early predict it, making a further distinction betweenearly and late
+dropout. To clarify the application, a dropout deﬁnition is needed: dropout occurs when the student
+leaves PoliMi for a reason diﬀerent from graduation. In particular, early dropout occurs when the
+student drops within the 3rd semester after enrolment,
+3 while late dropout occurs when the
+student drops later on. Taking the insitutional standpoint, it is not speciﬁed whether the student
+drops from educational system in general, or he/she shifts major. As stated by Tinto (1982, 2017),
+it is a matter of perspective and diﬀerent interests between students, who aim at obtaining a
+degree, and institutions, which aim at retaining their students. The choice of distinguishing
+between early and late dropout is motivated by our interest in investigating the determinats of
+these two types of dropout, that might be potentially diﬀerent. We expect drivers of an early
+dropout to be diﬀerent from the ones of a late dropout. Therefore, each classiﬁcation model will con-
+sider as outcomes of interest early dropoutversus graduate and late dropoutversus graduate.
+The Information Technology (IT) system of the university collects both dynamic and static data
+about enrolled students. The former ones are the so-called‘digital prints’ left in correspondence
+to some key administrative facts, such as register at exams’ sessions, accept or retake grades or
+pay university’s fees. Static data comprise all the information that administrative oﬃce registers at
+the moment of enrolment, such as citisenship, gender or date/place of birth, previous school per-
+formance or the university admission test score. The university Administration and IT o ﬃces
+Table 1. Proposed empirical models for analyzing early and late dropout.
+Degree courses approach Type
+of models
+Degree courses not
+considered
+Degree courses considered:
+dummy variable
+Degree courses considered:
+multilevel model
+Generalised linear model Model 1a Model 1b Model 1c
+Classiﬁcation tree Model 2a Model 2b Model 2c
+Random forest Model 3a Model 3b Model 3c
+Note: the table presents the overview of the run models, dividing them according to their typology (linear, tree or random forest)
+and to the ways of considering the degree courses information (ignored, included as a categorical variable or by a multilevel
+approach).
+STUDIES IN HIGHER EDUCATION 1941","the risk that some variables cover the eﬀect of other signiﬁcant and correlated ones. Therefore, the advantage of RFs is twofold: they reduce the model variance and they handle the presence of highly correlated covariates, disentangling their associations with the response variable. RFs provide the importance ranking of the covariates in predicting the response, measured as the mean decrease in Gini index – obtained by adding up the total amount that the Gini index is decreased by splits over a given predictor, averaged over all trees of the ensemble. Moreover, related partial plots displays the marginal association, estimated by GMERF, between each covariate and the response, averaging out the eﬀect of all other covariates.
+In the light of these methodological aspects, we expect tree-based methods to identify a similar set of signiﬁcant covariates. Nonetheless, our main interest is not this one, but it regards two other aspects. The former is the quantiﬁcation and the qualiﬁcation of the estimated associations between relevant covariates and the response, compared across diﬀerent methods. In particuar, we compare results interpretability and releasability. The latter is the quantiﬁcation of the eﬀect that diﬀerent assumptions onﬁxed eﬀects have on the models predictive power.
+In this light, standing on the proposed methods and on the diﬀerent usages we propose about the degree courses information, we run six diﬀerent empirical methods, listed inTable 1.
+3.3. Application– data about Politecnico di Milano
+Politecnico di Milano (PoliMi) is the best-ranked Italian public university, and trains students in Engineering, Architecture and Design majors. PoliMi counts around 46,000 students in 2019/2020 in Bachelor and Master courses, among which almost 35,000 in Engineering. This study investigates the phenomenon of student dropout at PoliMi (with speciﬁc reference to Engineering bachelor students) and develops a method to early predict it, making a further distinction betweenearly and late dropout. To clarify the application, a dropout deﬁnition is needed: dropout occurs when the student leaves PoliMi for a reason diﬀerent from graduation. In particular, early dropout occurs when the student drops within the 3rd semester after enrolment,
+3 while late dropout occurs when the student drops later on. Taking the insitutional standpoint, it is not speciﬁed whether the student drops from educational system in general, or he/she shifts major. As stated by Tinto , it is a matter of perspective and diﬀerent interests between students, who aim at obtaining a degree, and institutions, which aim at retaining their students. The choice of distinguishing between early and late dropout is motivated by our interest in investigating the determinats of these two types of dropout, that might be potentially diﬀerent. We expect drivers of an early dropout to be diﬀerent from the ones of a late dropout. Therefore, each classiﬁcation model will consider as outcomes of interest early dropoutversus graduate and late dropoutversus graduate.
+The Information Technology (IT) system of the university collects both dynamic and static data about enrolled students. The former ones are the so-called‘digital prints’ left in correspondence to some key administrative facts, such as register at exams’ sessions, accept or retake grades or pay university’s fees. Static data comprise all the information that administrative oﬃce registers at the moment of enrolment, such as citisenship, gender or date/place of birth, previous school performance or the university admission test score. The university Administration and IT o ﬃces
+Note: the table presents the overview of the run models, dividing them according to their typology (linear, tree or random forest)
+and to the ways of considering the degree courses information (ignored, included as a categorical variable or by a multilevel
+approach)."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"supply the dataset used in the analysis, recording students’ information from 2010 to 2019. The
+number of observations is more than 10 million and each of them represents an administrative
+event or a student’s set of features. The whole dataset is divided into multiple sub-datasets, accord-
+ing to type of information. Hence, data cleaning activity requires to merge the datasets through their
+linkage with unique encrypted key and to keep only concluded careers, using the student as a unit of
+analysis. The students’ features lastly selected and included into the analysis are summarised in
+Table 2, divided into demographic, previous studies and academic information.
+Our ﬁnal sample includes all concluded careers (for dropout or graduation) of students enrolled in
+an engineering degree course between a.y. 2010/2011 and a.y. 2015/2016. This sample counts
+31,071 concluded careers of students, 62.7% of which are graduated, 21.7% are early dropout and
+15.6% are late dropout. For both early and late dropout prediction, we train our models on a training
+set, that is composed by randomly selected 70% of the sample, while the test set is composed by the
+Table 2. Student-level variables’ list: description and domain.
+Group
+Variable’s
+name Description Possible values
+Descriptive
+statistics8
+Demographic
+information
+Gender Student’s gender 1: male 76.17%
+0: female 23.83%
+Income (range) Student’s contribution fee Highest income (reference) 33.58%
+High income 32.55%
+Low income 27.97%
+DSU (if the student receives a
+grant)
+3.20%
+DK, Unknown income 2.70%
+Access to study
+age
+Student’s age at enrolment From 17 to 50 19.27
+(IQR: 18.00–
+19.00)
+Student’ origins Student’s Citizenship &
+Residency
+Native Milan: if the student is
+Italian and live in Milan
+(reference)
+25.54%
+Native out Milan:if the student
+is Italian and live outside
+Milan
+67.57%
+Non-Italian abroad: if the
+student is not Italian and lives
+outside Italy
+3.87%
+Non-Italian in Milan: if the
+student is not Italian, but lives
+in Milan
+1.69%
+Non-Italian out of Milan: if the
+student is not Italian and lives
+out of Milan
+1.33%
+Previous studies and
+performance
+information
+Previous
+Studies
+High school track Scientiﬁc (reference) 73.33%
+Classic 6.32%
+Technical 15.97%
+Other 4.38%
+Admission
+score
+Admission test grade From 60 to 100 72.45
+(IQR: 81.07–
+64.57)
+Academic information TotalCredits1s Total credits earned at 1st
+sem. of 1st year
+From
+0 to 40 17.97
+(IQR: 30.00– 0.00)
+Attempts 1s n. of attempts to pass an exam
+in the 1st semester of the 1st
+year
+One: the student attempted the
+exam once (reference)
+24.17%
+No: no attempts are done, so
+the student never attempted
+the exam
+12.94%
+More: if the student attempted
+the exam more than once
+62.89%
+Note: The table presents the list of variables adopted in the models with their description and assumed values. When dealing
+with a categorical variable, we point out the reference level– usually the most populated one.
+1942 M. CANNISTRÀ ET AL.","supply the dataset used in the analysis, recording students’ information from 2010 to 2019. The
+number of observations is more than 10 million and each of them represents an administrative
+event or a student’s set of features. The whole dataset is divided into multiple sub-datasets, accord-
+ing to type of information. Hence, data cleaning activity requires to merge the datasets through their
+linkage with unique encrypted key and to keep only concluded careers, using the student as a unit of
+analysis. The students’ features lastly selected and included into the analysis are summarised in
+Table 2, divided into demographic, previous studies and academic information.
+Our ﬁnal sample includes all concluded careers (for dropout or graduation) of students enrolled in
+an engineering degree course between a.y. 2010/2011 and a.y. 2015/2016. This sample counts
+31,071 concluded careers of students, 62.7% of which are graduated, 21.7% are early dropout and
+15.6% are late dropout. For both early and late dropout prediction, we train our models on a training
+set, that is composed by randomly selected 70% of the sample, while the test set is composed by the
+
+Table 2. Student-level variables’ list: description and domain.
+Group
+Variable’s
+name Description Possible values
+Descriptive
+statistics
+Demographic
+information
+Gender Student’s gender 1: male 76.17%
+0: female 23.83%
+Income (range) Student’s contribution fee Highest income (reference) 33.58%
+High income 32.55%
+Low income 27.97%
+DSU (if the student receives a
+grant)
+3.20%
+DK, Unknown income 2.70%
+Access to study
+age
+Student’s age at enrolment From 17 to 50 19.27
+(IQR: 18.00–
+19.00)
+Student’ origins Student’s Citizenship &
+Residency
+Native Milan: if the student is
+Italian and live in Milan
+(reference)
+25.54%
+Native out Milan:if the student
+is Italian and live outside
+Milan
+67.57%
+Non-Italian abroad: if the
+student is not Italian and lives
+outside Italy
+3.87%
+Non-Italian in Milan: if the
+student is not Italian, but lives
+in Milan
+1.69%
+Non-Italian out of Milan: if the
+student is not Italian and lives
+out of Milan
+1.33%
+Previous studies and
+performance
+information
+Previous
+Studies
+High school track Scientiﬁc (reference) 73.33%
+Classic 6.32%
+Technical 15.97%
+Other 4.38%
+Admission
+score
+Admission test grade From 60 to 100 72.45
+(IQR: 81.07–
+64.57)
+Academic information TotalCredits1s Total credits earned at 1st
+sem. of 1st year
+From
+0 to 40 17.97
+(IQR: 30.00– 0.00)
+Attempts 1s n. of attempts to pass an exam
+in the 1st semester of the 1st
+year
+One: the student attempted the
+exam once (reference)
+24.17%
+No: no attempts are done, so
+the student never attempted
+the exam
+12.94%
+More: if the student attempted
+the exam more than once
+62.89%
+Note: The table presents the list of variables adopted in the models with their description and assumed values. When dealing
+with a categorical variable, we point out the reference level– usually the most populated one."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"remaining 30%. In particular, in our models,Yij = 1 when studentj within degree coursei drops, early
+or late depending on the model setting, andYij = 0 when he or she graduated;⃗X is the matrix of the
+ﬁxed-eﬀects covariates that contains all student-level characteristics shown inTable 2. When we take
+into account the degree courses information as a categorical student-level variable (Models 1b, 2b
+and 3b of Table 1), 19 dummy variables are included. Each dummy variable represents the belonging
+to one degree course with respect to the reference one (theﬁrst one in alphabetic order). When
+running multilevel models, i.e. when we take into account the hierarchical structure of students
+nested within degree courses, we include in the random eﬀects part a random intercept, i.e.
+pij = E[Yij|bi] j = 1, ..., ni, i = 1, ..., N
+log it(pij) = hij
+hij = f(⃗xij) + bi
+bi ≏N (0, s2
+c) (4)
+where bi is the value-added given by theith degree course to the dropout probability (either early or
+late, depending on the model setting): ifbi is negative, students within theith degree course are on
+average less likely to drop with respect to the others; while, ifbi is positive, students within theith
+degree course are on average more likely to drop with respect to the others. Given Equation (4) ,f(⃗xij)
+is equal to a linear combination of theﬁxed-eﬀects covariates in the case of a multilevel linear model
+(Model 1c), to a classiﬁcation tree in the case of a multilevel classiﬁcation tree (Model 2c) and to a
+random forest in the case of a multilevel random forest (Model 3c). In order to compare the perform-
+ance of theﬁtted models, we compute two types of indexes: (i) the Area Under the ROC Curve (AUC),
+that provides an aggregate measure of performance across all possible classiﬁcation thresholds; (ii)
+accuracy, sensitivity ans speciﬁcity indexes. Among the set of these performance indexes, we are
+mainly interested in the sensitivity, because we aim atﬁnding the model that better identiﬁes the
+at-risk students, i.e. the model with highest sensitivity.
+4. Results
+We run the nine models presented inTable 1, for both early dropoutversus graduated and late
+dropout versus graduated.4 We analyze the results from two perspectives, recalling the methodologi-
+cal aspects presented in Section3.1. First, we compare the models’ performance, highlighting the
+main diﬀerences between hierarchical and non-hierarchical models and between statistical and
+ML ones. Then, we compare the types of information about the dropout phenomenon extracted
+from the proposed models in order to deepen the related mechanisms.
+4.1. The performance of the empirical models– overview
+The ﬁrst set of results from the empirical analyses are reported inTables 3and 4, which cointain the
+predictive performances, measured in terms of AUC, sensitivity, accuracy and speiﬁcity, of theﬁtted
+models, for early and late dropout prediction, respectively. All models’ predictive performances are
+very high, both forearly and late dropout. The lowest value of AUC is 0.8714 and it is reached by the
+simple tree for predicting late dropout, while the highest one is 0.9615 and it is reached by the
+GLMM for predicting early dropout. All other models’ AUC range between these two values. In par-
+ticular, classiﬁcation trees have always slightly lower predictive power than GLM and RF, that,
+instead, have very similar performances. This diﬀerence is more pronounced for early than for late
+dropout and decreases when considering multilevel models. For both linear and tree-based
+models, taking into account the degree courses students are enrolled in (both as a dummy variable
+and by employing a multilevel model) increases their performances, with multilevel models having
+the highest peak (seeTables 3and 4). Strengthened by this evidence, we retain multilevel models to
+STUDIES IN HIGHER EDUCATION 1943","remaining 30%. In particular, in our models,Yij = 1 when studentj within degree coursei drops, early
+or late depending on the model setting, andYij = 0 when he or she graduated;⃗X is the matrix of the
+ﬁxed-eﬀects covariates that contains all student-level characteristics shown inTable 2. When we take
+into account the degree courses information as a categorical student-level variable (Models 1b, 2b
+and 3b of Table 1), 19 dummy variables are included. Each dummy variable represents the belonging
+to one degree course with respect to the reference one (theﬁrst one in alphabetic order). When
+running multilevel models, i.e. when we take into account the hierarchical structure of students
+nested within degree courses, we include in the random eﬀects part a random intercept, i.e.
+
+where bi is the value-added given by theith degree course to the dropout probability (either early or
+late, depending on the model setting): ifbi is negative, students within theith degree course are on
+average less likely to drop with respect to the others; while, ifbi is positive, students within theith
+degree course are on average more likely to drop with respect to the others. Given Equation (4) ,f(⃗xij)
+is equal to a linear combination of theﬁxed-eﬀects covariates in the case of a multilevel linear model
+(Model 1c), to a classiﬁcation tree in the case of a multilevel classiﬁcation tree (Model 2c) and to a
+random forest in the case of a multilevel random forest (Model 3c). In order to compare the perform-
+ance of theﬁtted models, we compute two types of indexes: (i) the Area Under the ROC Curve (AUC),
+that provides an aggregate measure of performance across all possible classiﬁcation thresholds; (ii)
+accuracy, sensitivity ans speciﬁcity indexes. Among the set of these performance indexes, we are
+mainly interested in the sensitivity, because we aim atﬁnding the model that better identiﬁes the
+at-risk students, i.e. the model with highest sensitivity.
+4. Results
+We run the nine models presented inTable 1, for both early dropoutversus graduated and late
+dropout versus graduated.4 We analyze the results from two perspectives, recalling the methodologi-
+cal aspects presented in Section3.1. First, we compare the models’ performance, highlighting the
+main diﬀerences between hierarchical and non-hierarchical models and between statistical and
+ML ones. Then, we compare the types of information about the dropout phenomenon extracted
+from the proposed models in order to deepen the related mechanisms.
+4.1. The performance of the empirical models– overview
+The ﬁrst set of results from the empirical analyses are reported inTables 3and 4, which cointain the
+predictive performances, measured in terms of AUC, sensitivity, accuracy and speiﬁcity, of theﬁtted
+models, for early and late dropout prediction, respectively. All models’ predictive performances are
+very high, both forearly and late dropout. The lowest value of AUC is 0.8714 and it is reached by the
+simple tree for predicting late dropout, while the highest one is 0.9615 and it is reached by the
+GLMM for predicting early dropout. All other models’ AUC range between these two values. In par-
+ticular, classiﬁcation trees have always slightly lower predictive power than GLM and RF, that,
+instead, have very similar performances. This diﬀerence is more pronounced for early than for late
+dropout and decreases when considering multilevel models. For both linear and tree-based
+models, taking into account the degree courses students are enrolled in (both as a dummy variable
+and by employing a multilevel model) increases their performances, with multilevel models having
+the highest peak (seeTables 3and 4). Strengthened by this evidence, we retain multilevel models to"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"be extremely informative in this application. Besides providing the best performance, theyﬁt the real
+nested structure of students and, especially, they provide interpretable information about the het-
+erogeneities across degree courses (see Section4.2).
+4.2. Understanding and interpreting students’ dropout – ﬁndings from multilevel
+generalised linear model and tree-based methods
+We now focus on the interpretation of the results, reﬂecting on the various types of information
+gathered from the proposed models output, adopting a student-level and course-level perspec-
+tives. We are interested in investigating whether these methods, that lead to slightly diﬀerence
+performance, give supplemental insights about the dropout phenomenon. In the light of the
+results shown in Section4.1, we focus on the multilevel models output, that we retain to be the
+most informative.
+4.3. Individual-level factors associated with dropout
+Table 5reports the results of the GLMM (Model 1c), both for early and late dropout, respectively.5 Not
+signiﬁcant covariates are removed from theﬁnal model using a step-by-step procedure.
+Table 4.Area Under the Curve (AUC) and accuracy, sensitivity and speciﬁcity indexes of the 9 models run for late dropoutversus
+graduated.
+Not nested
+(a)
+Dummy
+(b)
+Nested
+(c)
+Generalised Linear Model
+(1)
+AUC = 0.8977 Acc = 0.8637 AUC = 0.9089 Acc = 0.8593 AUC = 0.9091
+VPC=0.0852
+Acc = 0.859
+Sen = 0.7634 Sen = 0.8003 Sen = 0.7979
+Spec = 0.8855 Spec = 0.8721 Spec = 0.8723
+Classiﬁcation Tree
+(2)
+AUC = 0.8714 Acc = 0.8851 AUC = 0.89019 Acc = 0.8157 AUC = 0.9049
+VPC = 0.1193
+Acc = 0.8393
+Sen = 0.673 Sen = 0.8718 Sen = 0.8118
+Spec = 0.9312 Spec = 0.8035 Spec = 0.8453
+Random Forest
+(3)
+AUC = 0.8897 Acc = 0.864 AUC = 0.9016 Acc = 0.8519 AUC = 0.9065
+VPC = 0.1276
+Acc = 0.8549
+Sen = 0.7354 Sen = 0.788 Sen = 0.8036
+Spec = 0.8919 Spec = 0.8658 Spec = 0.866
+Note: The sensitivity is obtained as sensitivity = # true positive / (#true positive + #false negative), where the true positives are the
+students correctly classiﬁed as dropout by the model and the false negatives are the students that are wrongly identiﬁed as
+graduated by the model. ROC curve is a graphical plot that illustrates the diagnostic ability of the classiﬁer system as its dis-
+crimination threshold is varied. AUC measures the area under the ROC curve and is equal to the probability that the classiﬁer
+will rank a randomly chosen dropout student higher than a randomly chosen graduated one (assuming dropout ranks higher
+than graduate). AUC = 1 is the perfectﬁtting.
+Table 3.Area Under the ROC Curve (AUC) and accuracy, sensitivity and speciﬁcity indexes of the 9 models run for early dropout
+versus graduated.
+Not nested (a) Dummy (b) Nested (c)
+Generalised Linear Model (1) AUC = 0.9576 Acc = 0.9178 AUC = 0.9614 Acc = 0.9219 AUC = 0.9615
+VPC = 0.1063
+Acc = 0.9224
+Sen = 0.8943 Sen = 0.8913 Sen = 0.8921
+Spec = 0.9234 Spe = 0.9291 Spec = 0.9296
+Classiﬁcation Tree (2) AUC = 0.8748 Acc = 0.9342 AUC = 0.8748 Acc = 0.9342 AUC = 0.9473
+VPC = 0.0857
+Acc = 0.9118
+Sen = 0.7789 Sen = 0.7789 Sen = 0.9004
+Spec = 0.9708 Spe = 0.9708 Spec = 0.9145
+Random Forest (3) AUC = 0.9512 Acc = 0.9183 AUC = 0.9553 Acc = 0.9155 AUC = 0.9598
+VPC = 0.1803
+Acc = 0.916
+Sen = 0.8709 Sen = 0.8898 Sen = 0.8966
+Spec = 0.9294 Spe = 0.9216 Spec = 0.9205
+Note: The sensitivity is obtained as sensitivity = # true positive / (#true positive + #false negative), where the true positives are the
+students correctly classiﬁed as dropout by the model and the false negatives are the students that are wrongly identiﬁed as
+graduated by the model. ROC curve is a graphical plot that illustrates the diagnostic ability of the classiﬁer system as its dis-
+crimination threshold is varied. AUC measures the area under the ROC curve and is equal to the probability that the classiﬁer
+will rank a randomly chosen dropout student higher than a randomly chosen graduated one (assuming dropout ranks higher
+than graduate). AUC = 1 is the perfectﬁtting.
+1944 M. CANNISTRÀ ET AL.","be extremely informative in this application. Besides providing the best performance, theyﬁt the real
+nested structure of students and, especially, they provide interpretable information about the het-
+erogeneities across degree courses (see Section4.2).
+4.2. Understanding and interpreting students’ dropout – ﬁndings from multilevel
+generalised linear model and tree-based methods
+We now focus on the interpretation of the results, reﬂecting on the various types of information
+gathered from the proposed models output, adopting a student-level and course-level perspec-
+tives. We are interested in investigating whether these methods, that lead to slightly diﬀerence
+performance, give supplemental insights about the dropout phenomenon. In the light of the
+results shown in Section4.1, we focus on the multilevel models output, that we retain to be the
+most informative.
+4.3. Individual-level factors associated with dropout
+Table 5reports the results of the GLMM (Model 1c), both for early and late dropout, respectively.5 Not
+signiﬁcant covariates are removed from theﬁnal model using a step-by-step procedure."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Several interesting observations emerge from the associations between student-level infor-
+mation and dropout probability. First, some diﬀerences are related to personal characteristics
+and background. Males are more likely to late drop out than females; although the literature
+did not reach an agreement about the direction of gender di ﬀerences in HE dropout, some
+studies found that female students drop less than their male counterparts (Johnes and McNabb
+2004). Native Italians oﬀ-site (i.e. not living in Milan) are more likely to early drop than Italians
+in-site, perhaps suggesting that commuters and/or students who moved for studying reasons
+could have encountered additional obstacles to regular academic activities. Non-Italian students
+are more likely to late drop than native Italians in-site, all else equal – this ﬁnding echoes a
+similar one reported by Meggiolaro, Giraldo, and Clerici (2017) for another Italian university. Stu-
+dents starting their careers at PoliMi at an older age than the average, are more likely to late
+drop, potentially indicating that these students have a nonlinear educational trajectory until
+their starting moment at PoliMi (for example, they could be students who repeated a grade
+Table 5. Coeﬃcients of GLMMs for early and late dropout prediction.
+Dependent variable:
+Dropout vs. Graduated
+(Early) (Late)
+Gender (ref.: female) 0.616***
+(0.087)
+Prev Stud: Classic (ref.: scientiﬁc) −0.186
+(0.131)
+Prev Stud: Other (ref.: scientiﬁc) 0.266*
+(0.161)
+Prev Stud: Technical (ref.: scientiﬁc) 0.177**
+(0.08)
+Native out of Milan (ref.: Native Milan) 0.341*** 0.101
+(0.086) (0.067)
+Non-Italian abroad (ref.: Native Milan) 0.008 0.760**
+(0.457) (0.36)
+Non-Italian in Milan (ref.: Native Milan) 0.209 0.485**
+(0.364) (0.228)
+Non-Italian out of Milan (ref.: Native Milan) 0.002 0.347
+(0.337) (0.238)
+Admission Score 0.015*** −0.006**
+(0.004) (0.003)
+Access to studies age 0.188***
+(0.025)
+TotalCredits1.1 −0.228*** −0.171***
+(0.005) (0.004)
+attempts1: more (ref.: one) −0.682*** 0.463***
+(0.096) (0.089)
+attempts1: none (ref.: one) 2.339*** 0.973***
+(0.288) (0.274)
+Family Income: DSU (ref.: highest) −0.332 −0.754***
+(0.286) (0.264)
+Family Income: High (ref.: highest) −0.222** −0.1
+(0.094) (0.077)
+Family Income: Low (ref.: highest) −0.163* 0.116
+(0.097) (0.078)
+Family Income: DK (ref.: highest) −1.227 −0.773
+(1.031) (0.514)
+Constant 1.103*** −2.665***
+(0.322) (0.552)
+Observations 16,216 15,901
+Log Likelihood 2,703.508 −4,019.046
+Akaike Inf. Crit. 5,435.017 8,076.093
+Bayesian Inf. Crit. 5,542.729 8,221.901
+Note: Results are reported in terms of regression coeﬃcients point estimates with their standard deviation (in brackets). Stars
+represent the statistical signiﬁcance: *p<0.1; ** p<0.05; *** p<0.01.
+STUDIES IN HIGHER EDUCATION 1945","Several interesting observations emerge from the associations between student-level infor-
+mation and dropout probability. First, some diﬀerences are related to personal characteristics
+and background. Males are more likely to late drop out than females; although the literature
+did not reach an agreement about the direction of gender di ﬀerences in HE dropout, some
+studies found that female students drop less than their male counterparts (Johnes and McNabb
+2004). Native Italians oﬀ-site (i.e. not living in Milan) are more likely to early drop than Italians
+in-site, perhaps suggesting that commuters and/or students who moved for studying reasons
+could have encountered additional obstacles to regular academic activities. Non-Italian students
+are more likely to late drop than native Italians in-site, all else equal – this ﬁnding echoes a
+similar one reported by Meggiolaro, Giraldo, and Clerici (2017) for another Italian university. Stu-
+dents starting their careers at PoliMi at an older age than the average, are more likely to late
+drop, potentially indicating that these students have a nonlinear educational trajectory until
+their starting moment at PoliMi (for example, they could be students who repeated a grade"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"during secondary education, so are intrinsically more at-risk). Students who attended Other and,
+especially, technical high schools are more likely to late drop than the ones who attended aca-
+demic, scientiﬁc high schools. This evidence corroborates the heterogeneity across students with
+diﬀerent educational background; in Italy, students can attend academic, technical or vocational
+secondary education, a practice that can hinder equality of opportunities, including later academic
+success (Brunello and Checchi2007).
+Diﬀerences in dropout probability are also associated with students’ previous academic per-
+formances. The higher is the admission test score at PoliMi, the higher is the probability of students
+early dropout, but the lower is the probability of students late dropout. While the negative associ-
+ation with late dropout conﬁrms the right‘signalling’ eﬀect of the entry test, the positive assocaion
+with early dropout is quite anomalous. There could be several reasons for this result. It can be the
+case that high admission scores encourage less motivated students to enrol at PoliMi, then it could
+happen that they get recruited into the labor market early on or they change university. Further,
+the higher is the number of credits obtained at theﬁrst semester, the lower are both the early and
+late dropout probabilities, suggesting that students with a good (regular) early start beneﬁt of less
+risks later on. Students doing more than one attempt per exam during theﬁrst semester are less
+likely to early drop and more likely to late drop with respect to students doing one attempt per
+exam. These are students who try to pass exams with strong commitment (so they do not drop
+immeditely), but then are more likely to drop out later if their performance continues struggling.
+Students that do not attempt any exam during theﬁrst semester are more likely both to early and
+late drop with respect to students doing one attempt per exam; these are students who almost
+immediately ﬁnd strong diﬃculties, and do not even show up atﬁrst exams, becoming unable
+to ﬁll the gap later in their career.
+6 Lastly, students with more disadvanatged background (as
+measured through the income group) are less likely to early drop than their more advantaged
+counterparts. Also, DSU students (e.g. with a study grant) are less likely to late drop, meaning
+that socioeconomic background still plays a role in dropout (Rodriguez-Hernandez, Cascallar,
+and Kyndt 2020). It is worth to notice that thisﬁnding is conﬂicting to the one identiﬁed by the
+majority of the worldwide literature, that sees students from disadvantaged backgrounds facing
+a higher risk of dropping out, but is in line with previousﬁndings on the Italian case (Belloc, Mar-
+uotti, and Petrella2010). A possible explanation could be that, with respect to the majority of stu-
+dents that are in the highest income range and have a wide range of opportunities, more
+disadvantaged students are more motivated or feelﬁnancial pressures. Their choice to enroll at
+university may request sacriﬁces to their family, spurring them to commit. Moreover, those disad-
+vantaged students who decide to enroll at PoliMi are somehow already self-selected and more
+motivated than average.
+Regarding tree-based methods,Figure 1 reports the ﬁxed-eﬀects trees estimated by GMET, for
+both early and late dropout, respectively. The number of credits the student obtains at theﬁrst seme-
+ster results to be the most important variable to predict both early and late dropout probability. In
+particular, this is the only covariate used to build the trees. This result helps us in further understand-
+ing the dropout phenomenon. GMET output reveals that, by using the number of total credits as
+single ﬁxed-eﬀects covariate, we build a classiﬁcator that performs very close to much more
+complex models. This evidence is also corroborated by the variables importance ranking shown in
+Figure 2, obtained by GMERF. Variables importance rankings inFigure 2 conﬁrm that, for both
+early and late dropout prediction, the number of total credits obtained at theﬁrst semester is the
+most important covariate, and also, it way distance itself, in terms of importance, from the other cov-
+ariates. The second covariate of the ranking adds very low information to the prediction with respect
+to it, and so on so forth. The only other covariate that signiﬁcantly aﬀects the estimates of early
+dropout probability is the number of attempts.
+B e s i d e st h i sc l e a ra n di n t e r p r e t a ble result regarding the covariates ’ importance, Figure 3
+reports the partial dependence plot of the most important covariate selected by GMERF, i.e.
+the number of credits. Partial dependence plot s show the association between the selected
+1946 M. CANNISTRÀ ET AL.","during secondary education, so are intrinsically more at-risk). Students who attended Other and,
+especially, technical high schools are more likely to late drop than the ones who attended aca-
+demic, scientiﬁc high schools. This evidence corroborates the heterogeneity across students with
+diﬀerent educational background; in Italy, students can attend academic, technical or vocational
+secondary education, a practice that can hinder equality of opportunities, including later academic
+success.
+Diﬀerences in dropout probability are also associated with students’ previous academic per-
+formances. The higher is the admission test score at PoliMi, the higher is the probability of students
+early dropout, but the lower is the probability of students late dropout. While the negative associ-
+ation with late dropout conﬁrms the right‘signalling’ eﬀect of the entry test, the positive assocaion
+with early dropout is quite anomalous. There could be several reasons for this result. It can be the
+case that high admission scores encourage less motivated students to enrol at PoliMi, then it could
+happen that they get recruited into the labor market early on or they change university. Further,
+the higher is the number of credits obtained at theﬁrst semester, the lower are both the early and
+late dropout probabilities, suggesting that students with a good (regular) early start beneﬁt of less
+risks later on. Students doing more than one attempt per exam during theﬁrst semester are less
+likely to early drop and more likely to late drop with respect to students doing one attempt per
+exam. These are students who try to pass exams with strong commitment (so they do not drop
+immeditely), but then are more likely to drop out later if their performance continues struggling.
+Students that do not attempt any exam during theﬁrst semester are more likely both to early and
+late drop with respect to students doing one attempt per exam; these are students who almost
+immediately ﬁnd strong diﬃculties, and do not even show up atﬁrst exams, becoming unable
+to ﬁll the gap later in their career.
+Lastly, students with more disadvanatged background (as
+measured through the income group) are less likely to early drop than their more advantaged
+counterparts. Also, DSU students (e.g. with a study grant) are less likely to late drop, meaning
+that socioeconomic background still plays a role in dropout. It is worth to notice that thisﬁnding is conﬂicting to the one identiﬁed by the
+majority of the worldwide literature, that sees students from disadvantaged backgrounds facing
+a higher risk of dropping out, but is in line with previousﬁndings on the Italian case. A possible explanation could be that, with respect to the majority of stu-
+dents that are in the highest income range and have a wide range of opportunities, more
+disadvantaged students are more motivated or feelﬁnancial pressures. Their choice to enroll at
+university may request sacriﬁces to their family, spurring them to commit. Moreover, those disad-
+vantaged students who decide to enroll at PoliMi are somehow already self-selected and more
+motivated than average.
+Regarding tree-based methods,Figure 1 reports the ﬁxed-eﬀects trees estimated by GMET, for
+both early and late dropout, respectively. The number of credits the student obtains at theﬁrst seme-
+ster results to be the most important variable to predict both early and late dropout probability. In
+particular, this is the only covariate used to build the trees. This result helps us in further understand-
+ing the dropout phenomenon. GMET output reveals that, by using the number of total credits as
+single ﬁxed-eﬀects covariate, we build a classiﬁcator that performs very close to much more
+complex models. This evidence is also corroborated by the variables importance ranking shown in
+Figure 2, obtained by GMERF. Variables importance rankings inFigure 2 conﬁrm that, for both
+early and late dropout prediction, the number of total credits obtained at theﬁrst semester is the
+most important covariate, and also, it way distance itself, in terms of importance, from the other cov-
+ariates. The second covariate of the ranking adds very low information to the prediction with respect
+to it, and so on so forth. The only other covariate that signiﬁcantly aﬀects the estimates of early
+dropout probability is the number of attempts.
+B e s i d e st h i sc l e a ra n di n t e r p r e t a ble result regarding the covariates ’ importance, Figure 3
+reports the partial dependence plot of the most important covariate selected by GMERF, i.e.
+the number of credits. Partial dependence plot s show the association between the selected"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"covariate and the response, estimated by GMERF net to the eﬀect of all other covariates. In the
+p e r s p e c t i v eo fi n v e s t i g a t i n gt h et y p eo fa s s o c i a t i o nb e t w e e nt h es i n g l ec o v a r i a t ea n dt h e
+response, this graphical tool is extremely informative since it shows the functional form that
+links the covariate to the response, estimating it directly from the data without imposing any
+parametric assumption on it. Panels (3a) and (3b) of Figure 3 show that the associations
+between the number of credits obtained at theﬁrst semester and both early and late dropout
+probability are approximately linear. Being the number of credits obtained at theﬁrst semester
+the most important variable and having it a linearassociation with the response, it is reasonable
+to observe similar performances in GMERF and GLMM.
+Although the early academic performance results to be the most signiﬁcant determinant of
+student dropout probability, some diﬀerences in the dropout probability still emerges between stu-
+dents with diﬀerent origin, gender or previous study. Thisﬁnding suggests that there are other
+unobservable factors at play, connected to student origins and previous studies, that lead to signiﬁ-
+cant diﬀerences in the dropout probability.
+Figure 1. Fixed-eﬀects trees obtained by GMET (Model 2c), for early (panel 1a) and late (panel 1b) dropout prediction.
+STUDIES IN HIGHER EDUCATION 1947","covariate and the response, estimated by GMERF net to the eﬀect of all other covariates. In the
+p e r s p e c t i v eo fi n v e s t i g a t i n gt h et y p eo fa s s o c i a t i o nb e t w e e nt h es i n g l ec o v a r i a t ea n dt h e
+response, this graphical tool is extremely informative since it shows the functional form that
+links the covariate to the response, estimating it directly from the data without imposing any
+parametric assumption on it. Panels (3a) and (3b) of Figure 3 show that the associations
+between the number of credits obtained at theﬁrst semester and both early and late dropout
+probability are approximately linear. Being the number of credits obtained at theﬁrst semester
+the most important variable and having it a linearassociation with the response, it is reasonable
+to observe similar performances in GMERF and GLMM.
+Although the early academic performance results to be the most signiﬁcant determinant of
+student dropout probability, some diﬀerences in the dropout probability still emerges between stu-
+dents with diﬀerent origin, gender or previous study. Thisﬁnding suggests that there are other
+unobservable factors at play, connected to student origins and previous studies, that lead to signiﬁ-
+cant diﬀerences in the dropout probability.
+Figure 1. Fixed-eﬀects trees obtained by GMET (Model 2c), for early (panel 1a) and late (panel 1b) dropout prediction."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"4.4. Dropout diﬀerences across degree courses
+Besides the information about student-level characteristics, multilevel models give easily interpret-
+able insights about the nested structure, i.e. the degree courses eﬀect. Standing on the predictive
+performance of the models and on the coeﬃcients signiﬁcance, both early and late dropout prob-
+abilities vary across engineering degree courses. The Variance Partition Coe ﬃcient (VPC) is a
+common index computed in the multilevel model framework to quantify the portion of variability
+in the response explained at the highest level of grouping. In our case study, VPC quantiﬁes the
+portion of variability in student dropout that is explained at the degree courses level. Regarding
+early dropout, VPCs measure 0.1063 for GLMM (Model 1c), 0.0857 for GMET (Model 2c) and 0.1803
+for GMERF (Model 3c). For late dropout, VPCs measure 0.0852 for GLMM (Model 1c), 0.1193 for
+GMET (Model 2c) and 0.1276 for GMERF (Model 3c). These percentages are not negligible, suggesting
+that there are signiﬁcant diﬀerences in dropout dynamics across degree courses. Random intercepts
+estimated by multilevel models represent the value-added (positive or negative) of the 20 degree
+courses to the dropout probability of their students.
+7 These estimates are graphically reported in
+Figure A4 in Annex.
+Figure 2. Fixed-eﬀects variable importance plots computed by GMERF (Model 3c), for both early and late dropout prediction.
+Figure 3.Variable importance plots of total credits for early (panel 3a) and late dropout (panel 3b), respectively, estimated by
+GMERF (Model 3c).
+1948 M. CANNISTRÀ ET AL.","4.4. Dropout diﬀerences across degree courses
+Besides the information about student-level characteristics, multilevel models give easily interpret-
+able insights about the nested structure, i.e. the degree courses eﬀect. Standing on the predictive
+performance of the models and on the coeﬃcients signiﬁcance, both early and late dropout prob-
+abilities vary across engineering degree courses. The Variance Partition Coe ﬃcient (VPC) is a
+common index computed in the multilevel model framework to quantify the portion of variability
+in the response explained at the highest level of grouping. In our case study, VPC quantiﬁes the
+portion of variability in student dropout that is explained at the degree courses level. Regarding
+early dropout, VPCs measure 0.1063 for GLMM (Model 1c), 0.0857 for GMET (Model 2c) and 0.1803
+for GMERF (Model 3c). For late dropout, VPCs measure 0.0852 for GLMM (Model 1c), 0.1193 for
+GMET (Model 2c) and 0.1276 for GMERF (Model 3c). These percentages are not negligible, suggesting
+that there are signiﬁcant diﬀerences in dropout dynamics across degree courses. Random intercepts
+estimated by multilevel models represent the value-added (positive or negative) of the 20 degree
+courses to the dropout probability of their students.
+7 These estimates are graphically reported in
+Figure A4 in Annex.
+Figure 2. Fixed-eﬀects variable importance plots computed by GMERF (Model 3c), for both early and late dropout prediction.
+Figure 3.Variable importance plots of total credits for early (panel 3a) and late dropout (panel 3b), respectively, estimated by
+GMERF (Model 3c)."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Diﬀerences among degree courses might be due to various aspects, as for example heterogenous
+quality and diﬃculty and/or structural diﬀerences or movement of students across courses. Available
+data do not allow investigating these mechanisms more in details, and this topic deserves further
+attention in the future.
+4.5. The number of credits obtained at theﬁrst semester: the real milestone
+Results of the empirical models conﬁrm that the most powerful predictor of both early and late
+student dropout is the number of credits the student obtains at theﬁrst semester of theﬁrst year
+of career. The initial student performance at the university results to be decisive for the career
+and observing the number of credits obtained by each student at theﬁrst semester gives by itself
+a very good indicator of the student dropout probability. This does not mean that other character-
+istics are not relevant, especially, considering that all students characteristics antecedent to the
+enrolment are somehow partially endogenous with the number of credits obtained at theﬁrst seme-
+ster. Type of previous studies, nationality, residence, admission score and income are potential pre-
+dictors of the student early academic performance.
+In order to investigate this association, we regress the number of credits obtained at theﬁrst
+semester against student characteristics antecendent to the enrollment. We consider all students
+in the sample, i.e. enrolled at PoliMi between 2010 and 2015. In particular, we dichotomise the vari-
+able TotalCredits1s in a binary variable calledCredits_01 that takes value 1 ifTotalCredits1s <7.5 and
+value 0 ifTotalCredits1s ≥ 7.5. We chose the threshold value 7.5 identiﬁed by the GMET model (Model
+2c) as the most important split to diﬀerentiate graduatevs early drop students.
+Results of the generalized linear model are reported inTable 6(the model’s AUC values 0.733). All
+student characteristics antecedent to the enrolment result to be signiﬁcant for predicting the
+amount of credits (low or high) obtained by the student at the ﬁrst semester. This result
+somehow conﬁrms that students’ features are intrisecally and structurally dependent each other,
+conﬁrming the conceptual framework exposed in Section2.
+5. Discussion, implications and concluding remarks
+The results presented in Section4 can be summarized and commented by answering the research
+question of this paper.
+First, we ﬁnd a number of factors and variables that are associated with likelihood of dropout,
+classiﬁable in the two broad categories of (i) personal background and (ii) previous and early aca-
+demic performance. Broadly speaking, information belonging to the latter group is more statistically
+relevant for predicting dropout. All the models tested in this paper performs very well in identifying
+students who are at risk of dropout, and this is especially true for methods based on multilevel mod-
+elling. The major validity of multilevel approaches suggests how sorting across diﬀerent majors, as
+well as structural diﬀerences across the majors themselves, is an important factor aﬀecting the
+decision of students to drop out.
+Second, the use of tree-based classi ﬁcation methods highlights how the formative credits
+obtained in theﬁrst semester is by far the most important factor associated with dropout. The visu-
+alization by means of partial plots identiﬁes the relationship between credits and dropout as an
+almost linear one. This linear correlation explains why machine learning models (i.e. random
+forests) do not outperform multilevel ones in correctly predicting students who will droput.
+Indeed, ML techniques are known to be veryﬂexible and to perform good prediction results in
+complex data structures, when nonlinearities and interactions are at play. In the case presented
+here, the situation is partly diﬀerent.
+Third, the importance associated with early performance to inﬂuence dropouts calls for a reno-
+vated attention to explore the determinants of ﬁrst-semester performance. In the paper, we
+present some exploratory analyses that are able to explain a signi ﬁcant portion of variability
+STUDIES IN HIGHER EDUCATION 1949","Differences among degree courses might be due to various aspects, as for example heterogenous
+quality and diﬃculty and/or structural diﬀerences or movement of students across courses. Available
+data do not allow investigating these mechanisms more in details, and this topic deserves further
+attention in the future.
+4.5. The number of credits obtained at theﬁrst semester: the real milestone
+Results of the empirical models conﬁrm that the most powerful predictor of both early and late
+student dropout is the number of credits the student obtains at theﬁrst semester of theﬁrst year
+of career. The initial student performance at the university results to be decisive for the career
+and observing the number of credits obtained by each student at theﬁrst semester gives by itself
+a very good indicator of the student dropout probability. This does not mean that other character-
+istics are not relevant, especially, considering that all students characteristics antecedent to the
+enrolment are somehow partially endogenous with the number of credits obtained at theﬁrst seme-
+ster. Type of previous studies, nationality, residence, admission score and income are potential pre-
+dictors of the student early academic performance.
+In order to investigate this association, we regress the number of credits obtained at theﬁrst
+semester against student characteristics antecendent to the enrollment. We consider all students
+in the sample, i.e. enrolled at PoliMi between 2010 and 2015. In particular, we dichotomise the vari-
+able TotalCredits1s in a binary variable calledCredits_01 that takes value 1 ifTotalCredits1s <7.5 and
+value 0 ifTotalCredits1s ≥ 7.5. We chose the threshold value 7.5 identiﬁed by the GMET model (Model
+2c) as the most important split to diﬀerentiate graduatevs early drop students.
+Results of the generalized linear model are reported inTable 6(the model’s AUC values 0.733). All
+student characteristics antecedent to the enrolment result to be signiﬁcant for predicting the
+amount of credits (low or high) obtained by the student at the ﬁrst semester. This result
+somehow conﬁrms that students’ features are intrisecally and structurally dependent each other,
+conﬁrming the conceptual framework exposed in Section2.
+5. Discussion, implications and concluding remarks
+The results presented in Section4 can be summarized and commented by answering the research
+question of this paper.
+First, we ﬁnd a number of factors and variables that are associated with likelihood of dropout,
+classiﬁable in the two broad categories of (i) personal background and (ii) previous and early aca-
+demic performance. Broadly speaking, information belonging to the latter group is more statistically
+relevant for predicting dropout. All the models tested in this paper performs very well in identifying
+students who are at risk of dropout, and this is especially true for methods based on multilevel mod-
+elling. The major validity of multilevel approaches suggests how sorting across diﬀerent majors, as
+well as structural diﬀerences across the majors themselves, is an important factor aﬀecting the
+decision of students to drop out.
+Second, the use of tree-based classi ﬁcation methods highlights how the formative credits
+obtained in theﬁrst semester is by far the most important factor associated with dropout. The visu-
+alization by means of partial plots identiﬁes the relationship between credits and dropout as an
+almost linear one. This linear correlation explains why machine learning models (i.e. random
+forests) do not outperform multilevel ones in correctly predicting students who will droput.
+Indeed, ML techniques are known to be veryﬂexible and to perform good prediction results in
+complex data structures, when nonlinearities and interactions are at play. In the case presented
+here, the situation is partly diﬀerent.
+Third, the importance associated with early performance to inﬂuence dropouts calls for a reno-
+vated attention to explore the determinants of ﬁrst-semester performance. In the paper, we
+present some exploratory analyses that are able to explain a signi ﬁcant portion of variability"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"across students in this early performance. This type of analysis can help in identifying the at-risk stu-
+dents even before they obtain theirﬁrst academic results.
+The ﬁndings hold a number of policy and managerial implications. The ability to early predict stu-
+dents’ dropout is crucial for targeting interventions in a very personalized way. For example, once
+identiﬁed the at-risk students with suﬃcient precision, it is possible to develop individualized tutor-
+ing systems– eventually, with the support of technology. This is a promising direction to develop a
+fruitful integration between institutional research and student support systems. In this vein, the
+results presented in the paper are encouraging. Indeed, they provide suﬃcient evidence about
+the positive performance of the statistical and machine learning methods employed for the predic-
+tion of students’ results. Such predictions happen soon enough in time to develop remedial inter-
+ventions, which can sustain the diﬃculties of students in early stages of their higher education path.
+Lastly, a discussion about the limitations of this work and future research is needed. The ML meth-
+odologies that we chose to address our research question can handle a binary response, but not a
+multi-category one. To the best of our knowledge, while linear mixed-eﬀects models have been
+developed also for multinomial responses (Hadﬁeld 2010). This is not the case for mixed-eﬀects
+trees and RF, that, when dealing with hierarchical observations, can handle only continuous or
+binary responses. Because of this limitation, we implemented two diﬀerent models to estimate
+early and late dropout probability instead of considering a unique multinomial mixed-e ﬀects
+models with a three categories response (i.e. early dropout, late dropout and graduate). The multi-
+nomial approach would be of interest since it would allow to include the entire set of observations,
+Table 6. Results of the GLM for predictingCredits_01, considering all students enrolled between 2010 and 2015.
+Dependent variable: Credits_01
+Gender (ref.: female) 0.224***
+(0.048)
+Previous Studies: Classic (ref.: scientiﬁc) 0.061
+(0.077)
+Previous Studies: Other (ref.: scientiﬁc) 0.527***
+(0.101)
+Previous Studies: Technical (ref.: scientiﬁc) 0.045
+(0.055)
+Native out of Milan (ref.: Native Milan) −0.011
+(0.043)
+Non-Italian abroad (ref.: Native Milan) 0.358
+(0.236)
+Non-Italian in Milan (ref.: Native Milan) 0.624***
+(0.164)
+Non-Italian out of Milan (ref.: Native Milan) 0.390***
+(0.160)
+Admission Score −0.651***
+(0.023)
+Access to studies age 0.316***
+(0.024)
+Family Income: DSU (ref.: highest) −5.809***
+(1.005)
+Family Income: High (ref.: highest) −1.080***
+(0.047)
+Family Income: Low (ref.: highest) −0.743***
+(0.048)
+Family Income: DK (ref.: highest) −14.572
+(97.677)
+Constant −0.993***
+(0.057)
+Observations 18,865
+Log Likelihood −8,483.819
+Akaike Inf. Crit. 16,997.640
+Note: Results are reported in terms of regression coeﬃcients point estimates with their standard deviation (in brackets). Stars
+represent the statistical signiﬁcance: *p < 0.1; **p < 0.05; ***p < 0.01 .
+1950 M. CANNISTRÀ ET AL.","across students in this early performance. This type of analysis can help in identifying the at-risk stu-
+dents even before they obtain theirﬁrst academic results.
+The ﬁndings hold a number of policy and managerial implications. The ability to early predict stu-
+dents’ dropout is crucial for targeting interventions in a very personalized way. For example, once
+identiﬁed the at-risk students with suﬃcient precision, it is possible to develop individualized tutor-
+ing systems– eventually, with the support of technology. This is a promising direction to develop a
+fruitful integration between institutional research and student support systems. In this vein, the
+results presented in the paper are encouraging. Indeed, they provide suﬃcient evidence about
+the positive performance of the statistical and machine learning methods employed for the predic-
+tion of students’ results. Such predictions happen soon enough in time to develop remedial inter-
+ventions, which can sustain the diﬃculties of students in early stages of their higher education path.
+Lastly, a discussion about the limitations of this work and future research is needed. The ML meth-
+odologies that we chose to address our research question can handle a binary response, but not a
+multi-category one. To the best of our knowledge, while linear mixed-eﬀects models have been
+developed also for multinomial responses (Hadﬁeld 2010). This is not the case for mixed-eﬀects
+trees and RF, that, when dealing with hierarchical observations, can handle only continuous or
+binary responses. Because of this limitation, we implemented two diﬀerent models to estimate
+early and late dropout probability instead of considering a unique multinomial mixed-e ﬀects
+models with a three categories response (i.e. early dropout, late dropout and graduate). The multi-
+nomial approach would be of interest since it would allow to include the entire set of observations,"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"i.e. students, in the multinomial model instead of excluding late dropout students when studying
+early dropout phenomenon and vice-versa, introducing a natural bias in the model. In this perspec-
+tive, future research will be devoted to the identiﬁcation ofﬂexible models, able to handle hierarch-
+ical observations and multinomial responses.
+Notes
+1. An important note is needed here. Dropout represents a net waste of resources in the cases in which students
+leave university, but sometimes they do so for switching major or university. In this latter case, the eﬀect is not a
+net waste of resources for the society, but only for the abandoned university. The argument holds its validity
+then, although its application is dependent upon the speciﬁcd eﬁnition of dropout. In this paper, we consider
+the viewpoint of the single university involved (see the section about Methodology and data).
+2. It is worth to recall that relevance of covariates and threshold values in the splits are automatically identiﬁed by
+the tree, standing on certain input parameters.
+3. We chose this threshold because the third semester after the enrolment represents the deadline for students to
+enrol in the second academic year.
+4. In the early dropout analyses, late dropout students are excluded from the sample and vice-versa.
+5. Tables in Annexes A1 and A2 report detailed results ofModels 1a, 1band 1c, for early and late dropout, respect-
+ively. The association between student-level covariates and the response remains coherent across the models.
+6. We are aware that there could be a portion of students who do not take any attempts because they have already
+decided to drop, creating a potential endogeneity issue in studying the phenomenon. In order to check the
+robustness of our results and to avoid this potential confounding factor, we re-run our linear models for predict-
+ing early dropout excluding from the sample those students who did not take any attempts at theﬁrst semester.
+Results, reported in Table A3, conﬁrm that student characteristics associated to the dropout probability,
+together with models predictive performance, remain quite unchanged (AUC indexes are slightly lower when
+excluding zero attempts students).
+7. The technical and mathematical details about the computation of degree courses’eﬀects are reported in Pin-
+heiro and Bates (2006) and Pellagatti et al. (2021).
+8. We provide mean and interquartile range for numerical variables and percentage for categorical variables.
+Acknowledgments
+This research stems from an institutional initiative launched by Politecnico di Milano under the label‘Data Analytics for
+Institutional Support’, which broad aim is to leverage the available (administrative) datasets of the university to analyze
+many aspects of the academic life, and support better decision-making. We are grateful to the University’s management
+for their support and encouragement and to the IT Oﬃce of Politecnico di Milano for their support in extracting data
+and pre-processing them. All the eventual errors are our solely responsibility.
+Disclosure statement
+No potential conﬂict of interest was reported by the author(s).
+ORCID
+Francesca Ieva http://orcid.org/0000-0003-0165-1983
+Tommaso Agasisti http://orcid.org/0000-0002-8146-3079
+References
+Agresti, A.2018. An Introduction to Categorical Data Analysis. Hoboken, USA: John Wiley & Sons.
+Agrusti, F., G. Bonavolontà, and M. Mezzini.2019. “University Dropout Prediction Through Educational Data Mining
+Techniques: A Systematic Review.” Journal of E-Learning and Knowledge Society15 (3): 161– 182.
+Alban, M., and D. Mauricio.2019. “Neural Networks to Predict Dropout at the Universities.” International Journal of
+Machine Learning and Computing9 (2): 149– 153.
+Aljohani, O. 2016. “A Comprehensive Review of the Major Studies and Theoretical Models of Student Retention in
+Higher Education.” Higher Education Studies6 (2): 1– 18.
+STUDIES IN HIGHER EDUCATION 1951","i.e. students, in the multinomial model instead of excluding late dropout students when studying
+early dropout phenomenon and vice-versa, introducing a natural bias in the model. In this perspec-
+tive, future research will be devoted to the identiﬁcation ofﬂexible models, able to handle hierarch-
+ical observations and multinomial responses.
+Notes
+1. An important note is needed here. Dropout represents a net waste of resources in the cases in which students
+leave university, but sometimes they do so for switching major or university. In this latter case, the eﬀect is not a
+net waste of resources for the society, but only for the abandoned university. The argument holds its validity
+then, although its application is dependent upon the speciﬁcd eﬁnition of dropout. In this paper, we consider
+the viewpoint of the single university involved (see the section about Methodology and data).
+2. It is worth to recall that relevance of covariates and threshold values in the splits are automatically identiﬁed by
+the tree, standing on certain input parameters.
+3. We chose this threshold because the third semester after the enrolment represents the deadline for students to
+enrol in the second academic year.
+4. In the early dropout analyses, late dropout students are excluded from the sample and vice-versa.
+5. Tables in Annexes A1 and A2 report detailed results ofModels 1a, 1band 1c, for early and late dropout, respect-
+ively. The association between student-level covariates and the response remains coherent across the models.
+6. We are aware that there could be a portion of students who do not take any attempts because they have already
+decided to drop, creating a potential endogeneity issue in studying the phenomenon. In order to check the
+robustness of our results and to avoid this potential confounding factor, we re-run our linear models for predict-
+ing early dropout excluding from the sample those students who did not take any attempts at theﬁrst semester.
+Results, reported in Table A3, conﬁrm that student characteristics associated to the dropout probability,
+together with models predictive performance, remain quite unchanged (AUC indexes are slightly lower when
+excluding zero attempts students).
+7. The technical and mathematical details about the computation of degree courses’eﬀects are reported in Pin-
+heiro and Bates (2006) and Pellagatti et al. (2021).
+8. We provide mean and interquartile range for numerical variables and percentage for categorical variables.
+Acknowledgments
+This research stems from an institutional initiative launched by Politecnico di Milano under the label‘Data Analytics for
+Institutional Support’, which broad aim is to leverage the available (administrative) datasets of the university to analyze
+many aspects of the academic life, and support better decision-making. We are grateful to the University’s management
+for their support and encouragement and to the IT Oﬃce of Politecnico di Milano for their support in extracting data
+and pre-processing them. All the eventual errors are our solely responsibility.
+Disclosure statement
+No potential conﬂict of interest was reported by the author(s).
+ORCID
+Francesca Ieva http://orcid.org/0000-0003-0165-1983
+Tommaso Agasisti http://orcid.org/0000-0002-8146-3079"
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Anvur: Rapporto biennale sullo stato del sistema universitario e della ricerca.2018. Retrieved fromhttps://www.anvur.it/
+rapporto-biennale/rapporto-biennale-2018.
+Barbu, M., R. Vilanova, J. Vicario, M. J. Pereira, P. Alves, M. Podpora, A. Kawala-Janik, M. Prada, M. Dominguez, A.
+Spagnolini, et al.2019. Data mining tool for academic data exploitation: Publication report on engineering students
+proﬁles. ERASMUS+ KA2/KA203.
+Belloc, F., A. Maruotti, and L. Petrella.2010. “University Drop-out: an Italian Experience.”Higher Education60 (2): 127–
+138.
+Berens, J., K. Schneider, S. Görtz, S. Oster, and J. Burghoﬀ. 2018. Early detection of students at risk– predicting student
+dropouts using administrative student data and machine learning methods. Schumpeter Discussion Papers, No.
+2018-006, University of Wuppertal, Schumpeter School of Business and Economics, Wuppertal, http://nbn-
+resolving.de/urn:nbn:de:hbz:468-20180719-085420-5.
+Bratti, M., D. Checchi, and G. De Blasio. 2008. “Does the Expansion of Higher Education Increase the Equality of
+Educational Opportunities? Evidence from Italy.” Labour 22: 53– 88.
+Breiman, L.2001. “Random Forests.” Machine Learning45 (1): 5– 32.
+Brunello, G., and D. Checchi.2007. “Does School Tracking Aﬀect Equality of Opportunity?” New International Evidence.
+Economic Policy22 (52): 782– 861.
+Brunori, P., V. Peragine, and L. Serlenga.2012. “Fairness in Education: The Italian University Before and After the Reform.”
+Economics of Education Review31 (5): 764– 777.
+Burgos, C., M. L. Campanario, D. de la Peña, J. L. Lara, D. Lizcano, and M. A. Martinez.2018. “Data Mining for Modeling
+Students’ Performance: A Tutoring Action Plan to Prevent Academic Dropout.”Computers & Electrical Engineering66:
+541– 556.
+Cabrera, A. F., J. O. Stampen, and W. Lee Hansen.1990. “Exploring the Eﬀects of Ability to pay on Persistence in College.”
+The
+Review of Higher Education13 (3): 303– 336.
+Cunha, F., and J. Heckman.2007. “The Technology of Skill Formation.” American Economic Review97 (2): 31– 47.
+De Freitas, S., D. Gibson, C. Du Plessis, P. Halloran, E. Williams, M. Ambrose, I. Dunwell, and S. Arnab.2015. “Foundations
+of Dynamic Learning Analytics: Using University Student Data to Increase Retention.” British Journal of Educational
+Technology 46 (6): 1175– 1188.
+Del Bonifro, F., M. Gabbrielli, G. Lisanti, and S. P. Zingaro.2020, July. “Student Dropout Prediction.” In International
+Conference on Artiﬁcial Intelligence in Education, 129– 140. Cham, Switzerland: Springer.
+Fontana, L., C. Masci, F. Ieva, and A. M. Paganoni.2021. “Performing Learning Analytics via Generalised Mixed-Eﬀects
+Trees.” Data 6 (7): 74.
+Goldstein, H.2011. Multilevel Statistical Models, Volume 922. Chichester (UK): John Wiley & Sons.
+Hadﬁeld, J. D.2010. “MCMC Methods for Multi-Response Generalized Linear Mixed Models: the MCMCglmm R Package.”
+Journal of Statistical Software33 (1): 1– 22.
+Hastie, T., R. Tibshirani, and J. Friedman.2009. The Elements of Statistical Learning: Data Mining, Inference, and Prediction.
+New York (USA): Springer Science & Business Media.
+Heredia-Jiménez, V., A. Jiménez, M. Ortiz-Rojas, J. I. Marín, P. M. Moreno-Marcos, P. J. Muñoz-Merino, and C. D. Kloos.
+2020. An early warning dropout model in higher education degree programs: A case study in Ecuador. InLAUR@
+EC-TEL (pp. 58-67).
+Johnes, G., and R. McNabb.2004. “Never Give up on the Good Times: Student Attrition in the UK.”Oxford Bulletin of
+Economics and Statistics66 (1): 23– 47.
+Korhonen, V., and J. Rautopuro.2019. “Identifying Problematic Study Progression and“At-Risk” Students in Higher
+Education
+in Finland.” Scandinavian Journal of Educational Research63 (7): 1056– 1069.
+Kotsiantis, S. B., C. J. Pierrakeas, and P. E. Pintelas.2003, September. “Preventing Student Dropout in Distance Learning
+Using Machine Learning Techniques.” In International Conference on Knowledge-Based and Intelligent Information and
+Engineering Systems, 267– 274. Berlin, Heidelberg: Springer.
+Leitner, P., M. Khalil, and M. Ebner.2017. “Learning Analytics in Higher Education - a Literature Review.” In Learning
+Analytics: Fundaments, Applications, and Trends, edited by A. Pena-Ayala, 1– 23. Cham (Switzerland): Springer.
+Li, Kin Fun, D. Rusk, and F. Song. 2013. Predicting student academic performance. In 2013 Seventh International
+Conference on Complex, Intelligent, and Software Intensive Systems, pages 27– 33. IEEE.
+Mayra, A., and D. Mauricio.2018, April. Factors to predict dropout at the universities: A case of study in Ecuador. In2018
+IEEE Global Engineering Education Conference (EDUCON)(pp. 1238-1242). IEEE.
+Meggiolaro, S., A. Giraldo, and R. Clerici.2017. “A Multilevel Competing Risks Model for Analysis of University Students’
+Careers in Italy.” Studies in Higher Education42 (7): 1259– 1274.
+Nagy, M., and R. Molontay.2018, June. Predicting dropout in higher education based on secondary school performance.
+In 2018 IEEE 22nd international conference on intelligent engineering systems (INES)(pp. 000389-000394). IEEE.
+OECD. Education at a glance 2019: OECD indicators.2019. https://doi.org/10.1787/f8d7880d-en.
+Oppedisano, V. 2011. “The (Adverse) Eﬀects of Expanding Higher Education: Evidence from Italy.” Economics of
+Education Review30 (5): 997– 1008.
+Pascarella, E. T., and P. T. Terenzini.1980. “Predicting Freshman Persistence and Voluntary Dropout Decisions from a
+Theoretical Model.” The Journal of Higher Education51 (1): 60– 75.
+1952 M. CANNISTRÀ ET AL.",
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Pellagatti, M., C. Masci, F. Ieva, and A. M. Paganoni. 2021. “Generalized Mixed Eﬀects Random Forest: A Flexible
+Application to Predict University Student Dropout.”Statistical Analysis and Data Mining: The ASA Data Science14
+(3): 241– 257.
+Pinheiro, J., and D. Bates.2006. Mixed-Eﬀects Models in S and S-PLUS. New York (USA): Springer Science & Business Media.
+Raileanu, L. E., and K. Stoﬀel. 2004. “Theoretical Comparison Between the Gini Index and Information Gain Criteria.”
+Annals of Mathematics and Artiﬁcial Intelligence41 (1): 77– 93.
+Rodríguez-Muñiz, L. J., A. B. Bernardo, M. Esteban, and I. Díaz.2019. “Dropout and Transfer Paths: What are the Risky
+Proﬁles When Analyzing University Persistence with Machine Learning Techniques?” Plos one14 (6): e0218796.
+Rodriguez-Hernandez, C. F., E. Cascallar, and E. Kyndt.2020. “Socio-economic Status and Academic Performance in
+Higher Education: A Systematic Review.” Educational Research Review29: 100305.
+Sandoval-Palis, I., D. Naranjo, J. Vidal, and R. Gilar-Corbi.2020. “Early Dropout Prediction Model: A Case Study of
+University Leveling Course Students.” Sustainability 12 (22): 9314.
+Seidel, E., and S. Kutieleh. 2017. “Using Predictive Analytics to Target and Improve First Year Student Attrition.”
+Australian Journal of Education61 (2): 200– 218.
+Silva, J., L. F. A. Matos, C. M. Mosquera, C. V. Mercado, R. B. González, N. O. Llinás, and O. B. P. Lezama.2020. “Prediction of
+Academic Dropout in University Students Using Data Mining: Engineering Case. ” In Advances in Cybernetics,
+Cognition, and Machine Learning for Communication Technologies, 495– 500. Singapore: Springer.
+Solís, M., T. Moreira, R. Gonzalez, T. Fernandez, and M. Hernandez.2018, July. Perspectives to predict dropout in univer-
+sity students with machine learning. In 2018IEEE International Work Conference on Bioinspired Intelligence (IWOBI)
+(pp. 1-6). IEEE.
+Sothan, S.2019. “The Determinants of Academic Performance: Evidence from a Cambodian University.” Studies in Higher
+Education 44 (11): 2096– 2111.
+Spady,
+W. G.1970. “Dropouts from Higher Education: An Interdisciplinary Review and Synthesis.”Interchange 1 (1): 64–
+85.
+St John, E. P., M. B. Paulsen, and J. B. Starkey.1996. “The Nexus Between College Choice and Persistence.” Research in
+Higher Education37 (2): 175– 220.
+Tinto, V. 1975. “Dropout from Higher Education: A Theoretical Synthesis of Recent Research.” Review of Educational
+Research 45 (1): 89– 125.
+Tinto, V.1982. “Deﬁning Dropout: A Matter of Perspective.” New Directions for Institutional Research1982 (36): 3– 15.
+Tinto, V.2017. “Through the Eyes of Students.” Journal of College Student Retention: Research, Theory & Practice19 (3):
+254– 269.
+Vicario, J., R. Vilanova, M. Bazzarelli, A. M. Paganoni, U. Spagnolini, A. Torrebruno, M. Prada, A. Morán, M. Dominguez, M.
+J. Pereira, et al. 2018. Data mining tool for academic data exploitation: selection of most suitable algorithms.
+ERASMUS+ KA2/KA203.
+Von Hippel, P. T., and A. Hoﬄinger. 2020. “The Data Revolution Comes to Higher Education: Identifying Students at Risk
+of Dropout in Chile.” Journal of Higher Education Policy and Management, 43 (1): 1– 22.
+Wook, M., Z. M. Yusof, and M. Z. Ahmad Nazri.2017. “Educational Data Mining Acceptance among Undergraduate
+Students.” Education and Information Technologies22 (3): 1195– 1216.
+STUDIES IN HIGHER EDUCATION 1953",
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Annexes
+Table A1. Complete results of GLMs (Models 1a, 1b) and GLMM (Model 1c) for the prediction of early dropout vs. graduation.
+Dependent variable:
+Early dropout vs graduated
+Logistic models Mixed-eﬀ ects generalized linear model
+(a) (b) (c)
+Native out of Milan 0.338*** 0.352*** 0.341***
+(0.083) (0.086) (0.086)
+Non-Italian abroad 0.122 0.004 0.008
+(0.432) (0.46) (0.457)
+Non-Italian in Milan 0.319 0.202 0.209
+(0.362) (0.367) (0.364)
+Non-Italian out of Milan 0.094 −0.008 0.002
+(0.33) (0.338) (0.337)
+Admission Score 0.017*** 0.014*** 0.015***
+(0.003) (0.004) (0.004)
+TotalCredits1.1 −0.220*** −0.229*** −0.228***
+(0.004) (0.005) (0.005)
+attempts1: more −0.528*** −0.694*** −0.682***
+(0.091) (0.097) (0.096)
+attempts1: none 2.461*** 2.352*** 2.339***
+(0.284) (0.289) (0.288)
+Family Income: DSU −0.364 −0.325 −0.332
+(0.288) (0.287) (0.286)
+Family Income: High −0.257*** −0.217** −0.222**
+(0.091) (0.094) (0.094)
+Family Income: Low −0.172* −0.158 −0.163*
+(0.094) (0.097) (0.097)
+Family Income: DK −1.315 −1.219 −1.227
+(1.038) (1.034) (1.031)
+Constant 0.802*** 1.016*** 1.103***
+−0.27 −0.331 −0.322
+Control for course enrolment No Yes No
+Observations 16,216 16,216 16,216
+Log Likelihood −2,778.236 −2,667.904 −2,703.508
+Akaike Inf. Crit. 5,582.472 5,399.808 5,435.017
+Bayesian Ing. Crit. 5,542.729
+Note: Results are reported in terms of regression coeﬃcients point estimates with their standard deviation (in brackets). Stars
+represent the statistical signiﬁcance: *p < 0.1; **p < 0.05; ***p < 0.01.
+Table A2. Complete results of GLMs (Models 1a, 1b)and GLMM (Model 1c) for the prediction of late dropout vs. graduation.
+Dependent variable:
+Late dropout vs graduated
+Logistic models
+Mixed-eﬀects generalized
+linear model
+(a) (b) (c)
+Gender Male 0.770*** (0.083) 0.607*** (0.088) 0.616*** (0.087)
+Previous Studies: Classic −0.105 (0.128) −0.188 (0.132) −0.186 (0.131)
+Previous Studies: Other 0.370** (0.152) 0.265 (0.161) 0.266* (0.161)
+Previous Studies: Technical 0.408*** (0.073) 0.174** (0.08) 0.177** (0.08)
+Native out of Milan 0.071 (0.065) 0.107 (0.067) 0.101 (0.067)
+Non-Italian abroad 0.950*** (0.345) 0.749** (0.361) 0.760** (0.36)
+Non-Italian in Milan 0.741*** 0.466** (0.228) 0.485** (0.228)
+Non-Italian out of Milan 0.606*** (0.222) 0.334 (0.239) 0.347 (0.238)
+Admission
+Score −0.006** (0.003) −0.006** (0.003)
+Access to studies age 0.206*** (0.024) 0.188*** (0.025) 0.188*** (0.025)
+TotalCredits1.1 −0.171*** (0.003) −0.172*** (0.004) −0.171*** (0.004)
+attempts1: more 0.462*** (0.09) 0.463*** (0.089)
+attempts1: none 0.974*** (0.274) 0.973*** (0.274)
+Family Income: DSU −0.752*** (0.264) −0.754*** (0.264)
+(Continued)
+1954 M. CANNISTRÀ ET AL.","Annexes
+Table A1. Complete results of GLMs (Models 1a, 1b) and GLMM (Model 1c) for the prediction of early dropout vs. graduation.
+Note: Results are reported in terms of regression coeﬃcients point estimates with their standard deviation (in brackets). Stars
+represent the statistical signiﬁcance: *p < 0.1; **p < 0.05; ***p < 0.01.
+Table A2. Complete results of GLMs (Models 1a, 1b)and GLMM (Model 1c) for the prediction of late dropout vs. graduation."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Table A2. Continued.
+Dependent variable:
+Late dropout vs graduated
+Logistic models
+Mixed-eﬀects generalized
+linear model
+(a) (b) (c)
+Family Income: High −0.098 (0.077) −0.1 (0.077)
+Family Income: Low 0.116 (0.078) 0.116
+Family Income: DK −0.779 (0.514) −0.773
+Constant −3.197*** −2.894*** −2.665***
+(0.461) (0.553) (0.552)
+Control for course enrolment No Yes No
+Observations 15,901 15,901 15,901
+Log Likelihood −4,169.700 −3,981.816
+Akaike Inf. Crit. 8,361.400 8,037.631 8,076.093
+Bayesian Inf. Crit. 8,221.901
+Note: Results are reported in terms of regression coeﬃcients point estimates with their standard deviation (in brackets). Stars
+represent the statistical signiﬁcance: *p < 0.1; **p < 0.05; ***p < 0.01.
+Table A3. Complete results from GLM (Models 1a and 1b) and GLMM (Model 1c) for the prediction of early dropout vs. graduation
+considering students with more than 0 attempts (i.e. excluding from the analysis those students who did not attempt any exam).
+Dependent variable:
+Early dropout vs. graduated
+Logistic models Mixed-eﬀects generalized linear model
+(1) (2) (3)
+Gender Male 0.191** 0.144
+(0.09) (0.097)
+Native out of Milan 0.329*** 0.349*** 0.329***
+(0.083) (0.086) (0.086)
+Non-Italian abroad −0.104 −0.194 −0.187
+(0.492) (0.535) (0.526)
+Non-Italian in Milan −0.034 −0.072 −0.118
+(0.391) (0.389) (0.38)
+Non-Italian out of Milan 0.359 0.24 0.248
+(0.364) (0.378) (0.372)
+Admission Score 0.011*** 0.010** 0.010***
+(0.004) (0.004) (0.004)
+TotalCredits1.1 −0.215*** −0.225*** −0.226***
+(0.004)
+(0.005) (0.005)
+attempts1: more −0.638*** −0.828*** −0.813***
+(0.09) (0.097) (0.096)
+Family Income: DSU −0.531* −0.488
+(0.319) (0.316)
+Family Income: High −0.221** −0.187**
+(0.092) (0.095)
+Family Income: Low −0.043 −0.037
+(0.094) (0.098)
+Family Income: DK −1.241 −1.126
+(1.038) (1.041)
+Constant 0.997*** 1.100*** 1.330***
+(0.28) (0.336) (0.32)
+Control for course enrolment No Yes No
+Observations 14,790 14,790 14,790
+Log Likelihood −2,709.975 −2,591.232 −2,632.042
+Akaike Inf. Crit. 5,445.949 5,246.463 5,282.084
+Bayesian Ing. Crit. 5,350.500
+Note: AUC indexes are 0.9258, 0.9311 and 0.9311 forModels 1a, 1b and 1c, respectively. Results are reported in terms of
+regression coeﬃcients point estimates with their standard deviation (in brackets). Stars represent the statistical signiﬁcance:
+*p < 0.1; **p < 0.05; ***p < 0.01.
+STUDIES IN HIGHER EDUCATION 1955","Table A3. Complete results from GLM (Models 1a and 1b) and GLMM (Model 1c) for the prediction of early dropout vs. graduation
+considering students with more than 0 attempts (i.e. excluding from the analysis those students who did not attempt any exam)."
+Cannistrà - 2021 - Early-predicting dropout of university students an application of innovative multilevel machine lea.pdf,"Figure A4.Random eﬀects intercepts with relative 95% conﬁdence intervals, estimated by GLMM (Model 1c), GMET (Model 2c)
+and GMERF (Model3c). In particular,ﬁrst line reports the results for early dropout, for GLMM (Panel 4a), GMET (Panel 4b) and
+GMERF (Panel 4c), respectively. Second line reports the results for late dropout, for GLMM (Panel 4d), GMET (Panel 4e) and
+GMERF (Panel 4f), respectively.Note: For anonymity reasons, we do not report degree courses names alongside the estimated
+rankings. This ﬁgure is intended only as a tool to visualize and quantify the variability across degree courses, estimated by
+the proposed multilevel models.
+1956 M. CANNISTRÀ ET AL.","Figure A4.Random eﬀects intercepts with relative 95% conﬁdence intervals, estimated by GLMM (Model 1c), GMET (Model 2c)
+and GMERF (Model3c). In particular,ﬁrst line reports the results for early dropout, for GLMM (Panel 4a), GMET (Panel 4b) and
+GMERF (Panel 4c), respectively. Second line reports the results for late dropout, for GLMM (Panel 4d), GMET (Panel 4e) and
+GMERF (Panel 4f), respectively.Note: For anonymity reasons, we do not report degree courses names alongside the estimated
+rankings. This ﬁgure is intended only as a tool to visualize and quantify the variability across degree courses, estimated by
+the proposed multilevel models."

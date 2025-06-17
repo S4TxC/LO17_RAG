@@ -1,0 +1,1994 @@
+source,page_content,cleaned_page_content
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"IEEE RELIABILITY SOCIETY SECTION
+Received 22 July 2022, accepted 7 August 2022, date of publication 16 August 2022, date of current version 22 August 2022.
+Digital Object Identifier 10.1 109/ACCESS.2022.3198682
+Can We Predict Student Performance Based on
+Tabular and Textual Data?
+YUBIN QU
+ 1,2, FANG LI3, LONG LI
+ 4, (Member, IEEE),
+XIANZHEN DOU2, AND HONGMEI WANG5
+1Guangxi Key Laboratory of Trusted Software, Guilin University of Electronic Technology, Guilin 541004, China
+2School of Information Engineering, Jiangsu College of Engineering and Technology, Nantong 226001, China
+3School of Marxism, Jiangsu College of Engineering and Technology, Nantong 226001, China
+4School of Computer Science and Information Security, Guilin University of Electronic Technology, Guilin 541004, China
+5School of Computer, Jiangsu University of Science and Technology, Zhenjiang 212100, China
+Corresponding author: Hongmei Wang (wanghongmei@just.edu.cn)
+This work was supported in part by the Jiangsu Province Education Science ‘‘14th Five-Year Plan’’ under Project D/2021/01/133, in part
+by the Philosophy and Social Science Research Projects in Jiangsu under Grant 2020SJB0836, in part by the Nantong Science and
+Technology Project under Grant JC2021124, in part by the Guangxi Key Laboratory of Trusted Software under Grant kx202046, in part by
+the Scientiﬁc Research Projects of Jiangsu College of Engineering and Technology under Grant GYKY/2020/4, in part by the Research
+Project of Modern Educational Technology in Jiangsu Province under Grant 2021-R-94735, in part by the Special Project of China Higher
+Education Association under Grant 21SZYB23, in part by the Fifth Jiangsu Province V ocational Education Teaching Reform Research
+Project under Grant ZYB686, in part by the Special Foundation for Excellent Young Teachers and Principals Program of Jiangsu Province,
+and in part by the Qing Lan Project of Jiangsu Province.
+ABSTRACT With the emergence of more new teaching systems, such as Massive Open Online Courses
+(MOOCs), massive amounts of data are constantly being collected. There is a huge value in these massive
+teaching data. However, the data, including both student behavior data and student comment data about the
+course, is not processed to discover models and paradigms which can be useful for school management.
+There is no multimodal dataset with tabular and textual data for educational data mining yet. We ﬁrst collect
+a dataset that included student behavior data and course comments textual data. Then we fuse the student
+behavior data with course comments textual data to predict student performance, using a Transformer-based
+framework with a uniform vector representation. The empirical results of the collected dataset show the
+effectiveness of our proposed method. In terms of F1 and AUC the performance of our method improves by
+up to 3.33% and 4.37% respectively. We ﬁnd that the uniform feature vector representation learned by our
+proposed method can indeed improve the classiﬁer’s performance, compared with existing works. Further,
+we validate our approach on an open dataset. The results of the empirical study show that our proposed
+method has a strong generalization capability. Moreover, we perform interpretability analysis using the
+SHapley Additive exPlanation (SHAP) method and ﬁnd that text features have a more important inﬂuence
+on the classiﬁcation model. This further illustrates that fusing text features can improve the performance of
+classiﬁcation models.
+INDEX TERMS Educational data mining, deep learning, multimodal, data fusion, random forest.
+I. INTRODUCTION
+Traditional educational institutions have accumulated much
+information about the student, including the student’s school
+number, age, gender, etc. This data is usually stored in a
+relational database. This type of data is called tabular data.
+With the development of the mobile Internet in recent years,
+The associate editor coordinating the review of this manuscript and
+approving it for publication was Zhaojun Steven Li
+.
+web-based online educational systems have ﬂourished expo-
+nentially, thus providing multiple data sources with different
+granularity levels [1], [2]. With the emergence of more new
+teaching systems, such as MOOCs, massive amounts of data
+are constantly being collected. There is a huge value in these
+massive teaching data. However, this data is not being pro-
+cessed in time to discover models and paradigms useful for
+school management. In fact, the tension between the sheer
+size of data and knowledge discovery is a huge challenge
+86008 This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/VOLUME 10, 2022","ABSTRACT With the emergence of more new teaching systems, such as Massive Open Online Courses
+(MOOCs), massive amounts of data are constantly being collected. There is a huge value in these massive
+teaching data. However, the data, including both student behavior data and student comment data about the
+course, is not processed to discover models and paradigms which can be useful for school management.
+There is no multimodal dataset with tabular and textual data for educational data mining yet. We ﬁrst collect
+a dataset that included student behavior data and course comments textual data. Then we fuse the student
+behavior data with course comments textual data to predict student performance, using a Transformer-based
+framework with a uniform vector representation. The empirical results of the collected dataset show the
+effectiveness of our proposed method. In terms of F1 and AUC the performance of our method improves by
+up to 3.33% and 4.37% respectively. We ﬁnd that the uniform feature vector representation learned by our
+proposed method can indeed improve the classiﬁer’s performance, compared with existing works. Further,
+we validate our approach on an open dataset. The results of the empirical study show that our proposed
+method has a strong generalization capability. Moreover, we perform interpretability analysis using the
+SHapley Additive exPlanation (SHAP) method and ﬁnd that text features have a more important inﬂuence
+on the classiﬁcation model. This further illustrates that fusing text features can improve the performance of
+classiﬁcation models.
+INDEX TERMS Educational data mining, deep learning, multimodal, data fusion, random forest.
+I. INTRODUCTION
+Traditional educational institutions have accumulated much
+information about the student, including the student’s school
+number, age, gender, etc. This data is usually stored in a
+relational database. This type of data is called tabular data.
+With the development of the mobile Internet in recent years,
+web-based online educational systems have ﬂourished expo-
+nentially, thus providing multiple data sources with different
+granularity levels. With the emergence of more new
+teaching systems, such as MOOCs, massive amounts of data
+are constantly being collected. There is a huge value in these
+massive teaching data. However, this data is not being pro-
+cessed in time to discover models and paradigms useful for
+school management. In fact, the tension between the sheer
+size of data and knowledge discovery is a huge challenge"
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+for educational institutions today [3]. The applications of
+data mining techniques for the speciﬁc data from educational
+environments are called educational data mining (EDM) [4].
+EDM data comes from a wide variety of educational sys-
+tems, such as traditional face-to-face education, computer-
+based educational systems and blended learning systems.
+Each of the different educational systems provides different
+data sources [5]. Using machine learning techniques, such as
+clustering, text mining, and classiﬁcation techniques, these
+different types of data are analyzed to solve various edu-
+cational problems. The taxonomy comprises thirteen tasks
+addressed by EDM systems, including predicting student
+performance, detecting undesirable student behaviors, pro-
+ﬁling and grouping students, social network analysis, pro-
+viding reports, creating alerts for stakeholders, planning and
+scheduling, creating courseware, developing concept maps,
+generating recommendation, adaptive systems, evaluation
+and scientiﬁc inquiry [6], [7].
+D’Mello discussed the ubiquity and importance of emo-
+tion to learning [8]. The emotions may not always be con-
+sciously experienced, but they existed and inﬂuenced cog-
+nition nonetheless [9]. Language can express feelings very
+well, so text mining-based sentiment analysis techniques
+have great potential for analyzing the relationship between
+students’ thoughts and learning experiences. Yang et al.
+applied sentiment analysis techniques on students’ posts on
+MOOCs courses. They found that a negative correlation
+between the ratio of positive to negative terms and dropout
+across time [10]. Methods to automatically identify student
+confusion were developed from MOOCs posts [11]. This
+analysis method only uses unimodal data; MOOCs are now
+able to provide researchers with multimodal data, including
+students’ behavioral data, textual data, audio, video, brain-
+wave data, and more.
+DataShop dataset was one of the ﬁrst and biggest datasets
+that also provided a tool for intelligent tutoring systems [12].
+While the student learned from the software, the student’s
+actions and the tutor’s responses were stored in a log database
+or ﬁle, which was imported into DataShop for storage and
+analysis. Graphical Interactive Student Monitoring Tool for
+Moodle (GISMO) is another popular public dataset and is
+a graphical interactive monitoring tool that provides use-
+ful visualization of students’ activities in online courses
+to instructors. With GISMO instructors can examine vari-
+ous aspects of distance students, such as the attendance to
+courses, reading of materials and submission of assignments.
+Users of the popular learning management system Moodle
+may beneﬁt from GISMO for their teaching activities [13].
+Unimodal sentiment features and classiﬁcations (e.g., text,
+audio, and video) are used for sentiment discovery and anal-
+ysis (SDA) [14]. The Multimodal Teaching and Learning
+Analytics (MUTLA) dataset was very well described and
+covered many academic subjects (i.e., Mathematics, English,
+Physics and Chemistry). User records at question level log
+of student responses, brainwave data and webcam data were
+collected [15]. The MUTLA dataset is the ﬁrst rich mul-
+timodal dataset for EDM, but the MUTLA dataset is not
+open now. Cano et al. developed a multiview early warn-
+ing system built with comprehensible Genetic Programming
+classiﬁcation rules adapted to speciﬁcally target underrep-
+resented and underperforming student populations. The sys-
+tem integrated many student information repositories using
+multi-view learning to improve the accuracy and timing of
+the predictions [16].
+There are no open multimodal educational assessment
+datasets available. To address the lack of multimodal datasets,
+we collected multimodal data from several teaching man-
+agement systems and MOOCs platforms. The data includes
+student behavior as well as students’ course comments. The
+reason for choosing course comments instead of other data
+formats such as audio or video data is that the course com-
+menting module exists in most MOOCs platforms. This
+makes data collection less expensive and our proposed
+multimodal data fusion model has a strong generalization
+capability.
+Research on multimodal data fusion has focused more on
+the processing of text and images [17], however, the educa-
+tional multimodal data fusion has not fully been exploited.
+To address the problem of heterogeneous data mining, stu-
+dents’ behavior data and comment textual data are col-
+lected and manually aligned. Then a multimodal data fusion
+approach is designed to fuse structured students’ behavior
+data and unstructured students’ comment textual data into
+a uniﬁed semantic representation to predict student perfor-
+mance. Based on the dataset we collected, we conducted an
+empirical study. The study results show that the classiﬁcation
+method can achieve better classiﬁcation results in terms of
+RECALL, F1 and AUC.
+In our study, to better elucidate our proposed research
+idea of multimodal data fusion for educational data mining,
+we design the following four research questions (RQs):
+RQ1: Whether a multimodal dataset can be used to obtain
+a better classiﬁcation model than a unimodal dataset?
+RQ2: Can our proposed method outperform other data
+fusion methods when performing teaching effectiveness eval-
+uation?
+RQ3: Does our proposed model have strong a generaliza-
+tion ability?
+RQ4: Can we perform interpretable analysis on our pro-
+posed deep multimodal data fusion model?
+In summary, the contributions of this paper can be summa-
+rized as follows:
+• To the best of our knowledge, we are the ﬁrst to propose
+the use of student behavior data with course comments
+textual data to predict student performance.
+• we are the ﬁrst to propose an open dataset that includes
+student behavior data as well as course comments textual
+data.
+• We are the ﬁrst to propose a Transformer-based frame-
+work for creating deep multimodal data fusion algo-
+rithms with a uniform vector representation.
+VOLUME 10, 2022 86009","for educational institutions today. The applications of
+data mining techniques for the speciﬁc data from educational
+environments are called educational data mining (EDM).
+EDM data comes from a wide variety of educational sys-
+tems, such as traditional face-to-face education, computer-
+based educational systems and blended learning systems.
+Each of the different educational systems provides different
+data sources. Using machine learning techniques, such as
+clustering, text mining, and classiﬁcation techniques, these
+different types of data are analyzed to solve various edu-
+cational problems. The taxonomy comprises thirteen tasks
+addressed by EDM systems, including predicting student
+performance, detecting undesirable student behaviors, pro-
+ﬁling and grouping students, social network analysis, pro-
+viding reports, creating alerts for stakeholders, planning and
+scheduling, creating courseware, developing concept maps,
+generating recommendation, adaptive systems, evaluation
+and scientiﬁc inquiry.
+D’Mello discussed the ubiquity and importance of emo-
+tion to learning. The emotions may not always be con-
+sciously experienced, but they existed and inﬂuenced cog-
+nition nonetheless. Language can express feelings very
+well, so text mining-based sentiment analysis techniques
+have great potential for analyzing the relationship between
+students’ thoughts and learning experiences. Yang et al.
+applied sentiment analysis techniques on students’ posts on
+MOOCs courses. They found that a negative correlation
+between the ratio of positive to negative terms and dropout
+across time. Methods to automatically identify student
+confusion were developed from MOOCs posts. This
+analysis method only uses unimodal data; MOOCs are now
+able to provide researchers with multimodal data, including
+students’ behavioral data, textual data, audio, video, brain-
+wave data, and more.
+DataShop dataset was one of the ﬁrst and biggest datasets
+that also provided a tool for intelligent tutoring systems.
+While the student learned from the software, the student’s
+actions and the tutor’s responses were stored in a log database
+or ﬁle, which was imported into DataShop for storage and
+analysis. Graphical Interactive Student Monitoring Tool for
+Moodle (GISMO) is another popular public dataset and is
+a graphical interactive monitoring tool that provides use-
+ful visualization of students’ activities in online courses
+to instructors. With GISMO instructors can examine vari-
+ous aspects of distance students, such as the attendance to
+courses, reading of materials and submission of assignments.
+Users of the popular learning management system Moodle
+may beneﬁt from GISMO for their teaching activities.
+Unimodal sentiment features and classiﬁcations (e.g., text,
+audio, and video) are used for sentiment discovery and anal-
+ysis (SDA). The Multimodal Teaching and Learning
+Analytics (MUTLA) dataset was very well described and
+covered many academic subjects (i.e., Mathematics, English,
+Physics and Chemistry). User records at question level log
+of student responses, brainwave data and webcam data were
+collected. The MUTLA dataset is the ﬁrst rich mul-
+timodal dataset for EDM, but the MUTLA dataset is not
+open now. Cano et al. developed a multiview early warn-
+ing system built with comprehensible Genetic Programming
+classiﬁcation rules adapted to speciﬁcally target underrep-
+resented and underperforming student populations. The sys-
+tem integrated many student information repositories using
+multi-view learning to improve the accuracy and timing of
+the predictions.
+There are no open multimodal educational assessment
+datasets available. To address the lack of multimodal datasets,
+we collected multimodal data from several teaching man-
+agement systems and MOOCs platforms. The data includes
+student behavior as well as students’ course comments. The
+reason for choosing course comments instead of other data
+formats such as audio or video data is that the course com-
+menting module exists in most MOOCs platforms. This
+makes data collection less expensive and our proposed
+multimodal data fusion model has a strong generalization
+capability.
+Research on multimodal data fusion has focused more on
+the processing of text and images, however, the educa-
+tional multimodal data fusion has not fully been exploited.
+To address the problem of heterogeneous data mining, stu-
+dents’ behavior data and comment textual data are col-
+lected and manually aligned. Then a multimodal data fusion
+approach is designed to fuse structured students’ behavior
+data and unstructured students’ comment textual data into
+a uniﬁed semantic representation to predict student perfor-
+mance. Based on the dataset we collected, we conducted an
+empirical study. The study results show that the classiﬁcation
+method can achieve better classiﬁcation results in terms of
+RECALL, F1 and AUC.
+In our study, to better elucidate our proposed research
+idea of multimodal data fusion for educational data mining,
+we design the following four research questions (RQs):
+RQ1: Whether a multimodal dataset can be used to obtain
+a better classiﬁcation model than a unimodal dataset?
+RQ2: Can our proposed method outperform other data
+fusion methods when performing teaching effectiveness eval-
+uation?
+RQ3: Does our proposed model have strong a generaliza-
+tion ability?
+RQ4: Can we perform interpretable analysis on our pro-
+posed deep multimodal data fusion model?
+In summary, the contributions of this paper can be summa-
+rized as follows:
+• To the best of our knowledge, we are the ﬁrst to propose
+the use of student behavior data with course comments
+textual data to predict student performance.
+• we are the ﬁrst to propose an open dataset that includes
+student behavior data as well as course comments textual
+data.
+• We are the ﬁrst to propose a Transformer-based frame-
+work for creating deep multimodal data fusion algo-
+rithms with a uniform vector representation."
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+• Empirical results on real-world datasets show the effec-
+tiveness of our proposed method.
+The rest of this paper is organized as follows. Section II
+introduces the background of educational data mining and
+multimodal data fusion. Section III describes our proposed
+method in detail, including the framework of deep teach-
+ing quality assessment based on multimodal data fusion,
+the Transformer-based semantic representation of course
+comment texts and deep multimodal data fusion algorithm.
+Section IV reports our experimental setup, including exper-
+imental subjects, performance evaluation measures, strate-
+gies for experimental comparison, and experimental design.
+Section V discusses the results of our experiments. Section VI
+analyzes the potential threats to the validity of our empirical
+results. Section VII concludes the paper with some future
+work.
+II. BACKGROUND AND RELATED WORK
+In this section, we mainly discuss the related studies on
+educational data mining, sentiment analysis, and multimodal
+data fusion.
+A. EDUCATIONAL DATA MINING
+Traditional educational institutions have accumulated a large
+amount of basic teaching data, such as basic information
+about students, through information transformation over the
+years. With the development of mobile Internet in recent
+years, web-based online educational systems have ﬂourished
+exponentially, thus providing multiple data sources with dif-
+ferent granularity levels [18]. With the emergence of more
+new teaching systems, such as MOOCs, massive amounts
+of data are constantly being collected. There is considerable
+value in these enormous teaching data. Many new research
+areas have been born for the new education system. Educa-
+tional Data Mining is concerned with developing methods for
+exploring the unique types of data that come from educa-
+tional environments [4]. Learning Analytics can be deﬁned
+as the measurement, collection, analysis, and reporting of
+data about learners and their contexts, for purposes of under-
+standing and optimizing learning and the environments in
+which it occurs [19]. Academic Analytics and Institutional
+Analytics are concerned with the collection, analysis, and
+visualization of academic program activities such as courses,
+degree programs research, the revenue of students’ fees,
+course evaluation, resource allocation, and management to
+generate institutional insight [20]. Educational Data Science
+is deﬁned as the use of data gathered from educational
+environments/settings for solving educational problems [18].
+The different research areas share the same research inter-
+ests using a data-driven approach to educational research
+and share the same goal of improving teaching and learning
+practices.
+For intelligent tutoring systems, Markov Decision Pro-
+cess (MDP) framework was used to analyze and explore
+the application and effect of pedagogical strategies with
+EDM/LA techniques in terms of chi-squared, information
+gain, symmetrical uncertainty, information gain ratio and
+Weighted Information gain. The data source was collected
+in one per semester from the Spring of 2015 to the Fall
+of 2017 [21]. Chui et al. stated that improved conditional
+generative adversarial network based deep support vector
+machine (ICGAN-DSVM) algorithm was proposed to predict
+students’ performance under supportive learning via school
+and family tutoring [22]. For learning management systems,
+Partial Least Squares Structural Equation Model (PLS-SEM)
+was used to analyze collaborative learning and to predict
+the team grade in teamwork groups. The data source was
+collected from a CS2 course [23]. For e-Learning Man-
+agement Systems, an interpretable rule-based Genetic Pro-
+gramming classiﬁer was used to predict student performance
+and students at risk as soon as possible to intervene early
+to facilitate student success in terms of Geometric mean,
+AUC, and Kappa. The student data was from the Virginia
+Commonwealth University [16]. In addition to analyzing
+computer-based educational systems from students’ behavior
+data, sentiment analysis during online learning was also used
+to predict learning performance.
+B. SENTIMENT ANALYSIS
+Sentiment analysis (SA), also called Opinion Mining (OM)
+was the task of extracting and analyzing people’s opinions,
+sentiments, attitudes, perceptions, etc. Sentiment analysis
+posed a powerful tool for researchers to extract and analyze
+public mood and views and ﬁnally make better decisions [24],
+[25]. SDA aims to automatically identify the underlying atti-
+tudes, sentiments, and subjectivity towards a certain entity
+such as learners and learning resources. Due to its enor-
+mous potential for smart education, SDA has been deemed a
+powerful technique for identifying and classifying sentiments
+from multimodal and multisource data over the whole pro-
+cess of education [14]. D’Mello discussed the ubiquity and
+importance of emotion to learning [8]. The emotions may
+not always be consciously experienced, but they existed and
+inﬂuenced cognition nonetheless [9]. Language can express
+feelings very well, so text mining-based sentiment analy-
+sis techniques have great potential to analyze the relation-
+ship between students’ thoughts and learning experiences.
+Yang et al.applied sentiment analysis techniques to students’
+posts on their MOOCs courses. They found a negative cor-
+relation between the ratio of positive to negative terms and
+dropout across time [10]. Methods to automatically identify
+student confusion were developed from MOOCs posts [11].
+C. MULTIMODAL DATA FUSION
+Han et al.argued that there were many studies on unimodal
+sentiment features and classiﬁcations(e.g., text, audio and
+visual) [14]. Though they presented a novel SDA frame-
+work of multimodal fusions, together with the description of
+their crucial components, how to implement this multimodal
+framework had not been studied. The MUTLA dataset is the
+ﬁrst rich multimodal dataset for EDM. Cano et al.developed
+86010 VOLUME 10, 2022","• Empirical results on real-world datasets show the effec-
+tiveness of our proposed method.
+The rest of this paper is organized as follows. Section II
+introduces the background of educational data mining and
+multimodal data fusion. Section III describes our proposed
+method in detail, including the framework of deep teach-
+ing quality assessment based on multimodal data fusion,
+the Transformer-based semantic representation of course
+comment texts and deep multimodal data fusion algorithm.
+Section IV reports our experimental setup, including exper-
+imental subjects, performance evaluation measures, strate-
+gies for experimental comparison, and experimental design.
+Section V discusses the results of our experiments. Section VI
+analyzes the potential threats to the validity of our empirical
+results. Section VII concludes the paper with some future
+work.
+II. BACKGROUND AND RELATED WORK
+In this section, we mainly discuss the related studies on
+educational data mining, sentiment analysis, and multimodal
+data fusion.
+A. EDUCATIONAL DATA MINING
+Traditional educational institutions have accumulated a large
+amount of basic teaching data, such as basic information
+about students, through information transformation over the
+years. With the development of mobile Internet in recent
+years, web-based online educational systems have ﬂourished
+exponentially, thus providing multiple data sources with dif-
+ferent granularity levels. With the emergence of more
+new teaching systems, such as MOOCs, massive amounts
+of data are constantly being collected. There is considerable
+value in these enormous teaching data. Many new research
+areas have been born for the new education system. Educa-
+tional Data Mining is concerned with developing methods for
+exploring the unique types of data that come from educa-
+tional environments. Learning Analytics can be deﬁned
+as the measurement, collection, analysis, and reporting of
+data about learners and their contexts, for purposes of under-
+standing and optimizing learning and the environments in
+which it occurs. Academic Analytics and Institutional
+Analytics are concerned with the collection, analysis, and
+visualization of academic program activities such as courses,
+degree programs research, the revenue of students’ fees,
+course evaluation, resource allocation, and management to
+generate institutional insight. Educational Data Science
+is deﬁned as the use of data gathered from educational
+environments/settings for solving educational problems.
+The different research areas share the same research inter-
+ests using a data-driven approach to educational research
+and share the same goal of improving teaching and learning
+practices.
+For intelligent tutoring systems, Markov Decision Pro-
+cess (MDP) framework was used to analyze and explore
+the application and effect of pedagogical strategies with
+EDM/LA techniques in terms of chi-squared, information
+gain, symmetrical uncertainty, information gain ratio and
+Weighted Information gain. The data source was collected
+in one per semester from the Spring of 2015 to the Fall
+of 2017. Chui et al. stated that improved conditional
+generative adversarial network based deep support vector
+machine (ICGAN-DSVM) algorithm was proposed to predict
+students’ performance under supportive learning via school
+and family tutoring. For learning management systems,
+Partial Least Squares Structural Equation Model (PLS-SEM)
+was used to analyze collaborative learning and to predict
+the team grade in teamwork groups. The data source was
+collected from a CS2 course. For e-Learning Man-
+agement Systems, an interpretable rule-based Genetic Pro-
+gramming classiﬁer was used to predict student performance
+and students at risk as soon as possible to intervene early
+to facilitate student success in terms of Geometric mean,
+AUC, and Kappa. The student data was from the Virginia
+Commonwealth University. In addition to analyzing
+computer-based educational systems from students’ behavior
+data, sentiment analysis during online learning was also used
+to predict learning performance.
+B. SENTIMENT ANALYSIS
+Sentiment analysis (SA), also called Opinion Mining (OM)
+was the task of extracting and analyzing people’s opinions,
+sentiments, attitudes, perceptions, etc. Sentiment analysis
+posed a powerful tool for researchers to extract and analyze
+public mood and views and ﬁnally make better decisions.
+SDA aims to automatically identify the underlying atti-
+tudes, sentiments, and subjectivity towards a certain entity
+such as learners and learning resources. Due to its enor-
+mous potential for smart education, SDA has been deemed a
+powerful technique for identifying and classifying sentiments
+from multimodal and multisource data over the whole pro-
+cess of education. D’Mello discussed the ubiquity and
+importance of emotion to learning. The emotions may
+not always be consciously experienced, but they existed and
+inﬂuenced cognition nonetheless. Language can express
+feelings very well, so text mining-based sentiment analy-
+sis techniques have great potential to analyze the relation-
+ship between students’ thoughts and learning experiences.
+Yang et al.applied sentiment analysis techniques to students’
+posts on their MOOCs courses. They found a negative cor-
+relation between the ratio of positive to negative terms and
+dropout across time. Methods to automatically identify
+student confusion were developed from MOOCs posts.
+C. MULTIMODAL DATA FUSION
+Han et al.argued that there were many studies on unimodal
+sentiment features and classiﬁcations(e.g., text, audio and
+visual). Though they presented a novel SDA frame-
+work of multimodal fusions, together with the description of
+their crucial components, how to implement this multimodal
+framework had not been studied. The MUTLA dataset is the
+ﬁrst rich multimodal dataset for EDM. Cano et al.developed"
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+a multiview early warning system built with comprehen-
+sible Genetic Programming classiﬁcation rules adapted to
+target underrepresented and underperforming student popu-
+lations [15]. The system integrated many student informa-
+tion repositories using multi-view learning to improve the
+accuracy and timing of the predictions [16]. For MOOCs
+courses, student behavior data can be obtained from the logs
+of the software system, and course comments can reﬂect the
+emotional state of the student learning process. The datasets
+for student behavior and course comments are easy to be
+collected and the cost of collecting these data is manage-
+able compared to collecting brainwave data, video data, etc.
+Therefore, fusing student behavior data with course com-
+ments can better reﬂect the learning process of students
+and enable the prediction of student performance. Previous
+research in educational data mining has been conducted in
+a relatively isolated manner, either from student behavioural
+data or from the perspective of student sentiment analysis.
+It is difﬁcult for such studies to comprehensively measure the
+behaviour of students during their online learning process.
+Especially with the popularity of MOOCS, more and more
+students are involved in the learning process and they express
+their attitudes towards the course by leaving comments.
+These student comments and student behaviour provide a
+good basis for our data modelling. we can predict student
+performance based on tabular and textual data.
+III. OUR PROPOSED METHOD
+In this section, we ﬁrst brieﬂy describe the framework of
+deep teaching quality assessment based on multimodal data
+fusion; then, the Transformer-based semantic representation
+of review texts and deep multimodal data fusion algorithm is
+proposed.
+A. FRAMEWORK FOR DEEP EDUCATION QUALITY
+ASSESSMENT BASED ON MULTIMODAL FUSION DATA
+Online education platforms, like MOOCs, provide a fast,
+interactive platform for educational data mining. From the
+MOOCs platform, students’ learning process data can be
+collected, including both student behavior data and student
+interaction information, such as student comments on the
+learning course. The data can be extracted from relational
+databases at a low cost. We can intuitively feel that students
+who study hard will be more motivated to complete their
+assignments and will eventually achieve better performance.
+In addition, we can also just get the students’ learning status
+from their course comment text. For example, students who
+are more optimistic about their course tend to have more
+positive attitudes toward learning, leading to better academic
+performance. The process of extracting data from a relational
+database is shown in Figure 1. Based on the Transformer
+architecture’s powerful learning capability of natural lan-
+guage, we have the potential to learn more information about
+students’ learning status from course comments, which will
+ultimately enhance deeper mining of student learning data.
+The student learning process data of different modalities
+contain rich user information, and data mining can be per-
+formed for the student learning process data of different
+modalities to build a student teaching quality assessment
+model. The framework for deep education quality assessment
+is shown in Figure 2, which is based on the semantic vector
+representation of students’ comment text, as well as stu-
+dents’ behavior data. In the deep teaching quality assessment
+framework, the problem of predicting student performance is
+formalized as a binary classiﬁcation problem, and the model
+classiﬁes the results as excellent learning effect or average
+learning effect. The feature vector classiﬁcation function is
+deﬁned as:
+y′=argmaxc∈{0,1}fθ(x) (1)
+In Equation 1, x represents the input student learning status
+data, including student behavior data, such as MOOC learn-
+ing progress, learning progression for objective practice ques-
+tions, etc., and also includes the students’ course comments,
+for example, the student’s comment, ‘‘The course is rather
+obscure and covers a lot of underlying principles.’’. Student
+behavior data and course comments are persistently stored in
+a relational database from online education platforms, such
+as MOOC and SPOC Academy, as well as from third-party
+open data interfaces, such as Golden Classroom. fθ(.) denotes
+the classiﬁer obtained by historical training data of student
+learning, such as random forest, etc. The training data of
+the model is done by aligning multiple databases, and the
+excellent learning effect is labeled as 1, and the average
+learning effect is labeled as 0. For the training dataset Dtr ,
+a dataset containing N training samples is deﬁned Dtr =
+{xn,yn}N
+n=1, the samples are labeled yn ∈{0, 1},and the train-
+ing samples xn =
+(
+x1
+n ,x2
+n ,x3
+n ,x4
+n ,x5
+n ,x6
+n ,x7
+n
+)
+, x1
+n to x6
+n denote
+the behavioral characteristics of student learning, including
+learning progress (LP), learning progression for objective
+practice questions (LPO), learning progression for subjec-
+tive practice question (LPS), in-class discussion participation
+(DP), number of posts and number of replies respectively. The
+deﬁnitions of each behavioral characteristic are as follows.
+LP = Number of studied chapters
+Total number of course chapters (2)
+LPO = Number of completed objective questions
+Total number of objective questions (3)
+LPS = Number of completed subjective questions
+Total number of subjective questions (4)
+DP = Number of submitted class exercises
+Total number of class exercises (5)
+The number of posts and the number of replies refer
+to the number of posts made by students in the forum of
+the MOOC platform. The above data features are collected
+from the MOOC platform, which are exported after stu-
+dents ﬁnish a course on the MOOC platform. x7
+n represents
+the one-dimensional feature vector of students’ course com-
+ments, as shown in Figure 2, which is computed from a deep
+semantic vector learning model based on Transformer. xn is
+VOLUME 10, 2022 86011","a multiview early warning system built with comprehen-
+sible Genetic Programming classiﬁcation rules adapted to
+target underrepresented and underperforming student popu-
+lations [15]. The system integrated many student informa-
+tion repositories using multi-view learning to improve the
+accuracy and timing of the predictions [16]. For MOOCs
+courses, student behavior data can be obtained from the logs
+of the software system, and course comments can reﬂect the
+emotional state of the student learning process. The datasets
+for student behavior and course comments are easy to be
+collected and the cost of collecting these data is manage-
+able compared to collecting brainwave data, video data, etc.
+Therefore, fusing student behavior data with course com-
+ments can better reﬂect the learning process of students
+and enable the prediction of student performance. Previous
+research in educational data mining has been conducted in
+a relatively isolated manner, either from student behavioural
+data or from the perspective of student sentiment analysis.
+It is difﬁcult for such studies to comprehensively measure the
+behaviour of students during their online learning process.
+Especially with the popularity of MOOCS, more and more
+students are involved in the learning process and they express
+their attitudes towards the course by leaving comments.
+These student comments and student behaviour provide a
+good basis for our data modelling. we can predict student
+performance based on tabular and textual data.
+III. OUR PROPOSED METHOD
+In this section, we ﬁrst brieﬂy describe the framework of
+deep teaching quality assessment based on multimodal data
+fusion; then, the Transformer-based semantic representation
+of review texts and deep multimodal data fusion algorithm is
+proposed.
+A. FRAMEWORK FOR DEEP EDUCATION QUALITY
+ASSESSMENT BASED ON MULTIMODAL FUSION DATA
+Online education platforms, like MOOCs, provide a fast,
+interactive platform for educational data mining. From the
+MOOCs platform, students’ learning process data can be
+collected, including both student behavior data and student
+interaction information, such as student comments on the
+learning course. The data can be extracted from relational
+databases at a low cost. We can intuitively feel that students
+who study hard will be more motivated to complete their
+assignments and will eventually achieve better performance.
+In addition, we can also just get the students’ learning status
+from their course comment text. For example, students who
+are more optimistic about their course tend to have more
+positive attitudes toward learning, leading to better academic
+performance. The process of extracting data from a relational
+database is shown in Figure 1. Based on the Transformer
+architecture’s powerful learning capability of natural lan-
+guage, we have the potential to learn more information about
+students’ learning status from course comments, which will
+ultimately enhance deeper mining of student learning data.
+The student learning process data of different modalities
+contain rich user information, and data mining can be per-
+formed for the student learning process data of different
+modalities to build a student teaching quality assessment
+model. The framework for deep education quality assessment
+is shown in Figure 2, which is based on the semantic vector
+representation of students’ comment text, as well as stu-
+dents’ behavior data. In the deep teaching quality assessment
+framework, the problem of predicting student performance is
+formalized as a binary classiﬁcation problem, and the model
+classiﬁes the results as excellent learning effect or average
+learning effect. The feature vector classiﬁcation function is
+deﬁned as:
+In Equation 1, x represents the input student learning status
+data, including student behavior data, such as MOOC learn-
+ing progress, learning progression for objective practice ques-
+tions, etc., and also includes the students’ course comments,
+for example, the student’s comment, ‘‘The course is rather
+obscure and covers a lot of underlying principles.’’. Student
+behavior data and course comments are persistently stored in
+a relational database from online education platforms, such
+as MOOC and SPOC Academy, as well as from third-party
+open data interfaces, such as Golden Classroom. fθ(.) denotes
+the classiﬁer obtained by historical training data of student
+learning, such as random forest, etc. The training data of
+the model is done by aligning multiple databases, and the
+excellent learning effect is labeled as 1, and the average
+learning effect is labeled as 0. For the training dataset Dtr ,
+a dataset containing N training samples is deﬁned Dtr =
+{xn,yn}N
+n=1, the samples are labeled yn ∈{0, 1},and the train-
+ing samples xn =
+(
+x1
+n ,x2
+n ,x3
+n ,x4
+n ,x5
+n ,x6
+n ,x7
+n
+)
+, x1
+n to x6
+n denote
+the behavioral characteristics of student learning, including
+learning progress (LP), learning progression for objective
+practice questions (LPO), learning progression for subjec-
+tive practice question (LPS), in-class discussion participation
+(DP), number of posts and number of replies respectively. The
+deﬁnitions of each behavioral characteristic are as follows.
+The number of posts and the number of replies refer
+to the number of posts made by students in the forum of
+the MOOC platform. The above data features are collected
+from the MOOC platform, which are exported after stu-
+dents ﬁnish a course on the MOOC platform. x7
+n represents
+the one-dimensional feature vector of students’ course com-
+ments, as shown in Figure 2, which is computed from a deep
+semantic vector learning model based on Transformer. xn is"
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+FIGURE 1. The process of extracting data from a relational database.
+FIGURE 2. An overview of our study.
+represented as a uniform feature vector of student learning
+state data. Multiple decision trees are constructed to form a
+random forest-based on the training data Dtr and ensemble
+learning are used in the random forest. x7
+n differs from other
+features in that its conditional entropy must be calculated
+considering the domain feature migration of the Transformer
+network, and the parameters of the Transformer network are
+determined based on the training data of the review text, and
+its speciﬁc calculation formula is as Eq. 6.
+H(D |A) =wθ
+( N∑
+n=1
+|Dn|
+|D|H (Dn)
+)
+(6)
+wθ represents the Transformer network that determines the
+optimal network parameters, H(D |A) denotes the empirical
+conditional entropy in the case of condition A of the selected
+information entropy calculation, |Dn|indicates the number of
+samples for a given classiﬁcation for a selected characteristic,
+|Dn|
+|D| indicates the probability of a classiﬁcation for a selected
+feature, H (Dn) denotes the empirical information entropy
+of D.
+B. THE TRANSFORMER-BASED SEMANTIC
+REPRESENTATION OF REVIEW TEXTS
+The Transformer architecture has gained wide application
+in natural language processing. The pre-trained BERT mod-
+els can achieve better classiﬁcation performance after ﬁne-
+tuning domain-speciﬁc data, and its classiﬁcation is done by
+computing cross-entropy loss functions on feature vectors
+by a linear classiﬁer [26]. The attention mechanism and
+the feature vector representation of text provide a uniﬁed
+representation for the fusion of multimodal data, such as
+86012 VOLUME 10, 2022","FIGURE 1. The process of extracting data from a relational database.
+FIGURE 2. An overview of our study.
+represented as a uniform feature vector of student learning
+state data. Multiple decision trees are constructed to form a
+random forest-based on the training data Dtr and ensemble
+learning are used in the random forest. x7
+n differs from other
+features in that its conditional entropy must be calculated
+considering the domain feature migration of the Transformer
+network, and the parameters of the Transformer network are
+determined based on the training data of the review text
+
+B. THE TRANSFORMER-BASED SEMANTIC
+REPRESENTATION OF REVIEW TEXTS
+The Transformer architecture has gained wide application
+in natural language processing. The pre-trained BERT mod-
+els can achieve better classiﬁcation performance after ﬁne-
+tuning domain-speciﬁc data, and its classiﬁcation is done by
+computing cross-entropy loss functions on feature vectors
+by a linear classiﬁer . The attention mechanism and
+the feature vector representation of text provide a uniﬁed
+representation for the fusion of multimodal data, such as"
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+FIGURE 3. Transformer-based learning method for 1D text feature vector
+representation.
+text and images [17]. The multidimensional feature vector
+representation of text is unstructured data, and fusing the
+table-based data from the teaching process with the feature
+vector directly or calculating the attention between different
+features does not fully use the features of the table-based
+data [27], and conversely, integrating the multidimensional
+feature vector of BERT ﬁne-tuning into the table-based data
+may bring the problem of feature redundancy. To construct
+the teaching quality assessment model, a Transformer-based
+1D text feature vector representation learning method is
+designed, and this deep semantic feature learning process is
+shown in Figure 3. We give an example of the learning pro-
+cess for eigenvectors of student comments. For example, the
+student comment ‘‘The course is rather obscure and covers
+a lot of underlying principles’’. The student grade of 60 is
+converted to label 1. The student comment is fed as input to a
+pre-trained model for ﬁne-tuning. A linear classiﬁer is used
+at the feature vector layer to classify the output features on
+a multilayer neural network, and a loss function is calculated
+by comparing it with the classiﬁcation label 1.
+The course review texts of students and the results of
+the teaching quality assessment are taken as input, and the
+course review texts are ﬁne-tuned using the Transformer-
+based model BERT. The deep semantic connection between
+the input texts and the teaching quality assessment is estab-
+lished based on the attention mechanism. In the input layer,
+the word embedding vector representation of the review text
+is performed. The segment embedding representation of each
+text, as well as the location embedding vector are obtained,
+and the summation is the vector input of each review text. The
+key to learning the semantic vector of course review texts is to
+use the multiple attention mechanism to obtain the connection
+between course review texts and teaching quality assessment
+results, which is done by ﬁne-tuning the course review texts
+using BERT. The ﬁne-tuned model outputs a state vector,
+which is used as the input to a linear classiﬁer for learning.
+This linear classiﬁer is deﬁned as shown in Eq. 7.
+Xoutput =Linear (ReLU (Linear (Xattention ))) (7)
+Xattention represents the state vector output of the pre-
+trained model, and Xoutput is the output result, which repre-
+sents the classiﬁcation result of the comment text, with the
+value of 0 or 1. The loss function of the current training
+sample is calculated based on the outcome of the binary
+classiﬁcation, and the cross-entropy loss function used in the
+calculation is shown in Eq. 8.
+L =−1
+2 ((1 −α)yi log (pi)+α(1 −yi)log (1 −pi)) (8)
+L denotes the calculated loss function value, yi denotes the
+actual probability that the sample is i, pi denotes the predicted
+probability obtained based on the training of the ﬁne-tuned
+BERT model on the historical dataset, and α denotes the
+proportion of classes with actual probability pi on the train-
+ing dataset over the total dataset. α parameter is used to
+address the class imbalance problem existing in the training
+dataset [28]. Fine-tuning of this teaching quality assessment
+model was completed after recording the best classiﬁcation
+model on the validation dataset. The training dataset is rein-
+troduced into the ﬁnal Transformer model and the semantic
+representation of the review text for this historical data is
+computed by forwarding computation.
+C. DEEP MULTIMODAL DATA FUSION ALGORITHM
+As shown in Figure 2, the deep multimodal fused data-based
+teaching quality assessment framework uses a random for-
+est classiﬁer to classify a uniform feature vector and
+create multiple decision trees to vote to predict student
+learning effectiveness. This uniﬁed feature vector is the
+Transformer-based deep multimodal data fusion represen-
+tation, which includes both behavioral data during student
+learning and Transformer-based comment text semantic vec-
+tors. The deep multimodal data fusion process is shown in
+Algorithm 1.
+As shown in Algorithm 1, the algorithm can effectively
+use the tabular data of students’ learning behavior and
+meanwhile, embed the one-dimensional feature vector of
+comment text into the tabular data. So random forest can
+fully use the information entropy of uniﬁed features vec-
+tor representation to build students’ learning quality assess-
+ment model. The algorithm can effectively integrate with
+the traditional online teaching platform to extract students’
+behavior from the relational database; at the same time,
+the algorithm introduces students’ interaction behavior of
+comment text, enriching the description of student learning
+status and describing the student learning process from more
+dimensions.
+VOLUME 10, 2022 86013","FIGURE 3. Transformer-based learning method for 1D text feature vector
+representation.
+text and images . The multidimensional feature vector
+representation of text is unstructured data, and fusing the
+table-based data from the teaching process with the feature
+vector directly or calculating the attention between different
+features does not fully use the features of the table-based
+data , and conversely, integrating the multidimensional
+feature vector of BERT ﬁne-tuning into the table-based data
+may bring the problem of feature redundancy. To construct
+the teaching quality assessment model, a Transformer-based
+1D text feature vector representation learning method is
+designed, and this deep semantic feature learning process is
+shown in Figure 3. We give an example of the learning pro-
+cess for eigenvectors of student comments. For example, the
+student comment ‘‘The course is rather obscure and covers
+a lot of underlying principles’’. The student grade of 60 is
+converted to label 1. The student comment is fed as input to a
+pre-trained model for ﬁne-tuning. A linear classiﬁer is used
+at the feature vector layer to classify the output features on
+a multilayer neural network, and a loss function is calculated
+by comparing it with the classiﬁcation label 1.
+The course review texts of students and the results of
+the teaching quality assessment are taken as input, and the
+course review texts are ﬁne-tuned using the Transformer-
+based model BERT. The deep semantic connection between
+the input texts and the teaching quality assessment is estab-
+lished based on the attention mechanism. In the input layer,
+the word embedding vector representation of the review text
+is performed. The segment embedding representation of each
+text, as well as the location embedding vector are obtained,
+and the summation is the vector input of each review text. The
+key to learning the semantic vector of course review texts is to
+use the multiple attention mechanism to obtain the connection
+between course review texts and teaching quality assessment
+results, which is done by ﬁne-tuning the course review texts
+using BERT. The ﬁne-tuned model outputs a state vector,
+which is used as the input to a linear classiﬁer for learning.
+
+α parameter is used to
+address the class imbalance problem existing in the training
+dataset . Fine-tuning of this teaching quality assessment
+model was completed after recording the best classiﬁcation
+model on the validation dataset. The training dataset is rein-
+troduced into the ﬁnal Transformer model and the semantic
+representation of the review text for this historical data is
+computed by forwarding computation.
+C. DEEP MULTIMODAL DATA FUSION ALGORITHM
+As shown in Figure 2, the deep multimodal fused data-based
+teaching quality assessment framework uses a random for-
+est classiﬁer to classify a uniform feature vector and
+create multiple decision trees to vote to predict student
+learning effectiveness. This uniﬁed feature vector is the
+Transformer-based deep multimodal data fusion represen-
+tation, which includes both behavioral data during student
+learning and Transformer-based comment text semantic vec-
+tors. The deep multimodal data fusion process is shown in
+Algorithm 1.
+As shown in Algorithm 1, the algorithm can effectively
+use the tabular data of students’ learning behavior and
+meanwhile, embed the one-dimensional feature vector of
+comment text into the tabular data. So random forest can
+fully use the information entropy of uniﬁed features vec-
+tor representation to build students’ learning quality assess-
+ment model. The algorithm can effectively integrate with
+the traditional online teaching platform to extract students’
+behavior from the relational database; at the same time,
+the algorithm introduces students’ interaction behavior of
+comment text, enriching the description of student learning
+status and describing the student learning process from more
+dimensions."
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+Algorithm 1 Deep Multimodal Data Fusion Algorithm
+Input :
+training set Dtr ={xn,yn}N
+n=1;
+pre-trained model BERT;
+Output:
+uniﬁed features vector representation Rx ;
+1 for data in Dtr do
+2 Feed forward x7
+n in BERT, compute loss value and
+back propagation;
+3 Record the neural network parameters and obtain the
+domain representation of the text;
+4 end
+5 for data in Dtr do
+6 Freeze deep neural networks and perform forward
+pass;
+7 Obtain a one-dimensional semantic vector of
+comment text vtext ;
+8 Concatenate, Rx
+i =
+(
+x1
+i ,x2
+i ,x3
+i ,x4
+i ,x5
+i ,x6
+i ,vtext
+)
+;
+9 end
+10 Use Rx to train random forest classiﬁer RFquality ;
+TABLE 1. The teaching quality assessment dataset.
+IV. EXPERIMENTAL SETUP
+In this section, we introduce the experiment setup, including
+experimental subjects, performance evaluation metrics, mul-
+timodal data fusion methods and experimental design.
+A. EXPERIMENTAL SUBJECTS
+To compare the data fusion methods, we collected one dataset
+for predicting student performance and used one publicly
+available dataset to evaluate the generalizability of our pro-
+posed method.
+The ﬁrst dataset we collected comes from the MOOCs
+platform we are using. The courses are intended for college
+students. The collected data comes from three teaching sys-
+tems, including a MOOCs platform, the student course eval-
+uation system and academic management system. Learning
+progress, learning progression for objective practice ques-
+tion, learning progression for subjective practice question,
+in-class discussion participation, number of posts and num-
+ber of replies were obtained from a MOOCs platform; the
+students’ comments were obtained from the student course
+evaluation system. Students’ course grades were obtained
+from academic management system. A brief description of
+the ﬁrst teaching quality assessment dataset is described in
+Table 1.
+The second dataset is Women’s E-Commerce Clothing
+Reviews dataset, collected by Nick Brooks in 2018. This
+dataset is used to evaluate the generalization ability of our
+TABLE 2. Confusion matrix for predicting student performance.
+proposed method on a publicly available dataset and has been
+used to perform binary classiﬁcation [27]. The source of the
+reviews is anonymous. Data examples consist of a review,
+a rating, the clothing category of the product etc.
+B. PERFORMANCE EVALUATION METRICS
+There is class imbalance in the teaching quality assess-
+ment dataset. We consider three performance metrics: recall,
+F1-measure (F1) and the area under the receiver operating
+characteristic curve (AUC). The confusion matrix for the
+teaching quality assessment dataset is shown in Table 2, TP
+(true positive) indicates that the sample with average learning
+effect is correctly predicted as average, FN (false negative)
+indicates that the sample with average learning effect is incor-
+rectly predicted as excellent, FP (false positive) indicates
+that the sample with excellent learning effect is incorrectly
+predicted as average, and TN (true negative) indicates that the
+sample with excellent learning effect is correctly predicted as
+excellent.
+precision = TP
+TP +FP (9)
+recall = TP
+TP +FN (10)
+FPR = FP
+FP +TN (11)
+F1 =2 ×(precision ×recall)
+precision +recall (12)
+The AUC is calculated as the area formed by the Receiver
+Operating Characteristic (ROC) curve and the coordinate
+axis, with the maximum value not exceeding 1. The larger the
+AUC value, the better the classiﬁcation effect. The TPR indi-
+cates the percentage of samples that are correctly predicted
+as average learning effect among all samples that are actually
+average learning effect, and its value is equal to recall; the
+FPR indicates the percentage of samples that are incorrectly
+predicted as average learning effect among all samples that
+are actually excellent learning effect.
+To statistically evaluate the detailed results, we ﬁrst
+employ the Friedman test to determine whether there are sta-
+tistically signiﬁcant differences among compared methods.
+If there is a statistically signiﬁcant difference, the post-hoc
+Nemenyi test is applied to compare the difference.
+When the null hypothesis is rejected, the average rank
+should be calculated and compared with the critical distance
+(CD).
+CD =qa ×
+√
+k ×(k +1)
+6N (13)
+86014 VOLUME 10, 2022","IV. EXPERIMENTAL SETUP
+In this section, we introduce the experiment setup, including
+experimental subjects, performance evaluation metrics, multimodal data fusion methods and experimental design.
+A. EXPERIMENTAL SUBJECTS
+To compare the data fusion methods, we collected one dataset
+for predicting student performance and used one publicly
+available dataset to evaluate the generalizability of our proposed method.
+The ﬁrst dataset we collected comes from the MOOCs
+platform we are using. The courses are intended for college
+students. The collected data comes from three teaching systems, including a MOOCs platform, the student course evaluation system and academic management system. Learning
+progress, learning progression for objective practice question, learning progression for subjective practice question,
+in-class discussion participation, number of posts and number of replies were obtained from a MOOCs platform; the
+students’ comments were obtained from the student course
+evaluation system. Students’ course grades were obtained
+from academic management system. A brief description of
+the ﬁrst teaching quality assessment dataset is described in
+Table 1.
+The second dataset is Women’s E-Commerce Clothing
+Reviews dataset, collected by Nick Brooks in 2018. This
+dataset is used to evaluate the generalization ability of our proposed method on a publicly available dataset and has been
+used to perform binary classiﬁcation [27]. The source of the
+reviews is anonymous. Data examples consist of a review,
+a rating, the clothing category of the product etc.
+B. PERFORMANCE EVALUATION METRICS
+There is class imbalance in the teaching quality assessment dataset. We consider three performance metrics: recall,
+F1-measure (F1) and the area under the receiver operating
+characteristic curve (AUC). The confusion matrix for the
+teaching quality assessment dataset is shown in Table 2, TP
+(true positive) indicates that the sample with average learning
+effect is correctly predicted as average, FN (false negative)
+indicates that the sample with average learning effect is incorrectly predicted as excellent, FP (false positive) indicates
+that the sample with excellent learning effect is incorrectly
+predicted as average, and TN (true negative) indicates that the
+sample with excellent learning effect is correctly predicted as
+excellent.
+The AUC is calculated as the area formed by the Receiver
+Operating Characteristic (ROC) curve and the coordinate
+axis, with the maximum value not exceeding 1. The larger the
+AUC value, the better the classiﬁcation effect. The TPR indicates the percentage of samples that are correctly predicted
+as average learning effect among all samples that are actually
+average learning effect, and its value is equal to recall; the
+FPR indicates the percentage of samples that are incorrectly
+predicted as average learning effect among all samples that
+are actually excellent learning effect.
+To statistically evaluate the detailed results, we ﬁrst
+employ the Friedman test to determine whether there are statistically signiﬁcant differences among compared methods.
+If there is a statistically signiﬁcant difference, the post-hoc
+Nemenyi test is applied to compare the difference.
+When the null hypothesis is rejected, the average rank
+should be calculated and compared with the critical distance
+(CD)."
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+k represents different algorithms, and N represents all
+training datasets. qa is obtained by looking up the table
+depending on the different parameters. Therefore, the result
+of CD can be computed according to the Eq. 13. In addition,
+to evaluate the degree of difference among the compared
+methods in terms of recall, F1 and AUC, we apply Cohen’s d
+to measure the effect size [29], [30], [31].
+Cohen′s d=M1 −M2
+√
+σ2
+1 +σ2
+2
+2
+(14)
+where M1 and M2 represent the mean of the statistic,
+and σ represents the standard deviation of the statistic. If
+d ∈ {0,0.2}, this indicates the effect size is negligible.
+If d ∈{0.2, 0.5}, this indicates the effect size is negligible.
+If d ∈ {0.5,0.8}, this indicates the effect size is medium.
+If d ∈{0.8, 1}, this indicates the effect size is large.
+C. MULTIMODAL DATA FUSION METHODS
+To evaluate our proposed teaching quality prediction model
+(RfBERT) in a comprehensive manner, we chose the follow-
+ing data fusion methods as baseline methods for comparison.
+text_only: As shown in Eq. 8, only the review text is used
+as the input of the teaching quality assessment model, and the
+cross-information entropy is used as the loss function to build
+the Transformer-based text classiﬁcation model.
+tabular_only: Using xn =
+(
+x1
+n ,x2
+n ,x3
+n ,x4
+n ,x5
+n ,x6
+n
+)
+as input
+samples, we build a teaching quality assessment model based
+on random forest.
+concat: As shown in Figure 2, the uniform feature vector
+is used as the input sample to build a teaching quality assess-
+ment model with a linear classiﬁer.
+MLPconcat: Implementation of the data fusion method
+proposed by Gu et al [27]. This method separate MLPs on
+numerical feats then concatenation of transformer output,
+with processed numerical feats before the ﬁnal classiﬁer
+layer(s).
+MAG: Implementation of the data fusion method based on
+the attention mechanism proposed by Rahman1 et al. [32].
+In the output layer, this method used gated summation of
+transformer outputs, numerical feats, and categorical feats
+before the ﬁnal classiﬁer layer(s).
+D. EXPERIMENTAL DESIGN
+The experiments run on Windows OS, and the running hard-
+ware environment is Intel Core i7-10700K CPU with 64G
+RAM. The ﬁne-tuning of BERT is completed on NVIDIA
+GeForce RTX 2070 GPU. The deep neural network library
+used in the experiments is Pytorch 1.8 stable version and the
+open-source huggingface library is used to implement BERT.
+The pre-trained model BERT used in the experiments is
+bert-base-uncased, which has 12 layers, 12 head attention,
+word embedding dimension of 768 and network parameters
+of 110 M. Sentences exceeding a speciﬁc length are trun-
+cated, and zero-ﬁll operations are performed for sentences
+that do not satisfy the length. The open source sklearn frame-
+FIGURE 4. The comparison results via box plot.
+work is used, and the random forest classiﬁer uses the default
+hyperparameters, where the number of classiﬁcation subtrees
+is 10. The ratio of training dataset, validation dataset and test
+dataset was 8:1:1 during the experiment, and the number of
+training repetitions was 10, with random stratiﬁed sampling
+each time to maintain the consistency of data distribution.
+During the validation process, the early stop method was
+used to terminate the neural network training process to pre-
+vent overﬁtting. In the ﬁne-tuning of the Transformer model,
+a hyperparameter αis introduced to solve the class imbalance
+problem in the training data set, which reduces the impact
+of the majority class on the imbalanced data distribution by
+penalizing the loss value of the majority class.
+V. EXPERIMENTAL RESULTS
+In this section, we report experimental results for the four
+RQs.
+A. RESULT ANALYSIS FOR RQ1
+RQ1: Whether a multimodal dataset can be used to obtain
+a better classiﬁcation model than a unimodal dataset?
+Motivation: To verify whether better performance in pre-
+dicting student performance can be obtained by fusing multi-
+modal data, we compare our proposed method with classiﬁers
+that employ unimodal data. The text_only fusion method is
+preformed to compare the tabular data and the tabular_only
+fusion method is performed to compare the textual data.
+To answer this RQ, we conduct the experiments on the
+collected dataset. The comparison results via box plot are
+shown in Figure 4. From these ﬁgures, we can observe that
+our proposed method RfBERT achieves best performance
+in terms of recall, F1 and AUC. All three different data
+fusion methods obtained high recall; the AUC value of the
+text data fusion method was only 0.8153 and the method
+also had the lowest performance on the F1 metric, which
+could indicate that student performance could not be fully
+predicted using only the text of student course comments.
+The tabular_only fusion method achieves sub-optimal perfor-
+mance in F1 and AUC metrics; our proposed method achieves
+the best performance in all three metrics. This means that our
+VOLUME 10, 2022 86015","k represents different algorithms, and N represents all
+training datasets. qa is obtained by looking up the table
+depending on the different parameters. Therefore, the result
+of CD can be computed according to the Eq. 13. In addition,
+to evaluate the degree of difference among the compared
+methods in terms of recall, F1 and AUC, we apply Cohen’s d
+to measure the effect size.
+
+C. MULTIMODAL DATA FUSION METHODS
+To evaluate our proposed teaching quality prediction model
+(RfBERT) in a comprehensive manner, we chose the follow-
+ing data fusion methods as baseline methods for comparison.
+text_only: As shown in Eq. 8, only the review text is used
+as the input of the teaching quality assessment model, and the
+cross-information entropy is used as the loss function to build
+the Transformer-based text classiﬁcation model.
+tabular_only: Using xn =
+(
+x1
+n ,x2
+n ,x3
+n ,x4
+n ,x5
+n ,x6
+n
+)
+as input
+samples, we build a teaching quality assessment model based
+on random forest.
+concat: As shown in Figure 2, the uniform feature vector
+is used as the input sample to build a teaching quality assess-
+ment model with a linear classiﬁer.
+MLPconcat: Implementation of the data fusion method
+proposed by Gu et al. This method separate MLPs on
+numerical feats then concatenation of transformer output,
+with processed numerical feats before the ﬁnal classiﬁer
+layer(s).
+MAG: Implementation of the data fusion method based on
+the attention mechanism proposed by Rahman1 et al.
+In the output layer, this method used gated summation of
+transformer outputs, numerical feats, and categorical feats
+before the ﬁnal classiﬁer layer(s).
+D. EXPERIMENTAL DESIGN
+The experiments run on Windows OS, and the running hard-
+ware environment is Intel Core i7-10700K CPU with 64G
+RAM. The ﬁne-tuning of BERT is completed on NVIDIA
+GeForce RTX 2070 GPU. The deep neural network library
+used in the experiments is Pytorch 1.8 stable version and the
+open-source huggingface library is used to implement BERT.
+The pre-trained model BERT used in the experiments is
+bert-base-uncased, which has 12 layers, 12 head attention,
+word embedding dimension of 768 and network parameters
+of 110 M. Sentences exceeding a speciﬁc length are trun-
+cated, and zero-ﬁll operations are performed for sentences
+that do not satisfy the length. The open source sklearn frame-
+work is used, and the random forest classiﬁer uses the default
+hyperparameters, where the number of classiﬁcation subtrees
+is 10. The ratio of training dataset, validation dataset and test
+dataset was 8:1:1 during the experiment, and the number of
+training repetitions was 10, with random stratiﬁed sampling
+each time to maintain the consistency of data distribution.
+During the validation process, the early stop method was
+used to terminate the neural network training process to pre-
+vent overﬁtting. In the ﬁne-tuning of the Transformer model,
+a hyperparameter αis introduced to solve the class imbalance
+problem in the training data set, which reduces the impact
+of the majority class on the imbalanced data distribution by
+penalizing the loss value of the majority class.
+V. EXPERIMENTAL RESULTS
+In this section, we report experimental results for the four
+RQs.
+A. RESULT ANALYSIS FOR RQ1
+RQ1: Whether a multimodal dataset can be used to obtain
+a better classiﬁcation model than a unimodal dataset?
+Motivation: To verify whether better performance in pre-
+dicting student performance can be obtained by fusing multi-
+modal data, we compare our proposed method with classiﬁers
+that employ unimodal data. The text_only fusion method is
+preformed to compare the tabular data and the tabular_only
+fusion method is performed to compare the textual data.
+To answer this RQ, we conduct the experiments on the
+collected dataset. The comparison results via box plot are
+shown in Figure 4. From these ﬁgures, we can observe that
+our proposed method RfBERT achieves best performance
+in terms of recall, F1 and AUC. All three different data
+fusion methods obtained high recall; the AUC value of the
+text data fusion method was only 0.8153 and the method
+also had the lowest performance on the F1 metric, which
+could indicate that student performance could not be fully
+predicted using only the text of student course comments.
+The tabular_only fusion method achieves sub-optimal perfor-
+mance in F1 and AUC metrics; our proposed method achieves
+the best performance in all three metrics. This means that our"
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+proposed method can fully fuse two different kinds of data by
+learning feature vectors from text and then achieves the best
+performance.
+To compare the performance of different data fusion meth-
+ods from a statistical point of view, the non-parametric Fried-
+man test at a conﬁdence level of 95% is used to conduct a
+statistical analysis of the results. We ﬁnd that the calculated
+value is smaller than the critical value for a 0.05 signiﬁcance
+level. To reveal the differences between different data fusion
+methods, we further adopt a post hoc statistical analysis
+method. In this experiment, k means three different algo-
+rithms, and N = 10 means that the collected dataset was
+randomly sampled 10 times. Finally, Cohen’s d effect size
+is 0.75 between RfBERT and text_only in terms of AUC and
+this indicates the effect size is medium; Cohen’s d effect size
+is 0.82 between RfBERT and tabular_only in terms of AUC
+and this indicates the effect size is large.
+Summary for RQ1: From the box plot as well as the
+statistical results, our proposed method can fully fuse two
+different kinds of data by learning feature vectors from text
+and then achieves the best performance. Course comment
+texts should be considered when creating student academic
+assessment models.
+B. RESULT ANALYSIS FOR RQ2
+RQ2: Can our proposed method outperform other data
+fusion methods when performing teaching effectiveness
+evaluation?
+Motivation: Based on Gu et al. research [27], for multi-
+modal data fusion, there are three main baselines,including
+concat, NLPconcat, MAG. We need to verify whether our
+proposed method can outperform the three baseline methods.
+According to the box plot of Figure 5, all four data fusion
+methods obtained high recall, while our proposed data fusion
+method obtained the highest recall. In terms of the AUC and
+F1 metrics, the MAG data fusion method obtained the lowest
+performance and the concat data fusion method obtained
+the sub-optimal performance. Compared with concat, MLP-
+concat incorporates MLP on the tabular data output layer,
+which may be the reason for its performance degradation.
+We can clearly see that our proposed method obtains the best
+performance and has a high stability.
+The non-parametric Friedman test at a conﬁdence level of
+95% is used to conduct a statistical analysis of the results.
+We ﬁnd that the calculated value is smaller than the critical
+value for a 0.05 signiﬁcance level. The post hoc statistical
+analysis method was adopted. In this experiment, k means
+four different algorithms, and N = 10 means that the
+collected dataset was randomly sampled 10 times. Finally,
+Cohen’s d effect size is 0.68 and this indicates the effect size
+is medium.
+Summary for RQ2: Our proposed method achieves the
+best classiﬁcation performance compared to the base meth-
+ods. This implies that the uniform feature vector representa-
+tion learned by our proposed method can indeed improve the
+classiﬁer’s performance.
+FIGURE 5. The box plot on different data fusion methods.
+TABLE 3. Performance comparison of data fusion methods on open
+dataset.
+C. RESULT ANALYSIS FOR RQ3
+RQ3: Does our proposed model have strong generaliza-
+tion ability?
+Motivation: Although our method achieves the best classi-
+ﬁcation performance on the dataset we collected, to validate
+the generalization ability of our proposed method, we com-
+pare multiple feature fusion methods on an open dataset.
+We conducted experiments on the open clothes review
+dataset to evaluate feature fusion methods including con-
+cat, MLPconcat, MAG, RfBERT. We performed a ten fold
+cross-validation and obtained the mean F1 and AUC. The
+results are shown in Table 3.
+Our proposed method RfBERT obtains the best classi-
+ﬁcation performance on F1 and AUC metrics. On the F1
+metric, our method improves 3.34% over the method MLP-
+concat, which achieves the worst performance. Meanwhile,
+on the AUC metric, our method improves 2.37% over the
+method MLPconcat, which achieves the worst performance.
+As similar to the results of the RQ2 experiment, concat
+obtained suboptimal performance on both F1 and AUC met-
+rics. The performance of MAG is slightly stronger than MLP-
+concat and lower than our proposed method. This conclusion
+remains largely consistent with RQ2. This implies that for
+multimodal tabular and textual data, uniﬁed features vec-
+tor representation can effectively improve the classiﬁcation
+performance.
+Summary for RQ3: Our proposed method has a strong
+generalization capability. The classiﬁcation performance can
+86016 VOLUME 10, 2022","proposed method can fully fuse two different kinds of data by
+learning feature vectors from text and then achieves the best
+performance.
+To compare the performance of different data fusion meth-
+ods from a statistical point of view, the non-parametric Fried-
+man test at a conﬁdence level of 95% is used to conduct a
+statistical analysis of the results. We ﬁnd that the calculated
+value is smaller than the critical value for a 0.05 signiﬁcance
+level. To reveal the differences between different data fusion
+methods, we further adopt a post hoc statistical analysis
+method. In this experiment, k means three different algo-
+rithms, and N = 10 means that the collected dataset was
+randomly sampled 10 times. Finally, Cohen’s d effect size
+is 0.75 between RfBERT and text_only in terms of AUC and
+this indicates the effect size is medium; Cohen’s d effect size
+is 0.82 between RfBERT and tabular_only in terms of AUC
+and this indicates the effect size is large.
+Summary for RQ1: From the box plot as well as the
+statistical results, our proposed method can fully fuse two
+different kinds of data by learning feature vectors from text
+and then achieves the best performance. Course comment
+texts should be considered when creating student academic
+assessment models.
+B. RESULT ANALYSIS FOR RQ2
+RQ2: Can our proposed method outperform other data
+fusion methods when performing teaching effectiveness
+evaluation?
+Motivation: Based on Gu et al. research, for multi-
+modal data fusion, there are three main baselines,including
+concat, NLPconcat, MAG. We need to verify whether our
+proposed method can outperform the three baseline methods.
+According to the box plot of Figure 5, all four data fusion
+methods obtained high recall, while our proposed data fusion
+method obtained the highest recall. In terms of the AUC and
+F1 metrics, the MAG data fusion method obtained the lowest
+performance and the concat data fusion method obtained
+the sub-optimal performance. Compared with concat, MLP-
+concat incorporates MLP on the tabular data output layer,
+which may be the reason for its performance degradation.
+We can clearly see that our proposed method obtains the best
+performance and has a high stability.
+The non-parametric Friedman test at a conﬁdence level of
+95% is used to conduct a statistical analysis of the results.
+We ﬁnd that the calculated value is smaller than the critical
+value for a 0.05 signiﬁcance level. The post hoc statistical
+analysis method was adopted. In this experiment, k means
+four different algorithms, and N = 10 means that the
+collected dataset was randomly sampled 10 times. Finally,
+Cohen’s d effect size is 0.68 and this indicates the effect size
+is medium.
+Summary for RQ2: Our proposed method achieves the
+best classiﬁcation performance compared to the base meth-
+ods. This implies that the uniform feature vector representa-
+tion learned by our proposed method can indeed improve the
+classiﬁer’s performance.
+FIGURE 5. The box plot on different data fusion methods.
+TABLE 3. Performance comparison of data fusion methods on open
+dataset.
+C. RESULT ANALYSIS FOR RQ3
+RQ3: Does our proposed model have strong generaliza-
+tion ability?
+Motivation: Although our method achieves the best classi-
+ﬁcation performance on the dataset we collected, to validate
+the generalization ability of our proposed method, we com-
+pare multiple feature fusion methods on an open dataset.
+We conducted experiments on the open clothes review
+dataset to evaluate feature fusion methods including con-
+cat, MLPconcat, MAG, RfBERT. We performed a ten fold
+cross-validation and obtained the mean F1 and AUC. The
+results are shown in Table 3.
+Our proposed method RfBERT obtains the best classi-
+ﬁcation performance on F1 and AUC metrics. On the F1
+metric, our method improves 3.34% over the method MLP-
+concat, which achieves the worst performance. Meanwhile,
+on the AUC metric, our method improves 2.37% over the
+method MLPconcat, which achieves the worst performance.
+As similar to the results of the RQ2 experiment, concat
+obtained suboptimal performance on both F1 and AUC met-
+rics. The performance of MAG is slightly stronger than MLP-
+concat and lower than our proposed method. This conclusion
+remains largely consistent with RQ2. This implies that for
+multimodal tabular and textual data, uniﬁed features vec-
+tor representation can effectively improve the classiﬁcation
+performance.
+Summary for RQ3: Our proposed method has a strong
+generalization capability. The classiﬁcation performance can"
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+FIGURE 6. The importance of each feature using SHAP method.
+be improved by using a uniﬁed features vector representation
+for multimodal tabular and textual data.
+D. RESULT ANALYSIS FOR RQ4
+RQ4: Can we perform interpretable analysis on our pro-
+posed deep multimodal data fusion model?
+Motivation: Based on RQ1, RQ2 and RQ3, we can build
+a prediction model with strong generalization ability and
+higher performance from the historical dataset. The model
+contains multimodal data. To analyze students’ academic
+performance in a timely manner and intervene accordingly,
+it is necessary to conduct an interpretable analysis of our
+model.
+To evaluate the contribution of the seven features in the
+uniﬁed feature vector to the random forest classiﬁer, we intro-
+duce the SHAP method. The calculation procedure is shown
+in Eq. 15. Suppose the i sample is xi, the j feature of
+the i sample is xi,j, the predicted value of the model for
+the i sample is yi, and the baseline (usually the mean of
+the target variable for all samples) of the whole model
+is ybase.
+yi =ybase +f
+(
+xi,1
+)
++f
+(
+xi,2
+)
++···+ f
+(
+xi,7
+)
+(15)
+We implemented the SHAP method on the random forest
+classiﬁer and calculated the importance of each feature as
+shown in Figure 6. We see that the feature ‘‘number of posts’’
+is the largest contributor to the prediction result, followed by
+the text vector we learned from the BERT. This also shows
+that the course comment texts we used can improve the per-
+formance of the classiﬁer and make an important contribution
+to the classiﬁcation task.
+Further we can observe the contribution of different fea-
+tures to the prediction result of ‘‘average learning’’. The result
+is shown in Figure 7. A total of seven features inﬂuence the
+classiﬁcation results of the model. When the classiﬁcation
+result of the model is ‘‘average learning’’, different features
+contribute differently. The ﬁrst feature and the sixth feature
+have a relatively even effect on the current classiﬁcation
+result; the second feature has a negative effect on the current
+classiﬁcation result most of the time. The second feature has a
+negative effect on the current classiﬁcation result, indicating
+FIGURE 7. The contribution of different features to the prediction result
+of ‘‘average learning’’ .
+a negative correlation between the student’s course comments
+and the current classiﬁcation result. The third feature has an
+average impact on the classiﬁcation results. The fourth fea-
+ture also shows a negative correlation with the classiﬁcation
+results. The ﬁfth and seventh characteristics show a positive
+relationship with the classiﬁcation results. We can see that
+the learned text feature vector plays an important role for
+the category ‘‘average learning’’. This is consistent with the
+distribution of our data.
+Summary for RQ4: Based on the results of the inter-
+pretability analysis, we see that the uniﬁed feature vector
+fused with the text vector can indeed play a key role in model
+classiﬁcation.
+VI. THREATS TO VALIDITY
+In this section, we mainly discuss potential threats to the
+validity of our study.
+A. THREATS TO CONSTRUCT VALIDITY
+To evaluate our proposed approach, we collected data from
+multiple instructional management systems and built experi-
+mental datasets by alignment. However, the size of these data
+is currently small, and the dataset will need to be continuously
+expanded later. When testing the generalization capability,
+the test was conducted on only one open dataset. As more
+datasets are shared, there is a need to validate on more
+datasets.
+B. THREATS TO INTERNAL VALIDITY
+We use several open source software in our experiments,
+such as huggingface, sklearn, etc. These open source software
+provide default hyperparameter settings, such as pre-trained
+model BERT, etc. Although we ﬁne-tuned the deep neural
+network by validation dataset, there are still more hyperpa-
+rameters with default values. In addition, the machine learn-
+ing classiﬁers we used, such as random forest, also used the
+default hyperparameter settings.
+C. THREATS TO EXTERNAL VALIDITY
+External validity is the degree to which the research results
+can be generalized to the population under study and
+VOLUME 10, 2022 86017","FIGURE 6. The importance of each feature using SHAP method.
+be improved by using a uniﬁed features vector representation
+for multimodal tabular and textual data.
+D. RESULT ANALYSIS FOR RQ4
+RQ4: Can we perform interpretable analysis on our pro-
+posed deep multimodal data fusion model?
+Motivation: Based on RQ1, RQ2 and RQ3, we can build
+a prediction model with strong generalization ability and
+higher performance from the historical dataset. The model
+contains multimodal data. To analyze students’ academic
+performance in a timely manner and intervene accordingly,
+it is necessary to conduct an interpretable analysis of our
+model.
+To evaluate the contribution of the seven features in the
+uniﬁed feature vector to the random forest classiﬁer, we intro-
+duce the SHAP method. The calculation procedure is shown
+in Eq. 15. Suppose the i sample is xi, the j feature of
+the i sample is xi,j, the predicted value of the model for
+the i sample is yi, and the baseline (usually the mean of
+the target variable for all samples) of the whole model
+is ybase.
+We implemented the SHAP method on the random forest
+classiﬁer and calculated the importance of each feature as
+shown in Figure 6. We see that the feature ‘‘number of posts’’
+is the largest contributor to the prediction result, followed by
+the text vector we learned from the BERT. This also shows
+that the course comment texts we used can improve the per-
+formance of the classiﬁer and make an important contribution
+to the classiﬁcation task.
+Further we can observe the contribution of different fea-
+tures to the prediction result of ‘‘average learning’’. The result
+is shown in Figure 7. A total of seven features inﬂuence the
+classiﬁcation results of the model. When the classiﬁcation
+result of the model is ‘‘average learning’’, different features
+contribute differently. The ﬁrst feature and the sixth feature
+have a relatively even effect on the current classiﬁcation
+result; the second feature has a negative effect on the current
+classiﬁcation result most of the time. The second feature has a
+negative effect on the current classiﬁcation result, indicating
+FIGURE 7. The contribution of different features to the prediction result
+of ‘‘average learning’’ .
+a negative correlation between the student’s course comments
+and the current classiﬁcation result. The third feature has an
+average impact on the classiﬁcation results. The fourth fea-
+ture also shows a negative correlation with the classiﬁcation
+results. The ﬁfth and seventh characteristics show a positive
+relationship with the classiﬁcation results. We can see that
+the learned text feature vector plays an important role for
+the category ‘‘average learning’’. This is consistent with the
+distribution of our data.
+Summary for RQ4: Based on the results of the inter-
+pretability analysis, we see that the uniﬁed feature vector
+fused with the text vector can indeed play a key role in model
+classiﬁcation.
+VI. THREATS TO VALIDITY
+In this section, we mainly discuss potential threats to the
+validity of our study.
+A. THREATS TO CONSTRUCT VALIDITY
+To evaluate our proposed approach, we collected data from
+multiple instructional management systems and built experi-
+mental datasets by alignment. However, the size of these data
+is currently small, and the dataset will need to be continuously
+expanded later. When testing the generalization capability,
+the test was conducted on only one open dataset. As more
+datasets are shared, there is a need to validate on more
+datasets.
+B. THREATS TO INTERNAL VALIDITY
+We use several open source software in our experiments,
+such as huggingface, sklearn, etc. These open source software
+provide default hyperparameter settings, such as pre-trained
+model BERT, etc. Although we ﬁne-tuned the deep neural
+network by validation dataset, there are still more hyperpa-
+rameters with default values. In addition, the machine learn-
+ing classiﬁers we used, such as random forest, also used the
+default hyperparameter settings.
+C. THREATS TO EXTERNAL VALIDITY
+External validity is the degree to which the research results
+can be generalized to the population under study and"
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+other research settings. There are no commercial datasets
+available for testing yet, and we need to keep an eye
+on developments based on multimodal tabular and textual
+data fusion.
+VII. CONCLUSION AND FUTURE WORK
+With the emergence of more new teaching systems, such as
+MOOCs, massive amounts of data are constantly being col-
+lected. This massive amount of data is a vast gold mine. How-
+ever, the multimodal data including both student behavior
+data and student course comments textual data, is not pro-
+cessed to discover models and paradigms which can be
+useful for school management. All these state data during
+the learning process can reﬂect the effectiveness of student
+learning. There is no multimodal dataset with tabular data
+and textual data yet. So we ﬁrst collected an open dataset that
+included student behavior data as well as course comments
+textual data. We fused student behavior data with course
+comments textual data to predict student performance. Then a
+Transformer-based framework for creating deep multimodal
+data fusion algorithms with a uniform vector representation
+was proposed. The empirical results of the collected dataset
+show the effectiveness of our proposed method in terms
+of recall, F1 and AUC. The empirical research indicates
+that: (1)our proposed method can fully fuse two different
+kinds of data by learning feature vectors from text and then
+achieves the best performance. Course comment texts should
+be considered when creating student academic assessment
+models; (2)Our proposed method achieves the best classi-
+ﬁcation performance compared to the base methods. This
+implies that the uniform feature vector representation learned
+by our proposed method can indeed improve the classiﬁer’s
+performance.
+Further, we validated our approach on an open cloth-
+ing dataset. The results of the empirical study showed that
+our proposed method had a strong generalization capabil-
+ity. Moreover, we performed interpretability analysis using
+SHAP method and found that text features had more impor-
+tant inﬂuence on the classiﬁcation model. This further illus-
+trated that fusing text features can improve the performance
+of classiﬁcation models.
+In the future, we will continue to expand our dataset and
+apply our proposed method to other domains to validate its
+generalization capability continuously. In addition, we will
+also continue our in-depth research on the representation of
+uniﬁed feature vectors based on natural language processing
+techniques.We will work on additional ways to fuse data to
+improve the classiﬁcation performance of student learning
+classiﬁcation models.
+REFERENCES
+[1] C. Romero and S. Ventura, ‘‘Educational data science in massive
+open online courses,’’ Wiley Interdiscipl. Rev., Data Mining Knowl.
+Discovery, vol. 7, no. 1, p. e1187, Jan. 2017. [Online]. Available:
+https://onlinelibrary.wiley.com/doi/full/10.1002/widm.1187 and https://
+onlinelibrary.wiley.com/doi/abs/10.1002/widm.1187 and https://wires.
+onlinelibrary.wiley.com/doi/10.1002/widm.1187
+[2] R. S. Baker and P. S. Inventado, ‘‘Educational data mining and learn-
+ing analytics,’’ in Learning Analytics: From Research to Practice.
+Springer, Jan. 2014, pp. 61–75. [Online]. Available: https://link.springer.
+com/chapter/10.1007/978-1-4614-3305-7_4
+[3] M. I. Baig, L. Shuib, and E. Yadegaridehkordi, ‘‘Big data in education:
+A state of the art, limitations, and future research directions,’’ Int. J. Educ.
+Technol. Higher Educ., vol. 17, no. 1, pp. 1–23, Dec. 2020. [Online]. Avail-
+able: https://educationaltechnologyjournal.springeropen.com/articles/10.
+1186/s41239-020-00223-0
+[4] B. Bakhshinategh, O. R. Zaiane, S. ElAtia, and D. Ipperciel, ‘‘Educational
+data mining applications and tasks: A survey of the last 10 years,’’ Educ.
+Inf. Technol., vol. 23, no. 1, pp. 537–553, Jul. 2017. [Online]. Available:
+https://link.springer.com/article/10.1007/s10639-017-9616-z
+[5] C. Romero and S. Ventura, ‘‘Educational data mining: A survey
+from 1995 to 2005,’’ Exp. Syst. Appl., vol. 33, no. 1, pp. 135–146,
+Jul. 2007.
+[6] A. Hernández-Blanco, B. Herrera-Flores, D. Tomás, and
+B. Navarro-Colorado, ‘‘A systematic review of deep learning approaches
+to educational data mining,’’ Complexity, vol. 2019, May 2019,
+Art. no. 1306039.
+[7] M. D. Laddha, V . T. Lokare, A. W. Kiwelekar, and L. D. Netak, ‘‘Per-
+formance analysis of the impact of technical skills on employability,’’ Int.
+J. Performability Eng., vol. 17, no. 4, p. 371, Apr. 2021. [Online]. Avail-
+able: http://www.ijpe-online.com/EN/10.23940/ijpe.21.04.p5.371378
+[8] C. Lang, G. Siemens, A. Wise, and D. Gasevic. (2017). Hand-
+book of Learning Analytics. [Online]. Available: https://www.academia.
+edu/download/56326181/hla17.pdf
+[9] A. öhman and J. J. Soares, ‘‘Unconscious anxiety’: Phobic responses to
+masked stimuli,’’J. Abnormal Psychol., vol. 103, no. 2, pp. 231–240, 1994.
+[10] M. Wen, D. Yang, and C. P. Rosé. Sentiment Analysis in MOOC Discussion
+Forums: What Does It Tell Us?Citeseer. Accessed: Apr. 2022. [Online].
+Available: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.
+1.1.660.5804&rep=rep1&type=
+[11] D. Yang, M. Wen, I. Howley, R. Kraut, and C. Rosé, ‘‘Exploring the effect
+of confusion in discussion forums of massive open online courses,’’ in
+Proc. 2nd ACM Conf. Learn. Scale, Mar. 2015, pp. 121–130.
+[12] (2010). A Data Repository for the EDM Community. [Online].
+Available: https://www.researchgate.net/publication/254199600_A_
+Data_Repository_for_the_EDM_Community
+[13] Graphical Interactive Student Monitoring Tool for Moodle.
+Accessed: Apr. 2022. [Online]. Available: http://gismo.sourceforge.net/
+index.html
+[14] Z. Han, J. Wu, C. Huang, Q. Huang, and M. Zhao, ‘‘A review on
+sentiment discovery and analysis of educational big-data,’’ Wiley Inter-
+discipl. Rev., Data Mining Knowl. Discovery, vol. 10, no. 1, p. e1328,
+Jan. 2020. [Online]. Available: https://onlinelibrary.wiley.com/doi/full/
+10.1002/widm.1328 and https://onlinelibrary.wiley.com/doi/abs/10.1002/
+widm.1328 and https://wires.onlinelibrary.wiley.com/doi/10.1002/widm.
+1328
+[15] F. Xu, L. Wu, K. P. Thai, C. Hsu, W. Wang, and R. Tong, ‘‘MUTLA:
+A large-scale dataset for multimodal teaching and learning analytics,’’
+Oct. 2019, arxiv:1910.06078v1.
+[16] A. Cano and J. D. Leonard, ‘‘Interpretable multiview early warning system
+adapted to underrepresented populations,’’ IEEE Trans. Learn. Technol.,
+vol. 12, no. 2, pp. 198–211, Apr. 2019.
+[17] D. Kiela, S. Bhooshan, H. Firooz, E. Perez, and D. Testuggine, ‘‘Super-
+vised multimodal bitransformers for classifying images and text,’’ 2019,
+arXiv:1909.02950.
+[18] C. Romero and S. Ventura, ‘‘Educational data science in massive open
+online courses,’’ Wiley Interdiscipl. Rev., Data Mining Knowl. Discovery,
+vol. 7, no. 1, p. e1187, Jan. 2017.
+[19] C. Lang, G. Siemens, A. Wise, D. Gašević, and A. Research. Handbook of
+Learning Analytics Society for Learning. Accessed: Apr. 2022. [Online].
+Available: https://www.solarresearch.com
+[20] J. Campbell, P. DeBlois, D. Oblinger. (2007). Academic Analytics: A
+New Tool for a New Era. [Online]. Available: https://er.educause.edu/
+articles/2007/7/academic-analytics-a-new-tool-for-a-new-era
+[21] Exploring Induced Pedagogical Strategies Through a Markov Decision
+Process Framework: Lessons Learned. Accessed: Apr. 2022. [Online].
+Available: https://par.nsf.gov/biblio/10105557
+[22] K. T. Chui, R. W. Liu, M. Zhao, and P. O. de Pablos, ‘‘Predicting students’
+performance with school and family tutoring using generative adversar-
+ial network-based deep support vector machine,’’ IEEE Access, vol. 8,
+pp. 86745–86752, 2020.
+86018 VOLUME 10, 2022","VII. CONCLUSION AND FUTURE WORK
+With the emergence of more new teaching systems, such as
+MOOCs, massive amounts of data are constantly being col-
+lected. This massive amount of data is a vast gold mine. How-
+ever, the multimodal data including both student behavior
+data and student course comments textual data, is not pro-
+cessed to discover models and paradigms which can be
+useful for school management. All these state data during
+the learning process can reﬂect the effectiveness of student
+learning. There is no multimodal dataset with tabular data
+and textual data yet. So we ﬁrst collected an open dataset that
+included student behavior data as well as course comments
+textual data. We fused student behavior data with course
+comments textual data to predict student performance. Then a
+Transformer-based framework for creating deep multimodal
+data fusion algorithms with a uniform vector representation
+was proposed. The empirical results of the collected dataset
+show the effectiveness of our proposed method in terms
+of recall, F1 and AUC. The empirical research indicates
+that: (1)our proposed method can fully fuse two different
+kinds of data by learning feature vectors from text and then
+achieves the best performance. Course comment texts should
+be considered when creating student academic assessment
+models; (2)Our proposed method achieves the best classi-
+ﬁcation performance compared to the base methods. This
+implies that the uniform feature vector representation learned
+by our proposed method can indeed improve the classiﬁer’s
+performance.
+Further, we validated our approach on an open cloth-
+ing dataset. The results of the empirical study showed that
+our proposed method had a strong generalization capabil-
+ity. Moreover, we performed interpretability analysis using
+SHAP method and found that text features had more impor-
+tant inﬂuence on the classiﬁcation model. This further illus-
+trated that fusing text features can improve the performance
+of classiﬁcation models.
+In the future, we will continue to expand our dataset and
+apply our proposed method to other domains to validate its
+generalization capability continuously. In addition, we will
+also continue our in-depth research on the representation of
+uniﬁed feature vectors based on natural language processing
+techniques.We will work on additional ways to fuse data to
+improve the classiﬁcation performance of student learning
+classiﬁcation models."
+Qu - 2022 - Can We Predict Student Performance Based on Tabular and Textual Data.pdf,"Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+[23] Z. Li and S. Edwards. (2018). Applying Recent-Performance
+Factors Analysis to Explore Student Effort Invested in Programming
+Assignments. [Online]. Available: https://search.proquest.com/openview/
+1344abae126cd4240dfdce3764087786/1?pq-origsite=gscholar&cbl=
+1976352
+[24] M. Birjali, M. Kasri, and A. Beni-Hssane, ‘‘A comprehensive survey on
+sentiment analysis: Approaches, challenges and trends,’’ Knowl.-Based
+Syst., vol. 226, Aug. 2021, Art. no. 107134.
+[25] A. G. Etemad, A. I. Abidi, and M. Chhabra, ‘‘Fine-tuned T5
+for abstractive summarization,’’ Int. J. Performability Eng., vol. 17,
+no. 10, pp. 900–906, Oct. 2021. [Online]. Available: http://www.ijpe-
+online.com/EN/10.23940/ijpe.21.10.p8.900906
+[26] J. Devlin, M.-W. Chang, K. Lee, and K. Toutanova, ‘‘BERT: Pre-training
+of deep bidirectional transformers for language understanding,’’ 2018,
+arXiv:1810.04805.
+[27] K. Gu and A. Budhkar, ‘‘A package for learning on tabular and
+text data with transformers,’’ in Proc. 3rd Workshop Multimodal
+Artif. Intell., 2021, pp. 69–73. [Online]. Available: https://aclanthology.
+org/2021.maiworkshop-1.10
+[28] L. Fang, Q. Yubin, C. Xiang, L. Long, and Y . Fan, ‘‘A senti-
+ment analysis method based on class imbalance learning,’’ J. Jilin
+Univ. Sci. Ed., vol. 59, no. 4, pp. 929–935, 2021. [Online]. Available:
+http://xuebao.jlu.edu.cn/lxb/CN/abstract/abstract4404.shtml
+[29] Y . Qu, X. Chen, F. Li, F. Yang, J. Ji, and L. Li, ‘‘Empirical evaluation on the
+impact of class overlap for EEG-based early epileptic seizure detection,’’
+IEEE Access, vol. 8, pp. 180328–180340, 2020.
+[30] D. Lakens, ‘‘Calculating and reporting effect sizes to facilitate
+cumulative science: A practical primer for T-tests and ANOV As,’’
+Frontiers Psychol., vol. 4, p. 863, Nov. 2013. [Online]. Available:
+/pmc/articles/PMC3840331//pmc/articles/PMC3840331/?report=abstract
+and https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3840331/
+[31] S. S. Sawilowsky, ‘‘New effect size rules of thumb,’’ J. Modern Appl.
+Stat. Methods, vol. 8, no. 2, p. 26, Nov. 2009. [Online]. Available:
+https://digitalcommons.wayne.edu/jmasm/vol8/iss2/26
+[32] W. Rahman, M. Kamrul Hasan, S. Lee, A. Zadeh, C. Mao, L.-P. Morency,
+and E. Hoque, ‘‘Integrating multimodal information in large pretrained
+transformers,’’ 2019, arXiv:1908.05787.
+YUBIN QUwas born in Nanyang, China, in 1981.
+He received the B.S. and M.S. degrees in computer
+science and technology from Henan Polytechnic
+University, China, in 2004 and 2008, respectively.
+Since 2009, he has been a Lecturer with the Infor-
+mation Engineering Institute, Jiangsu College of
+Engineering and Technology. He is the author
+of more than ten articles. His research interests
+include software maintenance, software testing,
+and machine learning.
+FANG LIwas born in Baoji, China, in 1982. She
+received the M.S. degree in computer science and
+technology from Henan Polytechnic University,
+China, in 2011. Since 2014, she has been a Lec-
+turer with the Jiangsu College of Engineering and
+Technology. Her research interests include net-
+work ideological and political education and com-
+puter application.
+LONG LI (Member, IEEE) received the Ph.D.
+degree from the Guilin University of Electronic
+Technology, Guilin, China, in 2018. He is cur-
+rently a Lecturer with the School of Computer
+Science and Information Security, Guilin Uni-
+versity of Electronic Technology. His research
+interests include cryptographic protocols, privacy-
+preserving technologies in big data, and the IoT.
+XIANZHEN DOU was born in Xuzhou, China,
+in 1987. He received the M.S. degree from the
+School of Electronics and Information, Nantong
+University, China, in 2013. Since 2019, he has
+been a Lecturer with the Information Engineer-
+ing Institute, Jiangsu College of Engineering and
+Technology. His research interests include soft-
+ware engineering and machine learning.
+HONGMEI WANG was born in Lianyuan,
+China, in 1981. She received the B.S. and M.S.
+degrees in computer science and technology from
+Henan Polytechnic University, China, in 2005 and
+2008, respectively. She is currently pursuing the
+Ph.D. degree with the Nanjing University of
+Posts and Telecommunications. She was a Vis-
+iting Scholar at the University of Hong Kong,
+from 2018 to 2019. Since 2008, she has been with
+the Jiangsu University of Science and Technology.
+Her research interests include information security, machine learning, and
+artiﬁcial intelligence.
+VOLUME 10, 2022 86019","Y. Quet al.: Can We Predict Student Performance Based on Tabular and Textual Data?
+
+YUBIN QUwas born in Nanyang, China, in 1981.
+He received the B.S. and M.S. degrees in computer
+science and technology from Henan Polytechnic
+University, China, in 2004 and 2008, respectively.
+Since 2009, he has been a Lecturer with the Infor-
+mation Engineering Institute, Jiangsu College of
+Engineering and Technology. He is the author
+of more than ten articles. His research interests
+include software maintenance, software testing,
+and machine learning.
+FANG LIwas born in Baoji, China, in 1982. She
+received the M.S. degree in computer science and
+technology from Henan Polytechnic University,
+China, in 2011. Since 2014, she has been a Lec-
+turer with the Jiangsu College of Engineering and
+Technology. Her research interests include net-
+work ideological and political education and com-
+puter application.
+LONG LI (Member, IEEE) received the Ph.D.
+degree from the Guilin University of Electronic
+Technology, Guilin, China, in 2018. He is cur-
+rently a Lecturer with the School of Computer
+Science and Information Security, Guilin Uni-
+versity of Electronic Technology. His research
+interests include cryptographic protocols, privacy-
+preserving technologies in big data, and the IoT.
+XIANZHEN DOU was born in Xuzhou, China,
+in 1987. He received the M.S. degree from the
+School of Electronics and Information, Nantong
+University, China, in 2013. Since 2019, he has
+been a Lecturer with the Information Engineer-
+ing Institute, Jiangsu College of Engineering and
+Technology. His research interests include soft-
+ware engineering and machine learning.
+HONGMEI WANG was born in Lianyuan,
+China, in 1981. She received the B.S. and M.S.
+degrees in computer science and technology from
+Henan Polytechnic University, China, in 2005 and
+2008, respectively. She is currently pursuing the
+Ph.D. degree with the Nanjing University of
+Posts and Telecommunications. She was a Vis-
+iting Scholar at the University of Hong Kong,
+from 2018 to 2019. Since 2008, she has been with
+the Jiangsu University of Science and Technology.
+Her research interests include information security, machine learning, and
+artiﬁcial intelligence."

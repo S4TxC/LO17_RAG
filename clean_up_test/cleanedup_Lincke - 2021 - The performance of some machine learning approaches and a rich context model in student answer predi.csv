@@ -1,0 +1,1166 @@
+source,page_content,cleaned_page_content
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnology
+EnhancedLearning           (2021) 16:10 
+https://doi.org/10.1186/s41039-021-00159-7
+RESEARCH OpenAccess
+Theperformanceofsomemachine
+learningapproachesandarichcontext
+modelinstudentanswerprediction
+AlisaLincke1*,MarcJansen 1,2,MarceloMilrad 1 andEliasBerge 3
+*Correspondence:
+alisa.lincke@lnu.se
+1DepartmentofComputerScience
+andMediaTechnology,Linnaeus
+University,PGVejdesväg,35195
+Växjö,Sweden
+Fulllistofauthorinformationis
+availableattheendofthearticle
+Abstract
+Web-basedlearningsystemswithadaptivecapabilitiestopersonalizecontentare
+becomingnowadaysatrendinordertoofferinteractivelearningmaterialstocope
+withawidediversityofstudentsattendingonlineeducation.Learners’interactionand
+studypractice(quizzing,reading,exams)canbeanalyzedinordertogetsomeinsights
+intothestudent’slearningstyle,studyschedule,knowledge,andperformance.
+Quizzingmightbeusedtohelptocreateindividualized/personalizedspacedrepetition
+algorithminordertoimprovelong-termretentionofknowledgeandprovideefficient
+learninginonlinelearningplatforms.Currentspacedrepetitionalgorithmshave
+pre-definedrepetitionrulesandparametersthatmightnotbeagoodfitforstudents’
+differentlearningstylesinonlineplatforms.Thisstudyusesdifferentmachinelearning
+modelsandarichcontextmodeltoanalyzequizzingandreadingrecordsfrom
+e-learningplatformcalledHypocampusinordertogetsomeinsightsintotherelevant
+featurestopredictlearningoutcome(quizanswers).Byknowingtheanswer
+correctness,alearningsystemmightbeabletorecommendpersonalizedrepetitive
+scheduleforquestionswithmaximizinglong-termmemoryretention.Studyresults
+showthatquestiondifficultylevelandincorrectlyansweredpreviousquestionsare
+usefulfeaturestopredictthecorrectnessofstudent’sanswer.Thegradient-boosted
+treeandXGBoostmodelsarebestinpredictingthecorrectnessofthestudent’sanswer
+beforeansweringaquiz.Additionally,somenon-linearrelationshipwasfoundbetween
+thereadinglearningmaterialbehaviorintheplatformandquizperformancethat
+bringsaddedvaluetotheaccuracyforallusedmodels.
+Keywords: Adaptivequiz,Quizperformance,Machinelearning,Richcontextmodel,
+Answerprobabilityprediction
+Introduction
+One of the biggest challenges for educators is to meet the individual needs of stu-
+dents while facing the constraints of time. One way to personalize education is by using
+adaptable learning systems (Papoušek and Pelánek2015). In order to efficiently provide
+students with personalized, adaptive digital content, and scheduled practice, it is crucial
+thatthelearningsystemgetsovertimeanunderstandingnotonlyofthestudents’current
+knowledge level but also of his/her progression and self-regulated learning strategy.
+©TheAuthor(s). 2021 OpenAccess ThisarticleislicensedunderaCreativeCommonsAttribution4.0InternationalLicense,
+whichpermitsuse,sharing,adaptation,distributionandreproductioninanymediumorformat,aslongasyougiveappropriate
+credittotheoriginalauthor(s)andthesource,providealinktotheCreativeCommonslicence,andindicateifchangeswere
+made. Theimagesorotherthirdpartymaterialinthisarticleareincludedinthearticle’sCreativeCommonslicence,unless
+indicatedotherwiseinacreditlinetothematerial. Ifmaterialisnotincludedinthearticle’sCreativeCommonslicenceandyour
+intendeduseisnotpermittedbystatutoryregulationorexceedsthepermitteduse,youwillneedtoobtainpermissiondirectly
+fromthecopyrightholder. Toviewacopyofthislicence,visit http://creativecommons.org/licenses/by/4.0/.","Abstract
+Web-basedlearningsystemswithadaptivecapabilitiestopersonalizecontentare
+becomingnowadaysatrendinordertoofferinteractivelearningmaterialstocope
+withawidediversityofstudentsattendingonlineeducation.Learners’interactionand
+studypractice(quizzing,reading,exams)canbeanalyzedinordertogetsomeinsights
+intothestudent’slearningstyle,studyschedule,knowledge,andperformance.
+Quizzingmightbeusedtohelptocreateindividualized/personalizedspacedrepetition
+algorithminordertoimprovelong-termretentionofknowledgeandprovideefficient
+learninginonlinelearningplatforms.Currentspacedrepetitionalgorithmshave
+pre-definedrepetitionrulesandparametersthatmightnotbeagoodfitforstudents’
+differentlearningstylesinonlineplatforms.Thisstudyusesdifferentmachinelearning
+modelsandarichcontextmodeltoanalyzequizzingandreadingrecordsfrom
+e-learningplatformcalledHypocampusinordertogetsomeinsightsintotherelevant
+featurestopredictlearningoutcome(quizanswers).Byknowingtheanswer
+correctness,alearningsystemmightbeabletorecommendpersonalizedrepetitive
+scheduleforquestionswithmaximizinglong-termmemoryretention.Studyresults
+showthatquestiondifficultylevelandincorrectlyansweredpreviousquestionsare
+usefulfeaturestopredictthecorrectnessofstudent’sanswer.Thegradient-boosted
+treeandXGBoostmodelsarebestinpredictingthecorrectnessofthestudent’sanswer
+beforeansweringaquiz.Additionally,somenon-linearrelationshipwasfoundbetween
+thereadinglearningmaterialbehaviorintheplatformandquizperformancethat
+bringsaddedvaluetotheaccuracyforallusedmodels.
+Keywords: Adaptivequiz,Quizperformance,Machinelearning,Richcontextmodel,
+Answerprobabilityprediction
+Introduction
+One of the biggest challenges for educators is to meet the individual needs of stu-
+dents while facing the constraints of time. One way to personalize education is by using
+adaptable learning systems. In order to efficiently provide
+students with personalized, adaptive digital content, and scheduled practice, it is crucial
+thatthelearningsystemgetsovertimeanunderstandingnotonlyofthestudents’current
+knowledge level but also of his/her progression and self-regulated learning strategy."
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page2of16
+One traditional way of assessing the knowledge level is letting students take a place-
+ment test (Hodara et al.2012). However, to make a placement test adaptive, the system
+needs to be able to draw conclusions from every answered question. According to one
+study (Chounta et al.2017), predicted probabilities that students will answer questions
+correctly can provide some insights into students’ knowledge. By using the answers to
+predict the probability of answering correct on other questions, a learning system might
+be able to schedule the repetition frequency of the question or recommend questions
+with a suitable level of difficulty. This would make the placement test more efficient,
+i.e., needing fewer questions to get an accurate picture of the students’ knowledge
+level.
+Predictingtheprobabilitiesofstudents’answeringcorrectmayalsobevaluableinorder
+to maximize students’ engagement (Joseph2005). If we know the probabilities of stu-
+dents answering questions correctly, then we may optimize the studies with regard to
+engagement, memory retention, and knowledge level. Previous studies have suggested
+that an adaptive fail rate in a quiz increases student engagement (Papoušek and Pelánek
+2015;R o s se ta l .2018). By choosing questions with a difficulty level that increases the
+chances of a student answering correct, around 60% of the questions seems to hit a
+sweet spot where the average student experiences the quiz challenging without being
+too difficult. Moreover, one study (Simon-Campbell et al.2016) showed that the use of
+adaptivequizzesinnursingeducationincreasedlearningmaterialmastery,helpedtopre-
+dict final course grades, and positively influenced on the retation rates. Another study
+(Houseetal. 2016)exploredthestudent’ssatisfactionwithadaptivequizzingandshowed
+that this learning strategy increased their knowledge in course content and helped better
+toprepareforfinalexams.
+Modeling the student’s knowledge and performance in online education systems is a
+well-established problem (Pardos and Heffernan2011;P i e c he ta l .2015; Pelánek2017;
+Duong et al.2013). For instance, unknown students’ knowledge background (academic
+performance, grades), personal information (age, gender), cognitive skills, and access to
+the learning resources such as reading material, quizzes, exams, and courses any time
+and order brings different learning behaviors and strategies (e.g., accessing the learning
+materialindifferentorders,somestudentsjustdoingquizzesandexamswithoutreading
+the material on the web platform, others first read the material and afterwards doing
+quizzes to check their knowledge about this material). Furthermore, students can use
+otherlearningresourcesbesidestheonesprovided/offeredbythelearningplatform(such
+asbooks,universitycoursecontent).
+One approach for measuring academic achievements and student’s knowledge is the
+Item Response Theory (IRT) models (Reise and Revicki DA2014;C h e ne ta l .2005).
+IRT models allow measuring different students’ abilities (intelligence, individual learn-
+ing ability, attitude, academic achievements) by using answers on questions as test-based
+assessment. It predicts the probability that a student will answer the question correctly
+as a function with two parameters: student’s knowledge level and the question difficulty
+(Chaudhry et al.2018;G a l v e ze ta l .2009). This modeling approach showed good prac-
+tical use in estimating students’ performance and making adaptive quizzes (dynamically
+decidewhichquestiontoshowbasedonstudent’sanswers).However,thisapproachdoes
+not model the evolution of students’ knowledge over time (Chaudhry et al.2018;K h a j a h
+etal. 2014).","One traditional way of assessing the knowledge level is letting students take a place-
+ment test (Hodara et al.2012). However, to make a placement test adaptive, the system
+needs to be able to draw conclusions from every answered question. According to one
+study (Chounta et al.2017), predicted probabilities that students will answer questions
+correctly can provide some insights into students’ knowledge. By using the answers to
+predict the probability of answering correct on other questions, a learning system might
+be able to schedule the repetition frequency of the question or recommend questions
+with a suitable level of difficulty. This would make the placement test more efficient,
+i.e., needing fewer questions to get an accurate picture of the students’ knowledge
+level.
+Predictingtheprobabilitiesofstudents’answeringcorrectmayalsobevaluableinorder
+to maximize students’ engagement (Joseph2005). If we know the probabilities of stu-
+dents answering questions correctly, then we may optimize the studies with regard to
+engagement, memory retention, and knowledge level. Previous studies have suggested
+that an adaptive fail rate in a quiz increases student engagement (Papoušek and Pelánek
+2015;R o s se ta l .2018). By choosing questions with a difficulty level that increases the
+chances of a student answering correct, around 60% of the questions seems to hit a
+sweet spot where the average student experiences the quiz challenging without being
+too difficult. Moreover, one study (Simon-Campbell et al.2016) showed that the use of
+adaptivequizzesinnursingeducationincreasedlearningmaterialmastery,helpedtopre-
+dict final course grades, and positively influenced on the retation rates. Another study
+(Houseetal. 2016)exploredthestudent’ssatisfactionwithadaptivequizzingandshowed
+that this learning strategy increased their knowledge in course content and helped better
+toprepareforfinalexams.
+Modeling the student’s knowledge and performance in online education systems is a
+well-established problem (Pardos and Heffernan2011;P i e c he ta l .2015; Pelánek2017;
+Duong et al.2013). For instance, unknown students’ knowledge background (academic
+performance, grades), personal information (age, gender), cognitive skills, and access to
+the learning resources such as reading material, quizzes, exams, and courses any time
+and order brings different learning behaviors and strategies (e.g., accessing the learning
+materialindifferentorders,somestudentsjustdoingquizzesandexamswithoutreading
+the material on the web platform, others first read the material and afterwards doing
+quizzes to check their knowledge about this material). Furthermore, students can use
+otherlearningresourcesbesidestheonesprovided/offeredbythelearningplatform(such
+asbooks,universitycoursecontent).
+One approach for measuring academic achievements and student’s knowledge is the
+Item Response Theory (IRT) models (Reise and Revicki DA2014;C h e ne ta l .2005).
+IRT models allow measuring different students’ abilities (intelligence, individual learn-
+ing ability, attitude, academic achievements) by using answers on questions as test-based
+assessment. It predicts the probability that a student will answer the question correctly
+as a function with two parameters: student’s knowledge level and the question difficulty
+(Chaudhry et al.2018;G a l v e ze ta l .2009). This modeling approach showed good prac-
+tical use in estimating students’ performance and making adaptive quizzes (dynamically
+decidewhichquestiontoshowbasedonstudent’sanswers).However,thisapproachdoes
+not model the evolution of students’ knowledge over time (Chaudhry et al.2018;K h a j a h
+etal. 2014)."
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page3of16
+In a comprehensive review (Dunlosky et al.2013), researchers compared ten differ-
+ent learning techniques and claimed that retrieval practice and distributed practice were
+the only two techniques with robust effects on learning that generalized widely. The
+retrieval practice is a learning strategy that focuses on the active recalling of informa-
+tion from memory which has a positive effect on future recall attempts (Roediger III
+and Butler2011). What is seen in studies is that the effect of test-enhanced learning is
+greatest if repeating the tests with increasing intervals (Roediger III and Karpicke2006).
+Repeatedre-studyisanothercommonstudystrategywhererepetitionisusedtomeasure
+thestudent’sactivenesswiththestudymaterials(KarpickeandRoediger 2008;Thiedeand
+Dunlosky 1999).
+Mostresearchonretrievalpracticehasbeencarriedoutinsupportinglearninginclass-
+room settings rather than in MOOC environment. Therefore, how to effectively support
+retrieval practice in online learning environments has not yet been thoroughly examined
+(Davis et al.2016). Students generate a vast amount of interactional data in MOOCs that
+allows to use data mining and machine learning techniques new insights on the student’s
+learningstrategiesandimproveretrievalprocess(Maldonado-Mahauadetal. 2018;Chof-
+finetal. 2020;T a b i b i a neta l .2019; Settles and Meeder2016;D a vi seta l .2016). Quizzing
+and video-based learning material are one of the sources of retrieval practice in online
+learning platforms (Van der Zee et al.2018; Fellman et al.2020). Recent study (Davis et
+al. 2018) has developed an approach for creating adaptive quizzes in MOOC with auto-
+matically and intelligently delivering quiz questions by analyzing the student’s learning
+behavior in previous courses. Their study results did not show a positive effect on the
+knowledgeandlearning;thus,thebenefitsofusingtheretrievalpracticeinonlinelearning
+environmentneedfurtherresearchaswellascreationofnewretrievalpracticealgorithms
+foronlinelearningsettings.
+This study is an extension and follow-up on our previous work (Lincke et al.2019)
+that aims to (a) explore the association between online learning activities (such as time
+spend on reading learning material in the system) and quiz performance in the system
+and (b) to predict the quiz performance by using different machine learning tech-
+niques on data provided by online learning platform called Hypocampus. By knowing
+in advance if the student will answer the question correctly, it will allow us to create
+more personalized retrieval practice algorithm rather than the use of standard Leitner
+system for scheduling the question repetition in a quiz. Specifically, in this study, we
+increased the dataset (by including both multiple-choice and text type questions), added
+more user study behavior features (like reading time for learning materials), and added
+Bayesian-based machine learning model in order to compare the Bayesian model-based
+approach with previously applied models. We assess the accuracy and response time of
+training and predicting the quiz performance for the following models: linear regres-
+sion,logisticregression,gradient-boostedtree,extremegradient-boostedtree(XGBoost),
+deep neural network, rich context model (RCM) (Sotsenko2017), and Bayesian neural
+network.
+Method
+In this study, a general machine learning (ML) pipeline (Pentreath2015)w a su s e d
+for predicting the probability whether a question will be answered correctly as shown","In a comprehensive review (Dunlosky et al.2013), researchers compared ten different learning techniques and claimed that retrieval practice and distributed practice were the only two techniques with robust effects on learning that generalized widely. The retrieval practice is a learning strategy that focuses on the active recalling of information from memory which has a positive effect on future recall attempts (Roediger III and Butler2011). What is seen in studies is that the effect of test-enhanced learning is greatest if repeating the tests with increasing intervals (Roediger III and Karpicke2006). Repeatedre-studyisanothercommonstudystrategywhererepetitionisusedtomeasure
+thestudent’sactivenesswiththestudymaterials(KarpickeandRoediger 2008;Thiedeand
+Dunlosky 1999).
+Mostresearchonretrievalpracticehasbeencarriedoutinsupportinglearninginclass-
+room settings rather than in MOOC environment. Therefore, how to effectively support
+retrieval practice in online learning environments has not yet been thoroughly examined
+(Davis et al.2016). Students generate a vast amount of interactional data in MOOCs that
+allows to use data mining and machine learning techniques new insights on the student’s
+learningstrategiesandimproveretrievalprocess(Maldonado-Mahauadetal. 2018;Chof-
+finetal. 2020;T a b i b i a n eta l .2019; Settles and Meeder2016;D a vi seta l .2016). Quizzing
+and video-based learning material are one of the sources of retrieval practice in online
+learning platforms (Van der Zee et al.2018; Fellman et al.2020). Recent study (Davis et
+al. 2018) has developed an approach for creating adaptive quizzes in MOOC with auto-
+matically and intelligently delivering quiz questions by analyzing the student’s learning
+behavior in previous courses. Their study results did not show a positive effect on the
+knowledgeandlearning;thus,thebenefitsofusingtheretrievalpracticeinonlinelearning
+environmentneedfurtherresearchaswellascreationofnewretrievalpracticealgorithms
+foronlinelearningsettings.
+This study is an extension and follow-up on our previous work (Lincke et al.2019)
+that aims to (a) explore the association between online learning activities (such as time
+spend on reading learning material in the system) and quiz performance in the system
+and (b) to predict the quiz performance by using different machine learning tech-
+niques on data provided by online learning platform called Hypocampus. By knowing
+in advance if the student will answer the question correctly, it will allow us to create
+more personalized retrieval practice algorithm rather than the use of standard Leitner
+system for scheduling the question repetition in a quiz. Specifically, in this study, we
+increased the dataset (by including both multiple-choice and text type questions), added
+more user study behavior features (like reading time for learning materials), and added
+Bayesian-based machine learning model in order to compare the Bayesian model-based
+approach with previously applied models. We assess the accuracy and response time of
+training and predicting the quiz performance for the following models: linear regres-
+sion,logisticregression,gradient-boostedtree,extremegradient-boostedtree(XGBoost),
+deep neural network, rich context model (RCM) (Sotsenko2017), and Bayesian neural
+network.
+Method
+In this study, a general machine learning (ML) pipeline (Pentreath2015)w a su s e d
+for predicting the probability whether a question will be answered correctly as shown"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page4of16
+on Fig. 1. There are four main steps: data preprocessing of collected data (Dataset);
+featureextractionandselection;applyingsevenmodels:linearregression,logisticregres-
+sion, gradient-boosted tree regression, extreme gradient-boosted tree (XGBoost) (Chen
+and Guestrin 2016), feed-forward deep neural network, a rich context model (RCM)
+(Sotsenko 2017), and Bayesian neural network (BNN); and the last step is the model
+evaluation.
+The model evaluation included the accuracy metrics and performance measures. The
+following metrics were extracted from confusion matrix (Ting2010)a n du s e df o ra c c u -
+racy evaluation: false-positive rate (FP, %), false-negative rate (FN, %), precision, recall,
+accuracy, F1-score (F1, %), and Pearson correlation coefficient (r) between the predicted
+value by the model and depended variable (answer on the question). In our answer,
+prediction task: false positives are incorrect answered questions which have been pre-
+dicted as correct; false negatives are correctly answered questions which were predicted
+asincorrectlyansweredquestions;precisionisaproportionofcorrectanswerspredicted;
+recallisaproportionofcorrectlyansweredquestionswhicharepredictedtobecorrectly
+answered; accuracy is a proposition of total number of answer predictions that were cor-
+rect;F1-scoreisaweightedharmonicaverageofprecisionandrecall;Pearsoncorrelation
+coefficient shows how well the true value correlated with the predicted value, where 0
+is not correlated and 1 is highly correlated. We also use receiver operator characteris-
+tic (ROC) and precision-recall (PR) curves (Davis and Goadrich2006)t oc o m p a r et h e
+performanceofmachineleaningmodels.
+For performance evaluation, we measured execution time in milliseconds for training
+and testing the model. Performance and accuracy evaluation experiments are run on a
+MacBook Pro with a 2.3 GHz Intel Core i7 processor.
+The correlation analysis was applied to check the linear association between online
+learning activities (described as features in Feature Extraction and Selection section) and
+quizperformance(answeronquestions).
+Dataset
+For this study, we have obtained the data from the Hypocampus web-based learning
+platform. Hypocampus is an adaptive web-based learning platform used by medical stu-
+dents in Sweden. It contains a library with many interactive reading materials (e.g.,
+Fig.1 MLpipelineforpredictingtheprobabilityifaquestionwillbeansweredcorrectly","There are four main steps: data preprocessing of collected data (Dataset);
+featureextractionandselection;applyingsevenmodels:linearregression,logisticregres-
+sion, gradient-boosted tree regression, extreme gradient-boosted tree (XGBoost), feed-forward deep neural network, a rich context model (RCM), and Bayesian neural network (BNN); and the last step is the model
+evaluation.
+The model evaluation included the accuracy metrics and performance measures. The
+following metrics were extracted from confusion matrix and used for accuracy evaluation: false-positive rate (FP, %), false-negative rate (FN, %), precision, recall,
+accuracy, F1-score (F1, %), and Pearson correlation coefficient (r) between the predicted
+value by the model and depended variable (answer on the question). In our answer,
+prediction task: false positives are incorrect answered questions which have been pre-
+dicted as correct; false negatives are correctly answered questions which were predicted
+asincorrectlyansweredquestions;precisionisaproportionofcorrectanswerspredicted;
+recallisaproportionofcorrectlyansweredquestionswhicharepredictedtobecorrectly
+answered; accuracy is a proposition of total number of answer predictions that were cor-
+rect;F1-scoreisaweightedharmonicaverageofprecisionandrecall;Pearsoncorrelation
+coefficient shows how well the true value correlated with the predicted value, where 0
+is not correlated and 1 is highly correlated. We also use receiver operator characteris-
+tic (ROC) and precision-recall (PR) curves to compare the
+performanceofmachineleaningmodels.
+For performance evaluation, we measured execution time in milliseconds for training
+and testing the model. Performance and accuracy evaluation experiments are run on a
+MacBook Pro with a 2.3 GHz Intel Core i7 processor.
+The correlation analysis was applied to check the linear association between online
+learning activities (described as features in Feature Extraction and Selection section) and
+quizperformance(answeronquestions).
+Dataset
+For this study, we have obtained the data from the Hypocampus web-based learning
+platform. Hypocampus is an adaptive web-based learning platform used by medical stu-
+dents in Sweden. It contains a library with many interactive reading materials (e.g.,"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page5of16
+course literature) that students can use for self-studies in order to learn about a par-
+ticular subject matter and to revise and review their current knowledge. The platform
+provides also quizzes for each reading material in order to help students to check and
+assess their current knowledge for each particular subject matter. In addition, it offers
+customized learning paths based on quantitative educational studies, visualizations of
+learning progress for students and teachers, and adaptive individual learning pathways.
+The learning platform optimizes the learning content according to the principles of
+retrievalpractice(KarpickeandRoediger 2008).
+The reading material is structured into various subjects (e.g., Dermatology, Surgery,
+Gynecology, Internal Medicine, and others). Every subject has a number of topics called
+chaptergroups. Every chaptergroup represents a learning material and consists of chap-
+ters.Everychapterhasaquizcontainingfrom4to15questions;someofthemcanhaveup
+to28questions.Therearetwotypesofquestions: multiplechoice andtextquestions .T he
+multiple-choice questions have several options to choose and only one is correct. After
+answeringthemultiple-choicequestions,thesystemwillshowthedirectfeedbacktostu-
+dents whether the answer is correct or incorrect. Moreover, depending on the answers
+of the questions, the system highlights a part of the reading material in green color (that
+means a student knows this part of the material) or red color (that means a student
+does not know this part of the material and should read it). The text question contains
+a problem description and a student should provide a text answer on the problem. After
+answering a text question, the system does not check the text answer provided by stu-
+dent,butrathershowstheanswerandexplanationstotheproblem.Oncethestudenthas
+seen the answer, she/he should correct herself by selecting “I knew the answer” (correct)
+or “I need to read more” (incorrect). Table1 describes a summary of the collected data
+ofrandomlyselected300medicalstudentsoveraperiodof10monthsbetween2017and
+2018.
+Table1 shows that selected 300 students tend to read more than doing quizzes in the
+platform (38% quiz sessions and 62% reading sessions). However, they invest more time
+onquizzing(1127h)thenreading(467h)inthesystem.Inaverage,studentsspendaround
+2mintoreadasinglelearningmaterial(chapter)and41stoansweraquestion.
+The collected dataset includes information about user identification number, question
+type (multiple choice or text), question identifier, chapter id to which the question id
+belongs, time answering a question, time reviewing the feedback from the system after
+answeringthequestion,student’sanswer(true—correctandfalse—incorrect),student’s
+text answer on the text questions, timestamp, course identifier, question session, chapter
+group number, chapter identification number, focused reading time, and others. After
+Table1 Summaryofcollecteddata
+Name Numberofrecords
+Numberofstudents 300
+Numberofquestions 121,423
+Multiple-choicequestions 18,092
+Textquestions 103,331
+Correctanswers 94,433
+Incorrectanswers 26,725
+Quizsessions 6081","course literature) that students can use for self-studies in order to learn about a par-
+ticular subject matter and to revise and review their current knowledge. The platform
+provides also quizzes for each reading material in order to help students to check and
+assess their current knowledge for each particular subject matter. In addition, it offers
+customized learning paths based on quantitative educational studies, visualizations of
+learning progress for students and teachers, and adaptive individual learning pathways.
+The learning platform optimizes the learning content according to the principles of
+retrievalpractice.
+The reading material is structured into various subjects (e.g., Dermatology, Surgery,
+Gynecology, Internal Medicine, and others). Every subject has a number of topics called
+chaptergroups. Every chaptergroup represents a learning material and consists of chap-
+ters.Everychapterhasaquizcontainingfrom4to15questions;someofthemcanhaveup
+to28questions.Therearetwotypesofquestions: multiplechoice andtextquestions .T he
+multiple-choice questions have several options to choose and only one is correct. After
+answeringthemultiple-choicequestions,thesystemwillshowthedirectfeedbacktostu-
+dents whether the answer is correct or incorrect. Moreover, depending on the answers
+of the questions, the system highlights a part of the reading material in green color (that
+means a student knows this part of the material) or red color (that means a student
+does not know this part of the material and should read it). The text question contains
+a problem description and a student should provide a text answer on the problem. After
+answering a text question, the system does not check the text answer provided by stu-
+dent,butrathershowstheanswerandexplanationstotheproblem.Oncethestudenthas
+seen the answer, she/he should correct herself by selecting “I knew the answer” (correct)
+or “I need to read more” (incorrect). Table1 describes a summary of the collected data
+ofrandomlyselected300medicalstudentsoveraperiodof10monthsbetween2017and
+2018.
+Table1 shows that selected 300 students tend to read more than doing quizzes in the
+platform (38% quiz sessions and 62% reading sessions). However, they invest more time
+onquizzing(1127h)thenreading(467h)inthesystem.Inaverage,studentsspendaround
+2mintoreadasinglelearningmaterial(chapter)and41stoansweraquestion.
+The collected dataset includes information about user identification number, question
+type (multiple choice or text), question identifier, chapter id to which the question id
+belongs, time answering a question, time reviewing the feedback from the system after
+answeringthequestion,student’sanswer(true—correctandfalse—incorrect),student’s
+text answer on the text questions, timestamp, course identifier, question session, chapter
+group number, chapter identification number, focused reading time, and others. After
+Table1 Summaryofcollecteddata
+Name Numberofrecords
+Numberofstudents 300
+Numberofquestions 121,423
+Multiple-choicequestions 18,092
+Textquestions 103,331
+Correctanswers 94,433
+Incorrectanswers 26,725
+Quizsessions 6081"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page6of16
+collecting all these data, the preprocessing and feature extraction steps are performed in
+ordertopreparethedatasettobeusedbymachinelearningtechniquesandRCM.
+Datapreprocessing
+As part of the data preprocessing step, we performed data cleaning by removing
+records that have missing values related to the question id information and chap-
+ter id information. Original dataset stored into three tables:answer_material, _mate-
+rial,a n d_time.F i r s t ,w ej o i n e danswer_material and review_material tables into
+answer_review_material table in order to have full information about quizzing in a sin-
+gle tablefor further feature extractionprocess.Theread_timetablecontainsinformation
+about interactions with learning material (chaptergroup, chapter, or quiz). In order to
+access the quiz in Hypocampus system, a student needs first to select chapter group
+and scroll over all chapters to the bottom of the page in order to access a quiz. That
+means thatread_time table contains records that may correspond to the user navigation
+to the quiz and not to the reading of the learning material. Moreover, the user session
+in read_time table may include a sequence of different activities (e.g., reading, scrolling,
+reading, quizzing, reading, quizzing, scrolling). Therefore, the decision was taken to
+derivetheusersessionsthatrelateonlytoreadingactivitiesinordertoidentifyhowmuch
+time spend on reading a single material (chapter). In this study, a reading session defined
+and calculated as inactivity with the system for more than 15 min, and the duration of
+thereadingsessionshouldbemorethan5s(otherwise,itisscrollingoverlearningmate-
+rial). The chosen numbers for inactivity and scrolling were selected as starting point and
+couldbechangedifnecessarily.Afterreadingsessioncalculation,therecordsintwotables
+(read_time and answer_review_material) should be synchronized according to times-
+tamp.Thiswasthelastoperationindatapreprocessingstepthatreturnsprepareddataset
+for feature extraction process.
+Featureextraction
+ThefeatureextractionstepwasperformedonthepreprocesseddatapresentedinTable 1.
+Inthisstudy,a featurerepresentsaninteractionwiththesystem(quizzingandreading)at
+specificpointintime.Afeatureiscalled directifitisdirectlyusedfromrawdata(e.g.,user
+id, chapter id) orderived if it is computed from direct or indirect features (e.g., number
+of correct answers, time spend on reading in the system, etc.). We have selected 4 direct
+features from the original dataset and used it as labels:user id, chapter id, question id,
+andquestionsession.AfterperformingseveralinteractionsintheMLpipeline(Fig. 1),the
+following15derivedfeatureswereidentifiedandcalculatedforeachquestionrecord(see
+inTable 2).
+The extracted features capture different learning activities in Hypocamus system and
+relevanttothepredictorvariable(student’sanswer).Forexample,learningactivitiessuch
+asreadinglearningmaterials(F3,F4,F12),quizzing(quizaccuracy(F5-F10,F15),question
+difficultylevel(F13),quizfrequency(F11,F14)),andonecategoricalvariableF1isusedto
+describeoneofthedimensionsofcurrentcontextofthestudent(time).
+Models
+We selected seven models: two simple models (linear and logistic regression) were
+selected, and five more advanced models (two decision trees models, deep neural","Datapreprocessing
+As part of the data preprocessing step, we performed data cleaning by removing
+records that have missing values related to the question id information and chap-
+ter id information. Original dataset stored into three tables:answer_material, _mate-
+rial,a n d_time.F i r s t ,w ej o i n e danswer_material and review_material tables into
+answer_review_material table in order to have full information about quizzing in a sin-
+gle tablefor further feature extractionprocess.Theread_timetablecontainsinformation
+about interactions with learning material (chaptergroup, chapter, or quiz). In order to
+access the quiz in Hypocampus system, a student needs first to select chapter group
+and scroll over all chapters to the bottom of the page in order to access a quiz. That
+means thatread_time table contains records that may correspond to the user navigation
+to the quiz and not to the reading of the learning material. Moreover, the user session
+in read_time table may include a sequence of different activities (e.g., reading, scrolling,
+reading, quizzing, reading, quizzing, scrolling). Therefore, the decision was taken to
+derivetheusersessionsthatrelateonlytoreadingactivitiesinordertoidentifyhowmuch
+time spend on reading a single material (chapter). In this study, a reading session defined
+and calculated as inactivity with the system for more than 15 min, and the duration of
+thereadingsessionshouldbemorethan5s(otherwise,itisscrollingoverlearningmate-
+rial). The chosen numbers for inactivity and scrolling were selected as starting point and
+couldbechangedifnecessarily.Afterreadingsessioncalculation,therecordsintwotables
+(read_time and answer_review_material) should be synchronized according to times-
+tamp.Thiswasthelastoperationindatapreprocessingstepthatreturnsprepareddataset
+for feature extraction process.
+Featureextraction
+ThefeatureextractionstepwasperformedonthepreprocesseddatapresentedinTable 1.
+Inthisstudy,a featurerepresentsaninteractionwiththesystem(quizzingandreading)at
+specificpointintime.Afeatureiscalled directifitisdirectlyusedfromrawdata(e.g.,user
+id, chapter id) orderived if it is computed from direct or indirect features (e.g., number
+of correct answers, time spend on reading in the system, etc.). We have selected 4 direct
+features from the original dataset and used it as labels:user id, chapter id, question id,
+andquestionsession.AfterperformingseveralinteractionsintheMLpipeline(Fig. 1),the
+following15derivedfeatureswereidentifiedandcalculatedforeachquestionrecord(see
+inTable 2).
+The extracted features capture different learning activities in Hypocamus system and
+relevanttothepredictorvariable(student’sanswer).Forexample,learningactivitiessuch
+asreadinglearningmaterials(F3,F4,F12),quizzing(quizaccuracy(F5-F10,F15),question
+difficultylevel(F13),quizfrequency(F11,F14)),andonecategoricalvariableF1isusedto
+describeoneofthedimensionsofcurrentcontextofthestudent(time).
+Models
+We selected seven models: two simple models (linear and logistic regression) were
+selected, and five more advanced models (two decision trees models, deep neural"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page7of16
+Table2 Featureoverview
+N Featuretype Name Description
+F1 Categorical Timeoftheday Morning,lunch,afternoon,evening,night
+F2 Numerical Timesincelastdoingquiz Represents the time duration (in seconds)
+sincelasttimethestudentwasdoingaquiz
+F3 Numerical Tslr Represents the time duration (in seconds)
+since last time the student was reading a
+chapter
+F4 Numerical Readingtime Totalreadingtimeoflearningmaterial(chap-
+ter)
+F5 Numerical Correctperchapter Numberofquestionsansweredcorrectlyper
+chapterincurrentquizsession
+F6 Numerical Correctperattempt Numberofquestionsansweredcorrectlyper
+attempt
+F7 Numerical Correctpersession Numberofquestionsansweredcorrectlyper
+session
+F8 Numerical Incorrectperchapter Number of questions answered incorrectly
+perchapter
+F9 Numerical Incorrectperattempt Number of questions answered incorrectly
+perattempt
+F10 Numerical Incorrectpersession Number of questions answered incorrectly
+persession
+F11 Numerical Attemptnumber Number of times a question was answered
+bythestudent
+F12 Numerical Readingsessions Numberoftimesastudentreadthelearning
+material(chapter)
+F13 Numerical Questionfacilityindex Represents the question difficulty and in
+range between 0 and 1 (where 0 is very
+difficultand1isveryeasy)
+F14 Numerical Questioncounter Questionnumberinthequizsession
+F15 Numerical Correcttotal Total number of questions answered cor-
+rectlyforaspecificchapter
+network, Bayesian neural network) because they are commonly used in regression prob-
+lems (predicting probabilities) and taking contextual information into account (RCM).
+Furthermore,someofthesemodelsweresuccessfullyusedinpredictingstudents’perfor-
+mance(Bucos 2018;Shahirietal. 2015;IbrahimandRusli 2007).
+Linearandlogisticregressionsareoneofthesimplestmachinelearningmodelsusedto
+predict one dependent variable based on the set of independent variables (Seber and Lee
+2012). Linear regression assumes that there is a linear relationship between dependent
+and independent variables. In our scenario, the dependent variable is the answer to a
+question (correct/incorrect) and independent variables are features that described user
+study behavior data (see Table2). We use this model to check whether there is a linear
+relationship between the learning activities (quizzing, reading) and students’ answers on
+thequestions.Logisticregressionisappliedwhenthedependentvariableisbinary.Inour
+prediction problem, linear and logistic regressions predict the probability from 0 to 1 if
+thequestionwillbeansweredcorrectly.
+More advanced models such as decision trees (gradient-boosted tree and improved
+version extreme gradient-boosted tree (XGBoost)) help to reduce factors such as bias,
+variance,anddealingwithunbalanceddata(CieslakandChawla 2008;Chawlaetal. 2004).
+To the best of our knowledge, in the reviewed literature, this model was not applied to
+student’s performance or knowledge prediction. Therefore, we decide to test this model
+andtoapplyitinourstudy.","Table 2 Feature overview
+N Featuretype Name Description
+F1 Categorical Timeoftheday Morning,lunch,afternoon,evening,night
+F2 Numerical Timesincelastdoingquiz Represents the time duration (in seconds)
+sincelasttimethestudentwasdoingaquiz
+F3 Numerical Tslr Represents the time duration (in seconds)
+since last time the student was reading a
+chapter
+F4 Numerical Readingtime Totalreadingtimeoflearningmaterial(chap-
+ter)
+F5 Numerical Correctperchapter Numberofquestionsansweredcorrectlyper
+chapterincurrentquizsession
+F6 Numerical Correctperattempt Numberofquestionsansweredcorrectlyper
+attempt
+F7 Numerical Correctpersession Numberofquestionsansweredcorrectlyper
+session
+F8 Numerical Incorrectperchapter Number of questions answered incorrectly
+perchapter
+F9 Numerical Incorrectperattempt Number of questions answered incorrectly
+perattempt
+F10 Numerical Incorrectpersession Number of questions answered incorrectly
+persession
+F11 Numerical Attemptnumber Number of times a question was answered
+bythestudent
+F12 Numerical Readingsessions Numberoftimesastudentreadthelearning
+material(chapter)
+F13 Numerical Questionfacilityindex Represents the question difficulty and in
+range between 0 and 1 (where 0 is very
+difficultand1isveryeasy)
+F14 Numerical Questioncounter Questionnumberinthequizsession
+F15 Numerical Correcttotal Total number of questions answered cor-
+rectlyforaspecificchapter
+network, Bayesian neural network) because they are commonly used in regression prob-
+lems (predicting probabilities) and taking contextual information into account (RCM).
+Furthermore,someofthesemodelsweresuccessfullyusedinpredictingstudents’perfor-
+mance.
+Linearandlogisticregressionsareoneofthesimplestmachinelearningmodelsusedto
+predict one dependent variable based on the set of independent variables. Linear regression assumes that there is a linear relationship between dependent
+and independent variables. In our scenario, the dependent variable is the answer to a
+question (correct/incorrect) and independent variables are features that described user
+study behavior data (see Table 2). We use this model to check whether there is a linear
+relationship between the learning activities (quizzing, reading) and students’ answers on
+thequestions.Logisticregressionisappliedwhenthedependentvariableisbinary.Inour
+prediction problem, linear and logistic regressions predict the probability from 0 to 1 if
+thequestionwillbeansweredcorrectly.
+More advanced models such as decision trees (gradient-boosted tree and improved
+version extreme gradient-boosted tree (XGBoost)) help to reduce factors such as bias,
+variance,anddealingwithunbalanceddata.
+To the best of our knowledge, in the reviewed literature, this model was not applied to
+student’s performance or knowledge prediction. Therefore, we decide to test this model
+andtoapplyitinourstudy."
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page8of16
+Deep neural networks become more popular in educational data mining (EDM) tasks
+(Coelho and Silveira2017;G u oe ta l .2015). We use a feed-forward deep neural network.
+After empirically testing different model parameters in our previous study (Lincke et al.
+2019), the following parameters were found having minimal error: input layer with 13
+neurons and activation function“relu”, one hidden layer with 13 neurons and activation
+function “relu”, output layer with 1 neuron and activation function“sigmoid”,o p t i m i z e r
+“adam”andloss “binary_crossentropy”.
+Bayesianneural network combines probabilistic modeling and neural network in order
+to benefit from the bounds and guarantees of probabilistic modeling (Mullachery et al.
+2018). In BNN, weights are a probability distribution instead of a single value, which
+describetheuncertaintyinweightsandinpredictions.TheoutputoftheBNNisanentire
+distribution of answers. BNN can be used for classification and regression problems.
+In our study, we use BNN for predicting the probability that an answer will be correct
+(regressionproblem).Therefore,perceptronislogisticregressionwith1hiddenlayerand
+with 15 neurons. Weights initialized with normal distribution, tanh activation function
+usedforhiddenlayerandsigmoidforoutputlayerwithBernoullilikelihoodfunction.We
+approximate the posterior using variational inference method called ADVI provided by
+PyMC3library(Kucukelbiretal. 2017).
+Rich context model models contextual information in a multidimensional vector space
+model (MVSM) in order to provide recommendations based on the current context of
+a user. It is important to understand the student’s current context (e.g., time of the
+day: morning, lunch, afternoon, evening, night; location; number of difficult questions
+answered correctly) in order to provide personalized learning tasks/quizzes. This model
+can handle different data types (numerical, categorical features) in predicting the answer
+correctness. RCM requires an example set of vectors that represent the basis (or train-
+ing set used in machine learning approach) and a current context set of vectors to obtain
+recommended result (or testing set used in machine learning approach). In this study,
+the quiz records are divided into examples and current context datasets with 7:3 ratios.
+Results from our previous study (Lincke et al.2019) showed that RCM require to have
+balancedexampledataset.Therefore,theexampledatasetcontains30%ofdatawithsimi-
+lardistributionofincorrectandcorrectanswers(whereincorrectanswerrepresentsclass
+0 and correct is class 1). The example dataset is transformed to one-dimensional vec-
+tor representing the quiz record (QR) and placed in MVSM (e.g., from 1 toN as shown
+onFig. 2).
+Thecurrentcontextdatasetsaretransformedintoaone-dimensionalvector(ascurrent
+quiz record (CQR) shown in Fig.2), and Euclidean distance (d) is used to find the most
+similar quiz record in the example dataset (QR1, QR2,...QRN).Themostsimilarquiz
+record that has minimal distance defines if the student will answer correct or incorrect.
+In more detail, we calculate distances to each example in MVSM. The vector distance is
+a two-dimensional array where the first dimension is distance and the second dimension
+is the answer (correct 1 or incorrect 0). In this study, distances are a two-dimensional
+array sorted by distance in ascending order, because we used only one distance measure
+(Euclidean) for all dimensions. The first element in the array will have minimal distance
+to the current quiz record, and its answer value defines whether the student will answer
+correct or incorrectly.","Deep neural networks become more popular in educational data mining (EDM) tasks
+(Coelho and Silveira2017;G u oe ta l .2015). We use a feed-forward deep neural network.
+After empirically testing different model parameters in our previous study (Lincke et al.
+2019), the following parameters were found having minimal error: input layer with 13
+neurons and activation function“relu”, one hidden layer with 13 neurons and activation
+function “relu”, output layer with 1 neuron and activation function“sigmoid”,o p t i m i z e r
+“adam”andloss “binary_crossentropy”.
+Bayesianneural network combines probabilistic modeling and neural network in order
+to benefit from the bounds and guarantees of probabilistic modeling (Mullachery et al.
+2018). In BNN, weights are a probability distribution instead of a single value, which
+describetheuncertaintyinweightsandinpredictions.TheoutputoftheBNNisanentire
+distribution of answers. BNN can be used for classification and regression problems.
+In our study, we use BNN for predicting the probability that an answer will be correct
+(regressionproblem).Therefore,perceptronislogisticregressionwith1hiddenlayerand
+with 15 neurons. Weights initialized with normal distribution, tanh activation function
+usedforhiddenlayerandsigmoidforoutputlayerwithBernoullilikelihoodfunction.We
+approximate the posterior using variational inference method called ADVI provided by
+PyMC3library(Kucukelbiretal. 2017).
+Rich context model models contextual information in a multidimensional vector space
+model (MVSM) in order to provide recommendations based on the current context of
+a user. It is important to understand the student’s current context (e.g., time of the
+day: morning, lunch, afternoon, evening, night; location; number of difficult questions
+answered correctly) in order to provide personalized learning tasks/quizzes. This model
+can handle different data types (numerical, categorical features) in predicting the answer
+correctness. RCM requires an example set of vectors that represent the basis (or train-
+ing set used in machine learning approach) and a current context set of vectors to obtain
+recommended result (or testing set used in machine learning approach). In this study,
+the quiz records are divided into examples and current context datasets with 7:3 ratios.
+Results from our previous study (Lincke et al.2019) showed that RCM require to have
+balancedexampledataset.Therefore,theexampledatasetcontains30%ofdatawithsimi-
+lardistributionofincorrectandcorrectanswers(whereincorrectanswerrepresentsclass
+0 and correct is class 1). The example dataset is transformed to one-dimensional vec-
+tor representing the quiz record (QR) and placed in MVSM (e.g., from 1 toN as shown
+onFig. 2).
+Thecurrentcontextdatasetsaretransformedintoaone-dimensionalvector(ascurrent
+quiz record (CQR) shown in Fig.2), and Euclidean distance (d) is used to find the most
+similar quiz record in the example dataset (QR1, QR2,...QRN).Themostsimilarquiz
+record that has minimal distance defines if the student will answer correct or incorrect.
+In more detail, we calculate distances to each example in MVSM. The vector distance is
+a two-dimensional array where the first dimension is distance and the second dimension
+is the answer (correct 1 or incorrect 0). In this study, distances are a two-dimensional
+array sorted by distance in ascending order, because we used only one distance measure
+(Euclidean) for all dimensions. The first element in the array will have minimal distance
+to the current quiz record, and its answer value defines whether the student will answer
+correct or incorrectly."
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page9of16
+Fig.2 RepresentationofquizrecordsinRCM
+In terms of technologies and tools, we have used Matlab version R2020a (?matlab)
+for correlation analysis and Apache Spark MLlib and Scikit-learn libraries for machine
+learning pipeline (performing data preprocessing, feature extraction, and transformation
+steps).Forbuildingthemodels,weuseddifferentframeworksandlibraries:ApacheSpark
+MLlib(Mengetal. 2016)forlinear,logistic,andgradient-boostedtrees;XGBoostpython
+library for extreme gradient-boosted tree; the Keras deep learning library for deep neu-
+ral network; the PyMC3 library was used for building Bayesian neural network; and our
+ContextualizationService(Sotsenkoetal. 2016b)forbuildingRCM.
+Results
+Correlationanalysis
+The results of the correlational analysis between features and response variable (ques-
+tion answer) are presented in Table3. There is a low significant correlation between
+question difficulties and quiz performance (r = 0.26, p-value = 0.000). There is a nega-
+tive low correlation (significant) between incorrectly answered questions per chapter (r
+=− 0.21, p = 0.000), per session (r =− 0.23, p-value = 0.000), and quiz performance.
+No significant linear correlation between reading time spend on learning materials and
+quiz performance was found. Overall, most of the features are weakly correlating with
+responsevariable(student’sanswer).
+Predictionofquizperformance
+First, we run the experiment for dataset of 121,423 quiz records (multiple-choice
+and text question types) without reading features (F3, F4, and F12). The evaluation is
+conductedusingthe10-foldcross-validationapproach(Kohaviandetal 1995),thetrain-
+validation split approach provided by the Spark Mllib library for hyper-parameter tuning
+(Gounaris and Torres2018), and one split into training and validation datasets for the
+Bayesianmodel.TheresultsofthefirstexperimentareshowninTable 4.","Fig. 2 Representation of quiz records in RCM
+In terms of technologies and tools, we have used Matlab version R2020a (?matlab)
+for correlation analysis and Apache Spark MLlib and Scikit-learn libraries for machine
+learning pipeline (performing data preprocessing, feature extraction, and transformation
+steps). For building the models, we used different frameworks and libraries: Apache Spark
+MLlib for linear, logistic, and gradient-boosted trees; XGBoost python
+library for extreme gradient-boosted tree; the Keras deep learning library for deep neu-
+ral network; the PyMC3 library was used for building Bayesian neural network; and our
+ContextualizationService for building RCM.
+Results
+Correlation analysis
+The results of the correlational analysis between features and response variable (ques-
+tion answer) are presented in Table 3. There is a low significant correlation between
+question difficulties and quiz performance (r = 0.26, p-value = 0.000). There is a nega-
+tive low correlation (significant) between incorrectly answered questions per chapter (r
+=− 0.21, p = 0.000), per session (r =− 0.23, p-value = 0.000), and quiz performance.
+No significant linear correlation between reading time spend on learning materials and
+quiz performance was found. Overall, most of the features are weakly correlating with
+response variable (student’s answer).
+Prediction of quiz performance
+First, we run the experiment for dataset of 121,423 quiz records (multiple-choice
+and text question types) without reading features (F3, F4, and F12). The evaluation is
+conducted using the 10-fold cross-validation approach, the train-
+validation split approach provided by the Spark Mllib library for hyper-parameter tuning, and one split into training and validation datasets for the
+Bayesian model. The results of the first experiment are shown in Table 4."
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page10of16
+Table3 Correlationcoefficientsofstudents’onlinelearningactivitiesandquizperformance
+N Featurename Quizperformance(answer), r(p-value)
+F1 Timeoftheday 0.0087(0.002)
+F2 Timesincelastdoingquiz − 0.0155(0.000)
+F3 Tslr 0.0089(0.002)
+F4 Readingtime − 0.0015(0.594)
+F5 Correctperchapter 0.1194(0.000)
+F6 Correctperattempt 0.118(0.000)
+F7 Correctpersession 0.1161(0.000)
+F8 Incorrectperchapter − 0.2087(0.000)
+F9 Incorrectperattempt − 0.1256(0.000)
+F10 Incorrectpersession − 0.2264(0.000)
+F11 Attemptnumber 0.0639(0.000)
+F12 Readingsessions 0.0216(0.000)
+F13 Questionfacilityindex 0.2597(0.000)
+F14 Questioncounter 0.0931(0.000)
+F15 Correcttotal 0.1264(0.000)
+As shown in Table4, all of the models performed well in predicting the probability
+that an answer will be correct, with and accuracy rate ranging between 76 and 88%.
+These results indicate that the dataset of features has some non-linear association with
+response variable (student’s answer). The RCM model got the lowest accuracy (76%)
+and more false-negative errors (15%) than machine learning approaches. This could be
+explained by the lack of using contextual information in the model such as student’s
+location, age, gender, a device type, and others. Bayesian neural network (with logistic
+regressionperceptron)outperformedonlyon1%inaccuracyincomparisontotraditional
+logisticregressionmodel.Thebestalgorithmsinpredictingtheprobabilitythatastudent
+will answer correctly are gradient-boosted tree and XGBoost with around 88% accu-
+racy and highest correlation (0.62–0.63) and low false-positive and false-negative errors
+(FP= 39–40%,FN = 4–5%).
+Receiving operation characteristic (ROC) is an established metric for comparing the
+performances of classifiers (Bradley1997;F a w c e t t2006). ROC curves summarize the
+trade-off between true-positive rate and false-positive rate using different probability
+thresholds. In our study, ROC curve is for two classes (correct/incorrect answer) and
+based on plotting true-positive (TP) rate on they-axis and the false-positive (FP) rate
+on thex-axis. Figure3 shows ROC curves for all machine learning models. The current
+implementation of RCM does not provide the probabilities; therefore, it was excluded
+fromtheROCanalysis.
+Table4 Evaluationresultswithoutreadingfeatures
+Model FP,% FN,% Precision,% Recall,% Accuracy,% F1,% r
+Linearregression 80 3 81 97 80 89 0.29
+Logisticregression 81 3 81 97 79 88 0.25
+Gradient-boostedtree 39 5 90 95 88 92 0.62
+XGBoost 40 4 90 96 88 93 0.63
+Deepneuralnetwork 54 2 86 98 86 92 0.55
+BayesianNN 87 2 80 98 80 88 0.23
+RCM 53 15 85 85 76 85 0.31","Table 3 Correlation coefficients of students’ online learning activities and quiz performance
+As shown in Table 4, all of the models performed well in predicting the probability
+that an answer will be correct, with and accuracy rate ranging between 76 and 88%.
+These results indicate that the dataset of features has some non-linear association with
+response variable (student’s answer). The RCM model got the lowest accuracy (76%)
+and more false-negative errors (15%) than machine learning approaches. This could be
+explained by the lack of using contextual information in the model such as student’s
+location, age, gender, a device type, and others. Bayesian neural network (with logistic
+regressionperceptron)outperformedonlyon1%inaccuracyincomparisontotraditional
+logisticregressionmodel.Thebestalgorithmsinpredictingtheprobabilitythatastudent
+will answer correctly are gradient-boosted tree and XGBoost with around 88% accu-
+racy and highest correlation (0.62–0.63) and low false-positive and false-negative errors
+(FP= 39–40%,FN = 4–5%).
+Receiving operation characteristic (ROC) is an established metric for comparing the
+performances of classifiers. ROC curves summarize the
+trade-off between true-positive rate and false-positive rate using different probability
+thresholds. In our study, ROC curve is for two classes (correct/incorrect answer) and
+based on plotting true-positive (TP) rate on they-axis and the false-positive (FP) rate
+on thex-axis. Figure 3 shows ROC curves for all machine learning models. The current
+implementation of RCM does not provide the probabilities; therefore, it was excluded
+fromtheROCanalysis.
+Table 4 Evaluation results without reading features"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page11of16
+Fig.3 ROCcurvesformachinelearningmodels
+ROCcurvesindicatethatallmodelshavegoodpredictionperformance.Thedominant
+models are gradient-boosted tree and XGBoost models with highest AUC (0.903–0.94)
+and perform better in early-retrieval area. The early-retrieval area is used for evaluating
+asmallpartofthedatasetwithhigh-rankeditems(SaitoandRehmsmeier 2015;T ruchon
+andBayly 2007)andalsousefultocheckwhenthedatasetisunbalanced(WengandPoon
+2008).XGBoostandgradient-boostedtreeperformbetteratlowerFPrateandreach100%
+TP rate much earlier than other models. This indicates that these two models perform
+well on both classes (correct and incorrect answers). Bayesian neural network received
+the lowest AUC (0.739) and ROC curve is lower than for linear regression and logistic
+regression,eventhoughtheaccuracyofBayesianneuralnetwork(80%)ishigherofequal
+to linear and logistic regression (see Table3). The ROC curve of deep neural network
+has missing TP and FP values for probability threshold 0.04–0.25. However, it performs
+betterthanlinearregression,logisticregression,andBayesianneuralnetworkintheearly-
+retrieval area.
+Another useful performance measure is the precision-recall (PR) curve analysis
+(Boyd et al.2013; Buckland and Gey1994). Several studies showed that precision-recall
+curves are more applicable for imbalanced datasets and ROC curve is more applica-
+ble for datasets with equal distribution of classes (Davis and Goadrich2006; Saito and
+Rehmsmeier2015).Adatasetiscalledimbalancedwhentheratiobetweenclasseshasbig
+difference (e.g., 100:1) (Saito and Rehmsmeier2015;W ua n dC h a n g2003). Our dataset
+contains 22% of incorrect answers and 78% of correct answers, which can be considered
+asanunbalanceddatasetwithonemajorityclass(correctanswers).Therefore,weshould
+also look into precision-recall curve analysis. It summarizes the trade-off between the
+true-positive rate (TP) and the positive predicted value. In our study, the PR curve is for
+two classes (correct/incorrect answer) and based on plotting precision value on they-
+axis and recall value on thex-axis. Figure4shows precision-recall curves for all machine","Fig. 3 ROC curves for machine learning models
+ROC curves indicate that all models have good prediction performance. The dominant
+models are gradient-boosted tree and XGBoost models with highest AUC (0.903–0.94)
+and perform better in early-retrieval area. The early-retrieval area is used for evaluating
+asmallpartofthedatasetwithhigh-rankeditemsandalsousefultocheckwhenthedatasetisunbalanced. XGBoostandgradient-boostedtreeperformbetteratlowerFPrateandreach100%
+TP rate much earlier than other models. This indicates that these two models perform
+well on both classes (correct and incorrect answers). Bayesian neural network received
+the lowest AUC (0.739) and ROC curve is lower than for linear regression and logistic
+regression,eventhoughtheaccuracyofBayesianneuralnetwork(80%)ishigherofequal
+to linear and logistic regression (see Table3). The ROC curve of deep neural network
+has missing TP and FP values for probability threshold 0.04–0.25. However, it performs
+betterthanlinearregression,logisticregression,andBayesianneuralnetworkintheearly-
+retrieval area.
+Another useful performance measure is the precision-recall (PR) curve analysis. Several studies showed that precision-recall
+curves are more applicable for imbalanced datasets and ROC curve is more applica-
+ble for datasets with equal distribution of classes. Adatasetiscalledimbalancedwhentheratiobetweenclasseshasbig
+difference (e.g., 100:1). Our dataset
+contains 22% of incorrect answers and 78% of correct answers, which can be considered
+asanunbalanceddatasetwithonemajorityclass(correctanswers).Therefore,weshould
+also look into precision-recall curve analysis. It summarizes the trade-off between the
+true-positive rate (TP) and the positive predicted value. In our study, the PR curve is for
+two classes (correct/incorrect answer) and based on plotting precision value on they-
+axis and recall value on thex-axis. Figure4shows precision-recall curves for all machine"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page12of16
+Fig.4 Precisionandrecallcurves
+learningmodels.ThecurrentimplementationofRCMdoesnotprovidetheprobabilities;
+therefore, it was excluded from the PR curve analysis. Similarly to ROC, the dominant
+modelsaregradient-boostedtreeandXGBoost.
+For measuring the response time, the experiment was repeated 100 times and for each
+model the average response time of training and testing was measured and presented
+inFig. 5.
+The most computational expensive models are deep neural network (due to running it
+on CPU and not on GPU) and Bayesian neural network because of variational inference
+step(Mullacheryetal. 2018).RCMreceivedthelowesttimefortrainingthemodel(3ms)
+because the training process is to transform original data to vector representation and
+Fig.5 Responsetimeinmillisecondsfortrainingandtestingthemodel","Fig. 4 Precision and recall curves
+learning models. The current implementation of RCM does not provide the probabilities;
+therefore, it was excluded from the PR curve analysis. Similarly to ROC, the dominant
+models are gradient-boosted tree and XGBoost.
+For measuring the response time, the experiment was repeated 100 times and for each
+model the average response time of training and testing was measured and presented
+in Fig. 5.
+The most computational expensive models are deep neural network (due to running it
+on CPU and not on GPU) and Bayesian neural network because of variational inference
+step. RCM received the lowest time for training the model (3ms)
+because the training process is to transform original data to vector representation and
+Fig. 5 Response time in milliseconds for training and testing the model"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page13of16
+save it in to an array of examples. However, RCM is the most computational expensive
+intestingmode.Thiscanbeexplainedbyimplementationsolution:currently,thevectors
+are stored as arrays; therefore, when calculating the distance between vectors, we use
+loopsthatarenotefficientwhenthedatasetisbigbecauseofloops.Asaresult,gradient-
+boostedtreeandXGBoostmodelsperformedbestintermsofaccuracyandresponsetime
+(havingthelowestresponsetimeintrainingandtestingthemodel).
+Inthesecondexperiment,weaddedthereadingfeatures(F3,F4,andF12)andrepeatit
+on the 119,230 quiz records (multiple-choice and text question types). The total amount
+of quiz records changed because some of the students did not read the learning material
+correspondingtothequestioninquiz.Theresultsofthesecondexperimentareshownin
+Table5.
+AsshowninTable 5,theaccuracyincreasedinallmodelsinarangebetween2and6%.
+That indicates there is some non-linear correlation between reading sessions and quiz
+performance (r <0.1). The Pearson correlation coefficients decreased almost in all mod-
+els except RCM. The response times for all models did not change after adding reading
+featuresanditisasinthefirstexperiment(seeFig. 5).
+Discussion
+The purpose of this study is to explore the association between online learning activi-
+ties (independent variables) and quiz performance (response variable), and experimental
+assessment of the accuracy and performance of the different approaches to predict
+the quiz performance (such as probability that a student will answer the question cor-
+rectly). The correlation analysis results (see Table3) showed weak linear relationship
+betweenonlinelearningactivitiesandquizperformance.Onlyfewfeaturessuchasques-
+tion difficulty level, incorrect answers per session, and chapter received low (significant)
+correlation. No significant correlation was found between reading features and quiz per-
+formance. Hence, the machine learning results (presented in Table5) show that adding
+reading features has positive effect in increasing the prediction accuracy from 2 to 6%.
+This might be explained by having non-linear association between reading features and
+student’s answers. In terms of accuracy, the RCM performed similarly to machine learn-
+ing models and received the lowest accuracy value (82%). However, machine learning
+models have lack of transparency in their decision processes due to a black-box imple-
+mentationorahighcomplexitythatisdifficulttoexplainthereasoningofreceivedresults
+(Strobel 2019). The core of our RCM is the multidimensional vector space with comput-
+ing either distance measures or similarity metrics. Thus, RCM is transparent in making
+decisions and easy to explain why this decision was taken (e.g., the vector has absolute
+Table5 Evaluationresultswithreadingfeatures
+Model FP,% FN,% Precision,% Recall,% Accuracy,% F1,% r
+Linearregression 90 1 84 99 83 91 0.20
+Logisticregression 88 2 84 98 83 91 0.21
+Gradient-boostedtree 49 3 90 97 89 93 0.56
+XGBoost 48 2 91 97 89.5 94 0.59
+Deepneuralnetwork 70 1 87 99 87 89.5 0.45
+BayesianNN 96 0 83 100 83 83 0.11
+RCM 51 10 89 89 82 89 0.37","save it in to an array of examples. However, RCM is the most computational expensive
+intestingmode.
+Inthesecondexperiment,weaddedthereadingfeatures(F3,F4,andF12)andrepeatit
+on the 119,230 quiz records (multiple-choice and text question types). The total amount
+of quiz records changed because some of the students did not read the learning material
+correspondingtothequestioninquiz.Theresultsofthesecondexperimentareshownin
+Table5.
+AsshowninTable 5,theaccuracyincreasedinallmodelsinarangebetween2and6%.
+That indicates there is some non-linear correlation between reading sessions and quiz
+performance (r <0.1). The Pearson correlation coefficients decreased almost in all mod-
+els except RCM. The response times for all models did not change after adding reading
+featuresanditisasinthefirstexperiment(seeFig. 5).
+Discussion
+The purpose of this study is to explore the association between online learning activi-
+ties (independent variables) and quiz performance (response variable), and experimental
+assessment of the accuracy and performance of the different approaches to predict
+the quiz performance (such as probability that a student will answer the question cor-
+rectly). The correlation analysis results (see Table3) showed weak linear relationship
+betweenonlinelearningactivitiesandquizperformance.Onlyfewfeaturessuchasques-
+tion difficulty level, incorrect answers per session, and chapter received low (significant)
+correlation. No significant correlation was found between reading features and quiz per-
+formance. Hence, the machine learning results (presented in Table5) show that adding
+reading features has positive effect in increasing the prediction accuracy from 2 to 6%.
+This might be explained by having non-linear association between reading features and
+student’s answers. In terms of accuracy, the RCM performed similarly to machine learn-
+ing models and received the lowest accuracy value (82%). However, machine learning
+models have lack of transparency in their decision processes due to a black-box imple-
+mentationorahighcomplexitythatisdifficulttoexplainthereasoningofreceivedresults
+(Strobel 2019). The core of our RCM is the multidimensional vector space with comput-
+ing either distance measures or similarity metrics. Thus, RCM is transparent in making
+decisions and easy to explain why this decision was taken (e.g., the vector has absolute
+Table5 Evaluationresultswithreadingfeatures"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page14of16
+minimal values for all distances or similarity metrics). There are several solutions to
+increase the RCM response time: (a) re-implement our approach as a distributed sub-
+modulewhichallowsexecutionofmultipleparalleloperationswithusinganalyticsengine
+for Big Data such as Apache Spark; (b) based on our proposed approach in our previous
+study (Sotsenko et al.2016a), group similar entities into clusters, then compute simi-
+larity to the center of the cluster, and then inside of the cluster in order to reduce the
+computationload.
+Conclusionandfuturework
+Theaimsofthepresentresearchweretoexploretheassociationbetweenonlinelearning
+activities and quiz performance and to predict the quiz performance with using machine
+learning and RCM. Seven algorithms were applied including linear and logistic regres-
+sions, gradient-boosted tree, XGBoost, deep neural network, Bayesian neural network,
+and rich context model on a dataset consisting of medical students’ answers on quizzes
+(withbothmultiple-choiceandtextquestions)carriedoutattheHypocampusweb-based
+learningplatform.Theresultsshowthatthegradient-boostedtreeandtheXGBoostalgo-
+rithms outperform others by obtaining the overall prediction accuracy 88–89% and with
+lowest response time for training and testing the model. Additionally, adding the reading
+features had positive effect on the overall accuracy for all models. That indicates there is
+some relationship between quiz performance and reading learning material time spend
+in e-learning platform. Hence, no significant correlation was found between reading and
+quiz performance. Our results indicate that it is possible to predict the probability that a
+student will answer the question correct before doing a quiz by analyzing student’s study
+behavior on an e-learning platform. Further research is to design personalized spaced
+repetitionalgorithmforquizzing.
+Abbreviations
+IRT:Itemresponsetheory;RNN:Recurrentneuralnetwork;LSTM:Long-shorttermmemorymodel;BKT:Bayesian
+knowledgetracingmodel;XGBoost:Extreamgradient-boostedtree;RCM:Richcontextmodel;ML:Machinelearning;
+BNN:Bayesianneuralnetwork;EDM:Educationaldatamining;PR:Precision-recallcurve;ROC:Receivingoperation
+characteristiccurve;MVSM:Multidimensionalvectorspacemodel
+Acknowledgements
+Notapplicable.
+Authors’contributions
+ALcarriedoutthestudyanddraftedthemanuscript.EBprovidedthedatasetforthisstudy.MJandMMcontributedto
+thereviewofthemanuscript.Allauthorsreadandapprovedthefinalmanuscript.
+Funding
+Notapplicable.
+Availabilityofdataandmaterials
+Thedatacannotbeshared;pleasecontactEliasBergforgettingtheaccesstothedataset.
+Declarations
+Competinginterests
+Theauthorsdeclarethattheyhavenocompetinginterests.
+Authordetails
+1DepartmentofComputerScienceandMediaTechnology,LinnaeusUniversity,PGVejdesväg,35195Växjö,Sweden.
+2DepartmentofComputerScience,UniversityofAppliedSciencesRuhrWest,DüsternbrookerWeg2024105Bottrop,
+Germany.3HypocampusAB,DüsternbrookerWeg2024105Bottrop,Sweden.","There are several solutions to
+increase the RCM response time: (a) re-implement our approach as a distributed sub-
+modulewhichallowsexecutionofmultipleparalleloperationswithusinganalyticsengine
+for Big Data such as Apache Spark; (b) based on our proposed approach in our previous
+study (Sotsenko et al.2016a), group similar entities into clusters, then compute simi-
+larity to the center of the cluster, and then inside of the cluster in order to reduce the
+computationload.
+Conclusionandfuturework
+Theaimsofthepresentresearchweretoexploretheassociationbetweenonlinelearning
+activities and quiz performance and to predict the quiz performance with using machine
+learning and RCM. Seven algorithms were applied including linear and logistic regres-
+sions, gradient-boosted tree, XGBoost, deep neural network, Bayesian neural network,
+and rich context model on a dataset consisting of medical students’ answers on quizzes
+(withbothmultiple-choiceandtextquestions)carriedoutattheHypocampusweb-based
+learningplatform.Theresultsshowthatthegradient-boostedtreeandtheXGBoostalgo-
+rithms outperform others by obtaining the overall prediction accuracy 88–89% and with
+lowest response time for training and testing the model. Additionally, adding the reading
+features had positive effect on the overall accuracy for all models. That indicates there is
+some relationship between quiz performance and reading learning material time spend
+in e-learning platform. Hence, no significant correlation was found between reading and
+quiz performance. Our results indicate that it is possible to predict the probability that a
+student will answer the question correct before doing a quiz by analyzing student’s study
+behavior on an e-learning platform. Further research is to design personalized spaced
+repetitionalgorithmforquizzing.
+Abbreviations
+IRT:Itemresponsetheory;RNN:Recurrentneuralnetwork;LSTM:Long-shorttermmemorymodel;BKT:Bayesian
+knowledgetracingmodel;XGBoost:Extreamgradient-boostedtree;RCM:Richcontextmodel;ML:Machinelearning;
+BNN:Bayesianneuralnetwork;EDM:Educationaldatamining;PR:Precision-recallcurve;ROC:Receivingoperation
+characteristiccurve;MVSM:Multidimensionalvectorspacemodel"
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page15of16
+Received:29January2020 Accepted:6April2021
+References
+Boyd,K.,Eng,K.H.,Page,C.D.(2013).Areaundertheprecision-recallcurve:Pointestimatesandconfidenceintervals,In
+JointEuropeanconferenceonmachinelearningandknowledgediscoveryindatabases .https://doi.org/10.1007/978-3-
+642-40994-3_29 (pp.451–466):Springer.
+Bradley,A.P.(1997).TheuseoftheareaundertheROCcurveintheevaluationofmachinelearningalgorithms. Pattern
+recognition,30(7),1145–1159.
+Buckland,M.,&Gey,F.(1994).Therelationshipbetweenrecallandprecision. JournaloftheAmericansocietyfor
+informationscience,45(1),12–19.
+Bucos,M.(2018).Predictingstudentsuccessusingdatageneratedintraditionaleducationalenvironments. TEMJournal,
+7(3),617.
+Chaudhry,R.,Singh,H.,Dogga,P.,Saini,S.K.(2018).Modelinghint-takingbehaviorandknowledgestateofstudentswith
+multi-tasklearning. InternationalEducationalDataMiningSociety .https://doi.org/10.29007/dj6b.
+Chawla,N.V.,Japkowicz,N.,Kotcz,A.(2004).Specialissueonlearningfromimbalanceddatasets. ACMSIGKDD
+explorationsnewsletter,6(1),1–6.
+Chen,C.M.,Lee,H.M.,Chen,Y.H.(2005).Personalizede-learningsystemusingitemresponsetheory. Computers&
+Education,44(3),237–255.
+Chen,T.,&Guestrin,C.(2016).Xgboost:Ascalabletreeboostingsystem,In Proceedingsofthe22ndacmsigkdd
+internationalconferenceonknowledgediscoveryanddatamining (pp.785–794).SanFranciscoCalifornia:Association
+forComputingMachineryNewYorkNYUnitedStates.
+Choffin,B.,Popineau,F.,Bourda,Y.(2020).Modellingstudentlearningandforgettingforoptimallyschedulingskillreview.
+ERCIMNews,2020(120),12–13.
+Chounta,I.A.,Albacete,P.,Jordan,P.,Katz,S.,McLaren,B.M.(2017).The“GreyArea”:Acomputationalapproachtomodel
+theZoneofProximalDevelopment,In EuropeanConferenceonTechnologyEnhancedLearning .https://doi.org/10.
+1007/978-3-319-66610-5_1 (pp.3–16):Springer.
+Cieslak,D.A.,&Chawla,N.V.(2008).Learningdecisiontreesforunbalanceddata,In JointEuropeanConferenceonMachine
+LearningandKnowledgeDiscoveryinDatabases .https://doi.org/10.1007/978-3-540-87479-9_34 (pp.241–256):
+Springer.
+Coelho,O.B.,&Silveira,I.(2017).Deeplearningappliedtolearninganalyticsandeducationaldatamining:Asystematic
+literaturereview,In BrazilianSymposiumonComputersinEducation(SimpósioBrasileirodeInformáticana
+Educação-SBIE),vol.28 .https://doi.org/10.5753/cbie.sbie.2017.143(p.143).
+Davis,D.,Chen,G.,VanderZee,T.,Hau_,C.,Houben,G.J.(2016).Retrievalpracticeandstudyplanninginmoocs:
+Exploringclassroombasedself-regulatedlearningstrategiesatscale,In Europeanconferenceontechnologyenhanced
+learning(pp.57–71):Springer.
+Davis,J,&Goadrich,M.(2006).Therelationshipbetweenprecision-recallandROCcurves,In Proceedingsofthe23rd
+internationalconferenceonMachinelearning .https://doi.org/10.1145/1143844.1143874(pp.233–240).
+Davis,D.,Kizilcec,R.F.,Hau_,C.,Houben,G.J.(2018).Thehalf-lifeofmoocknowledge:arandomizedtrialevaluating
+knowledgeretentionandretrievalpracticeinmoocs,In Proceedingsofthe8thInternationalConferenceonLearning
+AnalyticsandKnowledge (pp.1–10).
+Dunlosky,J.,Rawson,K.A.,Marsh,E.J.,Nathan,M.J.,Willingham,D.T.(2013).Improvingstudents’learningwitheffective
+learningtechniques:Promisingdirectionsfromcognitiveandeducationalpsychology. PsychologicalScienceinthe
+PublicInterest,14(1),4–58.
+Duong,H.,Zhu,L.,Wang,Y.,Heffernan,N.T.(2013). Apredictionmodelthatusesthesequenceofattemptsandhintstobetter
+predictknowledge:“Bettertoattempttheproblemfirst,ratherthanaskforahint” ,(pp.316–317):EDM.
+Fawcett,T.(2006).AnintroductiontoROCanalysis. Patternrecognitionletters ,27(8),861–874.
+Fellman,D.,Lincke,A.,Jonsson,B.(2020).Doindividualdifferencesincognitionandpersonalitypredictretrievalpractice
+activitiesonmoocs? Frontiersinpsychology ,11,2076.
+Galvez,J.,Guzman,E.,Conejo,R.,Millan,E.(2009).Studentknowledgediagnosisusingitemresponsetheoryand
+constraint-basedmodeling,In ArtificialIntelligenceinEducation(AIED-2009) ˚UBuildinglearningsystemsthatcare:from
+knowledgerepresentationtoaffectivemodelling(Vol.200) (pp.291–298):IOSPress.
+Gounaris,A.,&Torres,J.(2018).Amethodologyforsparkparametertuning. Bigdataresearch ,11,22–32.
+Guo,B.,Zhang,R.,Xu,G.,Shi,C.,Yang,L.(2015).Predictingstudentsperformanceineducationaldatamining,In 2015
+InternationalSymposiumonEducationalTechnology(ISET) .https://doi.org/10.1109/iset.2015.33(pp.125–128).Wuhan:
+InstituteofElectricalandElectronicsEngineersInc,IEEEComputerSociety.
+Hodara,M.,Jaggars,S.,KarpMJM(2012).Improvingdevelopmentaleducationassessmentandplacement:Lessonsfrom
+communitycollegesacrossthecountry.(CCRCWorkingPaperNo.51).NewYork:CommunityCollegeResearch
+Center.
+House,S.K.,Sweet,S.L.,Vickers,C.(2016).Students’perceptionsandsatisfactionwithadaptivequizzing. AURCOJournal,
+22(Spring),104–110.
+Ibrahim,Z,&Rusli,D.(2007).Predictingstudents’academicperformance:Comparingartificialneuralnetwork,decision
+treeandlinearregression,In 21stAnnualSASMalaysiaForum,5thSeptember .KualaLumpur,Malaysia.
+Joseph,E.(2005).Engagementtracing:usingresponsetimestomodelstudentdisengagement. Artificialintelligencein
+education:Supportinglearningthroughintelligentandsociallyinformedtechnology ,125,88.
+Karpicke,J.D.,&Roediger,H.L.(2008).Thecriticalimportanceofretrievalforlearning. Science,319(5865),966–968.
+Khajah,M.M.,Huang,Y.,González-Brenes,J.P.,Mozer,M.C.,Brusilovsky,P.(2014).Integratingknowledgetracinganditem
+responsetheory:Ataleoftwoframeworks,In ProceedingsofWorkshoponPersonalizationApproachesinLearning
+Environments(PALE2014)atthe22thInternationalConferenceonUserModeling,Adaptation,andPersonalization
+(pp.7–15).Pittsburgh:UniversityofPittsburgh.",References
+Lincke - 2021 - The performance of some machine learning approaches and a rich context model in student answer predi.pdf,"Linckeetal. ResearchandPracticeinTechnologyEnhancedLearning           (2021) 16:10 Page16of16
+Kohavi,R.,&etal(1995).Astudyofcross-validationandbootstrapforaccuracyestimationandmodelselection,In
+ProceedingsoftheFourteenthInternationalJointConferenceonArtificialIntelligence (pp.1137–1143).SanFrancisco:
+MorganKaufmann.
+Kucukelbir,A.,Tran,D.,Ranganath,R.,Gelman,A.,Blei,D.M.(2017).Automaticdifferentiationvariationalinference. The
+JournalofMachineLearningResearch ,18(1),430–474.
+Lincke,A,Jansen,M,Milrad,M,Berge,E.(2019).Usingdataminingtechniquestoassessstudents’answerpredictions,In
+The27thInternationalConferenceonComputersinEducation(Vol.1) (pp.42–50).Kenting:Asia-PacificSocietyfor
+ComputersinEducation.
+Maldonado-Mahauad,J.,Perez-Sanagustin,M.,Kizilcec,R.F.,Morales,N.,Munoz-Gama,J.(2018).Miningtheory-based
+patternsfrombigdata:Identifyingselfregulatedlearningstrategiesinmassiveopenonlinecourses. Computersin
+HumanBehavior,80,179–196.
+Meng,X.,Bradley,J.,Yavuz,B.,Sparks,E.,Venkataraman,S.,Liu,D.,Freeman,J.,Tsai,D.,Amde,M.,Owen,S.,etal(2016).
+Mllib:machinelearninginapachespark. TheJournalofMachineLearningResearch ,17(1),1235–1241.
+Mullachery,V.,Khera,A.,Husain,A.(2018).Bayesianneuralnetworks.arXivpreprintarXiv:180107710.
+Papoušek,J.,&Pelánek,R.(2015).Impactofadaptiveeducationalsystembehaviouronstudentmotivation,In
+InternationalConferenceonArtificialIntelligenceinEducation (pp.348–357).Madrid:Springer.
+Pardos,Z.A.,&Heffernan,N.T.(2011).KT-IDEM:Introducingitemdifficultytotheknowledgetracingmodel,In
+Internationalconferenceonusermodeling,adaptation,andpersonalization (pp.243–254).Girona:Springer.
+Pelánek,R.(2017).Bayesianknowledgetracing,logisticmodels,andbeyond:Anoverviewoflearnermodeling
+techniques.UserModelingandUser-AdaptedInteraction ,27(3-5),313–350.
+Pentreath,N.(2015). Machinelearningwithspark .Birmingham:PacktPublishingLtd.
+Piech,C.,Bassen,J.,Huang,J.,Ganguli,S.,Sahami,M.,Guibas,L.J.,Sohl-Dickstein,J.(2015).Deepknowledgetracing,In
+Advancesinneuralinformationprocessingsystems (pp.505–513).Montreal:MITPress.
+Reise,S.P.,&RevickiDA(2014). Handbookofitemresponsetheorymodeling:Applicationstotypicalperformanceassessment .
+Routledge:Taylor&Francis,NewYork&London.
+RoedigerIII,H.L.,&Butler,A.C.(2011).Thecriticalroleofretrievalpracticeinlong-termretention. Trendsincognitive
+sciences,15(1),20–27.
+RoedigerIII,H.L.,&Karpicke,J.D.(2006).Test-enhancedlearning:Takingmemorytestsimproveslong-termretention.
+Psychologicalscience,17(3),249–255.
+Ross,B.,Chase,A.M.,Robbie,D.,Oates,G.,Absalom,Y.(2018).Adaptivequizzestoincreasemotivation,engagementand
+learningoutcomesinafirstyearaccountingunit. InternationalJournalofEducationalTechnologyinHigherEducation ,
+15(1),30.
+Saito,T.,&Rehmsmeier,M.(2015).Theprecision-recallplotismoreinformativethantheROCplotwhenevaluatingbinary
+classifiersonimbalanceddatasets. PLoSONE,10(3).https://doi.org/10.1371/journal.pone.0118432.
+Seber,G.A.,&Lee,A.J.(2012). Linearregressionanalysis,vol.329 .NewYork:Wiley.
+Settles,B.,&Meeder,B.(2016).Atrainablespacedrepetitionmodelforlanguagelearning,In Proceedingsofthe54th
+annualmeetingoftheassociationforcomputationallinguistics(volume1:longpapers) (pp.1848–1858).
+Shahiri,A.M.,Husain,W.,etal(2015).Areviewonpredictingstudent’sperformanceusingdataminingtechniques.
+ProcediaComputerScience ,72,414–422.
+Simon-Campbell,L.,Phelan,J.,etal(2016).Effectivenessofanadaptivequizzingsystemasaninstitutional-widestrategy
+toimprovestudentlearningandretention. Nurseeducator,41(5),246–251.
+Sotsenko,A.(2017). Arichcontextmodel:Designandimplementation.PhDthesis,FacultyofTechnology,LinnaeusUniversity .
+Växjö.
+Sotsenko,A.,Jansen,M.,Milrad,M.,Rana,J.(2016a).Usingarichcontextmodelforreal-timebigdataanalyticsintwitter,
+In2016IEEE4thInternationalConferenceonFutureInternetofThingsandCloudWorkshops (pp.228–233).Vienna:IEEE
+ComputerSociety.
+Sotsenko,A.,Zbick,J.,Jansen,M.,Milrad,M.(2016b).Flexibleandcontextualizedcloudapplicationsformobilelearning
+scenarios.Mobile,ubiquitous,andpervasivelearning ,167–192.Springer.
+Strobel,M.(2019).Aspectsoftransparencyinmachinelearning,In Proceedingsofthe18thInternationalConferenceon
+AutonomousAgentsandMultiAgentSystems (pp.2449–2451).Richland:InternationalFoundationforAutonomous
+AgentsandMultiagentSystems.
+Tabibian,B.,Upadhyay,U.,De,A.,Zarezade,A.,Schölkopf,B.,Gomez-Rodriguez,M.(2019).Enhancinghumanlearningvia
+spacedrepetitionoptimization. ProceedingsoftheNationalAcademyofSciences ,116(10),3988–3993.
+Thiede,K.W.,&Dunlosky,J.(1999).Towardageneralmodelofself-regulatedstudy:Ananalysisofselectionofitemsfor
+studyandself-pacedstudytime. Journalofexperimentalpsychology:Learning,Memory,andCognition ,25(4),1024.
+Ting,K.M.(2010).ConfusionMatrix. Encyclopediaofmachinelearning ,1,260–260.Springer,Boston.
+Truchon,J.F.,&Bayly,C.I.(2007).Evaluatingvirtualscreeningmethods:Goodandbadmetricsforthe“earlyrecognition”
+problem.Journalofchemicalinformationandmodeling ,47(2),488–508.
+VanderZee,T.,Davis,D.,Saab,N.,Giesbers,B.,Ginn,J.,VanDerSluis,F.,Paas,F.,Admiraal,W.(2018).Evaluatingretrieval
+practiceinamooc:Howwritingandreadingsummariesofvideosaffectsstudentlearning,In Proceedingsofthe8th
+InternationalConferenceonLearningAnalyticsandKnowledge (pp.216–225).
+Weng,C.G.,&Poon,J.(2008).Anewevaluationmeasureforimbalanceddatasets,In Proceedingsofthe7thAustralasian
+DataMiningConference-Volume,vol.87 .https://doi.org/10.1109/ijcnn.2011.6033267(pp.27–32).
+Wu,G.,&Chang,E.Y.(2003).Class-boundaryalignmentforimbalanceddatasetlearning,In ICML2003workshopon
+learningfromimbalanceddatasets,vol.II (pp.49–56).Washington.
+Publisher’sNote
+SpringerNatureremainsneutralwithregardtojurisdictionalclaimsinpublishedmapsandinstitutionalaffiliations.","Publisher’sNote
+SpringerNatureremainsneutralwithregardtojurisdictionalclaimsinpublishedmapsandinstitutionalaffiliations."

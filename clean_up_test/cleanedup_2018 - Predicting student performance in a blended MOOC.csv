@@ -1,0 +1,1916 @@
+source,page_content,cleaned_page_content
+2018 - Predicting student performance in a blended MOOC.pdf,"ORIGINAL ARTICLE
+Predicting student performance in a blended MOOC
+R. Conijn1,2 | A. Van den Beemt2 | P. Cuijpers3
+1 Department of Cognitive Science and
+Artificial Intelligence, Tilburg University, The
+Netherlands
+2 Eindhoven School of Education, Eindhoven
+University of Technology, The Netherlands
+3 Department of Mathematics and Computer
+Science, Eindhoven University of Technology,
+The Netherlands
+Correspondence
+Rianne Conijn, Department of Cognitive
+Science and Artificial Intelligence, Tilburg
+University, NL‐5000 LE Tilburg, The
+Netherlands.
+Email: m.a.conijn@uvt.nl
+Abstract
+Predicting student performance is a major tool in learning analytics. This study aims to
+identify how different measures of massive open online course (MOOC) data can be
+used to identify points of improvement in MOOCs. In the context of MOOCs, student
+performance is often defined as course completion. However, students could have
+other learning objectives than MOOC completion. Therefore, we define student
+performance as obtaining personal learning objective(s). This study examines a
+subsample of students in a graduate‐level blended MOOC who shared on‐campus
+course completion as a learning objective. Aggregated activity frequencies, specific
+course item frequencies, and order of activities were analysed to predict student
+performance using correlations, multiple regressions, and process mining. All
+aggregated MOOC activity frequencies related positively to on‐campus exam grade.
+However, this relation is less clear when controlling for past performance. In total,
+65% of the specific course items showed significant correlations with final exam
+grade. Students who passed the course spread their learning over more days
+compared with students who failed. Little difference was found in the order of activities
+within the MOOC between students who passed and who failed. The results are
+combined with course evaluations to identify points of improvement within the MOOC.
+KEYWORDS
+blended learning, learning analytics, MOOC, MOOC improvement, predictive modeling, process
+mining
+1 | INTRODUCTION
+The extensive amounts of data collected in massive open online
+courses (MOOCs; Downes, 2008) allow for analysing online learning
+behaviour of large, heterogeneous groups of learners (Drachsler &
+Kalz, 2016). Using these data to understand and optimize learning
+and teaching is also known as learning analytics (Long, Siemens,
+Conole, & Gasevic, 2011). A majority of learning analytics studies
+focus on predicting student performance (Baker & Yacef, 2009;
+Buckingham Shum & Ferguson, 2012; Romero & Ventura, 2010).
+These predictions can be used to distinguish factors that determine
+a good learning environment or precondition for learning. Teachers
+may use these insights to improve their course materials, and students
+may use these insights to reflect upon and improve their learning.
+Recently researchers stressed the importance to transform data
+into actionable information (Conde & Hernández‐García, 2015). How-
+ever, existing studies predicting student performance in MOOCs
+mostly lack practical advice to improve learning and teaching.
+First, these studies usually define performance as MOOC comple-
+tion (e.g., Jiang, Warschauer, Williams, O'Dowd, & Schenke, 2014;
+------------------------------------------------------------------------------------------------------------------------------- -
+This is an open access article under the terms of the Creative Commons Attribution License, which permits use, distribution and reproduction in any medium, provided
+the original work is properly cited.
+© 2018 The Authors.Journal of Computer Assisted LearningPublished by John Wiley & Sons, Ltd.
+Received: 10 April 2017 Revised: 8 March 2018 Accepted: 8 April 2018
+DOI: 10.1111/jcal.12270
+J Comput Assist Learn. 2018;34:615–628. wileyonlinelibrary.com/journal/jcal 615","ORIGINAL ARTICLE
+Abstract
+Predicting student performance is a major tool in learning analytics. This study aims to
+identify how different measures of massive open online course (MOOC) data can be
+used to identify points of improvement in MOOCs. In the context of MOOCs, student
+performance is often defined as course completion. However, students could have
+other learning objectives than MOOC completion. Therefore, we define student
+performance as obtaining personal learning objective(s). This study examines a
+subsample of students in a graduate‐level blended MOOC who shared on‐campus
+course completion as a learning objective. Aggregated activity frequencies, specific
+course item frequencies, and order of activities were analysed to predict student
+performance using correlations, multiple regressions, and process mining. All
+aggregated MOOC activity frequencies related positively to on‐campus exam grade.
+However, this relation is less clear when controlling for past performance. In total,
+65% of the specific course items showed significant correlations with final exam
+grade. Students who passed the course spread their learning over more days
+compared with students who failed. Little difference was found in the order of activities
+within the MOOC between students who passed and who failed. The results are
+combined with course evaluations to identify points of improvement within the MOOC.
+KEYWORDS
+blended learning, learning analytics, MOOC, MOOC improvement, predictive modeling, process
+mining
+1 | INTRODUCTION
+The extensive amounts of data collected in massive open online
+courses (MOOCs; Downes, 2008) allow for analysing online learning
+behaviour of large, heterogeneous groups of learners (Drachsler &
+Kalz, 2016). Using these data to understand and optimize learning
+and teaching is also known as learning analytics (Long, Siemens,
+Conole, & Gasevic, 2011). A majority of learning analytics studies
+focus on predicting student performance (Baker & Yacef, 2009;
+Buckingham Shum & Ferguson, 2012; Romero & Ventura, 2010).
+These predictions can be used to distinguish factors that determine
+a good learning environment or precondition for learning. Teachers
+may use these insights to improve their course materials, and students
+may use these insights to reflect upon and improve their learning.
+Recently researchers stressed the importance to transform data
+into actionable information (Conde & Hernández‐García, 2015). How-
+ever, existing studies predicting student performance in MOOCs
+mostly lack practical advice to improve learning and teaching.
+First, these studies usually define performance as MOOC comple-
+tion (e.g., Jiang, Warschauer, Williams, O'Dowd, & Schenke, 2014;"
+2018 - Predicting student performance in a blended MOOC.pdf,"Ramesh, Goldwasser, Huang, Iii, & Getoor, 2014; Sinha, Jermann, Li, &
+Dillenbourg, 2014). However, not completing an MOOC does not nec-
+essarily mean that learning or teaching needs to be improved, because
+students may have other motivations and learning objectives besides
+completion (Clow, 2013; Henderikx, Kreijns, & Kalz, 2017; Koller,
+Ng, Do, & Chen, 2013). Therefore, in the current study, we define stu-
+dent performance as achieving personal learning objectives.
+Second, current literature typically focuses on aggregated activity
+frequencies in MOOCs while ignoring other measures. Yet adding
+more specific measures could result in a higher prediction accuracy
+and could signal specific points of improvement in the MOOC. There-
+fore, the current study includes specific course item frequencies and
+the order of activities. Furthermore, our predictions of student perfor-
+mance are combined with course evaluations to determine how the
+findings can be used to improve the MOOC.
+In this study, the relation between student performance and
+MOOC activity frequencies, specific course item frequencies, and
+order of MOOC activities is analysed. Data are analysed from a grad-
+uate‐level on‐demand MOOC, titled “Quantitative Formal Modeling
+and Worst‐Case Performance Analysis,” which was part of a blended
+on‐campus course. Completing the MOOC was not required for com-
+pleting the on‐campus course. Hence, we can analyse the achieve-
+ment of personal learning objectives for the subsample that followed
+the MOOC as part of the on‐campus course, which students are
+assumed to share the objective of passing the on‐campus course. This
+study aims to determine how different measures of MOOC data can
+be used to identify points of improvement for the MOOC.
+2 | PREVIOUS RESEARCH
+Since Siemens and Downes coined the acronym MOOC in 2008 to
+describe the online course“Connectivism and Connective Knowledge,”
+the yearly number of publications on MOOCs has increased
+(Liyanagunawardena, Adams, & Williams, 2013). Researchers investi-
+gated opportunities and challenges of MOOCs (Hew & Cheung, 2014),
+educational theories related to learning in MOOCs (Eisenberg & Fischer,
+2014), or the design of MOOCs (Yousef, Chatti, Schroeder, Wosnitza, &
+Jakobs, 2014). Additionally, because every click in an MOOC is collected
+and stored, studies also investigated online learning behaviour using
+MOOC data. The current study falls in the latter category.
+Online behaviour studies are considered part of both learning ana-
+lytics and educational data mining. These fields share the goal of improv-
+ing learning and teaching, yet they apply different approaches in its
+achievement. In educational data mining studies, advanced techniques
+are used for automated discovery and adaptation (Romero & Ventura,
+2013; Siemens & Baker, 2012), whereas learning analytics studies often
+have a stronger focus on informing and empowering students and
+teachers (Siemens & Baker, 2012). For brevity, we use the term“learning
+analytics” to refer to both learning analytics and educational data mining.
+In this study, we use the prediction of student performance, a
+major tool in learning analytics (Baker & Yacef, 2009; Buckingham
+Shum & Ferguson, 2012; Romero & Ventura, 2010), to identify points
+of improvement in a blended MOOC (bMOOC). Most existing studies
+on predicting student performance in MOOCs cannot yet be directly
+used to improve student performance. The following literature review
+addresses three main issues: (a) The definition used for student perfor-
+mance in MOOCs is not entirely suitable; (b) only general frequencies
+of activities are used as predictors; and (c) additional data are neces-
+sary to translate the results into actionable information.
+2.1 | Blended learning and MOOCs
+A subset of the online behaviour studies focuses on blended learning.
+Blended learning refers to “the range of possibilities presented by
+combining Internet and digital media with established classroom forms
+that require the physical co ‐presence of teacher and students ”
+(Friesen, 2012, p. 1). When the digital media consist of MOOCs, we
+speak of bMOOCs (Yousef, Chatti, Schroeder, & Wosnitza, 2015).
+Research on blended learning usually compares established classroom
+teaching with the MOOC part (e.g., Larson & Sung, 2009) and to a
+lesser extent examines variance within the bMOOC (Yousef et al.,
+2015). Comparative studies most often find no difference in learning
+outcomes between the MOOC and established teaching (Ashby,
+Sadera, & McNary, 2011). Sometimes, the online part leads to better
+results, especially in the field of STEM education (Vo, Zhu, & Diep,
+2017). However, Conijn, Snijders, Kleingeld, and Matzat (2017)
+showed that even within a single institution, results may vary. Exam-
+ples of measurements in this type of research are learning results, fre-
+quencies of logins and video views, forum use, resource use, and
+disposition variables such as perception and appreciation. Studies
+examining student perceptions report a preference for digital sources
+rather than traditional learning materials. This counts especially for
+high achievers (Owston, York, & Murtha, 2013).
+2.2 | Defining student performance in MOOCs
+In MOOCs, various definitions are used to describe student
+performance. Often, researchers distinguish between completion and
+drop‐off, where completion is defined as students who submitted
+the final exam (Ramesh et al., 2014), students who showed behaviour
+in the last week (Sinha et al., 2014), or students who earned a normal
+or “with distinction” certificate (Allione & Stein, 2016; Jiang et al.,
+2014; Pursel, Zhang, Jablokow, Choi, & Velegol, 2016) and by self‐
+reports of (partially) completion (Adamopoulos, 2013).
+However, MOOC completion may not be the best way to define
+student performance, because students in an MOOC have learning
+objectives and motivation beyond MOOC completion (Clow, 2013;
+Koller et al., 2013). Recently, a new typology has been developed to
+define student performance in MOOCs, based on initial intentions of
+the student (Henderikx et al., 2017). In this typology, students who
+do as much as or even more than they initially intended are considered
+successful. Accordingly, we define student performance as achieving
+the original intentions or learning objective(s) set by the student. In
+this way, we expect to find more useful pointers for the improvement
+of learning and teaching, rather than just boosting the MOOC
+completion rates.
+Generally, it is hard to measure personal learning objectives
+because these have to be made explicit and might be diffuse. How-
+ever, in the current study, learning objectives are available of students
+616 CONIJN ET AL.
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","However, not completing an MOOC does not necessarily mean that learning or teaching needs to be improved, because students may have other motivations and learning objectives besides completion. Therefore, in the current study, we define student performance as achieving personal learning objectives.
+Second, current literature typically focuses on aggregated activity frequencies in MOOCs while ignoring other measures. Yet adding more specific measures could result in a higher prediction accuracy and could signal specific points of improvement in the MOOC. Therefore, the current study includes specific course item frequencies and the order of activities. Furthermore, our predictions of student performance are combined with course evaluations to determine how the findings can be used to improve the MOOC.
+In this study, the relation between student performance and MOOC activity frequencies, specific course item frequencies, and order of MOOC activities is analysed. Data are analysed from a graduate‐level on‐demand MOOC, titled “Quantitative Formal Modeling and Worst‐Case Performance Analysis,” which was part of a blended on‐campus course. Completing the MOOC was not required for completing the on‐campus course. Hence, we can analyse the achievement of personal learning objectives for the subsample that followed the MOOC as part of the on‐campus course, which students are assumed to share the objective of passing the on‐campus course. This study aims to determine how different measures of MOOC data can be used to identify points of improvement for the MOOC.
+2 | PREVIOUS RESEARCH
+Since Siemens and Downes coined the acronym MOOC in 2008 to describe the online course“Connectivism and Connective Knowledge,” the yearly number of publications on MOOCs has increased. Researchers investigated opportunities and challenges of MOOCs, educational theories related to learning in MOOCs, or the design of MOOCs. Additionally, because every click in an MOOC is collected and stored, studies also investigated online learning behaviour using MOOC data. The current study falls in the latter category.
+Online behaviour studies are considered part of both learning analytics and educational data mining. These fields share the goal of improving learning and teaching, yet they apply different approaches in its achievement. In educational data mining studies, advanced techniques are used for automated discovery and adaptation, whereas learning analytics studies often have a stronger focus on informing and empowering students and teachers. For brevity, we use the term“learning analytics” to refer to both learning analytics and educational data mining.
+In this study, we use the prediction of student performance, a major tool in learning analytics, to identify points of improvement in a blended MOOC (bMOOC). Most existing studies on predicting student performance in MOOCs cannot yet be directly used to improve student performance. The following literature review addresses three main issues: (a) The definition used for student performance in MOOCs is not entirely suitable; (b) only general frequencies of activities are used as predictors; and (c) additional data are necessary to translate the results into actionable information.
+2.1 | Blended learning and MOOCs
+A subset of the online behaviour studies focuses on blended learning.
+Blended learning refers to “the range of possibilities presented by combining Internet and digital media with established classroom forms that require the physical co ‐presence of teacher and students ” (p. 1). When the digital media consist of MOOCs, we speak of bMOOCs.
+Research on blended learning usually compares established classroom teaching with the MOOC part (e.g., Larson & Sung, 2009) and to a lesser extent examines variance within the bMOOC. Comparative studies most often find no difference in learning outcomes between the MOOC and established teaching. Sometimes, the online part leads to better results, especially in the field of STEM education. However, Conijn, Snijders, Kleingeld, and Matzat (2017) showed that even within a single institution, results may vary. Exam- ples of measurements in this type of research are learning results, fre- quencies of logins and video views, forum use, resource use, and disposition variables such as perception and appreciation. Studies examining student perceptions report a preference for digital sources rather than traditional learning materials. This counts especially for high achievers.
+2.2 | Defining student performance in MOOCs
+In MOOCs, various definitions are used to describe student performance. Often, researchers distinguish between completion and drop‐off, where completion is defined as students who submitted the final exam, students who showed behaviour in the last week, or students who earned a normal or “with distinction” certificate and by self‐ reports of (partially) completion.
+However, MOOC completion may not be the best way to define student performance, because students in an MOOC have learning objectives and motivation beyond MOOC completion. Recently, a new typology has been developed to define student performance in MOOCs, based on initial intentions of the student. In this typology, students who do as much as or even more than they initially intended are considered successful. Accordingly, we define student performance as achieving the original intentions or learning objective(s) set by the student. In this way, we expect to find more useful pointers for the improvement of learning and teaching, rather than just boosting the MOOC completion rates.
+Generally, it is hard to measure personal learning objectives because these have to be made explicit and might be diffuse. How- ever, in the current study, learning objectives are available of students"
+2018 - Predicting student performance in a blended MOOC.pdf,"in the on‐campus course, a subsample of all MOOC participants.
+Therefore, we only include students who followed the MOOC as part
+of a blended on‐campus course, assuming these students have similar
+learning objectives, that is, completing the on‐campus course. Conse-
+quently, student performance is defined by the final exam grade for
+the blended on‐campus course.
+2.3 | Predicting student performance in MOOCs
+using general frequencies
+Most studies predicting student performance in MOOCs focused on
+general frequencies of MOOC activities (e.g., de Barba, Kennedy, &
+Ainley, 2016; Ramesh et al., 2014). Overall, these studies found that
+being active in an MOOC has a positive effect on student perfor-
+mance. As videos are significant MOOC components, unsurprisingly,
+the number of videos watched is found to positively relate with
+completion of the course (de Barba et al., 2016; Pursel et al., 2016).
+Moreover, students who often replayed videos were 33% less likely
+to drop the course than students who rarely replayed videos. Students
+who watched significantly more videos than average were 37% less
+likely to drop the course compared with students who watched
+average or less than average proportions (Sinha et al., 2014).
+Likewise, because quizzes and assignments are often required to
+complete an MOOC, activity in assessments is positively related with
+MOOC completion. Students who take the first quiz are 30% less
+likely to drop off, and students who take the peer assessment are
+60% less likely, compared with students who only watch videos
+(Allione & Stein, 2016). The amount of quiz attempts is positively
+related with final grades (de Barba et al., 2016). Students who have
+a high average quiz grade are more likely to obtain a certificate (Jiang
+et al., 2014). Quizzes are mainly important predictors in the beginning
+and middle of the course (Ramesh et al., 2014).
+Compared with videos and quizzes, posting on MOOC forums is a
+less robust predictor. Breslow et al. (2013) found that 52% of the stu-
+dents who gained a certificate were active on the forum. Others also
+showed that forum posts were positively related to MOOC comple-
+tion, especially in the course's middle and end phases (Pursel et al.,
+2016; Ramesh et al., 2014). However, Allione and Stein (2016) found
+that students who posted in the forum were 28% more likely to drop
+off, and Adamopoulos (2013) found that having a forum is negatively
+related with completion.
+2.4 | Predicting student performance in MOOCs
+using more specific measures
+The number of MOOC activities has shown limited value for pre-
+dicting student performance and improving MOOCs. These aggre-
+gated activity measures are rather coarse and do not distinguish
+between different parts of the course. We expect that more specific
+measures of MOOC activity will result in both better predictions and
+guidance to improve MOOCs.
+First, focusing on specific course items (e.g., watched video 1.1)
+could lead to better predictions, as the relation between course items
+and performance may differ across items. However, to the authors'
+knowledge, the effect of specific course items on student performance
+has not yet been studied. This may be because these measures are
+highly course specific, which results in low generalizability. Yet the
+effect of specific course items on student performance can provide a
+more precise indicator to improve specific course parts.
+Second, several researchers found that sequences of interac-
+tions within videos are related to student performance (Brinton,
+Buccapatnam, Chiang, & Poor, 2015; Sinha et al., 2014). Using pro-
+cess mining to analyse an MOOC on process mining, it was found
+that students who passed showed a more linear path through the
+videos, but more random patterns of quiz submissions after submis-
+sion of the first quiz, compared with students who failed (Van den
+Beemt, Buijs, & Van der Aalst, 2017). Thus, the order of activities in
+an MOOC also has an influence on student performance. Hence, in
+the current study, we extend on earlier research by including the
+effect of the order of specific course items on student performance,
+in addition to general counts of activities. On the basis of the findings
+by Van den Beemt et al. (2017), we also expect that students who
+passed will show a more linear path through the specific course mate-
+rials (i.e., videos and literature) and a less linear path through quiz
+submissions, compared with students who failed.
+Lastly, the number of activities and sequences of behaviour may
+depend on students' ability (measured by ACT and SAT tests) or past
+performance (Dollinger, Matyja, & Huber, 2008; Hattie, 2008),
+because these are robust predictors of student performance. Ability
+and past performance have been shown to be even better predictors
+than MOOC behaviour (Kennedy, Coffrin, de Barba, & Corrin, 2015).
+To determine the effect of MOOC behaviour on student performance
+in addition to past performance, we control for past performance,
+measured by prior GPA of the students in the bMOOC.
+2.5 | From predictions to actionable information and
+MOOC improvement
+It has been shown that the analysis of MOOC use can guide teachers
+and course designers to improve their MOOCs. For instance, Guo,
+Kim, and Rubin (2014) analysed the time spent on videos to deter-
+mine how these videos should be designed to improve engagement.
+Others analysed peaks of use within videos and suggested that
+automatic classification of these peaks could be used to label
+peaks, easing video browsing (Kim, Li, Cai, Gajos, & Miller, 2014).
+However, these studies did not relate the MOOC activities to stu-
+dent performance.
+Taken together, we expect that predictions of student perfor-
+mance on specific course items and the order of activities in the
+MOOC give a better indication of what parts of the MOOC could be
+improved, compared with general measures (e.g., total number of
+videos viewed). However, these data do not allow to explain why cer-
+tain behaviour occurred or how a specific part should be improved. It
+is important to first transform the data into actionable information,
+before it can be used to improve learning and teaching (Conde &
+Hernández‐García, 2015). To transform our data, results from the
+course evaluation are included that might explain some of our findings
+about MOOC behaviour. We expect this to result in actionable
+information.
+CONIJN ET AL. 617
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","in the on‐campus course, a subsample of all MOOC participants.
+Therefore, we only include students who followed the MOOC as part
+of a blended on‐campus course, assuming these students have similar
+learning objectives, that is, completing the on‐campus course. Conse-
+quently, student performance is defined by the final exam grade for
+the blended on‐campus course.
+2.3 | Predicting student performance in MOOCs
+using general frequencies
+Most studies predicting student performance in MOOCs focused on
+general frequencies of MOOC activities. Overall, these studies found that
+being active in an MOOC has a positive effect on student perfor-
+mance. As videos are significant MOOC components, unsurprisingly,
+the number of videos watched is found to positively relate with
+completion of the course.
+Moreover, students who often replayed videos were 33% less likely
+to drop the course than students who rarely replayed videos. Students
+who watched significantly more videos than average were 37% less
+likely to drop the course compared with students who watched
+average or less than average proportions.
+Likewise, because quizzes and assignments are often required to
+complete an MOOC, activity in assessments is positively related with
+MOOC completion. Students who take the first quiz are 30% less
+likely to drop off, and students who take the peer assessment are
+60% less likely, compared with students who only watch videos
+The amount of quiz attempts is positively
+related with final grades. Students who have
+a high average quiz grade are more likely to obtain a certificate. Quizzes are mainly important predictors in the beginning
+and middle of the course.
+Compared with videos and quizzes, posting on MOOC forums is a
+less robust predictor. Breslow et al. (2013) found that 52% of the stu-
+dents who gained a certificate were active on the forum. Others also
+showed that forum posts were positively related to MOOC comple-
+tion, especially in the course's middle and end phases. However, Allione and Stein (2016) found
+that students who posted in the forum were 28% more likely to drop
+off, and Adamopoulos (2013) found that having a forum is negatively
+related with completion.
+2.4 | Predicting student performance in MOOCs
+using more specific measures
+The number of MOOC activities has shown limited value for pre-
+dicting student performance and improving MOOCs. These aggre-
+gated activity measures are rather coarse and do not distinguish
+between different parts of the course. We expect that more specific
+measures of MOOC activity will result in both better predictions and
+guidance to improve MOOCs.
+First, focusing on specific course items (e.g., watched video 1.1)
+could lead to better predictions, as the relation between course items
+and performance may differ across items. However, to the authors'
+knowledge, the effect of specific course items on student performance
+has not yet been studied. This may be because these measures are
+highly course specific, which results in low generalizability. Yet the
+effect of specific course items on student performance can provide a
+more precise indicator to improve specific course parts.
+Second, several researchers found that sequences of interac-
+tions within videos are related to student performance. Using pro-
+cess mining to analyse an MOOC on process mining, it was found
+that students who passed showed a more linear path through the
+videos, but more random patterns of quiz submissions after submis-
+sion of the first quiz, compared with students who failed. Thus, the order of activities in
+an MOOC also has an influence on student performance. Hence, in
+the current study, we extend on earlier research by including the
+effect of the order of specific course items on student performance,
+in addition to general counts of activities. On the basis of the findings
+by Van den Beemt et al. (2017), we also expect that students who
+passed will show a more linear path through the specific course mate-
+rials (i.e., videos and literature) and a less linear path through quiz
+submissions, compared with students who failed.
+Lastly, the number of activities and sequences of behaviour may
+depend on students' ability (measured by ACT and SAT tests) or past
+performance because these are robust predictors of student performance. Ability
+and past performance have been shown to be even better predictors
+than MOOC behaviour.
+To determine the effect of MOOC behaviour on student performance
+in addition to past performance, we control for past performance,
+measured by prior GPA of the students in the bMOOC.
+2.5 | From predictions to actionable information and
+MOOC improvement
+It has been shown that the analysis of MOOC use can guide teachers
+and course designers to improve their MOOCs. For instance, Guo,
+Kim, and Rubin (2014) analysed the time spent on videos to deter-
+mine how these videos should be designed to improve engagement.
+Others analysed peaks of use within videos and suggested that
+automatic classification of these peaks could be used to label
+peaks, easing video browsing.
+However, these studies did not relate the MOOC activities to stu-
+dent performance.
+Taken together, we expect that predictions of student perfor-
+mance on specific course items and the order of activities in the
+MOOC give a better indication of what parts of the MOOC could be
+improved, compared with general measures (e.g., total number of
+videos viewed). However, these data do not allow to explain why cer-
+tain behaviour occurred or how a specific part should be improved. It
+is important to first transform the data into actionable information,
+before it can be used to improve learning and teaching. To transform our data, results from the
+course evaluation are included that might explain some of our findings
+about MOOC behaviour. We expect this to result in actionable
+information."
+2018 - Predicting student performance in a blended MOOC.pdf,"3 | METHOD
+3.1 | Course design and participants
+Data came from the graduate‐level on‐demand MOOC “Quantitative
+Formal Modeling and Worst‐Case Performance Analysis” provided
+on Coursera (https://www.coursera.org/learn/quantitative ‐formal‐
+modeling‐1). The MOOC was part of the blended graduate course
+“Quantitative Evaluation of Embedded Systems ” taught from
+November 9, 2015, to January 31, 2016. MOOC data were collected
+from a week before the on‐campus course started to the end of the
+exam period.
+The on‐campus course consisted of the MOOC and face‐to‐face
+lectures. The on‐campus course focused on formalisms (especially data-
+flow graphs and Markov chains) used when quantitative aspects such as
+time, probability, and resource usage play a role in system behaviour
+analysis. The course was provided by three technical universities in
+the Netherlands (situated in Delft, Twente, and Eindhoven). The course
+was compulsory for students following the graduate program Embed-
+ded Systems and optional for other interested students. In total, 199
+students registered for the on‐campus course, 156 students completed
+the final exam, and 125 passed the course.
+The on‐campus course consisted of eight lecture weeks and two
+exam weeks (see Figure 1). The first two lecture weeks were used
+for the MOOC. The content of the MOOC was assessed with a prac-
+tical assignment in Week 5 and the final exam in Week 9. Students did
+not have to complete the MOOC to pass the on‐campus course.
+The MOOC consisted of 47 videos, 14 resources, 9 graded quiz-
+zes, 5 practice quizzes, 1 peer‐reviewed assignment, and a discussion
+forum, divided over four modules. The MOOC was relatively small
+with 2,123 students enrolled, whereas a typical Coursera MOOC con-
+sists of 40,000 to 60,000 students (Koller et al., 2013). Only 30% of
+the students started a video (compared with the typical 50–60%),
+16% started a quiz, 5% started a peer‐reviewed assignment, and 2%
+posted on the discussion forum. The completion rate of 2% is rather
+low compared with the current average completion rate on Coursera
+of 6% (Jordan, 2015). These low numbers can (partly) be explained
+by specificity of the MOOC, the relative high level (graduate level),
+and the short time frame in which data were collected.
+In the current study, only students (n = 199) enrolled in the on‐
+campus course are considered. The assumption is that these students
+have similar learning objectives (completing the on‐campus course).
+3.2 | Data preprocessing
+Several data sources were used to analyse the on‐campus course:
+MOOC data from Coursera, performance data, and course evaluation
+data. Data preprocessing and data integration were done using the
+statistical package R.
+3.2.1 | MOOC data
+From the MOOC data, general activity frequencies, specific course
+item frequencies, and order of MOOC activities were collected. When
+a student did not show any behaviour, the value of that variable was
+set to zero.
+Activity frequencies
+Aggregated measures were collected from all MOOC activities: videos,
+course resources, quizzes, forum, and peer‐reviewed assignments. The
+total and unique number of times a course item was started and fin-
+ished (videos and quizzes) or accessed (resources) was collected.
+Coursera coded a video‐start when the first 5 s was watched and a
+video‐finish when the last 5 s was watched. Hence, when students
+“started” and “finished” a video, this does not necessarily mean they
+watched a whole video; they could have skipped the middle part.
+Because this cannot be verified, we assume that students watched a
+video when they started and finished it.
+Additional measures were collected about quizzes and peer ‐
+reviewed assignments, including the total amount of quizzes passed
+and failed, average quiz grade, number of peer‐reviewed assignments
+reviewed, and peer‐reviewed assignment grade. Moreover, the total
+amount of questions and the total amount of answers posted on the
+forum were collected. Combined, this resulted in a total of 21 variables.
+Specific course item frequencies
+For each video, quiz, and assignment, the number of times students
+started and finished that course item was collected (e.g., number of
+times video 1.1 started). Additionally, the number of attempts per
+course item was estimated by as follows: (total amount of times a
+course item is started + finished)/(unique number of students per
+course item started + finished). For the resources, the number of
+accesses was collected. Combined, this resulted in a total of (47
+videos + 14 quizzes + 1 peer‐reviewed assignment) * 2 (start and fin-
+ish) + 14 resources (access) = 138 variables.
+Order of activities
+For the order of activities, case (use rid), event (course item name), and
+timestamps (for both activity started and activity finished) were
+collected from the “course_progress” table as input for the process
+mining tool ProM (ProM, 2016).
+3.2.2 | Performance data
+GPA master's program data were collected to control for past perfor-
+mance. Final exam grade for the on‐campus course was collected as
+FIGURE 1 Timeline on‐campus course. MOOC = massive open online course
+618 CONIJN ET AL.
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","3 | METHOD
+3.1 | Course design and participants
+Data came from the graduate‐level on‐demand MOOC “Quantitative
+Formal Modeling and Worst‐Case Performance Analysis” provided
+on Coursera (https://www.coursera.org/learn/quantitative ‐formal‐
+modeling‐1). The MOOC was part of the blended graduate course
+“Quantitative Evaluation of Embedded Systems ” taught from
+November 9, 2015, to January 31, 2016. MOOC data were collected
+from a week before the on‐campus course started to the end of the
+exam period.
+The on‐campus course consisted of the MOOC and face‐to‐face
+lectures. The on‐campus course focused on formalisms (especially data-
+flow graphs and Markov chains) used when quantitative aspects such as
+time, probability, and resource usage play a role in system behaviour
+analysis. The course was provided by three technical universities in
+the Netherlands (situated in Delft, Twente, and Eindhoven). The course
+was compulsory for students following the graduate program Embed-
+ded Systems and optional for other interested students. In total, 199
+students registered for the on‐campus course, 156 students completed
+the final exam, and 125 passed the course.
+The on‐campus course consisted of eight lecture weeks and two
+exam weeks (see Figure 1). The first two lecture weeks were used
+for the MOOC. The content of the MOOC was assessed with a prac-
+tical assignment in Week 5 and the final exam in Week 9. Students did
+not have to complete the MOOC to pass the on‐campus course.
+The MOOC consisted of 47 videos, 14 resources, 9 graded quiz-
+zes, 5 practice quizzes, 1 peer‐reviewed assignment, and a discussion
+forum, divided over four modules. The MOOC was relatively small
+with 2,123 students enrolled, whereas a typical Coursera MOOC con-
+sists of 40,000 to 60,000 students. Only 30% of
+the students started a video (compared with the typical 50–60%),
+16% started a quiz, 5% started a peer‐reviewed assignment, and 2%
+posted on the discussion forum. The completion rate of 2% is rather
+low compared with the current average completion rate on Coursera
+of 6%. These low numbers can (partly) be explained
+by specificity of the MOOC, the relative high level (graduate level),
+and the short time frame in which data were collected.
+In the current study, only students (n = 199) enrolled in the on‐
+campus course are considered. The assumption is that these students
+have similar learning objectives (completing the on‐campus course).
+3.2 | Data preprocessing
+Several data sources were used to analyse the on‐campus course:
+MOOC data from Coursera, performance data, and course evaluation
+data. Data preprocessing and data integration were done using the
+statistical package R.
+3.2.1 | MOOC data
+From the MOOC data, general activity frequencies, specific course
+item frequencies, and order of MOOC activities were collected. When
+a student did not show any behaviour, the value of that variable was
+set to zero.
+Activity frequencies
+Aggregated measures were collected from all MOOC activities: videos,
+course resources, quizzes, forum, and peer‐reviewed assignments. The
+total and unique number of times a course item was started and fin-
+ished (videos and quizzes) or accessed (resources) was collected.
+Coursera coded a video‐start when the first 5 s was watched and a
+video‐finish when the last 5 s was watched. Hence, when students
+“started” and “finished” a video, this does not necessarily mean they
+watched a whole video; they could have skipped the middle part.
+Because this cannot be verified, we assume that students watched a
+video when they started and finished it.
+Additional measures were collected about quizzes and peer ‐
+reviewed assignments, including the total amount of quizzes passed
+and failed, average quiz grade, number of peer‐reviewed assignments
+reviewed, and peer‐reviewed assignment grade. Moreover, the total
+amount of questions and the total amount of answers posted on the
+forum were collected. Combined, this resulted in a total of 21 variables.
+Specific course item frequencies
+For each video, quiz, and assignment, the number of times students
+started and finished that course item was collected (e.g., number of
+times video 1.1 started). Additionally, the number of attempts per
+course item was estimated by as follows: (total amount of times a
+course item is started + finished)/(unique number of students per
+course item started + finished). For the resources, the number of
+accesses was collected. Combined, this resulted in a total of (47
+videos + 14 quizzes + 1 peer‐reviewed assignment) * 2 (start and fin-
+ish) + 14 resources (access) = 138 variables.
+Order of activities
+For the order of activities, case (use rid), event (course item name), and
+timestamps (for both activity started and activity finished) were
+collected from the “course_progress” table as input for the process
+mining tool ProM.
+3.2.2 | Performance data
+GPA master's program data were collected to control for past perfor-
+mance. Final exam grade for the on‐campus course was collected as
+FIGURE 1 Timeline on-campus course. MOOC = massive open online course"
+2018 - Predicting student performance in a blended MOOC.pdf,"outcome variable. Past performance data were only available for
+students from Eindhoven University of Technology (n = 71). All perfor-
+mance data were on a scale from 0 to 10, where grades≥5.5 indicate
+a pass and grades <5.5 indicate a fail.
+3.2.3 | Course evaluation data
+After the on‐campus course was finished, course evaluation question-
+naires were sent by email to all students who were enrolled in the
+course. In total, 43 students completed the questionnaire. The ques-
+tionnaire consisted of 5‐point scale questions, multiple choice ques-
+tions, and open‐ended questions related to the general evaluation of
+the course, students' background, course organization, course mate-
+rials, lecturers, assessments, forum use, and workload. Because course
+evaluations are mostly filled out by students who are extremely happy
+or unhappy with the course, the course evaluation data are biased.
+Therefore, the course evaluations are only used to provide additional
+explanations for our results.
+3.2.4 | Data integration
+Not all data were available for all students and not all data sources could
+be combined, because there was no shared unique identifier (e.g., stu-
+dent ID). Due to Coursera's privacy policy, MOOC data could only be
+merged with data generated outside the platform when students are
+enrolled in a specific group in the MOOC. Because only 91 students
+accepted the group invitation, analyses were conducted on data
+representing 91 students. Of these students, past performance was
+only available for 26 students. Moreover, students from the on‐campus
+course could not be compared with the regular MOOC students,
+because not all on‐campus students could be identified in the MOOC.
+3.3 | Data analysis
+After data preprocessing and data integration, the MOOC activity
+frequencies were analysed using Stata 14. Descriptive analyses
+showed that there was little activity in the peer‐reviewed assign-
+ments and the forum. Therefore, the variables peer assignment fin-
+ished, peer assignment reviewed, forum questions posted, and forum
+answers posted were transformed to binary variables (0: zero activity,
+1: any activity).
+Subsequently, Pearson correlational analyses of all variables with
+final exam grade were conducted. Thereafter, a multiple linear regres-
+sion using backward stepwise regression was run, using the aggregated
+measures of MOOC activities (with and without past performance). All
+predictors with ap value >.2 were removed from the model. Robust
+regressions were used, because the assumption of homoscedasticity
+was often not met. The Stata function“crossfold” was used for tenfold
+cross‐validation, which runs 10 regressions on subsamples and takes
+the average of these regressions (Daniels, 2012).
+The order of activities was analysed using ProM 6.6 (ProM, 2016),
+a process mining tool. First, a dotted chart was generated to deter-
+mine the activity in MOOC modules during the on‐campus course,
+for the different final exam grades (similar to Van den Beemt et al.,
+2017). Second, two models were made with Fuzzy Miner, a ProM
+plug‐in, to compare the sequences of activities between students
+who passed and students who failed the on‐campus course. The Fuzzy
+Miner simplifies the view of a process model by using abstractions
+based on the significance of activities and relations between these
+activities. Significance refers to the relative importance of the
+activities and can be measured in multiple ways (Günther & Van der
+Aalst, 2007). Here, unary significance was used: the more an activity
+occurred in the log, the higher the significance. Because our main goal
+was to determine the differences and not to obtain the best model fit,
+the default settings of the plug‐in were used.
+3.4 | Preliminary analysis: Differences between
+whole sample and subsample
+Past performance was only available for a subsample of the students.
+Because this subsample was not randomly chosen,t tests and multiple
+linear regressions were used to verify similarity with the whole sample.
+Independent samples t tests showed that the outcome variable
+exam grade and most MOOC activity frequencies did not significantly
+differ between the students with and without past performance data
+available. Only the use of the peer‐reviewed assignment showed signif-
+icant differences: Fewer students finished the peer‐reviewed assign-
+ment, t(89) = 2.01, p = .05, and fewer reviewed the peer‐reviewed
+assignment, t(89) = 2.15,p = .03, in the subsample compared with stu-
+dents outside the subsample. Hence, we cannot generalize the use of
+peer‐reviewed assignments of the subsample to the whole sample.
+Simple linear regression showed that being in the subsample did
+not have a significant influence on exam grade. Multiple linear regres-
+sion showed that being in the subsample still did not have a significant
+influence on final exam grade when all predictors (MOOC activities)
+were added. Lastly, when interactions of all predictors with being in
+the subsample were included in the regression, none of the interactions
+were found significant. Hence, there is no difference between the
+effects of the predictors on final exam grade between students with
+and without past performance data available. This indicates that the
+effects of the predictors on final exam grade from the subsample with
+past performance available can be generalized to the whole sample.
+4 | RESULTS
+4.1 | MOOC activity frequencies
+First, MOOC activity frequencies were analysed. From the 91 stu-
+dents, most started and finished at least half of the videos, started at
+least half of the quizzes, and read at least half of the resources. On
+average (median), the students finished 46 of the 47 videos, passed
+seven of the nine graded quizzes, and read five of the six resources.
+The quiz grades were relatively high: higher than 8 (out of 10) on aver-
+age. An explanation could be that students needed an 8 to pass the
+quiz and could attempt a quiz multiple times to improve their grades.
+Almost half of the students finished and reviewed the optional peer‐
+reviewed assignment (43 and 44, respectively). The forum was rarely
+used: 14 students posted questions, and 18 students posted answers.
+Correlational analyses were conducted between the MOOC activ-
+ity frequencies and final exam grade scored in the on‐campus course
+(see Table 1). The MOOC did not cover all topics of the final exam.
+Nonetheless, all activities correlated significantly with final exam
+CONIJN ET AL. 619
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","outcome variable. Past performance data were only available for
+students from Eindhoven University of Technology (n = 71). All perfor-
+mance data were on a scale from 0 to 10, where grades≥5.5 indicate
+a pass and grades <5.5 indicate a fail.
+3.2.3 | Course evaluation data
+After the on‐campus course was finished, course evaluation question-
+naires were sent by email to all students who were enrolled in the
+course. In total, 43 students completed the questionnaire. The ques-
+tionnaire consisted of 5‐point scale questions, multiple choice ques-
+tions, and open‐ended questions related to the general evaluation of
+the course, students' background, course organization, course mate-
+rials, lecturers, assessments, forum use, and workload. Because course
+evaluations are mostly filled out by students who are extremely happy
+or unhappy with the course, the course evaluation data are biased.
+Therefore, the course evaluations are only used to provide additional
+explanations for our results.
+3.2.4 | Data integration
+Not all data were available for all students and not all data sources could
+be combined, because there was no shared unique identifier (e.g., stu-
+dent ID). Due to Coursera's privacy policy, MOOC data could only be
+merged with data generated outside the platform when students are
+enrolled in a specific group in the MOOC. Because only 91 students
+accepted the group invitation, analyses were conducted on data
+representing 91 students. Of these students, past performance was
+only available for 26 students. Moreover, students from the on‐campus
+course could not be compared with the regular MOOC students,
+because not all on‐campus students could be identified in the MOOC.
+3.3 | Data analysis
+After data preprocessing and data integration, the MOOC activity
+frequencies were analysed using Stata 14. Descriptive analyses
+showed that there was little activity in the peer‐reviewed assign-
+ments and the forum. Therefore, the variables peer assignment fin-
+ished, peer assignment reviewed, forum questions posted, and forum
+answers posted were transformed to binary variables (0: zero activity,
+1: any activity).
+Subsequently, Pearson correlational analyses of all variables with
+final exam grade were conducted. Thereafter, a multiple linear regres-
+sion using backward stepwise regression was run, using the aggregated
+measures of MOOC activities (with and without past performance). All
+predictors with ap value >.2 were removed from the model. Robust
+regressions were used, because the assumption of homoscedasticity
+was often not met. The Stata function“crossfold” was used for tenfold
+cross‐validation, which runs 10 regressions on subsamples and takes
+the average of these regressions.
+The order of activities was analysed using ProM 6.6,
+a process mining tool. First, a dotted chart was generated to deter-
+mine the activity in MOOC modules during the on‐campus course,
+for the different final exam grades (similar to Van den Beemt et al.,
+2017). Second, two models were made with Fuzzy Miner, a ProM
+plug‐in, to compare the sequences of activities between students
+who passed and students who failed the on‐campus course. The Fuzzy
+Miner simplifies the view of a process model by using abstractions
+based on the significance of activities and relations between these
+activities. Significance refers to the relative importance of the
+activities and can be measured in multiple ways. Here, unary significance was used: the more an activity
+occurred in the log, the higher the significance. Because our main goal
+was to determine the differences and not to obtain the best model fit,
+the default settings of the plug‐in were used.
+3.4 | Preliminary analysis: Differences between
+whole sample and subsample
+Past performance was only available for a subsample of the students.
+Because this subsample was not randomly chosen,t tests and multiple
+linear regressions were used to verify similarity with the whole sample.
+Independent samples t tests showed that the outcome variable
+exam grade and most MOOC activity frequencies did not significantly
+differ between the students with and without past performance data
+available. Only the use of the peer‐reviewed assignment showed signif-
+icant differences: Fewer students finished the peer‐reviewed assign-
+ment, t(89) = 2.01, p = .05, and fewer reviewed the peer‐reviewed
+assignment, t(89) = 2.15,p = .03, in the subsample compared with stu-
+dents outside the subsample. Hence, we cannot generalize the use of
+peer‐reviewed assignments of the subsample to the whole sample.
+Simple linear regression showed that being in the subsample did
+not have a significant influence on exam grade. Multiple linear regres-
+sion showed that being in the subsample still did not have a significant
+influence on final exam grade when all predictors (MOOC activities)
+were added. Lastly, when interactions of all predictors with being in
+the subsample were included in the regression, none of the interactions
+were found significant. Hence, there is no difference between the
+effects of the predictors on final exam grade between students with
+and without past performance data available. This indicates that the
+effects of the predictors on final exam grade from the subsample with
+past performance available can be generalized to the whole sample.
+4 | RESULTS
+4.1 | MOOC activity frequencies
+First, MOOC activity frequencies were analysed. From the 91 stu-
+dents, most started and finished at least half of the videos, started at
+least half of the quizzes, and read at least half of the resources. On
+average (median), the students finished 46 of the 47 videos, passed
+seven of the nine graded quizzes, and read five of the six resources.
+The quiz grades were relatively high: higher than 8 (out of 10) on aver-
+age. An explanation could be that students needed an 8 to pass the
+quiz and could attempt a quiz multiple times to improve their grades.
+Almost half of the students finished and reviewed the optional peer‐
+reviewed assignment (43 and 44, respectively). The forum was rarely
+used: 14 students posted questions, and 18 students posted answers.
+Correlational analyses were conducted between the MOOC activ-
+ity frequencies and final exam grade scored in the on‐campus course
+(see Table 1). The MOOC did not cover all topics of the final exam.
+Nonetheless, all activities correlated significantly with final exam"
+2018 - Predicting student performance in a blended MOOC.pdf,"grade, with small to moderate effect sizes. The number of videos
+watched, and quizzes passed and finished correlated positively with
+final exam grade (rs = .39–.54, p < .001), whereas the number of
+graded quizzes failed correlated negatively (r = −.28, p < .01). Both
+starting and finishing the peer‐reviewed assignment had a positive
+correlation with final exam grade (r = .36, p < .001; r = .22, p < .05).
+Posting questions or answers on the forum was positively correlated
+with final exam grade; however, the effect sizes were small (r = .24,
+p < .05;r = .30,p < .01).
+When looking at the correlations for the students with high and
+low past performances separately, almost none of the activities cor-
+related significantly with final exam grade. This is probably due to
+the low sample size. Interestingly, there was a negative trend for
+the number of videos watched on final exam grade for students
+with low past performance, but a positive trend for students with
+high past performance. The peer ‐reviewed assignment showed a
+significant positive correlation with final exam grade, but only for
+students with low past performance (r = .69, p = .01). Thus, being
+active in the MOOC might not lead to higher final exam grades
+for all students.
+To predict final exam grade, multiple linear regressions were run
+with final exam grade as outcome variable and all 21 MOOC activity
+variables as predictors. The final model after backward stepwise
+regression consisted of quizzes finished, graded quizzes passed,
+unique resources read, peer assignments started, forum answer
+posted, unique videos finished, and peer assignments finished
+(Table 2, Model 1). Combined, these variables could explain 52% of
+the variance in final exam grade (cross‐validated R
+2 = .46). Thus,
+although the final exam did not only cover the content of the MOOC,
+MOOC activity could already explain a high amount of variance in final
+exam grade. Moreover, all different MOOC activities (videos, quizzes,
+peer‐reviewed assignment, resources, and the forum) explain a unique
+part of the variance.
+TABLE 1 Pearson correlation for massive open online course activity counts with final exam grade
+Variable
+All students (n = 91) High past performance ( n = 14) Low past performance ( n = 12)
+rp r p r p
+Videos started .41 <.001 .14 .64 −.45 .14
+Videos finished .39 <.001 .19 .51 −.30 .34
+Unique videos started .45 <.001 .36 .21 −.16 .63
+Unique videos finished .45 <.001 .34 .24 −.09 .77
+Quizzes started .48 <.001 .06 .82 −.12 .72
+Quizzes finished .54 <.001 .49 .07 .30 .34
+Unique quizzes started .51 <.001 .37 .19 .04 .90
+Unique quizzes finished .53 <.001 .32 .26 .24 .45
+Practice quizzes started .51 <.001 .40 .16 .11 .74
+Practice quiz grade .38 <.001 .20 .49 .43 .16
+Graded quizzes passed .54 <.001 .11 .71 .26 .42
+Graded quizzes failed −.28 .01 −.10 .72 −.47 .12
+Graded quiz grade .46 <.001 .13 .66 .31 .32
+Resources read .30 .01 .09 .77 −.10 .75
+Unique resources read .56 <.001 .28 .34 .06 .85
+Peer assignments started .36 <.001 .18 .54 .69 .01
+Peer assignment finished (Y/N) .22 .04 −.35 .22 .69 .01
+Peer assignment reviewed (Y/N) .23 .03 −.35 .22 .69 .01
+Peer assignment grade .28 .01 .10 .73 . .
+Forum question posted (Y/N) .24 .02 .19 .52 . .
+Forum answer posted (Y/N) .30 .01 .31 .27 . .
+TABLE 2 Multiple linear regression on final exam grade with
+(1) MOOC activity counts and (2) MOOC activity counts and
+past performance
+Variable
+(1) MOOC
+activities
+(2) MOOC activities
+and past performance
+BpB p
+Videos started −0.43 .03
+Unique videos finished −0.35 .01
+Quizzes finished 0.19 .02 0.39 .02
+Graded quizzes passed 0.44 <.01
+Resources read −0.19 <.01
+Unique resources read 0.48 <.001 0.32 .02
+Peer assignments started 0.22 .02 0.80 <.01
+Peer assignment finished −0.28 .04 −0.67 <.01
+Forum answer posted 0.15 .06
+Past performance 0.33 .11
+R
+2 .52 .75
+Cross‐validated R2 .46 ‐a
+N 91 26
+Note. Constants omitted from the table, standardized betas reported for all
+variables. Predictors with p value >.2 were removed from the model.
+MOOC = massive open online course.
+aSample size too small for tenfold cross‐validation.
+620 CONIJN ET AL.
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","grade, with small to moderate effect sizes. The number of videos
+watched, and quizzes passed and finished correlated positively with
+final exam grade (rs = .39–.54, p < .001), whereas the number of
+graded quizzes failed correlated negatively (r = −.28, p < .01). Both
+starting and finishing the peer‐reviewed assignment had a positive
+correlation with final exam grade (r = .36, p < .001; r = .22, p < .05).
+Posting questions or answers on the forum was positively correlated
+with final exam grade; however, the effect sizes were small (r = .24,
+p < .05;r = .30,p < .01).
+When looking at the correlations for the students with high and
+low past performances separately, almost none of the activities cor-
+related significantly with final exam grade. This is probably due to
+the low sample size. Interestingly, there was a negative trend for
+the number of videos watched on final exam grade for students
+with low past performance, but a positive trend for students with
+high past performance. The peer ‐reviewed assignment showed a
+significant positive correlation with final exam grade, but only for
+students with low past performance (r = .69, p = .01). Thus, being
+active in the MOOC might not lead to higher final exam grades
+for all students.
+To predict final exam grade, multiple linear regressions were run
+with final exam grade as outcome variable and all 21 MOOC activity
+variables as predictors. The final model after backward stepwise
+regression consisted of quizzes finished, graded quizzes passed,
+unique resources read, peer assignments started, forum answer
+posted, unique videos finished, and peer assignments finished
+(Table 2, Model 1). Combined, these variables could explain 52% of
+the variance in final exam grade (cross‐validated R
+2 = .46). Thus,
+although the final exam did not only cover the content of the MOOC,
+MOOC activity could already explain a high amount of variance in final
+exam grade. Moreover, all different MOOC activities (videos, quizzes,
+peer‐reviewed assignment, resources, and the forum) explain a unique
+part of the variance.
+TABLE 1 Pearson correlation for massive open online course activity counts with final exam grade
+Variable
+All students (n = 91) High past performance ( n = 14) Low past performance ( n = 12)
+rp r p r p
+Videos started .41 <.001 .14 .64 −.45 .14
+Videos finished .39 <.001 .19 .51 −.30 .34
+Unique videos started .45 <.001 .36 .21 −.16 .63
+Unique videos finished .45 <.001 .34 .24 −.09 .77
+Quizzes started .48 <.001 .06 .82 −.12 .72
+Quizzes finished .54 <.001 .49 .07 .30 .34
+Unique quizzes started .51 <.001 .37 .19 .04 .90
+Unique quizzes finished .53 <.001 .32 .26 .24 .45
+Practice quizzes started .51 <.001 .40 .16 .11 .74
+Practice quiz grade .38 <.001 .20 .49 .43 .16
+Graded quizzes passed .54 <.001 .11 .71 .26 .42
+Graded quizzes failed −.28 .01 −.10 .72 −.47 .12
+Graded quiz grade .46 <.001 .13 .66 .31 .32
+Resources read .30 .01 .09 .77 −.10 .75
+Unique resources read .56 <.001 .28 .34 .06 .85
+Peer assignments started .36 <.001 .18 .54 .69 .01
+Peer assignment finished (Y/N) .22 .04 −.35 .22 .69 .01
+Peer assignment reviewed (Y/N) .23 .03 −.35 .22 .69 .01
+Peer assignment grade .28 .01 .10 .73 . .
+Forum question posted (Y/N) .24 .02 .19 .52 . .
+Forum answer posted (Y/N) .30 .01 .31 .27 . .
+TABLE 2 Multiple linear regression on final exam grade with
+(1) MOOC activity counts and (2) MOOC activity counts and
+past performance
+Variable
+(1) MOOC
+activities
+(2) MOOC activities
+and past performance
+BpB p
+Videos started −0.43 .03
+Unique videos finished −0.35 .01
+Quizzes finished 0.19 .02 0.39 .02
+Graded quizzes passed 0.44 <.01
+Resources read −0.19 <.01
+Unique resources read 0.48 <.001 0.32 .02
+Peer assignments started 0.22 .02 0.80 <.01
+Peer assignment finished −0.28 .04 −0.67 <.01
+Forum answer posted 0.15 .06
+Past performance 0.33 .11
+R
+2 .52 .75
+Cross‐validated R2 .46 ‐a
+N 91 26
+Note. Constants omitted from the table, standardized betas reported for all
+variables. Predictors with p value >.2 were removed from the model.
+MOOC = massive open online course.
+aSample size too small for tenfold cross‐validation."
+2018 - Predicting student performance in a blended MOOC.pdf,"We expected that past performance would have an influence on
+the effects of MOOC activities on final exam grade. Therefore, in
+the second model, past performance was added as control variable.
+The final model consisted of videos started, quizzes finished, (unique)
+resources read, peer assignment started and finished, and past perfor-
+mance (Table 2, Model 2). Combined, these variables accounted for
+75% of the variance in final grade. Thus, adding past performance
+improved the prediction accuracy. However, it should be noted that
+past performance data were only available for 26 students, resulting
+in a small sample. With this many variables and small number of stu-
+dents, the model could easily be overfitted. Unfortunately, this could
+not be determined, because the sample size was too small for tenfold
+cross‐validation.
+4.2 | Specific course item frequencies
+Next to the general activity frequencies, specific course item frequen-
+cies were analysed. Highlights of the use per specific course item can
+be found in Table 3; the complete table is presented as Table A1. On
+average, videos were started 110 times by 80 unique students and fin-
+ished 233 times by 76 unique students. This means that the beginning
+of videos (first 5 s) was watched less often than the end of videos (last
+5 s), whereas only a few students dropped off during videos. Thus,
+students more often replayed the end of videos, perhaps because this
+part was more interesting or difficult than the beginning. As expected,
+the number of students who watched a video dropped over time, indi-
+cating that some students dropped off during the course.
+On average, each video was watched 2.18 times. Especially the
+videos at the end of Module 3 were replayed more frequently. This
+may indicate that these videos are more difficult to understand, more
+interesting to watch, or are needed for a specific assignment. The
+quizzes, and especially the graded quizzes, were attempted more often
+than the videos. One quiz“Calculating optimal periodic schedules and
+their latencies” was even attempted more than 13 times, on average.
+All resources were accessed mostly only once.
+Correlational analyses between the specific course items and
+final exam grade showed that 65% of the course items correlated
+positively with final exam grade. All quizzes, except the first quiz,
+were significantly related with final exam grade, with a small to mod-
+erate effect size (rs = .20–.40, p < .05). Moreover, the effect sizes
+increased during the course, up to effect sizes of .54 at the end of
+Module 3. This indicates that course items later in the course have
+more effect on final exam grade, perhaps because some students
+already dropped off by then or these materials were assessed more
+in the final exam. The resource, “materials created by fellow stu-
+dents,” a course summary made by one of the students, had the
+highest effect size (r = .59, p < .001).
+Specific course items frequencies were not used to predict stu-
+dent performance, as these frequencies show high collinearity and
+the number of variables would be too much for reliable prediction
+for this relatively small sample size.
+4.3 | Order of MOOC activities
+Lastly, the order of MOOC activities was examined. First, a dotted
+chart was generated to determine whether the students used the con-
+tent in the provided order and timing of the MOOC (Figure 2). The
+results showed that the students in general stuck to the provided
+order. In the first week, they primarily used course items from the first
+module in the MOOC. In the second week, students mainly used items
+from Module 2 and occasionally looked back to resources provided in
+the first module. Thereafter, students accessed course items of the
+third module but spread out over 2 to 3 weeks. Occasionally, course
+items from the first two modules were (re)visited. Thereafter (just
+TABLE 3 Highlights of specific course item use: Number of students, average number of attempts, and Pearson correlation with final exam grade
+per course item
+Module
+No. of students Average
+attemptsStart Finish Correlation r
+1 Introduction 88 86 1.57 .17
+Basic modeling ideas 89 89 4.30 .28**
+Modeling Warehouse 13 88 70 3.44 .20
+Peer‐reviewed assignment 50 43 6.11 .17
+2 Warning prepare for some set theory! 87 83 1.50 .19
+Formalizing periodic scheduling 77 75 2.03 .19
+About the next quiz 76 1.07 .26*
+Formalizing performance properties 71 61 3.20 .30**
+3 Running example 83 82 1.98 .41***
+Summarize! 72 54 2.17 .22**
+The boot‐up time of a dataflow graph 73 72 2.21 .54***
+Calculating optimal periodic schedules and their latencies 70 38 13.17 .40***
+4 One final example 73 63 2.08 .40***
+Material created by fellow students 48 1.00 .59***
+Video Quiz Practice quiz Resource Peer‐reviewed assignment
+Note. Course items are shown in order of appearance in the course. Full table can be found in Table A1.
+*p < .05. **p < .01. ***p < .001.
+CONIJN ET AL. 621
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","We expected that past performance would have an influence on
+the effects of MOOC activities on final exam grade. Therefore, in
+the second model, past performance was added as control variable.
+The final model consisted of videos started, quizzes finished, (unique)
+resources read, peer assignment started and finished, and past perfor-
+mance (Table 2, Model 2). Combined, these variables accounted for
+75% of the variance in final grade. Thus, adding past performance
+improved the prediction accuracy. However, it should be noted that
+past performance data were only available for 26 students, resulting
+in a small sample. With this many variables and small number of stu-
+dents, the model could easily be overfitted. Unfortunately, this could
+not be determined, because the sample size was too small for tenfold
+cross‐validation.
+4.2 | Specific course item frequencies
+Next to the general activity frequencies, specific course item frequen-
+cies were analysed. Highlights of the use per specific course item can
+be found in Table 3; the complete table is presented as Table A1. On
+average, videos were started 110 times by 80 unique students and fin-
+ished 233 times by 76 unique students. This means that the beginning
+of videos (first 5 s) was watched less often than the end of videos (last
+5 s), whereas only a few students dropped off during videos. Thus,
+students more often replayed the end of videos, perhaps because this
+part was more interesting or difficult than the beginning. As expected,
+the number of students who watched a video dropped over time, indi-
+cating that some students dropped off during the course.
+On average, each video was watched 2.18 times. Especially the
+videos at the end of Module 3 were replayed more frequently. This
+may indicate that these videos are more difficult to understand, more
+interesting to watch, or are needed for a specific assignment. The
+quizzes, and especially the graded quizzes, were attempted more often
+than the videos. One quiz“Calculating optimal periodic schedules and
+their latencies” was even attempted more than 13 times, on average.
+All resources were accessed mostly only once.
+Correlational analyses between the specific course items and
+final exam grade showed that 65% of the course items correlated
+positively with final exam grade. All quizzes, except the first quiz,
+were significantly related with final exam grade, with a small to mod-
+erate effect size (rs = .20–.40, p < .05). Moreover, the effect sizes
+increased during the course, up to effect sizes of .54 at the end of
+Module 3. This indicates that course items later in the course have
+more effect on final exam grade, perhaps because some students
+already dropped off by then or these materials were assessed more
+in the final exam. The resource, “materials created by fellow stu-
+dents,” a course summary made by one of the students, had the
+highest effect size (r = .59, p < .001).
+Specific course items frequencies were not used to predict stu-
+dent performance, as these frequencies show high collinearity and
+the number of variables would be too much for reliable prediction
+for this relatively small sample size.
+4.3 | Order of MOOC activities
+Lastly, the order of MOOC activities was examined. First, a dotted
+chart was generated to determine whether the students used the con-
+tent in the provided order and timing of the MOOC (Figure 2). The
+results showed that the students in general stuck to the provided
+order. In the first week, they primarily used course items from the first
+module in the MOOC. In the second week, students mainly used items
+from Module 2 and occasionally looked back to resources provided in
+the first module. Thereafter, students accessed course items of the
+third module but spread out over 2 to 3 weeks. Occasionally, course
+items from the first two modules were (re)visited. Thereafter (just"
+2018 - Predicting student performance in a blended MOOC.pdf,"before the Christmas break), course items of the last module of the
+MOOC were increasingly used. After the Christmas break, course
+items of all modules were revisited, indicating that students were
+reviewing all content in the last week(s) before the exam.
+The dotted chart shows some differences in the order and timing
+of the activities between students who passed and students who
+failed the final exam. On average, students who passed the exam
+started earlier with the content of the second module, compared with
+students who failed. Moreover, the students who passed the exam
+showed more constant activity in the MOOC during the whole course,
+compared with students who failed, who almost did not use the
+MOOC in the third and fourth weeks of the course. Lastly, students
+who passed the final exam more often revisited the course content
+in the last week(s) before the exam, revisited more course items, and
+started earlier with revisiting the course items, compared with stu-
+dents who failed. Thus, passing students spread their learning over
+more days compared with failing students.
+To determine differences in the order of specific activities
+between students who passed and students who failed, two fuzzy
+models were created for both groups. For simplicity, only finished
+activities were included, using the first time the activity was finished
+(see Figure 3). For readability, the activities that show the same linear
+order as in which they were provided in the MOOC are merged and
+represented by a dotted arrow.
+Both models show that most students started with the introduc-
+tion video and followed the provided order of activities at least until
+half of the videos in the first module. Thereafter, some students
+started to skip the quizzes (e.g.,“Modeling warehouse 13”). The activ-
+ities in Module 2 were watched in linear order, whereas activities in
+Modules 3 and 4 were accessed less linearly: Students started skipping
+videos and quizzes and accessed some of the videos and quizzes in a
+different order than provided in the MOOC.
+When comparing the models for students who passed with the
+students who failed, a few differences can be found. Students who
+passed the final exam showed somewhat higher significance for most
+activities; thus, less activities were skipped, compared with students
+who failed. Contrary to the students who failed, some students
+who passed did not start with the introduction video; they seemed
+to go straight to the content they needed. In general, though, there
+is little difference between the order of the activities for students
+FIGURE 2 Dotted chart of LMS clicks for
+each user during the on‐campus course,
+categorized by massive open online course
+module, sorted by final exam grade of the user
+622 CONIJN ET AL.
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","before the Christmas break), course items of the last module of the
+MOOC were increasingly used. After the Christmas break, course
+items of all modules were revisited, indicating that students were
+reviewing all content in the last week(s) before the exam.
+The dotted chart shows some differences in the order and timing
+of the activities between students who passed and students who
+failed the final exam. On average, students who passed the exam
+started earlier with the content of the second module, compared with
+students who failed. Moreover, the students who passed the exam
+showed more constant activity in the MOOC during the whole course,
+compared with students who failed, who almost did not use the
+MOOC in the third and fourth weeks of the course. Lastly, students
+who passed the final exam more often revisited the course content
+in the last week(s) before the exam, revisited more course items, and
+started earlier with revisiting the course items, compared with stu-
+dents who failed. Thus, passing students spread their learning over
+more days compared with failing students.
+To determine differences in the order of specific activities
+between students who passed and students who failed, two fuzzy
+models were created for both groups. For simplicity, only finished
+activities were included, using the first time the activity was finished
+(see Figure 3). For readability, the activities that show the same linear
+order as in which they were provided in the MOOC are merged and
+represented by a dotted arrow.
+Both models show that most students started with the introduc-
+tion video and followed the provided order of activities at least until
+half of the videos in the first module. Thereafter, some students
+started to skip the quizzes (e.g.,“Modeling warehouse 13”). The activ-
+ities in Module 2 were watched in linear order, whereas activities in
+Modules 3 and 4 were accessed less linearly: Students started skipping
+videos and quizzes and accessed some of the videos and quizzes in a
+different order than provided in the MOOC.
+When comparing the models for students who passed with the
+students who failed, a few differences can be found. Students who
+passed the final exam showed somewhat higher significance for most
+activities; thus, less activities were skipped, compared with students
+who failed. Contrary to the students who failed, some students
+who passed did not start with the introduction video; they seemed
+to go straight to the content they needed. In general, though, there
+is little difference between the order of the activities for students"
+2018 - Predicting student performance in a blended MOOC.pdf,"who passed and failed. Thus, there seems to be little relation
+between the order of activities in this MOOC and student perfor-
+mance in the on‐campus course.
+5 | DISCUSSION
+This study aimed to determine how different measures of MOOC
+data can be used to identify points of improvement in MOOCs. Three
+main issues in the current literature were addressed. First, the current
+definition of student performance as MOOC completion (e.g., de
+Barba et al., 2016; Ramesh et al., 2014) is not entirely suitable for
+improving student performance. Second, general frequencies of
+activities as predictors of student performance are not insightful for
+MOOC improvement. Lastly, added information such as order of
+activities and past performance need to be added to translate the
+predictions into actionable information. By addressing these issues,
+this study took a first step from descriptive learning analytics towards
+explanatory learning analytics (Bain & Drengenberg, 2016).
+Students might have other learning goals than completing the
+MOOC (Clow, 2013; Koller et al., 2013). Therefore, we defined stu-
+dent performance as obtaining personal learning objectives and only
+included students who (presumably) shared as a learning objective:
+completing the on‐campus course. This resulted in a completely dis-
+tinct picture. Although only 2% of the 2,123 MOOC students com-
+pleted the MOOC, 51% of the 91 students studied achieved their
+learning objectives. The percentages are quite similar to a recent
+study, which showed that 5.6–6.5% of the students completed the
+MOOC, whereas 59–70% of the students achieved their learning
+objectives (Henderikx et al., 2017). As Henderikx et al. (2017) argued,
+the achievement of learning objectives gives a more nuanced insight
+into student performance. In addition, we state that this definition is
+more insightful for MOOC (re)design and improvement.
+Earlier work already showed that being active in an MOOC is pos-
+itively related with MOOC completion. By defining student perfor-
+mance as achieving personal learning objectives, we also found that
+all activities in the MOOC positively correlated with final grades in
+the on‐campus course. This implies that being active in an MOOC pos-
+itively relates to student performance in the on‐campus course. How-
+ever, when controlling for past performance, activity frequencies were
+not significantly related with final exam grade. Moreover, for students
+with low past performance, some activities even showed a negative
+trend. Consequently, being more active in an MOOC does not always
+have a positive influence on final exam grade, especially not when stu-
+dents have low past performance. Future work with larger samples in
+other contexts and courses should determine under what conditions
+being active in an MOOC has a positive influence on final exam grade,
+while controlling for past performance.
+That being active in the MOOC generally leads to better course
+performance does not provide much insight for MOOC (re)design.
+By adding specific course item frequencies and the order of activities,
+we showed that added features can provide more insight in MOOC
+FIGURE 3 Fuzzy models for students who failed (a) and passed (b) the course, coloured by massive open online course module. Note that
+activities showing linear order are merged and represented by a dotted arrow. Numbers show the significance of the activity [Colour figure can
+be viewed at wileyonlinelibrary.com]
+CONIJN ET AL. 623
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","who passed and failed. Thus, there seems to be little relation
+between the order of activities in this MOOC and student perfor-
+mance in the on‐campus course.
+5 | DISCUSSION
+This study aimed to determine how different measures of MOOC
+data can be used to identify points of improvement in MOOCs. Three
+main issues in the current literature were addressed. First, the current
+definition of student performance as MOOC completion (e.g., de
+Barba et al., 2016; Ramesh et al., 2014) is not entirely suitable for
+improving student performance. Second, general frequencies of
+activities as predictors of student performance are not insightful for
+MOOC improvement. Lastly, added information such as order of
+activities and past performance need to be added to translate the
+predictions into actionable information. By addressing these issues,
+this study took a first step from descriptive learning analytics towards
+explanatory learning analytics (Bain & Drengenberg, 2016).
+Students might have other learning goals than completing the
+MOOC (Clow, 2013; Koller et al., 2013). Therefore, we defined stu-
+dent performance as obtaining personal learning objectives and only
+included students who (presumably) shared as a learning objective:
+completing the on‐campus course. This resulted in a completely dis-
+tinct picture. Although only 2% of the 2,123 MOOC students com-
+pleted the MOOC, 51% of the 91 students studied achieved their
+learning objectives. The percentages are quite similar to a recent
+study, which showed that 5.6–6.5% of the students completed the
+MOOC, whereas 59–70% of the students achieved their learning
+objectives (Henderikx et al., 2017). As Henderikx et al. (2017) argued,
+the achievement of learning objectives gives a more nuanced insight
+into student performance. In addition, we state that this definition is
+more insightful for MOOC (re)design and improvement.
+Earlier work already showed that being active in an MOOC is pos-
+itively related with MOOC completion. By defining student perfor-
+mance as achieving personal learning objectives, we also found that
+all activities in the MOOC positively correlated with final grades in
+the on‐campus course. This implies that being active in an MOOC pos-
+itively relates to student performance in the on‐campus course. How-
+ever, when controlling for past performance, activity frequencies were
+not significantly related with final exam grade. Moreover, for students
+with low past performance, some activities even showed a negative
+trend. Consequently, being more active in an MOOC does not always
+have a positive influence on final exam grade, especially not when stu-
+dents have low past performance. Future work with larger samples in
+other contexts and courses should determine under what conditions
+being active in an MOOC has a positive influence on final exam grade,
+while controlling for past performance.
+That being active in the MOOC generally leads to better course
+performance does not provide much insight for MOOC (re)design.
+By adding specific course item frequencies and the order of activities,
+we showed that added features can provide more insight in MOOC
+FIGURE 3 Fuzzy models for students who failed (a) and passed (b) the course, coloured by massive open online course module. Note that
+activities showing linear order are merged and represented by a dotted arrow. Numbers show the significance of the activity [Colour figure can
+be viewed at wileyonlinelibrary.com]"
+2018 - Predicting student performance in a blended MOOC.pdf,"improvement and, moreover, can improve the prediction. The analyses
+of specific course items showed that the attempts per course item
+increased during the MOOC, with especially videos at the end of
+Module 3 watched and replayed more often than other videos.
+Replaying videos can be related to higher engagement in the course:
+Students who more often replay videos are less likely to drop out
+(Sinha et al., 2014). The course items at the end of the MOOC
+also showed higher correlations with final grade. This could be
+explained by the materials at the end being also the exam materials,
+whereas the materials at the beginning is considered“introductory”
+by the teacher.
+The analyses of the order of activities showed that students who
+passed the final exam spread their learning over more days compared
+with students who failed. This can be explained by the spacing effect,
+which states that learning is more effective when it is spread over time
+(Hintzman, 1974).
+Van den Beemt et al. (2017) found that students who failed
+showed a less structured path through the learning materials than
+students who passed. An explanation could be that students have
+different learning objectives and might be only looking for specific
+information without completing the course and hence follow a less
+structured path. Indeed, when keeping learning objectives constant,
+we found little differences in the order of activities between students
+who passed and students who failed. However, due to the large num-
+ber of course items in the current study, only the first use of a course
+item was analysed. Future work should also include multiple attempts,
+to determine differences in how passing and failing students return to
+previously accessed content.
+Adding specific course item frequencies and the order of activities
+indeed provided more insight into the relation between MOOC activ-
+ity and student performance. To understand these results and trans-
+late them to actionable feedback, additional information in the form
+of course evaluations was added. The course evaluations showed that
+the students perceived the course as rather difficult and wanted to
+have more examples and learning materials available. Although the
+course was found to be difficult, students rarely used the forum for
+help. Students indicated that they were not confident enough with
+their work to use the forum or thought it was the teacher's responsi-
+bility to answer questions. Additional analyses showed that only stu-
+dents with high past performance (grade > 6.5) posted on the forum.
+Therefore, it may be good to encourage posting on forums, especially
+for students with low past performance. This could be done by provid-
+ing incentives for forum use. For example, Anderson, Huttenlocher,
+Kleinberg, and Leskovec (2014) found that students viewed and voted
+on more posts when a badge system was used to reward the use of
+the discussion forum.
+The quizzes “Which is a refinement of which ” in Module 1,
+“Calculate some periodic schedules”, and“Calculating optimal periodic
+schedules and their latencies” in Module 4 knew a high number of
+attempts: 8, 9, and 13 attempts on average, respectively. These find-
+ings can be explained by the course evaluation; two students specifi-
+cally stated that the calculations of periodic schedules were too hard
+and that the videos did not sufficiently bridge the gap between theory
+and application. To improve the MOOC, gentler introductory quizzes
+and better explanations and examples in videos are needed here.
+5.1 | Limitations and future work
+This study knows several limitations that in turn can be used as
+starting point for future research. First, there were limitations in the
+data obtained from the MOOC. Data were available about the start
+and completion of videos, indicating whether the student watched
+the first and last 5 s, respectively. Here, we assumed that when stu-
+dents started and completed a video, they watched the whole video.
+However, it is unknown if the students watched the whole video or
+skipped the middle part. Future work should include clickstream data
+(Brinton et al., 2015; Sinha et al., 2014), to have a more reliable mea-
+sure of video use. Additionally, clickstream data could further specify
+improvements for specific parts within videos, for example, by auto-
+matically labelling highly used parts in the video, to ease video brows-
+ing (Kim et al., 2014). Due to privacy policies, we were not able to use
+and combine all available data sources. Therefore, the sample sizes are
+limited. However, preliminary analyses showed that the sample with
+past performance available can be generalized to the whole sample.
+Second, we assumed that all on‐campus students had similar
+learning objectives, which turned out to be an oversimplification. Yet
+the learning objectives of on‐campus students are more similar than
+the learning objectives of all students in the MOOC. In future work,
+learning objectives could be measured in the form of a preques-
+tionnaire (Henderikx et al., 2017) and perhaps also during the MOOC,
+considering that learning objectives might not be known from the
+beginning and might change over time. With learning objectives spec-
+ified, it could be determined how the behaviour in MOOCs differs
+across students with different learning objectives, which in turn can
+be used for more personalized interventions.
+Third, we only included past performance as background informa-
+tion. However, other background information has been shown useful
+to improve learning and teaching as well. For example, learning dispo-
+sitions are highly valuable for timely feedback generation (Tempelaar,
+Rienties, & Giesbers, 2015). In addition, self‐regulated learning could
+be measured to support students' control of their own learning pro-
+cesses in MOOCs (Jansen, van Leeuwen, Janssen, Kester, & Kalz,
+2017). Future work should also include these background variables,
+to obtain a more complete understanding of students' behaviour in
+the MOOC, which could be used for more personalized improvements
+and student support.
+5.2 | Practical implications
+In this study, we showed that MOOC activities can be a reliable indi-
+cator of student performance in the blended course. This is in line with
+literature on blended learning in MOOCs, which shows that there is
+often no difference in learning outcomes between the MOOC and
+established learning (Ashby et al., 2011). Thus, to improve learning
+outcomes, it is equally important to improve the MOOC as improving
+traditional education and learning materials.
+To improve an MOOC based on the prediction of student perfor-
+mance, several points need to be considered. First, the definition
+of student performance has an influence on the implications for
+MOOC (re)design (cf. Henderikx et al., 2017). For this, the goal of your
+MOOC (re)design needs to be considered: Do you want to improve
+624 CONIJN ET AL.
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","improvement and, moreover, can improve the prediction. The analyses
+of specific course items showed that the attempts per course item
+increased during the MOOC, with especially videos at the end of
+Module 3 watched and replayed more often than other videos.
+Replaying videos can be related to higher engagement in the course:
+Students who more often replay videos are less likely to drop out. The course items at the end of the MOOC
+also showed higher correlations with final grade. This could be
+explained by the materials at the end being also the exam materials,
+whereas the materials at the beginning is considered“introductory”
+by the teacher.
+The analyses of the order of activities showed that students who
+passed the final exam spread their learning over more days compared
+with students who failed. This can be explained by the spacing effect,
+which states that learning is more effective when it is spread over time.
+Van den Beemt et al. (2017) found that students who failed
+showed a less structured path through the learning materials than
+students who passed. An explanation could be that students have
+different learning objectives and might be only looking for specific
+information without completing the course and hence follow a less
+structured path. Indeed, when keeping learning objectives constant,
+we found little differences in the order of activities between students
+who passed and students who failed. However, due to the large num-
+ber of course items in the current study, only the first use of a course
+item was analysed. Future work should also include multiple attempts,
+to determine differences in how passing and failing students return to
+previously accessed content.
+Adding specific course item frequencies and the order of activities
+indeed provided more insight into the relation between MOOC activ-
+ity and student performance. To understand these results and trans-
+late them to actionable feedback, additional information in the form
+of course evaluations was added. The course evaluations showed that
+the students perceived the course as rather difficult and wanted to
+have more examples and learning materials available. Although the
+course was found to be difficult, students rarely used the forum for
+help. Students indicated that they were not confident enough with
+their work to use the forum or thought it was the teacher's responsi-
+bility to answer questions. Additional analyses showed that only stu-
+dents with high past performance (grade > 6.5) posted on the forum.
+Therefore, it may be good to encourage posting on forums, especially
+for students with low past performance. This could be done by provid-
+ing incentives for forum use. For example, Anderson, Huttenlocher,
+Kleinberg, and Leskovec (2014) found that students viewed and voted
+on more posts when a badge system was used to reward the use of
+the discussion forum.
+The quizzes “Which is a refinement of which ” in Module 1,
+“Calculate some periodic schedules”, and“Calculating optimal periodic
+schedules and their latencies” in Module 4 knew a high number of
+attempts: 8, 9, and 13 attempts on average, respectively. These find-
+ings can be explained by the course evaluation; two students specifi-
+cally stated that the calculations of periodic schedules were too hard
+and that the videos did not sufficiently bridge the gap between theory
+and application. To improve the MOOC, gentler introductory quizzes
+and better explanations and examples in videos are needed here.
+5.1 | Limitations and future work
+This study knows several limitations that in turn can be used as
+starting point for future research. First, there were limitations in the
+data obtained from the MOOC. Data were available about the start
+and completion of videos, indicating whether the student watched
+the first and last 5 s, respectively. Here, we assumed that when stu-
+dents started and completed a video, they watched the whole video.
+However, it is unknown if the students watched the whole video or
+skipped the middle part. Future work should include clickstream data
+, to have a more reliable mea-
+sure of video use. Additionally, clickstream data could further specify
+improvements for specific parts within videos, for example, by auto-
+matically labelling highly used parts in the video, to ease video brows-
+ing. Due to privacy policies, we were not able to use
+and combine all available data sources. Therefore, the sample sizes are
+limited. However, preliminary analyses showed that the sample with
+past performance available can be generalized to the whole sample.
+Second, we assumed that all on‐campus students had similar
+learning objectives, which turned out to be an oversimplification. Yet
+the learning objectives of on‐campus students are more similar than
+the learning objectives of all students in the MOOC. In future work,
+learning objectives could be measured in the form of a preques-
+tionnaire and perhaps also during the MOOC,
+considering that learning objectives might not be known from the
+beginning and might change over time. With learning objectives spec-
+ified, it could be determined how the behaviour in MOOCs differs
+across students with different learning objectives, which in turn can
+be used for more personalized interventions.
+Third, we only included past performance as background informa-
+tion. However, other background information has been shown useful
+to improve learning and teaching as well. For example, learning dispo-
+sitions are highly valuable for timely feedback generation. In addition, self‐regulated learning could
+be measured to support students' control of their own learning pro-
+cesses in MOOCs. Future work should also include these background variables,
+to obtain a more complete understanding of students' behaviour in
+the MOOC, which could be used for more personalized improvements
+and student support.
+5.2 | Practical implications
+In this study, we showed that MOOC activities can be a reliable indi-
+cator of student performance in the blended course. This is in line with
+literature on blended learning in MOOCs, which shows that there is
+often no difference in learning outcomes between the MOOC and
+established learning. Thus, to improve learning
+outcomes, it is equally important to improve the MOOC as improving
+traditional education and learning materials.
+To improve an MOOC based on the prediction of student perfor-
+mance, several points need to be considered. First, the definition
+of student performance has an influence on the implications for
+MOOC (re)design (cf. Henderikx et al., 2017). For this, the goal of your
+MOOC (re)design needs to be considered: Do you want to improve"
+2018 - Predicting student performance in a blended MOOC.pdf,"MOOC completion rates, or do you want to aid students in achieving
+their learning objectives?
+Second, the indicators used to assess student performance have
+a large influence on identifying the points of improvement in the
+MOOC. We showed that specific course item frequencies or the
+order of activities can provide more insight into where the MOOC
+needs to be improved. The specific course item frequencies can
+show where problems can be expected. For example, the high num-
+ber of replays of the end of the videos indicates that the content on
+the end of the videos needs to be reconsidered and if possible expla-
+nations or more practical examples should be added. In addition, the
+positive relation between performance and students making and
+sharing their own materials online can be read as a call to stimulate
+students to actively summarize learning content and share it with
+their peers. This would offer another way to interact with the con-
+tent and learning materials.
+Third, the addition of other proximal data, such as motivation,
+past performance, and future plans, could lead to more personalized
+and adaptive improvements in the MOOC. Lastly, it is useful to add
+additional information such as course evaluations. Course evalua-
+tions do not necessarily relate to student performance; thus, it is
+necessary to be cautious to use the evaluations directly to improve
+the MOOC (Rienties & Toetenel, 2016). Yet they can be useful to
+interpret the analyses on MOOC behaviour and translate them into
+actionable information.
+6 | CONCLUSION
+In this study, we showed that activity frequencies, specific course item
+frequencies, and the order of activities all have an influence on stu-
+dent performance and can be used to identify points of improvement.
+Although activity frequencies result in more generalizable findings for
+the prediction of student performance, specific course item frequen-
+cies and order of activities show more value for identifying MOOC
+improvements. The course evaluations showed to be useful to inter-
+pret the findings. In the future, empirical studies are needed to verify
+whether improvements actually lead to better learning and teaching.
+This study showed initially which data are useful and how these can
+be used to achieve improvements in MOOCs. This is a first step from
+descriptive analytics towards more explanatory analytics.
+ORCID
+R. Conijn
+http://orcid.org/0000-0002-6316-4892
+REFERENCES
+Adamopoulos, P. (2013). What makes a great MOOC? An interdisciplinary
+analysis of student retention in online courses. InThirty Fourth Interna-
+tional Conference on Information Systems. Milan.
+Allione, G., & Stein, R. M. (2016). Mass attrition: An analysis of drop out
+from principles of microeconomics MOOC. The Journal of Economic
+Education, 47(2), 174–186.
+Anderson, A., Huttenlocher, D., Kleinberg, J., & Leskovec, J. (2014). Engag-
+ing with massive online courses. InProceedings of the 23rd International
+Conference on World Wide Web, pp. 687–698. ACM.
+Ashby, J., Sadera, W. A., & McNary, S. W. (2011). Comparing student suc-
+cess between developmental math courses offered online, blended,
+and face‐to‐face. Journal of Interactive Online Learning, 10(3), 128–140.
+Bain, A., & Drengenberg, N. (2016). Transforming the measurement of
+learning and teaching in higher education. New York, NY: Routledge.
+Baker, R. S. J. d., & Yacef, K. (2009). The state of educational data mining in
+2009: A review and future visions.JEDM‐Journal of Educational Data
+Mining, 1(1), 3–17.
+Breslow, L., Pritchard, D. E., DeBoer, J., Stump, G. S., Ho, A. D., & Seaton,
+D. T. (2013). Studying learning in the worldwide classroom: Research
+into edX's first MOOC.Research & Practice in Assessment, 8,1 3–25.
+Brinton, C. G., Buccapatnam, S., Chiang, M., & Poor, H. V. (2015). Mining
+MOOC clickstreams: On the relationship between learner video ‐
+watching behavior and performance. InACD Conference on Knowledge
+Discovery and Data Mining (SIGKDD).
+Buckingham Shum, S., & Ferguson, R. (2012). Social learning analytics.
+Educational Technology & Society, 15(3), 3–26.
+Clow, D. (2013). MOOCs and the funnel of participation. InProceedings of
+the Third International Conference on Learning Analytics and Knowledge,
+pp. 185–189. ACM.
+Conde, M. Á., & Hernández‐García, Á. (2015). Learning analytics for educa-
+tional decision making.Computers in Human Behavior, 47,1 –3.
+Conijn, R., Snijders, C., Kleingeld, A., & Matzat, U. (2017). Predicting
+student performance from LMS data: A comparison of 17 blended
+courses using Moodle LMS.IEEE Transactions on Learning Technologies.,
+10,1 7–29.
+Daniels, B. (2012). CROSSFOLD: Stata module to perform k‐fold cross‐
+validation. Boston College Department of Economics. Retrieved from
+https://ideas.repec.org/c/boc/bocode/s457426.html
+de Barba, P. G., Kennedy, G. E., & Ainley, M. D. (2016). The role of
+students' motivation and participation in predicting performance in a
+MOOC. Journal of Computer Assisted Learning, 32(3), 218–231.
+Dollinger, S. J., Matyja, A. M., & Huber, J. L. (2008). Which factors best
+account for academic success: Those which college students can
+control or those they cannot?Journal of Research in Personality, 42(4),
+872–885.
+Downes, S. (2008). Places to go: Connectivism & connective knowledge.
+Innovate: Journal of Online Education, 5(1), 6.
+Drachsler, H., & Kalz, M. (2016). The MOOC and learning analytics innova-
+tion cycle (MOLAC): A reflective summary of ongoing research and its
+challenges. Journal of Computer Assisted Learning, 32(3), 281–290.
+Eisenberg, M., & Fischer, G. (2014). MOOCs: A perspective from the learn-
+ing sciences. In Learning and Becoming in Practice: 11th International
+Conference of the Learning Sciences (ICLS).
+Friesen, N. (2012). Report: Defining blended learning. Retrieved from
+learningspaces.org/papers/Defining_Blended_Learning_NF.pdf
+Günther, C. W., & Van der Aalst, W. M. P. (2007). Fuzzy mining—Adaptive
+process simplification based on multi‐perspective metrics. In Interna-
+tional Conference on Business Process Management , pp. 328 –343.
+Springer Berlin Heidelberg.
+Guo, P. J., Kim, J., & Rubin, R. (2014). How video production affects
+student engagement: An empirical study of MOOC videos. In Pro-
+ceedings of the First ACM Conference on Learning @ Scale Conference
+(pp. 41–50). New York, NY, USA: ACM.
+Hattie, J. (2008). Visible learning: A synthesis of over 800 meta‐analyses
+relating to achievement. London, UK: Routledge.
+Henderikx, M. A., Kreijns, K., & Kalz, M. (2017). Refining success and drop-
+out in massive open online courses based on the intention–behavior
+gap. Distance Education, 38(3), 353–368.
+Hew, K. F., & Cheung, W. S. (2014). Students' and instructors' use of
+massive open online courses (MOOCs): Motivations and challenges.
+Educational Research Review, 12,4 5–58.
+CONIJN ET AL. 625
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","MOOC completion rates, or do you want to aid students in achieving
+their learning objectives?
+Second, the indicators used to assess student performance have
+a large influence on identifying the points of improvement in the
+MOOC. We showed that specific course item frequencies or the
+order of activities can provide more insight into where the MOOC
+needs to be improved. The specific course item frequencies can
+show where problems can be expected. For example, the high num-
+ber of replays of the end of the videos indicates that the content on
+the end of the videos needs to be reconsidered and if possible expla-
+nations or more practical examples should be added. In addition, the
+positive relation between performance and students making and
+sharing their own materials online can be read as a call to stimulate
+students to actively summarize learning content and share it with
+their peers. This would offer another way to interact with the con-
+tent and learning materials.
+Third, the addition of other proximal data, such as motivation,
+past performance, and future plans, could lead to more personalized
+and adaptive improvements in the MOOC. Lastly, it is useful to add
+additional information such as course evaluations. Course evalua-
+tions do not necessarily relate to student performance; thus, it is
+necessary to be cautious to use the evaluations directly to improve
+the MOOC. Yet they can be useful to
+interpret the analyses on MOOC behaviour and translate them into
+actionable information.
+6 | CONCLUSION
+In this study, we showed that activity frequencies, specific course item
+frequencies, and the order of activities all have an influence on stu-
+dent performance and can be used to identify points of improvement.
+Although activity frequencies result in more generalizable findings for
+the prediction of student performance, specific course item frequen-
+cies and order of activities show more value for identifying MOOC
+improvements. The course evaluations showed to be useful to inter-
+pret the findings. In the future, empirical studies are needed to verify
+whether improvements actually lead to better learning and teaching.
+This study showed initially which data are useful and how these can
+be used to achieve improvements in MOOCs. This is a first step from
+descriptive analytics towards more explanatory analytics.
+ORCID
+R. Conijn"
+2018 - Predicting student performance in a blended MOOC.pdf,"Hintzman, D. L. (1974). Theoretical implications of the spacing effect. In
+Theories in cognitive psychology: The Loyola Symposium(p. 386). Oxford,
+England: Lawrence Erlbaum.
+Jansen, R. S., van Leeuwen, A., Janssen, J., Kester, L., & Kalz, M. (2017).
+Validation of the self‐regulated online learning questionnaire.Journal
+of Computing in Higher Education, 29(1), 6–27.
+Jiang, S., Warschauer, M., Williams, A. E., O'Dowd, D., & Schenke, K.
+(2014). Predicting MOOC performance with week 1 behavior. In
+Proceedings of the 7th International Conference on Educational Data
+Mining, pp. 273–275.
+Jordan, K. (2015). MOOC completion rates. Retrieved April 5, 2016, from
+http://www.katyjordan.com/MOOCproject.html
+Kennedy, G., Coffrin, C., de Barba, P., & Corrin, L. (2015). Predicting success:
+How learners' prior knowledge, skills and activities predict MOOC per-
+formance. In Proceedings of the Fifth International Conference on
+Learning Analytics and Knowledge(pp. 136–140). New York, NY: ACM.
+Kim, J., Li, S.‐W., Cai, C. J., Gajos, K. Z., & Miller, R. C. (2014). Leveraging
+video interaction data and content analysis to improve video learning.
+In Proceedings of the CHI 2014 Learning Innovation at Scale Workshop.
+Koller, D., Ng, A., Do, C., & Chen, Z. (2013). Retention and intention in
+massive open online courses: In depth.Educause Review, 48(3), 62–63.
+Larson, D. K., & Sung, C.‐H. (2009). Comparing student performance:
+Online versus blended versus face‐to‐face. Journal of Asynchronous
+Learning Networks, 13(1), 31–42.
+Liyanagunawardena, T. R., Adams, A. A., & Williams, S. A. (2013). MOOCs:
+A systematic study of the published literature 2008 ‐2012. The
+International Review of Research in Open and Distributed Learning ,
+14(3), 202–227.
+Long, P., Siemens, G., Conole, G., & Gasevic, D. (2011).Proceedings of the
+1st International Conference on Learning Analytics and Knowledge. New
+York, NY: ACM.
+Owston, R., York, D., & Murtha, S. (2013). Student perceptions and
+achievement in a university blended learning strategic initiative.The
+Internet and Higher Education, 18,3 8–46.
+ProM (2016). (Version 6.6). Retrieved from http://www.promtools.org/
+Pursel, B. K., Zhang, L., Jablokow, K. W., Choi, G. W., & Velegol, D. (2016).
+Understanding MOOC students: Motivations and behaviours indicative
+of MOOC completion. Journal of Computer Assisted Learning, 32(3),
+202–217.
+Ramesh, A., Goldwasser, D., Huang, B., Iii, H. D., & Getoor, L. (2014).
+Learning latent engagement patterns of students in online courses. In
+Proceedings of the Twenty‐
+Eighth AAAI Conference on Artificial Intelli-
+gence, pp. 1272–1278. AAAI Press.
+Rienties, B., & Toetenel, L. (2016). The impact of learning design on stu-
+dent behaviour, satisfaction and performance: A cross ‐institutional
+comparison across 151 modules. Computers in Human Behavior, 60,
+333–341.
+Romero, C., & Ventura, S. (2010). Educational data mining: A review of the
+state of the art.IEEE Transactions on Systems, Man, and Cybernetics, Part
+C: Applications and Reviews, 40(6), 601–618. https://doi.org/10.1109/
+TSMCC.2010.2053532
+Romero, C., & Ventura, S. (2013). Data mining in education.Wiley Interdis-
+ciplinary Reviews: Data Mining and Knowledge Discovery, 3(1), 12–27.
+Siemens, G., & Baker, R. S. (2012). Learning analytics and educational data
+mining: towards communication and collaboration. In Proceedings of
+the 2nd International Conference on Learning Analytics and Knowledge
+(pp. 252–254). New York, NY: ACM.
+Sinha, T., Jermann, P., Li, N., & Dillenbourg, P. (2014). Your click decides
+your fate: Inferring information processing and attrition behavior from
+MOOC video clickstream interactions. InProceedings of the 2014 Con-
+ference on Empirical Methods in Natural Language Processing (EMNLP),
+pp. 3–14. Doha, Qatar.
+Tempelaar, D. T., Rienties, B., & Giesbers, B. (2015). In search for the most
+informative data for feedback generation: Learning analytics in a data‐
+rich context.Computers in Human Behavior, 47, 157–167.
+Van den Beemt, A. A. J., Buijs, J. C. A. M., & Van der Aalst, W. M. P. (2017).
+Students' structured learning behaviour in Massive Open Online
+Courses (MOOCs): a process mining and clustering approach. Paper
+presented at the Dutch/Flemish Educational Research Conference
+(ORD), June 2017, Antwerp, Belgium.
+Vo, H. M., Zhu, C., & Diep, N. A. (2017). The effect of blended learning
+on student performance at course‐level in higher education: A meta‐
+analysis. Studies in Educational Evaluation, 53,1 7–28.
+Yousef, A. M. F., Chatti, M. A., Schroeder, U., & Wosnitza, M. (2015). A
+usability evaluation of a blended MOOC environment: An experimental
+case study.The International Review of Research in Open and Distributed
+Learning, 16(2). https://doi.org/10.19173/irrodl.v16i2.2032
+Yousef, A. M. F., Chatti, M. A., Schroeder, U., Wosnitza, M., & Jakobs, H.
+(2014). MOOCs —A review of the state ‐of‐the‐art. In CSEDU (3) ,
+pp. 9–20.
+How to cite this article:Conijn R, Van den Beemt A, Cuijpers
+P. Predicting student performance in a blended MOOC.
+J Comput Assist Learn . 2018;34:615 –628.
+https://doi.org/
+10.1111/jcal.12270
+APPENDIX A
+FREQUENCIES OF SPECIFIC COURSE ITEMS IN THE MOOC
+TABLE A1 Number of students, average number of attempts, and Pearson correlation with final exam grade per course item
+Module
+No. of students Average
+attemptsStart Finish Correlation r
+1 Introduction 88 86 1.57 .17
+A single picture tells more than a thousand words 89 87 2.01 .13
+Consumption and production of tokens 88 88 2.13 .17
+Always ask yourself… 87 1.20 .12
+Modeling an intensive care unit 89 89 1.98 .12
+Modeling a wireless LAN radio 89 89 1.70 .22*
+(Continues)
+626 CONIJN ET AL.
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","APPENDIX A
+FREQUENCIES OF SPECIFIC COURSE ITEMS IN THE MOOC
+TABLE A1 Number of students, average number of attempts, and Pearson correlation with final exam grade per course item
+Module
+No. of students Average
+attemptsStart Finish Correlation r
+1 Introduction 88 86 1.57 .17
+A single picture tells more than a thousand words 89 87 2.01 .13
+Consumption and production of tokens 88 88 2.13 .17
+Always ask yourself… 87 1.20 .12
+Modeling an intensive care unit 89 89 1.98 .12
+Modeling a wireless LAN radio 89 89 1.70 .22*
+(Continues)"
+2018 - Predicting student performance in a blended MOOC.pdf,"TABLE A1 (Continued)
+Module
+No. of students Average
+attemptsStart Finish Correlation r
+Modeling and refining an industrial robot 88 89 2.18 .15
+Basic modeling ideas 89 89 4.30 .28**
+Modeling Warehouse 13 88 70 3.44 .20
+Pick your own system 89 89 1.58 .19
+Classes of Petri nets 89 88 2.36 .28**
+Causality, choice, and concurrency (modeling patterns) 88 88 2.50 .17
+Modeling features 87 82 6.13 .26*
+Refinement of consumption/production systems 88 85 2.61 .29
+Which is a refinement of which? 82 72 7.81 .29**
+Interpreting pictures for performance analysis 87 83 1.76 .19
+Draw your own model 84 81 1.67 .09
+Peer‐reviewed assignment 50 43 6.11 .17
+2 Warning prepare for some set theory! 87 83 1.50 .19
+Syntax and semantics 87 86 1.91 .26*
+The basics 87 85 2.01 .27**
+Extensions 85 83 1.90 .23*
+Bipartite graphs 82 78 3.31 .36***
+Prefix orders 85 83 2.64 .34**
+Exercise on prefix orders 84 81 2.25 .22*
+Proof that flows form a prefix order 83 72 2.06 .25*
+Formalizing interpretations as functions 84 81 2.33 .15
+Counting is order preserving 83 80 2.12 .21
+Thinking about observation functions 78 60 2.42 .29**
+Isomorphism 73 51 2.59 .24*
+Formalizing the Petri net interpretation 84 77 4.60 .18
+Proof that the number of tokens in a single‐rate dataflow cycle is constant 80 70 2.15 .23*
+Summarize! 69 43 2.33 .29**
+Formalizing timing 81 77 2.34 .17
+Formalizing eager scheduling 79 76 2.17 .19
+Formalizing periodic scheduling 77 75 2.03 .19
+About the next quiz 76 1.07 .26*
+Formalizing performance properties 71 61 3.20 .30**
+3 Running example 83 82 1.98 .41***
+Throughput is bounded by 1/MCM 83 82 3.26 .29**
+Proof—a 78 75 1.61 .23*
+Proof—b 75 69 1.80 .24*
+Proof—c 71 69 1.61 .18
+Proof—d 71 68 1.85 .20
+Proof—e 70 64 1.64 .26*
+Proof—f 66 63 1.78 .23*
+Proof—g 65 60 1.62 .23*
+Proof—h 65 56 1.59 .25*
+Proof—i 61 51 1.61 .25*
+Proof—j 56 51 1.50 .27**
+Slides of the proof 40 1.00 .06
+Summarize! 72 54 2.17 .22**
+The throughput bound is tight 77 74 2.47 .27*
+Calculating the MCM and worst‐case throughput 71 66 6.93 .39***
+Alternative proof in synchronization and linearity 70 1.01 .38***
+(Continues)
+CONIJN ET AL. 627
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","Module
+No. of students Average
+attemptsStart Finish Correlation r
+Modeling and refining an industrial robot
+Basic modeling ideas
+Modeling Warehouse 13
+Pick your own system
+Classes of Petri nets
+Causality, choice, and concurrency (modeling patterns)
+Modeling features
+Refinement of consumption/production systems
+Which is a refinement of which?
+Interpreting pictures for performance analysis
+Draw your own model
+Peer‐reviewed assignment
+2 Warning prepare for some set theory!
+Syntax and semantics
+The basics
+Extensions
+Bipartite graphs
+Prefix orders
+Exercise on prefix orders
+Proof that flows form a prefix order
+Formalizing interpretations as functions
+Counting is order preserving
+Thinking about observation functions
+Isomorphism
+Formalizing the Petri net interpretation
+Proof that the number of tokens in a single‐rate dataflow cycle is constant
+Summarize!
+Formalizing timing
+Formalizing eager scheduling
+Formalizing periodic scheduling
+About the next quiz
+Formalizing performance properties
+3 Running example
+Throughput is bounded by 1/MCM
+Proof—a
+Proof—b
+Proof—c
+Proof—d
+Proof—e
+Proof—f
+Proof—g
+Proof—h
+Proof—i
+Proof—j
+Slides of the proof
+Summarize!
+The throughput bound is tight
+Calculating the MCM and worst‐case throughput
+Alternative proof in synchronization and linearity
+(Continues)"
+2018 - Predicting student performance in a blended MOOC.pdf,"TABLE A1 (Continued)
+Module
+No. of students Average
+attemptsStart Finish Correlation r
+Periodic scheduling of a dataflow graph 79 77 4.04 .35***
+Calculate some periodic schedules 76 65 9.18 .40***
+Latency analysis of a periodic schedule 79 77 3.62 .46***
+Latency analysis of an eager schedule 75 73 2.51 .43***
+The formal definition of latency 73 72 2.03 .34***
+The boot‐up time of a dataflow graph 73 72 2.21 .54***
+Optimizing latency estimates w.r.t. boot‐up time 73 70 3.20 .51***
+Calculating optimal periodic schedules and their latencies 70 38 13.17 .40***
+Buffering and backpressure 72 69 2.52 .46***
+Calculating suitable buffer sizes 64 42 7.45 .40***
+4 One final example 73 63 2.08 .40***
+Assignment for TU/e, 3TU, and EIT: Modeling time‐division multiplexing 85 1.46 .14
+Material created by fellow students 48 1.00 .59***
+Video Quiz Practice quiz Resource Peer‐reviewed assignment
+Note. Course items are shown in order of appearance in the course. MCM = maximum cycle mean.
+*p < .05. **p < .01. ***p < .001.
+628 CONIJN ET AL.
+ 13652729, 2018, 5, Downloaded from https://onlinelibrary.wiley.com/doi/10.1111/jcal.12270 by UNIVERSITY OF EASTERN FINLAND, Wiley Online Library on [05/09/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License","4 One final example
+Assignment for TU/e, 3TU, and EIT: Modeling time‐division multiplexing
+Material created by fellow students
+Note. Course items are shown in order of appearance in the course. MCM = maximum cycle mean."

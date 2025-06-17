@@ -1,0 +1,1452 @@
+source,page_content,cleaned_page_content
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"Received February 14, 2020, accepted March 11, 2020, date of publication March 19, 2020, date of current version March 30, 2020.
+Digital Object Identifier 10.1 109/ACCESS.2020.2981905
+Using Data Mining Techniques to Predict Student
+Performance to Support Decision Making in
+University Admission Systems
+HANAN ABDULLAH MENGASH
+Information Systems Department, College of Computer and Information Sciences, Princess Nourah bint Abdulrahman University, Riyadh 11351, Saudi Arabia
+e-mail: hamengash@pnu.edu.sa
+This work was supported by the Deanship of Scientiﬁc Research at Princess Nourah bint Abdulrahman University through the Fast-track
+Research Funding Program.
+ABSTRACT An admissions system based on valid and reliable admissions criteria is very important
+to select candidates likely to perform well academically at institutions of higher education. This study
+focuses on ways to support universities in admissions decision making using data mining techniques to
+predict applicants’ academic performance at university. A data set of 2,039 students enrolled in a Computer
+Science and Information College of a Saudi public university from 2016 to 2019 was used to validate
+the proposed methodology. The results demonstrate that applicants’ early university performance can be
+predicted before admission based on certain pre-admission criteria (high school grade average, Scholastic
+Achievement Admission Test score, and General Aptitude Test score). The results also show that Scholastic
+Achievement Admission Test score is the pre-admission criterion that most accurately predicts future student
+performance. Therefore, this score should be assigned more weight in admissions systems. We also found
+that the Artiﬁcial Neural Network technique has an accuracy rate above 79%, making it superior to other
+classiﬁcation techniques considered (Decision Trees, Support Vector Machines, and Naïve Bayes).
+INDEX TERMS Data mining techniques, educational data mining, performance prediction, pre-admission
+criteria, student performance.
+I. INTRODUCTION
+Today, all higher education institutions, especially computer
+and engineering colleges, face challenges in the admissions
+process. Each university should strive for an admissions sys-
+tem based on valid and reliable admissions criteria that select
+candidates likely to succeed in its programs. In addition,
+each university should use the best possible techniques for
+predicting applicants’ future academic performance before
+admitting them. This would support university decision mak-
+ers as they set efﬁcient admissions criteria.
+However, most higher education institutions face chal-
+lenges when they analyze their large educational databases
+to predict students’ performance [1]. This is because they
+use only conventional statistical methods rather than new
+and efﬁcient predictive techniques such as Educational Data
+Mining (EDM), which is the most popular technique to
+The associate editor coordinating the review of this manuscript and
+approving it for publication was Fatih Emre Boran
+ .
+evaluate and predict students’ performance [2]–[6]. EDM
+is the process of extracting useful information and pat-
+terns from a huge educational database [2], which can
+then be used to predict students’ performance. As a
+result of better information, student performance can be
+more effectively improved through more effective strategic
+programs.
+In this context, this study focuses on supporting universi-
+ties in making admissions decisions through the application
+of data mining techniques to better predict applicants’ aca-
+demic performance before admission.
+More speciﬁcally, this study addresses the following
+questions:
+1) Is it possible to identify the admission criterion that
+most accurately predicts applicants’ future academic
+performance?
+2) Is it possible to predict applicants’ early academic
+performance before admitting them based on their
+pre-admission test scores?
+55462 This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/VOLUME 8, 2020","Using Data Mining Techniques to Predict Student
+Performance to Support Decision Making in
+University Admission Systems
+HANAN ABDULLAH MENGASH
+ABSTRACT An admissions system based on valid and reliable admissions criteria is very important
+to select candidates likely to perform well academically at institutions of higher education. This study
+focuses on ways to support universities in admissions decision making using data mining techniques to
+predict applicants’ academic performance at university. A data set of 2,039 students enrolled in a Computer
+Science and Information College of a Saudi public university from 2016 to 2019 was used to validate
+the proposed methodology. The results demonstrate that applicants’ early university performance can be
+predicted before admission based on certain pre-admission criteria (high school grade average, Scholastic
+Achievement Admission Test score, and General Aptitude Test score). The results also show that Scholastic
+Achievement Admission Test score is the pre-admission criterion that most accurately predicts future student
+performance. Therefore, this score should be assigned more weight in admissions systems. We also found
+that the Artiﬁcial Neural Network technique has an accuracy rate above 79%, making it superior to other
+classiﬁcation techniques considered (Decision Trees, Support Vector Machines, and Naïve Bayes).
+INDEX TERMS Data mining techniques, educational data mining, performance prediction, pre-admission
+criteria, student performance.
+I. INTRODUCTION
+Today, all higher education institutions, especially computer
+and engineering colleges, face challenges in the admissions
+process. Each university should strive for an admissions sys-
+tem based on valid and reliable admissions criteria that select
+candidates likely to succeed in its programs. In addition,
+each university should use the best possible techniques for
+predicting applicants’ future academic performance before
+admitting them. This would support university decision mak-
+ers as they set efﬁcient admissions criteria.
+However, most higher education institutions face chal-
+lenges when they analyze their large educational databases
+to predict students’ performance [1]. This is because they
+use only conventional statistical methods rather than new
+and efﬁcient predictive techniques such as Educational Data
+Mining (EDM), which is the most popular technique to
+evaluate and predict students’ performance [2]–[6]. EDM
+is the process of extracting useful information and pat-
+terns from a huge educational database [2], which can
+then be used to predict students’ performance. As a
+result of better information, student performance can be
+more effectively improved through more effective strategic
+programs.
+In this context, this study focuses on supporting universi-
+ties in making admissions decisions through the application
+of data mining techniques to better predict applicants’ aca-
+demic performance before admission.
+More speciﬁcally, this study addresses the following
+questions:
+1) Is it possible to identify the admission criterion that
+most accurately predicts applicants’ future academic
+performance?
+2) Is it possible to predict applicants’ early academic
+performance before admitting them based on their
+pre-admission test scores?"
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"H. A. Mengash: Using Data Mining Techniques to Predict Student Performance to Support Decision Making
+3) Which data mining prediction technique among Arti-
+ﬁcial Neural Network (ANN), Decision Trees (DT),
+Support Vector Machines (SVM), and Naïve Bayes
+performs best in this study?
+4) Do students’ ﬁrst-year academic performances
+improve when more weight is assigned to the most
+signiﬁcant admission criterion?
+This study contributes to the literature in several ways.
+First, we develop and test four predictive models using
+data mining classiﬁcation techniques to predict early aca-
+demic performance among applicants based on their pre-
+admission proﬁles. The information in these proﬁles most
+often used to predict student performance in higher educa-
+tion includes quiz scores, ﬁnal exam scores, participation
+in extra activities, student demography, overall grades, and
+social network interactions (e.g. [7]–[10]). However, vari-
+ables such as pre-admission test scores are rarely consid-
+ered in the admissions process (e.g. [11]–[13]) to predict
+future student performance. These underused metrics are
+the focus of this study. In addition, we identify the best of
+four classiﬁcation techniques to predict student performance
+in terms of accuracy, precision, recall, and F1-Measure
+metrics.
+Second, through a correlation coefﬁcient analysis,
+we determine the relation between admissions criteria and
+students’ Cumulative Grade Point Average (CGPA) during
+their ﬁrst year of study at university. We also identify admis-
+sion criterion that most accurately predicts student perfor-
+mance so that decision makers can assign more weight to this
+particular criterion.
+Third, based on the results and recommendations provided
+by this study, the university where this study was conducted
+decided to change the weighting of its admission criteria. This
+study proved the efﬁcacy of such a decision by comparing
+the ﬁrst-year CGPAs of new students admitted using the new
+system to the ﬁrst-year CGPAs of students admitted using
+the old system. The percentage of students who achieved
+excellent or very good ﬁrst-year CGPAs increased by 31%,
+and the percentage of the students who got acceptable or poor
+ﬁrst-year CGPAs decreased by 18%.
+Finally, this study differs from other studies in the ﬁeld
+of predicting student performance because it had a large
+sample size of 2,039 students of the College of Computer
+and Information Sciences (CCIS) at Princess Nourah bint
+Abdulrahman University (PNU), located in Riyadh, Kingdom
+of Saudi Arabia (KSA). It is the largest university for women
+in the world. Most of the work that has been done in this ﬁeld
+uses much smaller sample sizes in their model performance
+validation.
+In our extensive search of research literature in KSA,
+we found only one published study [14] in the ﬁeld of admis-
+sions criteria analysis the role admissions criteria play in
+predicting student performance in the computer science and
+technology colleges of Saudi public universities. That study
+addressed the relationship between pre-university exams and
+student performance at university. However, it applied only
+one statistical model (regression) that was not compared
+to other signiﬁcant DM techniques. Also, the study used
+data from only one department (the Information Technology
+department) of the Computer College. In addition, the study’s
+recommendations were not applied at the university where
+the study was conducted, and so the study’s recommendations
+were never tested.
+To the best of our knowledge, the few other related studies
+on this topic in KSA were focused exclusively on medical
+school students (e.g. [11]–[13], [15]–[17]). In addition, these
+studies used statistical software for data analysis rather than
+EDM techniques.
+In 2016, two studies [18] used EDM to predict the students
+GPA based on their performance in previous courses, but
+they have not addressed the relationship between the student
+performance and university admission criteria.
+We further detail the related work and research gap in
+Section 2.
+The rest of this paper is organized as follows.
+Section 2 details the related work and research gap.
+Section 3 describes the domain of the study. Section 4
+explains its methodology. Section 5 presents the experimental
+evaluation. Section 6 outlines our conclusion, recommenda-
+tions, and some potential future work.
+II. RELATED WORK AND RESEARCH GAP
+In higher learning institutions, student performance is the fac-
+tor most important to a university’s quality. EDM is currently
+the technique most commonly used by researchers to evaluate
+and predict student performance due to its signiﬁcance in
+decision making [3]–[7].
+Predicting student performance has two main factors:
+attributes and prediction methods [19]. It has been shown
+in [19] that student CGPA is the most frequently used attribute
+in predicting student performance at university. It has been
+used in many researches (e.g. [7]–[10], [20]). Other attributes
+commonly used by researches to predict student performance
+at university are: assessments, quiz grades, lab work, and ﬁnal
+exam grades (e.g. [8], [9], [21]). Few researches have used
+other attributes like extra activities, student demography, and
+social interaction network (e.g. [19], [22]).
+However, input variables such as pre-admission tests are
+rarely used (e.g. [11]–[13]) to predict student performance at
+university in the admissions process. This is the focus of this
+study.
+Several data mining classiﬁcation techniques have been
+applied for prediction of student performance. For example,
+ANN is used in study [21] to predict the academic per-
+formance of 505 students in their eighth semester. Regard-
+ing Decision Trees, study [9] proposed a model to predict
+student performance in certain courses using small student
+sample sizes (32 and 42 students). Naïve Bayes is applied in
+study [23] on a set of 1,600 students to predict performance
+in a particular course. SVM is applied by study [24] on a data
+set of 1,074 students to predict students at risk performance
+in their ﬁrst year of study.
+VOLUME 8, 2020 55463","3) Which data mining prediction technique among Arti-
+ﬁcial Neural Network (ANN), Decision Trees (DT),
+Support Vector Machines (SVM), and Naïve Bayes
+performs best in this study?
+4) Do students’ ﬁrst-year academic performances
+improve when more weight is assigned to the most
+signiﬁcant admission criterion?
+This study contributes to the literature in several ways.
+First, we develop and test four predictive models using
+data mining classiﬁcation techniques to predict early aca-
+demic performance among applicants based on their pre-
+admission proﬁles. The information in these proﬁles most
+often used to predict student performance in higher educa-
+tion includes quiz scores, ﬁnal exam scores, participation
+in extra activities, student demography, overall grades, and
+social network interactions. However, vari-
+ables such as pre-admission test scores are rarely consid-
+ered in the admissions process to predict
+future student performance. These underused metrics are
+the focus of this study. In addition, we identify the best of
+four classiﬁcation techniques to predict student performance
+in terms of accuracy, precision, recall, and F1-Measure
+metrics.
+Second, through a correlation coefﬁcient analysis,
+we determine the relation between admissions criteria and
+students’ Cumulative Grade Point Average (CGPA) during
+their ﬁrst year of study at university. We also identify admis-
+sion criterion that most accurately predicts student perfor-
+mance so that decision makers can assign more weight to this
+particular criterion.
+Third, based on the results and recommendations provided
+by this study, the university where this study was conducted
+decided to change the weighting of its admission criteria. This
+study proved the efﬁcacy of such a decision by comparing
+the ﬁrst-year CGPAs of new students admitted using the new
+system to the ﬁrst-year CGPAs of students admitted using
+the old system. The percentage of students who achieved
+excellent or very good ﬁrst-year CGPAs increased by 31%,
+and the percentage of the students who got acceptable or poor
+ﬁrst-year CGPAs decreased by 18%.
+Finally, this study differs from other studies in the ﬁeld
+of predicting student performance because it had a large
+sample size of 2,039 students of the College of Computer
+and Information Sciences (CCIS) at Princess Nourah bint
+Abdulrahman University (PNU), located in Riyadh, Kingdom
+of Saudi Arabia (KSA). It is the largest university for women
+in the world. Most of the work that has been done in this ﬁeld
+uses much smaller sample sizes in their model performance
+validation.
+In our extensive search of research literature in KSA,
+we found only one published study in the ﬁeld of admis-
+sions criteria analysis the role admissions criteria play in
+predicting student performance in the computer science and
+technology colleges of Saudi public universities. That study
+addressed the relationship between pre-university exams and
+student performance at university. However, it applied only
+one statistical model (regression) that was not compared
+to other signiﬁcant DM techniques. Also, the study used
+data from only one department (the Information Technology
+department) of the Computer College. In addition, the study’s
+recommendations were not applied at the university where
+the study was conducted, and so the study’s recommendations
+were never tested.
+To the best of our knowledge, the few other related studies
+on this topic in KSA were focused exclusively on medical
+school students. In addition, these
+studies used statistical software for data analysis rather than
+EDM techniques.
+In 2016, two studies used EDM to predict the students
+GPA based on their performance in previous courses, but
+they have not addressed the relationship between the student
+performance and university admission criteria.
+We further detail the related work and research gap in
+Section 2.
+The rest of this paper is organized as follows.
+Section 2 details the related work and research gap.
+Section 3 describes the domain of the study. Section 4
+explains its methodology. Section 5 presents the experimental
+evaluation. Section 6 outlines our conclusion, recommenda-
+tions, and some potential future work.
+II. RELATED WORK AND RESEARCH GAP
+In higher learning institutions, student performance is the fac-
+tor most important to a university’s quality. EDM is currently
+the technique most commonly used by researchers to evaluate
+and predict student performance due to its signiﬁcance in
+decision making.
+Predicting student performance has two main factors:
+attributes and prediction methods. It has been shown
+in that student CGPA is the most frequently used attribute
+in predicting student performance at university. It has been
+used in many researches. Other attributes
+commonly used by researches to predict student performance
+at university are: assessments, quiz grades, lab work, and ﬁnal
+exam grades. Few researches have used
+other attributes like extra activities, student demography, and
+social interaction network.
+However, input variables such as pre-admission tests are
+rarely used to predict student performance at
+university in the admissions process. This is the focus of this
+study.
+Several data mining classiﬁcation techniques have been
+applied for prediction of student performance. For example,
+ANN is used in study to predict the academic per-
+formance of 505 students in their eighth semester. Regard-
+ing Decision Trees, study proposed a model to predict
+student performance in certain courses using small student
+sample sizes (32 and 42 students). Naïve Bayes is applied in
+study on a set of 1,600 students to predict performance
+in a particular course. SVM is applied by study on a data
+set of 1,074 students to predict students at risk performance
+in their ﬁrst year of study."
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"H. A. Mengash: Using Data Mining Techniques to Predict Student Performance to Support Decision Making
+The analysis of the literature reveals that most available
+studies do not explore the relationship between students’ pre-
+admission exam scores and their expected academic perfor-
+mance at university in the admissions process. Thus, this
+study ﬁlls a research gap.
+In this study, different admissions criteria were used as
+input attributes to predict students’ ﬁrst-year CGPAs in the
+computer sciences colleges of Saudi public universities.
+Most of the few published related studies performed in
+KSA have been conﬁned to medical colleges (e.g. [11]–[13],
+[15]–[17]). These studies have not used EDM, which can
+discover hidden patterns in institutions’ large datasets, and
+therefore enhance their decision making. One of the very
+few studies related to this topic that has been conﬁned to a
+computer science college is study [18], which applied one
+of the EDM techniques (i.e., J48 decision tree) to predict
+students’ ﬁnal GPA based on their grades in all courses.
+The authors of [18] collected data from the academic tran-
+scripts of 236 students of the Computer Science College at
+King Saud University (KSU) in KSA. They identiﬁed which
+courses in the study plan most strongly affect ﬁnal GPA.
+However, they applied only one EDM technique on a very
+small dataset to predict student performance and did not
+ensure the accuracy of their results by using additional EDM
+techniques.
+Another study that related to this topic in KSA is
+study [25], which applied three EDM techniques (Naïve
+Bayes, ANN, and Decision Tree) to predict student per-
+formance based on their academic records and forum
+participation. By comparing results of the three prediction
+techniques, they found that Naïve Bayes outperformed others
+by achieving a prediction accuracy rate of 86%.
+However, the studies [18], [25] have not assessed the rela-
+tionship between admission criteria and computer science
+student performance in Saudi public universities, which is the
+focus of this study.
+To the best of our knowledge, the only related published
+study that addressed this topic is study [14]. In this study, the
+authors applied regression techniques on a dataset of 657 stu-
+dents to determine whether pre-admission exams have a sig-
+niﬁcant effect on student GPA. They found that high school
+ﬁnal grade affects college GPA more than pre-admission
+exam scores. These ﬁndings differ from the ﬁndings of this
+study.
+However, their data was collected from only one depart-
+ment (the Information Technology department) of the Com-
+puter Science College at KSU, which has ﬁve departments.
+In addition, they only used one statistical process (i.e.,
+Regression Analysis) rather than applying different EDM
+models to predict student performance, which could have
+enhanced their ﬁndings.
+III. UNDERSTANDING THE DOMAIN OF THE STUDY
+In KSA, enrollment in the computer science and technology
+colleges of public universities has increased from 2,959 stu-
+dents in academic year 2004-2005 to 27,089 students in
+academic year 2016-2017 [26]. Since the early 2000s, all
+Saudi public universities have central policies and procedures
+for student admissions that are controlled by the Saudi Min-
+istry of Education [27]. Before an applicant can be admit-
+ted into any undergraduate program at any Saudi public
+university computer science and technology college, he/she
+is expected to take two standardized tests administrated
+by the National Assessment Center for Higher Education.
+These tests are the General Aptitude Test (GAT) and the
+Scholastic Achievement Admission Test (SAAT). While the
+GAT assesses mathematical and verbal skills to measure
+students’ comprehension, logical reasoning, problem solving,
+and inductive/deductive skills, the SAAT assesses compre-
+hension, application, and inference in ﬁve subjects: biology,
+chemistry, physics, mathematics, and English [28].
+Admissions is based primarily on the weighted average
+score of three criteria: the High School Grade Average
+(HSGA), the SAAT, and the GAT. Each public university
+assigns certain weights to these three criteria, and each pro-
+gram identiﬁes a cut-off point for weighted averages based
+on the number of available seats in each year. For example,
+in academic year 2017-2018, the weights of these three cri-
+teria in the four most famous Saudi public universities are,
+for the three criteria (HSGA, SAAT, and GAT), respectively:
+30%, 40%, and 30% at KSU [29]; 50%, 20%, and 30% at
+King Abdulaziz University [30]; 20%, 50%, and 30% at King
+Fahd University of Petroleum & Minerals [31]; and 60%,
+20%, and 20% at PNU [32].
+However, it is difﬁcult to determine appropriate weights for
+these criteria because of the lack of existing studies in KSA to
+analyze the relationship between these criteria and the student
+performance at university. This study will help in selecting
+students through a more appropriate system of weights that
+prioritizes the correct criteria.
+IV. METHODOLOGY
+1) To answer the ﬁrst question in this study (Is it possible to
+identify the admission criterion that most accurately predicts
+applicants’ future academic performance?), we developed
+a model using the Linear Regression technique, which is
+widely used for ﬁnding relationship between independent
+variables (i.e., predictors) and a dependent variable (i.e.,
+response). The model helped us to determine the relationship
+between the three admission criteria (HSGA, SAAT, and
+GAT) as the independent variables, and the CGPA through
+students’ ﬁrst two semesters as the dependent variable. To
+describe the strength the linear relationship between each
+admission criteria and the CGPA, we used the correlation
+coefﬁcient, which are usually used in statistics to measure the
+strength and direction of the linear relationships between two
+variables. In addition, to describe the percentage of the effect
+of each admission criteria on the students’ ﬁrst-year CGPA,
+we used the coefﬁcient of determination.
+2) To answer the second question in this study (Is it possible
+to predict applicants’ early academic performance before
+admitting them based on their pre-admission test scores?),
+55464 VOLUME 8, 2020","The analysis of the literature reveals that most available
+studies do not explore the relationship between students’ pre-
+admission exam scores and their expected academic perfor-
+mance at university in the admissions process. Thus, this
+study ﬁlls a research gap.
+In this study, different admissions criteria were used as
+input attributes to predict students’ ﬁrst-year CGPAs in the
+computer sciences colleges of Saudi public universities.
+Most of the few published related studies performed in
+KSA have been conﬁned to medical colleges. These studies have not used EDM, which can
+discover hidden patterns in institutions’ large datasets, and
+therefore enhance their decision making. One of the very
+few studies related to this topic that has been conﬁned to a
+computer science college is study which applied one
+of the EDM techniques (i.e., J48 decision tree) to predict
+students’ ﬁnal GPA based on their grades in all courses.
+The authors of collected data from the academic tran-
+scripts of 236 students of the Computer Science College at
+King Saud University (KSU) in KSA. They identiﬁed which
+courses in the study plan most strongly affect ﬁnal GPA.
+However, they applied only one EDM technique on a very
+small dataset to predict student performance and did not
+ensure the accuracy of their results by using additional EDM
+techniques.
+Another study that related to this topic in KSA is
+study which applied three EDM techniques (Naïve
+Bayes, ANN, and Decision Tree) to predict student per-
+formance based on their academic records and forum
+participation. By comparing results of the three prediction
+techniques, they found that Naïve Bayes outperformed others
+by achieving a prediction accuracy rate of 86%.
+However, the studies have not assessed the rela-
+tionship between admission criteria and computer science
+student performance in Saudi public universities, which is the
+focus of this study.
+To the best of our knowledge, the only related published
+study that addressed this topic is study In this study, the
+authors applied regression techniques on a dataset of 657 stu-
+dents to determine whether pre-admission exams have a sig-
+niﬁcant effect on student GPA. They found that high school
+ﬁnal grade affects college GPA more than pre-admission
+exam scores. These ﬁndings differ from the ﬁndings of this
+study.
+However, their data was collected from only one depart-
+ment (the Information Technology department) of the Com-
+puter Science College at KSU, which has ﬁve departments.
+In addition, they only used one statistical process (i.e.,
+Regression Analysis) rather than applying different EDM
+models to predict student performance, which could have
+enhanced their ﬁndings.
+III. UNDERSTANDING THE DOMAIN OF THE STUDY
+In KSA, enrollment in the computer science and technology
+colleges of public universities has increased from 2,959 stu-
+dents in academic year 2004-2005 to 27,089 students in
+academic year 2016-2017. Since the early 2000s, all
+Saudi public universities have central policies and procedures
+for student admissions that are controlled by the Saudi Min-
+istry of Education. Before an applicant can be admit-
+ted into any undergraduate program at any Saudi public
+university computer science and technology college, he/she
+is expected to take two standardized tests administrated
+by the National Assessment Center for Higher Education.
+These tests are the General Aptitude Test (GAT) and the
+Scholastic Achievement Admission Test (SAAT). While the
+GAT assesses mathematical and verbal skills to measure
+students’ comprehension, logical reasoning, problem solving,
+and inductive/deductive skills, the SAAT assesses compre-
+hension, application, and inference in ﬁve subjects: biology,
+chemistry, physics, mathematics, and English.
+Admissions is based primarily on the weighted average
+score of three criteria: the High School Grade Average
+(HSGA), the SAAT, and the GAT. Each public university
+assigns certain weights to these three criteria, and each pro-
+gram identiﬁes a cut-off point for weighted averages based
+on the number of available seats in each year. For example,
+in academic year 2017-2018, the weights of these three cri-
+teria in the four most famous Saudi public universities are,
+for the three criteria (HSGA, SAAT, and GAT), respectively:
+30%, 40%, and 30% at KSU; 50%, 20%, and 30% at
+King Abdulaziz University; 20%, 50%, and 30% at King
+Fahd University of Petroleum & Minerals; and 60%,
+20%, and 20% at PNU.
+However, it is difﬁcult to determine appropriate weights for
+these criteria because of the lack of existing studies in KSA to
+analyze the relationship between these criteria and the student
+performance at university. This study will help in selecting
+students through a more appropriate system of weights that
+prioritizes the correct criteria.
+IV. METHODOLOGY
+1) To answer the ﬁrst question in this study (Is it possible to
+identify the admission criterion that most accurately predicts
+applicants’ future academic performance?), we developed
+a model using the Linear Regression technique, which is
+widely used for ﬁnding relationship between independent
+variables (i.e., predictors) and a dependent variable (i.e.,
+response). The model helped us to determine the relationship
+between the three admission criteria (HSGA, SAAT, and
+GAT) as the independent variables, and the CGPA through
+students’ ﬁrst two semesters as the dependent variable. To
+describe the strength the linear relationship between each
+admission criteria and the CGPA, we used the correlation
+coefﬁcient, which are usually used in statistics to measure the
+strength and direction of the linear relationships between two
+variables. In addition, to describe the percentage of the effect
+of each admission criteria on the students’ ﬁrst-year CGPA,
+we used the coefﬁcient of determination.
+2) To answer the second question in this study (Is it possible
+to predict applicants’ early academic performance before
+admitting them based on their pre-admission test scores?),"
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"H. A. Mengash: Using Data Mining Techniques to Predict Student Performance to Support Decision Making
+we developed four prediction models by applying four well-
+known data mining classiﬁcation techniques, namely: Artiﬁ-
+cial Neural Network (ANN), Decision Tree, Support Vector
+Machine (SVM), and Naive Bayes.
+There are multiple DM classiﬁcation techniques, however,
+our choices in this paper are these four well-known ones
+because of their critical features, which we brieﬂy describe
+in the next paragraphs:
+A. ARTIFICIAL NEURAL NETWORK (ANN)
+ANN is a popular technique in EDM, and is designed to
+mimic the structure of the human brain to solve complex
+problems. It consists of a set of units that accept a weighted
+set of inputs and responds with an output.
+Many published papers have used ANN to predict students’
+performance (e.g., [8], [21], [23], [24], [33]). We, also, used
+it because of its ability to detect all possible interactions
+among variables and its ability to learn from a limited set of
+examples. In addition, ANN models were found in a previous
+study to outperform classiﬁcation techniques in correctly
+classifying admitted applicant who will accepted and not
+accepted [33]. In this study, we used the Multilayer Percep-
+tion (MLP) topology for the ANN model due to the nature
+of the datasets, which were not large enough to require more
+complex topologies.
+B. DECISION TREE
+Decision Tree is based on a set of nodes that are arranged
+from the top to the bottom of the tree. Each node represents
+a feature of an instance, and its branches represent possible
+values. We used this technique because it is widely used by
+researchers due to its simplicity (e.g., [1], [6], [7], [9], [34]).
+It predicts values in a simple and straightforward way. In
+addition, it has some advantages like represents rules that
+could be understood and interpreted easily by users, perform
+well for categorical and numerical attributes, and does not
+require complex data preparation [6].
+C. SUPPORT VECTOR MACHINE (SVM)
+This classiﬁcation technique builds a hyperplane that sepa-
+rates objects based on their classes. The larger the distance
+from the hyperplane to the nearest object becomes, the lower
+the generalization error of the SVM technique becomes. SVM
+is used in few researches (e.g., [7], [23], [24]) and is used in
+this study because it is well suited for small datasets. Further,
+it is faster than the other techniques [19].
+D. NAIVE BAYES
+Naive Bayes is a simple probabilistic technique based
+on applying Bayes’ theorem with independent assump-
+tions between variables. It assigns probabilities to each
+object for each possible class. In this study, we chose
+to use this technique due to its simplicity, very good
+performance for real-world problems, computational efﬁ-
+ciency [35], and popularity in the related research literature
+(e.g., [7], [23], [24], [35]–[37]).
+3) To answer the third question in this paper (Which data
+mining prediction technique performs best in this study?),
+we evaluated and compared the performance of the four
+models by using accuracy, recall, precision, and F1-Measure
+metrics. (See Evaluation Metrics in Subsection A, Experi-
+mental Setup at the following section)
+4) To answer the fourth question in this study (Do stu-
+dents admitted under the new weighting system achieve better
+academic performance during their ﬁrst two semesters than
+past students admitted under the old weighting system?),
+we developed the second stage of the study to compare the
+ﬁrst-year CGPAs of new students admitted for academic
+year 2018-2019 under the new admission criteria weights to
+the ﬁrst-year CGPAs of past students admitted for academic
+years 2016-2017 and 2017-2018 under the old admission
+criteria weights.
+V. EXPERIMENTAL EVALUATION
+A. EXPERIMENTAL SETUP
+1) DATASET
+This study was conducted with the records of students
+enrolled in the CCIS at PNU. The methods used, however, are
+general and can be used in any higher education institution.
+The data was obtained from the academic electronic database
+of the ofﬁce of the Admitted and Registration Deanship. The
+required ethical approval was obtained from the Institution
+Review Board of PNU (Number 19-0152). PNU is the only
+public female-only university in KSA and is also the largest
+university for women in the world. The campus is 32 million
+square feet and has approximately 50,000 students and more
+than 5,000 academic and administrative staff. The CCIS was
+established in 2007 to fulﬁll the growing need in KSA for
+female higher education in the ﬁelds of computer science and
+technology. CCIS has three departments: Computer Science,
+Information Systems, and Information Technology. The pro-
+grams of the three departments in CCIS are completed during
+students’ four-year study plans. Each year is divided into two
+semesters.
+In the ﬁrst stage of this study, we collected a total of 1,569
+student records from all three departments from two batches,
+namely 902 students from academic year 2016-2017 and
+667 students from academic year 2017-2018. All students
+of this study were Saudi females, who live in the same
+region (the central region of the Kingdom of Saudi Arabia).
+In addition, all students do not work while in college, but
+they all receive a monthly salary from the government. The
+acceptance of the students from both batches was based pri-
+marily on three admission criteria: HSGA, SAAT, and GAT,
+for which the assigned weights were 60%, 20%, and 20%,
+respectively.
+Based on the results and recommendations provided by
+the ﬁrst stage of this study, which shows that SAAT score
+is the admission criterion that most accurately predicts stu-
+dent performance, PNU decided to change the weighting
+of its admission criteria. The weights were changed to the
+VOLUME 8, 2020 55465","we developed four prediction models by applying four well-
+known data mining classiﬁcation techniques, namely: Artiﬁ-
+cial Neural Network (ANN), Decision Tree, Support Vector
+Machine (SVM), and Naive Bayes.
+There are multiple DM classiﬁcation techniques, however,
+our choices in this paper are these four well-known ones
+because of their critical features, which we brieﬂy describe
+in the next paragraphs:
+A. ARTIFICIAL NEURAL NETWORK (ANN)
+ANN is a popular technique in EDM, and is designed to
+mimic the structure of the human brain to solve complex
+problems. It consists of a set of units that accept a weighted
+set of inputs and responds with an output.
+Many published papers have used ANN to predict students’
+performance. We, also, used
+it because of its ability to detect all possible interactions
+among variables and its ability to learn from a limited set of
+examples. In addition, ANN models were found in a previous
+study to outperform classiﬁcation techniques in correctly
+classifying admitted applicant who will accepted and not
+accepted. In this study, we used the Multilayer Percep-
+tion (MLP) topology for the ANN model due to the nature
+of the datasets, which were not large enough to require more
+complex topologies.
+B. DECISION TREE
+Decision Tree is based on a set of nodes that are arranged
+from the top to the bottom of the tree. Each node represents
+a feature of an instance, and its branches represent possible
+values. We used this technique because it is widely used by
+researchers due to its simplicity.
+It predicts values in a simple and straightforward way. In
+addition, it has some advantages like represents rules that
+could be understood and interpreted easily by users, perform
+well for categorical and numerical attributes, and does not
+require complex data preparation.
+C. SUPPORT VECTOR MACHINE (SVM)
+This classiﬁcation technique builds a hyperplane that sepa-
+rates objects based on their classes. The larger the distance
+from the hyperplane to the nearest object becomes, the lower
+the generalization error of the SVM technique becomes. SVM
+is used in few researches and is used in
+this study because it is well suited for small datasets. Further,
+it is faster than the other techniques.
+D. NAIVE BAYES
+Naive Bayes is a simple probabilistic technique based
+on applying Bayes’ theorem with independent assump-
+tions between variables. It assigns probabilities to each
+object for each possible class. In this study, we chose
+to use this technique due to its simplicity, very good
+performance for real-world problems, computational efﬁ-
+ciency, and popularity in the related research literature.
+3) To answer the third question in this paper (Which data
+mining prediction technique performs best in this study?),
+we evaluated and compared the performance of the four
+models by using accuracy, recall, precision, and F1-Measure
+metrics. (See Evaluation Metrics in Subsection A, Experi-
+mental Setup at the following section)
+4) To answer the fourth question in this study (Do stu-
+dents admitted under the new weighting system achieve better
+academic performance during their ﬁrst two semesters than
+past students admitted under the old weighting system?),
+we developed the second stage of the study to compare the
+ﬁrst-year CGPAs of new students admitted for academic
+year 2018-2019 under the new admission criteria weights to
+the ﬁrst-year CGPAs of past students admitted for academic
+years 2016-2017 and 2017-2018 under the old admission
+criteria weights.
+V. EXPERIMENTAL EVALUATION
+A. EXPERIMENTAL SETUP
+1) DATASET
+This study was conducted with the records of students
+enrolled in the CCIS at PNU. The methods used, however, are
+general and can be used in any higher education institution.
+The data was obtained from the academic electronic database
+of the ofﬁce of the Admitted and Registration Deanship. The
+required ethical approval was obtained from the Institution
+Review Board of PNU (Number 19-0152). PNU is the only
+public female-only university in KSA and is also the largest
+university for women in the world. The campus is 32 million
+square feet and has approximately 50,000 students and more
+than 5,000 academic and administrative staff. The CCIS was
+established in 2007 to fulﬁll the growing need in KSA for
+female higher education in the ﬁelds of computer science and
+technology. CCIS has three departments: Computer Science,
+Information Systems, and Information Technology. The pro-
+grams of the three departments in CCIS are completed during
+students’ four-year study plans. Each year is divided into two
+semesters.
+In the ﬁrst stage of this study, we collected a total of 1,569
+student records from all three departments from two batches,
+namely 902 students from academic year 2016-2017 and
+667 students from academic year 2017-2018. All students
+of this study were Saudi females, who live in the same
+region (the central region of the Kingdom of Saudi Arabia).
+In addition, all students do not work while in college, but
+they all receive a monthly salary from the government. The
+acceptance of the students from both batches was based pri-
+marily on three admission criteria: HSGA, SAAT, and GAT,
+for which the assigned weights were 60%, 20%, and 20%,
+respectively.
+Based on the results and recommendations provided by
+the ﬁrst stage of this study, which shows that SAAT score
+is the admission criterion that most accurately predicts stu-
+dent performance, PNU decided to change the weighting
+of its admission criteria. The weights were changed to the"
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"H. A. Mengash: Using Data Mining Techniques to Predict Student Performance to Support Decision Making
+FIGURE 1. Mean values of HSGA, SAAT, and GAT for students enrolled in
+academic year 2016-2017 and academic year 2017-2018.
+following for HSGA, SAAT, and GAT, respectively: 30%,
+40%, and 30%.
+In the second stage of this study, we collected a total of 470
+student records from all three departments from academic
+year 2018-2019, for which student acceptance was based on
+the new assigned weights. Other students’ conditions were
+similar to those mentioned in the ﬁrst stage of the study.
+We used this data set to compare the ﬁrst-year CGPAs of new
+students to the ﬁrst-year CGPAs of students admitted under
+the old admission criteria weights.
+All collected data sets were organized in Microsoft Excel,
+and each student’s record included scores on the three admis-
+sion criteria (all values between 0 and 100), and her CGPA
+after her ﬁrst two semesters (all values between 0 and 5)
+Data is then converted from the Excel ﬁle into the standard
+format required by the Waikato Environment for Knowledge
+Analysis (WEKA) tool [38], which we used in this study for
+the Data Mining techniques. WEKA is an open source tool
+coded in Java, and we selected it because it is widely used in
+EDM research.
+For the ﬁrst stage of the study and before applying
+the EDM techniques, we prepared the data set with pre-
+processing. We took steps such as eliminating certain
+irrelevant attributes (e.g., student ID, name, and address),
+identifying outliers, deleting records with missing val-
+ues, and removing duplicates. The total remaining number
+of student records after the previous data pre-processing
+was 1,430 records for 828 students from academic year
+2016-2017 and 602 students from academic year 2017-2018.
+Fig. 1 shows mean values for HSGA, SAAT, and GAT.
+We constructed a categorical target variable (class) based
+on the original numeric parameter CGPA. It has ﬁve cate-
+gories according to the ﬁve-level scale that is used in PNU
+grade system, which based on the following ranges: excellent
+(≥4.5), very good (3.75 to < 4.5), good (2.75 to < 3.75),
+average (2.0 to < 2.75), and poor ( <2.0). The CGPA distri-
+bution for students enrolled in academic year 2016-2017 and
+academic year 2017-2018 is shown in Fig. 2.
+FIGURE 2. Students’ first-year CGPA distribution for academic year
+2016-2107 and academic year 2017-2018.
+We also applied pre-processing to the data set of academic
+year 2018-2019 through some data pre-processing as we
+did to the data sets for academic years 2016 to 2018. The
+total number of remaining student records for academic year
+2018-2019 was 437.
+We developed four prediction models by applying four
+well-known data mining classiﬁcation techniques, namely:
+Artiﬁcial Neural Network (ANN), Decision Tree, Support
+Vector Machine (SVM), and Naive Bayes. Each model was
+built using 10-fold cross validation, in which 9 sets of data
+were used for training the model and the remaining set was
+used for testing purposes. The process was repeated 10 times,
+ones for each of the different sets. This process maximized the
+total number of observation used for testing. All models were
+run using the parameter values deﬁned by default in WEKA
+software.
+2) EVALUATION METRICS
+The performance of the data mining models can be deter-
+mined by using the following concepts:
+• True Positive Rate (TP): the number of instances that are
+correctly predicted as positive.
+• False Positive Rate (FP): the number of instances that
+are incorrectly predicted as positive.
+• True Negative Rate (TN): the number of instances that
+are correctly predicted as negative.
+• False Negative Rate (FN): the number of instances that
+are incorrectly predicted as negative.
+Accuracy is the percentage of correctly predicted results and
+is measured with (1):
+Accuracy =(TP +TN)/(TP +TN +FP +FN) (1)
+Recall is the percentage of positives that are correctly pre-
+dicted as positive and is measured with (2):
+Recall =TP/(TP +FN) (2)
+Precision is the percentage of correct positive observations
+and is measured with (3):
+Precision =TP/(TP +FP) (3)
+55466 VOLUME 8, 2020","FIGURE 1. Mean values of HSGA, SAAT, and GAT for students enrolled in
+academic year 2016-2017 and academic year 2017-2018.
+following for HSGA, SAAT, and GAT, respectively: 30%,
+40%, and 30%.
+In the second stage of this study, we collected a total of 470
+student records from all three departments from academic
+year 2018-2019, for which student acceptance was based on
+the new assigned weights. Other students’ conditions were
+similar to those mentioned in the ﬁrst stage of the study.
+We used this data set to compare the ﬁrst-year CGPAs of new
+students to the ﬁrst-year CGPAs of students admitted under
+the old admission criteria weights.
+All collected data sets were organized in Microsoft Excel,
+and each student’s record included scores on the three admis-
+sion criteria (all values between 0 and 100), and her CGPA
+after her ﬁrst two semesters (all values between 0 and 5)
+Data is then converted from the Excel ﬁle into the standard
+format required by the Waikato Environment for Knowledge
+Analysis (WEKA) tool, which we used in this study for
+the Data Mining techniques. WEKA is an open source tool
+coded in Java, and we selected it because it is widely used in
+EDM research.
+For the ﬁrst stage of the study and before applying
+the EDM techniques, we prepared the data set with pre-
+processing. We took steps such as eliminating certain
+irrelevant attributes (e.g., student ID, name, and address),
+identifying outliers, deleting records with missing val-
+ues, and removing duplicates. The total remaining number
+of student records after the previous data pre-processing
+was 1,430 records for 828 students from academic year
+2016-2017 and 602 students from academic year 2017-2018.
+Fig. 1 shows mean values for HSGA, SAAT, and GAT.
+We constructed a categorical target variable (class) based
+on the original numeric parameter CGPA. It has ﬁve cate-
+gories according to the ﬁve-level scale that is used in PNU
+grade system, which based on the following ranges: excellent
+(≥4.5), very good (3.75 to < 4.5), good (2.75 to < 3.75),
+average (2.0 to < 2.75), and poor ( <2.0). The CGPA distri-
+bution for students enrolled in academic year 2016-2017 and
+academic year 2017-2018 is shown in Fig. 2.
+FIGURE 2. Students’ first-year CGPA distribution for academic year
+2016-2107 and academic year 2017-2018.
+We also applied pre-processing to the data set of academic
+year 2018-2019 through some data pre-processing as we
+did to the data sets for academic years 2016 to 2018. The
+total number of remaining student records for academic year
+2018-2019 was 437.
+We developed four prediction models by applying four
+well-known data mining classiﬁcation techniques, namely:
+Artiﬁcial Neural Network (ANN), Decision Tree, Support
+Vector Machine (SVM), and Naive Bayes. Each model was
+built using 10-fold cross validation, in which 9 sets of data
+were used for training the model and the remaining set was
+used for testing purposes. The process was repeated 10 times,
+ones for each of the different sets. This process maximized the
+total number of observation used for testing. All models were
+run using the parameter values deﬁned by default in WEKA
+software.
+2) EVALUATION METRICS
+The performance of the data mining models can be deter-
+mined by using the following concepts:
+• True Positive Rate (TP): the number of instances that are
+correctly predicted as positive.
+• False Positive Rate (FP): the number of instances that
+are incorrectly predicted as positive.
+• True Negative Rate (TN): the number of instances that
+are correctly predicted as negative.
+• False Negative Rate (FN): the number of instances that
+are incorrectly predicted as negative."
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"H. A. Mengash: Using Data Mining Techniques to Predict Student Performance to Support Decision Making
+TABLE 1. The correlation coefficient between admission criteria and
+CGPA.
+TABLE 2. The coefficient of determination between admission criteria
+and CGPA.
+F1-Measure conveys the balance between the recall and the
+precision, and it emphasizes the performance of a classiﬁer on
+common and rare categories, respectively [34]. It is measured
+with (4):
+F1Measure =2×Recall×Precision/(Recall+Precision)
+(4)
+B. EXPERIMENTAL RESULTS AND DISCUSSION
+1) MOST SIGNIFICANT CRITERION IDENTIFICATION
+The results of this study showed that students’ ﬁrst-year
+CGPAs could be predicted based on admission criteria,
+which underscores their importance as signiﬁcant predictors
+of student performance in Saudi higher education institu-
+tions. To identify the admission criterion that most accu-
+rately predicts student academic performance at university,
+we used the result of the correlation coefﬁcient between the
+variables, as demonstrated in Table 1, and the coefﬁcient
+of determination between the variables, as demonstrated in
+Table 2.
+Analysis of Table 1 shows that SAAT scores have the
+strongest correlation with ﬁrst-year CGPAs at the value
+of 44% of all other independent variables.
+In addition, the percent impact of SAAT score on stu-
+dent ﬁrst-year CGPA is 19%, which is the highest per-
+cent impact among the admission variables, as shown in
+Table 2.
+Therefore, SAAT score is the admission criterion that most
+accurately predicts later academic performance at univer-
+sity. More weight should therefore be assigned to it. This
+result matches those of other national studies conducted in
+KSA (e.g., [11], [12], [15], [16]), which also show that
+SAAT score is the most signiﬁcant positive predictor of
+student performance in Saudi medical schools. However,
+our result contradicts what is proposed in another national
+study [14], which found that the HSGA affects student CGPA
+more than the other two criteria. This difference could be
+attributed to many factors, such as the fact that HSGA score
+represents attainment in all high school subjects including
+those that are not related to computer science. In addition,
+TABLE 3. Prediction techniques performance.
+FIGURE 3. Comparison of the classifier performance among all the
+applied classifiers.
+the high school subjects are taught in Arabic language,
+while the computer college courses are conducted in
+English.
+2) CLASSIFICATION TECHNIQUE PERFORMANCE
+After implementing the four mentioned classifying tech-
+niques, their performance is shown in Table 3.
+Comparison of the classiﬁer performance among all the
+applied classiﬁers is demonstrated in Fig. 3.
+Analysis of Table 3 shows that it is possible to predict
+applicants’ early academic performance at university before
+admitting them based on their admission criteria. Accuracy,
+recall, precision, and F1-Measure are high when applying
+each classiﬁer technique. Therefore, the institution in charge
+may adopt these techniques to predict students’ academic
+performance before accepting them.
+As shown in Fig. 3, the ANN classiﬁer technique out-
+performs the other techniques in both explored performance
+metrics: the accuracy rate (79%), which represents classiﬁer
+effectiveness, and the precision rate (81%), which represents
+classiﬁer predictive power. This result corroborates the result
+in other studies [8, 24]. In addition, the DT classiﬁer tech-
+nique outperforms the others in the recall rate (80%), which
+represents classiﬁer sensitivity, and in the F1-Measure rate
+(81%), which conveys the balance between the recall and
+the precision. This result matches the results of other studies
+(e.g., [7], [35], [39]).
+Further, the SVM classiﬁer technique shows accurate pre-
+dictions. As in other studies (e.g., [36], [37]), the NB clas-
+siﬁer technique performs worse than the other techniques,
+VOLUME 8, 2020 55467","TABLE 1. The correlation coefficient between admission criteria and
+CGPA.
+TABLE 2. The coefficient of determination between admission criteria
+and CGPA.
+B. EXPERIMENTAL RESULTS AND DISCUSSION
+1) MOST SIGNIFICANT CRITERION IDENTIFICATION
+The results of this study showed that students’ ﬁrst-year
+CGPAs could be predicted based on admission criteria,
+which underscores their importance as signiﬁcant predictors
+of student performance in Saudi higher education institu-
+tions. To identify the admission criterion that most accu-
+rately predicts student academic performance at university,
+we used the result of the correlation coefﬁcient between the
+variables, as demonstrated in Table 1, and the coefﬁcient
+of determination between the variables, as demonstrated in
+Table 2.
+Analysis of Table 1 shows that SAAT scores have the
+strongest correlation with ﬁrst-year CGPAs at the value
+of 44% of all other independent variables.
+In addition, the percent impact of SAAT score on stu-
+dent ﬁrst-year CGPA is 19%, which is the highest per-
+cent impact among the admission variables, as shown in
+Table 2.
+Therefore, SAAT score is the admission criterion that most
+accurately predicts later academic performance at univer-
+sity. More weight should therefore be assigned to it. This
+result matches those of other national studies conducted in
+KSA (e.g., [11], [12], [15], [16]), which also show that
+SAAT score is the most signiﬁcant positive predictor of
+student performance in Saudi medical schools. However,
+our result contradicts what is proposed in another national
+study [14], which found that the HSGA affects student CGPA
+more than the other two criteria. This difference could be
+attributed to many factors, such as the fact that HSGA score
+represents attainment in all high school subjects including
+those that are not related to computer science. In addition,
+TABLE 3. Prediction techniques performance.
+FIGURE 3. Comparison of the classifier performance among all the
+applied classifiers.
+the high school subjects are taught in Arabic language,
+while the computer college courses are conducted in
+English.
+2) CLASSIFICATION TECHNIQUE PERFORMANCE
+After implementing the four mentioned classifying tech-
+niques, their performance is shown in Table 3.
+Comparison of the classiﬁer performance among all the
+applied classiﬁers is demonstrated in Fig. 3.
+Analysis of Table 3 shows that it is possible to predict
+applicants’ early academic performance at university before
+admitting them based on their admission criteria. Accuracy,
+recall, precision, and F1-Measure are high when applying
+each classiﬁer technique. Therefore, the institution in charge
+may adopt these techniques to predict students’ academic
+performance before accepting them.
+As shown in Fig. 3, the ANN classiﬁer technique out-
+performs the other techniques in both explored performance
+metrics: the accuracy rate (79%), which represents classiﬁer
+effectiveness, and the precision rate (81%), which represents
+classiﬁer predictive power. This result corroborates the result
+in other studies [8, 24]. In addition, the DT classiﬁer tech-
+nique outperforms the others in the recall rate (80%), which
+represents classiﬁer sensitivity, and in the F1-Measure rate
+(81%), which conveys the balance between the recall and
+the precision. This result matches the results of other studies
+(e.g., [7], [35], [39]).
+Further, the SVM classiﬁer technique shows accurate pre-
+dictions. As in other studies (e.g., [36], [37]), the NB clas-
+siﬁer technique performs worse than the other techniques,"
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"H. A. Mengash: Using Data Mining Techniques to Predict Student Performance to Support Decision Making
+FIGURE 4. Comparison of students’ first-year performance before and
+after updating admission criteria weights.
+showing the lowest values of all the four considered perfor-
+mance metrics.
+According to these results, we may conclude that, in this
+particular setting, the ANN classiﬁer technique generally
+outperforms the other techniques. The superiority of the ANN
+technique in predicting student performance has been widely
+discussed in the literature (e.g., [19], [24], [40]).
+3) STUDENT PERFORMANCE IMPROVEMENT
+Based on the results and recommendations provided by this
+study, the PNU Admitted and Registration Deanship decided
+that the current admissions system should be changed to
+modify the weights of admission criteria to ensure high per-
+formance of ﬁrst-year students. The deanship decided to add
+more weight to the SAAT criterion and change the weights
+of the three admission criteria (HSGA, SAAT, and GAT)
+to be 30%, 40%, and 30%, respectively, for academic year
+2018-2019. The previous corresponding weights were 60%,
+20%, 20%, respectively.
+Fig. 4 shows the comparisons between the new students’
+ﬁrst-year CGPAs to ﬁrst-year CGPAs for students from pre-
+vious years.
+As shown in Fig. 4, after adding more weight to the most
+signiﬁcant admission criterion (SAAT score), the percentage
+of students who achieved an excellent or very good ﬁrst-
+year academic performance increased from 34% in academic
+year 2016-2018 to 65% in academic year 2018-2019. In addi-
+tion, the percentage of the students who achieved an accept-
+able or poor ﬁrst-year academic performance decreased
+from 24% in academic year 2016-2018 to 6% in academic
+year 2018-2019. This result corroborates the recommen-
+dation of this study to assign more weight to the admis-
+sion criterion that most accurately predicts future student
+performance.
+VI. CONCLUSION
+The aim of this study is to support higher education insti-
+tutions in making good decisions in its admissions pro-
+cess by predicting applicants’ academic performance before
+admitting them. Four prediction models were proposed and
+developed using four well-known data mining techniques,
+namely: Artiﬁcial Neural Network (ANN), Decision Tree,
+Support Vector Machine (SVM), and Naive Bayes. The study
+was conducted with a dataset of 2,039 records of students
+enrolled in PNU, one of the largest universities in KSA. The
+methods used, however, are general and can be used in any
+higher education institution.
+The study conﬁrms the effectiveness of prediction mod-
+eling in higher education institutions where decision makers
+can use these models in planning and optimizing institutions’
+limited resource allocations.
+In addition, the results show that a high performance model
+to predict students’ early performance could be developed
+based on pre-admission information. For example, in this par-
+ticular study, the ANN model was able to reach performance
+accuracy levels of about 79.22%.
+Moreover, the results of this study show that ANN tech-
+nique outperforms the others in both accuracy and precision
+metrics, while the Decision Tree technique outperforms the
+others in recall and F1-Measure. The Naive Bayes had the
+worst results.
+This study concludes that SAAT score is the admission
+criterion that most accurately predicts later academic perfor-
+mance and that more weight should therefore be assigned
+to it. Based on this recommendation, decision makers at PNU,
+where this study was conducted, reviewed the admissions
+system and decided to modify the weights of their three
+admission criteria mentioned in this study by assigning more
+weight to SAAT score.
+To investigate how the new admission process impacts
+student performance at PNU, this study compares the ﬁrst-
+year CGPAs of students admitted using the old admissions
+weighting system to the ﬁrst-year CGPAs of students admit-
+ted under the old weighting system. The results show that,
+after applying the new admission weighting system, the per-
+centage of students who achieved excellent or very good ﬁrst-
+year CGPAs increased by 31%, and the percentage of the
+students who achieved acceptable or poor ﬁrst-year CGPAs
+decreased by 18%.
+A. RECOMMENDATIONS
+• Decision makers in Saudi computer science colleges
+should give serious consideration to students’ pre-
+admission SAAT scores before accepting them.
+• Other important pre-admission exams, which measure
+English-language proﬁciency should be added to the
+admission process for engineering and computer science
+colleges, because all courses in these colleges are con-
+ducted in English.
+• Higher education institutions should consider more pre-
+admission variables that may affect future student per-
+formance such as parent education, previous high school
+(national or international), social interaction network,
+and programming knowledge.
+• By applying data mining techniques, institutions can
+identify students in risk situations very early, which
+55468 VOLUME 8, 2020","According to these results, we may conclude that, in this
+particular setting, the ANN classiﬁer technique generally
+outperforms the other techniques. The superiority of the ANN
+technique in predicting student performance has been widely
+discussed in the literature.
+3) STUDENT PERFORMANCE IMPROVEMENT
+Based on the results and recommendations provided by this
+study, the PNU Admitted and Registration Deanship decided
+that the current admissions system should be changed to
+modify the weights of admission criteria to ensure high per-
+formance of ﬁrst-year students. The deanship decided to add
+more weight to the SAAT criterion and change the weights
+of the three admission criteria (HSGA, SAAT, and GAT)
+to be 30%, 40%, and 30%, respectively, for academic year
+2018-2019. The previous corresponding weights were 60%,
+20%, 20%, respectively.
+Fig. 4 shows the comparisons between the new students’
+ﬁrst-year CGPAs to ﬁrst-year CGPAs for students from pre-
+vious years.
+As shown in Fig. 4, after adding more weight to the most
+signiﬁcant admission criterion (SAAT score), the percentage
+of students who achieved an excellent or very good ﬁrst-
+year academic performance increased from 34% in academic
+year 2016-2018 to 65% in academic year 2018-2019. In addi-
+tion, the percentage of the students who achieved an accept-
+able or poor ﬁrst-year academic performance decreased
+from 24% in academic year 2016-2018 to 6% in academic
+year 2018-2019. This result corroborates the recommen-
+dation of this study to assign more weight to the admis-
+sion criterion that most accurately predicts future student
+performance.
+VI. CONCLUSION
+The aim of this study is to support higher education insti-
+tutions in making good decisions in its admissions pro-
+cess by predicting applicants’ academic performance before
+admitting them. Four prediction models were proposed and
+developed using four well-known data mining techniques,
+namely: Artiﬁcial Neural Network (ANN), Decision Tree,
+Support Vector Machine (SVM), and Naive Bayes. The study
+was conducted with a dataset of 2,039 records of students
+enrolled in PNU, one of the largest universities in KSA. The
+methods used, however, are general and can be used in any
+higher education institution.
+The study conﬁrms the effectiveness of prediction mod-
+eling in higher education institutions where decision makers
+can use these models in planning and optimizing institutions’
+limited resource allocations.
+In addition, the results show that a high performance model
+to predict students’ early performance could be developed
+based on pre-admission information. For example, in this par-
+ticular study, the ANN model was able to reach performance
+accuracy levels of about 79.22%.
+Moreover, the results of this study show that ANN tech-
+nique outperforms the others in both accuracy and precision
+metrics, while the Decision Tree technique outperforms the
+others in recall and F1-Measure. The Naive Bayes had the
+worst results.
+This study concludes that SAAT score is the admission
+criterion that most accurately predicts later academic perfor-
+mance and that more weight should therefore be assigned
+to it. Based on this recommendation, decision makers at PNU,
+where this study was conducted, reviewed the admissions
+system and decided to modify the weights of their three
+admission criteria mentioned in this study by assigning more
+weight to SAAT score.
+To investigate how the new admission process impacts
+student performance at PNU, this study compares the ﬁrst-
+year CGPAs of students admitted using the old admissions
+weighting system to the ﬁrst-year CGPAs of students admit-
+ted under the old weighting system. The results show that,
+after applying the new admission weighting system, the per-
+centage of students who achieved excellent or very good ﬁrst-
+year CGPAs increased by 31%, and the percentage of the
+students who achieved acceptable or poor ﬁrst-year CGPAs
+decreased by 18%.
+A. RECOMMENDATIONS
+• Decision makers in Saudi computer science colleges
+should give serious consideration to students’ pre-
+admission SAAT scores before accepting them.
+• Other important pre-admission exams, which measure
+English-language proﬁciency should be added to the
+admission process for engineering and computer science
+colleges, because all courses in these colleges are con-
+ducted in English.
+• Higher education institutions should consider more pre-
+admission variables that may affect future student per-
+formance such as parent education, previous high school
+(national or international), social interaction network,
+and programming knowledge.
+• By applying data mining techniques, institutions can
+identify students in risk situations very early, which"
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"H. A. Mengash: Using Data Mining Techniques to Predict Student Performance to Support Decision Making
+will help decision makers to give them more attention
+and to build a strategic plan to improve their academic
+performance.
+B. FUTURE STUDY
+All classiﬁcation techniques were applied on data collected
+from a single university in Saudi Arabia. Thus, to validate
+these ﬁndings further, more studies should use data from mul-
+tiple Saudi universities, as well as American and European
+universities. In addition, further studies are needed to con-
+sider more pre-admission factors that affect future student
+performance, such as student personality, student demogra-
+phy, student family, and communication skills. For future
+study, other data mining techniques such as clustering may
+be used.
+REFERENCES
+[1] H. Guruler, A. Istanbullu, and M. Karahasan, ‘‘A new student perfor-
+mance analysing system using knowledge discovery in higher educational
+databases,’’Comput. Edu., vol. 55, no. 1, pp. 247–254, Aug. 2010.
+[2] S. K. Mohamad and Z. Tasir, ‘‘Educational data mining: A review,’’
+Procedia Social Behav. Sci., vol. 97, pp. 320–324, Nov. 2013.
+[3] A. Peña-Ayala, ‘‘Educational data mining: A survey and a data mining-
+based analysis of recent works,’’ Expert Syst. Appl., vol. 41, no. 4,
+pp. 1432–1462, Mar. 2014.
+[4] C. Romero and S. Ventura, ‘‘Educational data mining: A review of the state
+of the art,’’ IEEE Trans. Syst., Man, Cybern. C, Appl. Rev., vol. 40, no. 6,
+pp. 601–618, Nov. 2010.
+[5] H. Aldowah, H. Al-Samarraie, and W. M. Fauzy, ‘‘Educational data
+mining and learning analytics for 21st century higher education:
+A review and synthesis,’’ Telematics Informat., vol. 37, pp. 13–49,
+Apr. 2019.
+[6] C. Anuradha and T. Velmurugan, ‘‘A comparative analysis on the evalua-
+tion of classiﬁcation algorithms in the prediction of students performance,’’
+Indian J. Sci. Technol., vol. 8, no. 15, pp. 974–6846, Jan. 2015.
+[7] V . L. Miguéis, A. Freitas, P. J. V . Garcia, and A. Silva, ‘‘Early seg-
+mentation of students according to their academic performance: A pre-
+dictive modelling approach,’’ Decis. Support Syst., vol. 115, pp. 36–51,
+Nov. 2018.
+[8] M. Mayilvaganan and D. Kalpanadevi, ‘‘Comparison of classiﬁcation tech-
+niques for predicting the performance of students academic environment,’’
+in Proc. Int. Conf. Commun. Netw. Technol., Sivakasi, India, Dec. 2014,
+pp. 113–118.
+[9] S. Natek and M. Zwilling, ‘‘Student data mining solution–knowledge
+management system related to higher education institutions,’’ Expert Syst.
+Appl., vol. 41, no. 14, pp. 6400–6407, Oct. 2014.
+[10] T. M. Christian and M. Ayub, ‘‘Exploration of classiﬁcation using NB tree
+for predicting students’ performance,’’ in Proc. Int. Conf. Data Softw. Eng.
+(ICODSE), Bandung, ID, USA, Nov. 2014, pp. 1–6.
+[11] J. Albishri, S. Aly, and Y . Alnemary, ‘‘Admission criteria to Saudi medical
+schools. Which is the best predictor for successful achievement?’’ Saudi
+Med. J., vol. 33, pp. 1222–1228, 2012.
+[12] M. O. Al-Rukban, F. M. Munshi, H. Abdulghani, and I. Al-Hoqail,
+‘‘The ability of the pre-admission criteria to predict performance in a Saudi
+medical school,’’ Saudi Med. J., vol. 31, pp. 560–564, 2010.
+[13] A. M. Alhadlaq, O. F. Alshammari, S. M. Alsager, K. A. F. Neel, and
+A. G. Mohamed, ‘‘Ability of admissions criteria to predict early academic
+performance among students of health science colleges at King Saud
+University, Saudi Arabia,’’ J. Dental Educ. , vol. 79, pp. 665–670,
+Jan. 2015.
+[14] S. M. Hassan and M. S. Al-Razgan, ‘‘Pre-university exams effect on
+students GPA: A case study in IT department,’’ Procedia Comput. Sci.,
+vol. 82, pp. 127–131, 2016.
+[15] M. F. Al-Qahtani and T. M. Alanzi, ‘‘Comparisons of the predictive values
+of admission criteria for academic achievement among undergraduate stu-
+dents of health and non-health science professions: A longitudinal cohort
+study,’’Psychol. Res. Behav. Manage., vol. 12, pp. 1–6, Dec. 2018.
+[16] A.-A. Dabaliz, S. Kaadan, M. M. Dabbagh, A. Barakat, M. A. Shareef,
+M. Al-Tannir, A. Obeidat, and A. Mohamed, ‘‘Predictive validity of pre-
+admission assessments on medical student performance,’’ Int. J. Med. Edu.,
+vol. 8, pp. 408–413, Nov. 2017.
+[17] A. A. Al-Ansari and M. M. A. El Tantawi, ‘‘Predicting academic perfor-
+mance of dental students using perception of educational environment,’’
+J. Dental Educ., vol. 79, pp. 337–344, Mar. 2015.
+[18] M. A. Al-Barrak and M. Al-Razgan, ‘‘Predicting students ﬁnal GPA using
+decision trees: A case study,’’ Int. J. Inf. Edu. Technol., vol. 6, no. 7,
+pp. 528–533, 2016.
+[19] A. M. Shahiri, W. Husain, and N. A. Rashid, ‘‘A review on predicting
+Student’s performance using data mining techniques,’’ Procedia Comput.
+Sci., vol. 72, pp. 414–422, Jan. 2015.
+[20] N. Thi Ngoc Hien and P. Haddawy, ‘‘A decision support system for evaluat-
+ing international student applications,’’ in Proc. 37th Annu. Frontiers Edu.
+Conf. Global Eng., Knowl. Borders, Opportunities Passports, Milwaukee,
+WI, USA, Oct. 2007, pp. F2A-1–F2A-6.
+[21] P. M. Arsad, N. Buniyamin, and J.-L.-A. Manan, ‘‘A neural network
+students’ performance prediction model (NNSPPM),’’ in Proc. IEEE Int.
+Conf. Smart Instrum., Meas. Appl. (ICSIMA), Kuala Lumpur, Malaysia,
+Nov. 2013, pp. 1–5.
+[22] C. Romero, M.-I. López, J.-M. Luna, and S. Ventura, ‘‘Predicting students’
+ﬁnal performance from participation in on-line discussion forums,’’ Com-
+put. Edu., vol. 68, pp. 458–472, Oct. 2013.
+[23] F. Marbouti, H. A. Diefes-Dux, and K. Madhavan, ‘‘Models for early
+prediction of at-risk students in a course using standards-based grading,’’
+Comput. Edu., vol. 103, pp. 1–15, Dec. 2016.
+[24] G. Gray, C. McGuinness, and P. Owende, ‘‘An application of classiﬁcation
+models to predict learner progression in tertiary education,’’ in Proc.
+IEEE Int. Advance Comput. Conf. (IACC), Gurgaon, Indian, Feb. 2014,
+pp. 549–554.
+[25] A. Mueen, B. Zafar, and U. Manzoor, ‘‘Modeling and predicting students’
+academic performance using data mining techniques,’’ Int. J. Mod. Educ.
+Comput. Sci., vol. 11, pp. 36–42, Nov. 2016.
+[26] Ministry of Education in Kingdom of Saudi Arabia. (Mar. 18, 2019).
+Ministry Deputyship for Planning and Development . [Online].
+Available: https://departments.moe.gov.sa/PlanningDevelopment/
+RelatedDepartments/Educationstatisticscenter/EducationDetailedReports/
+Pages/default.aspx
+[27] National Center for Assessment (Qiyas). (Mar. 18, 2019). Establishment of
+National Center for Assessment in Higher Education. [Online]. Available:
+http://www.qiyas.sa/en/About/Pages/establishment.aspx
+[28] National Center for Assessment in Higher Education. (Mar. 18, 2019).
+Education Exams . [Online]. Available: http://www.qiyas.sa/en/pages/
+default.aspx
+[29] King Saud University. (Mar. 19, 2019). Deanship of Admission and Regis-
+tration. [Online]. Available: https://dar.ksu.edu.sa/en/e-admission
+[30] King Abdulaziz University. (Mar. 19, 2019). Admission. [Online].
+Available: http://www.kau.edu.sa/admission.aspx
+[31] King Fahd University of Petroleum and Minerals. (Mar. 19, 2019).
+Undergraduate Admission (Bachelor Degree) . [Online]. Available:
+http://www.kfupm.edu.sa/departments/admissions/default.aspx
+[32] Princess Nourah bint Abdulrahman University. (Mar. 19, 2019). Dean-
+ship of Admission and Registration. [Online]. Available: http://www.pnu.
+edu.sa/en/deanships/registration/Pages/Default.aspx
+[33] E. N. Maltz, K. E. Murphy, and M. L. Hand, ‘‘Decision support for uni-
+versity enrollment management: Implementation and experience,’’ Decis.
+Support Syst., vol. 44, no. 1, pp. 106–123, Nov. 2007.
+[34] S. Fong and R. Biuk-Aghai, ‘‘An automated university admission recom-
+mender system for secondary school students,’’ in Proc. 6th Int. Conf. Inf.
+Technol. Appl., 2009, p. 42.
+[35] D. Kabakchieva, ‘‘Predicting student performance by using data mining
+methods for classiﬁcation,’’Cybern. Inf. Technol., vol. 13, no. 1, pp. 61–72,
+Mar. 2013.
+[36] M. Bogaert, M. Ballings, and D. Van den Poel, ‘‘The added value of
+facebook friends data in event attendance prediction,’’ Decis. Support Syst.,
+vol. 82, pp. 26–34, Feb. 2016.
+[37] S. S. Groth and J. Muntermann, ‘‘An intraday market risk management
+approach based on textual analysis,’’ Decis. Support Syst., vol. 50, no. 4,
+pp. 680–691, Mar. 2011.
+[38] M. Hall, E. Frank, G. Holmes, B. Pfahringer, P. Reutemann, and
+I. H. Witten, ‘‘The WEKA data mining software: An update,’’ ACM
+SIGKDD Explorations Newslett., vol. 11, no. 1, pp. 10–18, 2009.
+VOLUME 8, 2020 55469","will help decision makers to give them more attention
+and to build a strategic plan to improve their academic
+performance.
+B. FUTURE STUDY
+All classiﬁcation techniques were applied on data collected
+from a single university in Saudi Arabia. Thus, to validate
+these ﬁndings further, more studies should use data from mul-
+tiple Saudi universities, as well as American and European
+universities. In addition, further studies are needed to con-
+sider more pre-admission factors that affect future student
+performance, such as student personality, student demogra-
+phy, student family, and communication skills. For future
+study, other data mining techniques such as clustering may
+be used."
+Mengash - 2020 - Using Data Mining Techniques to Predict Student Performance to Support Decision Making in University.pdf,"H. A. Mengash: Using Data Mining Techniques to Predict Student Performance to Support Decision Making
+[39] Z. Alharbi, J. Cornford, L. Dolder, and B. De La Iglesia, ‘‘Using
+data mining techniques to predict students at risk of poor perfor-
+mance,’’ in Proc. SAI Comput. Conf. (SAI), London, U.K., Jul. 2016,
+pp. 523–531.
+[40] P. Kaur, M. Singh, and G. S. Josan, ‘‘Classiﬁcation and prediction based
+data mining algorithms to predict slow learners in education sector,’’
+Procedia Comput. Sci., vol. 57, pp. 500–508, Jan. 2015.
+HANAN ABDULLAH MENGASHwas born in Riyadh, Saudi Arabia. She
+received the B.S. degree in computer science from King Saud University,
+Riyadh, Saudi Arabia, in 1993, the M.S. degree in engineering management
+from George Washington University, Washington, DC, USA, in 1999, and
+the Ph.D. degree in information technology from George Mason University,
+Fairfax, V A, USA, in 2016.
+From 1993 to 1994, she was a Systems Analyst with the King Khaled Eye
+Specialist Hospital, Riyadh. From 1995 to 2016, she was a Lecturer with
+the Information System Department, College of Computer and Informa-
+tion Science (CCIS), Princess Nourah bint Abdulrahman University (PNU),
+Riyadh. Since 2016, she has been an Assistant Professor with the Information
+System Department. From 2016 to 2018, she was the Vice Dean of Student
+Affairs with CCIS, PNU. From 2018 to 2019, she was the Vice Dean of
+Academic Affairs. Since 2019, she has been the Dean of CCIS, PNU. She
+has published a number of research articles. Her research interests include
+decision support systems, group recommender systems, and recommender
+systems for optimal energy operation and investment high pressure and high
+density.
+Dr. Mengash is a Technical Committee Member of the IEEE Global
+Conference on Internet of Things (GCIoT). She is also the Chair of the
+International Conference on Computing (ICC 2019).
+55470 VOLUME 8, 2020","HANAN ABDULLAH MENGASHwas born in Riyadh, Saudi Arabia. She
+received the B.S. degree in computer science from King Saud University,
+Riyadh, Saudi Arabia, in 1993, the M.S. degree in engineering management
+from George Washington University, Washington, DC, USA, in 1999, and
+the Ph.D. degree in information technology from George Mason University,
+Fairfax, V A, USA, in 2016.
+From 1993 to 1994, she was a Systems Analyst with the King Khaled Eye
+Specialist Hospital, Riyadh. From 1995 to 2016, she was a Lecturer with
+the Information System Department, College of Computer and Informa-
+tion Science (CCIS), Princess Nourah bint Abdulrahman University (PNU),
+Riyadh. Since 2016, she has been an Assistant Professor with the Information
+System Department. From 2016 to 2018, she was the Vice Dean of Student
+Affairs with CCIS, PNU. From 2018 to 2019, she was the Vice Dean of
+Academic Affairs. Since 2019, she has been the Dean of CCIS, PNU. She
+has published a number of research articles. Her research interests include
+decision support systems, group recommender systems, and recommender
+systems for optimal energy operation and investment high pressure and high
+density.
+Dr. Mengash is a Technical Committee Member of the IEEE Global
+Conference on Internet of Things (GCIoT). She is also the Chair of the
+International Conference on Computing (ICC 2019)."

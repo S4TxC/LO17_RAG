@@ -1,0 +1,902 @@
+source,page_content,cleaned_page_content
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/330680085
+A Data Mining Approach for Predicting Academic Success – A Case Study:
+Helping Teachers Develop Research Informed Practice
+Chapter · February 2019
+DOI: 10.1007/978-3-030-11890-7_5
+CITATIONS
+4
+READS
+790
+4 authors, including:
+Maria Martins
+Instituto Politécnico de Bragança
+10 PUBLICATIONS   20 CITATIONS   
+SEE PROFILE
+V.L. Miguéis
+University of Porto
+43 PUBLICATIONS   1,065 CITATIONS   
+SEE PROFILE
+Davide S. B. Fonseca
+Universidade da Beira Interior
+65 PUBLICATIONS   559 CITATIONS   
+SEE PROFILE
+All content following this page was uploaded by Maria Martins on 05 July 2019.
+The user has requested enhancement of the downloaded file.","A Data Mining Approach for Predicting Academic Success – A Case Study:
+Helping Teachers Develop Research Informed Practice
+Chapter · February 2019"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"A Data Mining Approach for Predicting 
+Academic Success – A Case Study 
+Maria P . G. Martins 1,3( B), V era L. Migu´ eis 2, D. S. B. F onseca 3,
+and Albano Alves 1
+1 School of T echnology and Management, Polytechnic Institute of Bragan¸ ca, 
+Campus de Santa Apol´ onia, 5300-253 Bragan¸ ca, Portugal 
+prud@ipb.pt
+2 F aculty of Engineering, University of Porto, 
+Rua Dr. Roberto F rias, 4200-465 Porto, Portugal 
+3 CISE - Electromechatronic Systems Research Centre, University of Bei ra Interior, 
+Cal¸ cada F onte do Lameiro, P, 6201-001 Covilh˜ a, Portugal 
+Abstract. The present study puts forward a regression analytic model 
+based on the random forest algorithm, developed to predict, at an early 
+stage, the global academic performance of the undergraduates of a poly- 
+technic higher education institution. The study targets the universe of 
+an institution composed of 5 schools rather than following the usual p ro- 
+cedure of delimiting the prediction to one single speciﬁc degree course. 
+Hence, we intend to provide the institution with one single tool capable 
+of including the heterogeneity of the universe of students as we ll as edu- 
+cational dynamics. A diﬀerent approach to feature selection is propose d, 
+which enables to completely exclude categories of predictive va riables, 
+making the model useful for scenarios in which not all categories of data
+considered are collected. The introduced model can be used at a c en- 
+tral level by the decision-makers who are entitled to design action s to 
+mitigate academic failure. 
+Keywords: Data mining · Educational data mining · Prediction ·
+Academic success · Random forest · Regression 
+1 Introduction 
+The quality of academic training has a paramount role in the growth and devel- 
+opment of any country or society . In turn, educational success is closely linked to 
+the eﬃcacy and eﬃciency of educational institutions. F or this reas on, the deliv- 
+ery of high-quality training and the deﬁnition of strategies which may p romote 
+academic success as well as retention recovery have been the sub ject of deep 
+reﬂection by the administration board of the Polytechnic Institute o f Bragan¸ ca 
+(IPB – Instituto Polit´ ecnico de Bragan¸ ca ), a polytechnic higher education insti- 
+tution in inland Portugal. Therefore, the aim to provide a methodology which 
+enables the obtainment of useful knowledge to help and ground d ecision-making 
+c⃝ Springer Nature Switzerland AG 2019 
+´A. Rocha et al. (Eds.): ICITS 2019, AISC 918, pp. 45–56, 2019. 
+https://doi.org/10.1007/978-3-030-11890-7 _5","Abstract. The present study puts forward a regression analytic model 
+based on the random forest algorithm, developed to predict, at an early 
+stage, the global academic performance of the undergraduates of a poly- 
+technic higher education institution. The study targets the universe of 
+an institution composed of 5 schools rather than following the usual p ro- 
+cedure of delimiting the prediction to one single speciﬁc degree course. 
+Hence, we intend to provide the institution with one single tool capable 
+of including the heterogeneity of the universe of students as we ll as edu- 
+cational dynamics. A diﬀerent approach to feature selection is propose d, 
+which enables to completely exclude categories of predictive va riables, 
+making the model useful for scenarios in which not all categories of data
+considered are collected. The introduced model can be used at a c en- 
+tral level by the decision-makers who are entitled to design action s to 
+mitigate academic failure. 
+Keywords: Data mining · Educational data mining · Prediction ·
+Academic success · Random forest · Regression 
+1 Introduction 
+The quality of academic training has a paramount role in the growth and devel- 
+opment of any country or society . In turn, educational success is closely linked to 
+the eﬃcacy and eﬃciency of educational institutions. F or this reas on, the deliv- 
+ery of high-quality training and the deﬁnition of strategies which may p romote 
+academic success as well as retention recovery have been the sub ject of deep 
+reﬂection by the administration board of the Polytechnic Institute o f Bragan¸ ca 
+(IPB – Instituto Polit´ ecnico de Bragan¸ ca ), a polytechnic higher education insti- 
+tution in inland Portugal. Therefore, the aim to provide a methodology which 
+enables the obtainment of useful knowledge to help and ground d ecision-making"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"46 M. P . G. Martins et al. 
+by the IPB management bodies created the need to develop an acad emic success 
+predictive model, which ﬁts educational data mining ﬁeld. 
+This work presents a regression model based on the random fore st algo- 
+rithm [ 
+1], developed with the aim to predict at an early stage the global acade mic 
+performance of IPB undergraduates at the terminus of their acad emic path. 
+After this introduction, the present paper is composed of the follo wing sec- 
+tions: Sect. 2 – outline of related studies; Sect. 3 – presentation of the methodol- 
+ogy and of the data model developed; Sect. 4 – presentation of results and of the 
+prediction model of performance proposed; Sect. 5 – ﬁnal discussion of results 
+and respective conclusions. 
+2 Related Studies 
+The main goal of educational data mining (EDM) is to generate usefu l knowledge 
+which may ground and sustain decision-making targeted at impro ving student 
+communities’ learning as well as educational institutions’ eﬃci ency . Several sys- 
+tematic literature reviews [ 
+2– 9] give evidence of the growing importance of EDM 
+throughout time and refer and analyse the main research topics in which EDM 
+has shown a remarkable contribution as a management analysis and su pport 
+tool. Also, such studies provide evidence of the usefulness, potentia l and eﬃcacy 
+of the most used data mining methods and algorithms. 
+Among the typology of tasks where EDM has shown a remarkable con- 
+tribution, we can ﬁnd the prediction of academic performance. This research 
+topic is normally approached from three diﬀerent perspectives : predicting school 
+dropout, predicting retention, or predicting academic success a t the end of the 
+degree course. Literature on EDM has shown that within those studie s, several 
+authors over time have studied a number of factors which promote academic suc- 
+cess or failure. The main goal of the studies [ 10 , 11 ] was to conduct a review on 
+the most used and relevant factors for this kind of predictions. S imultaneously , 
+the authors also intended to determine the main data mining method s and algo- 
+rithms used in such studies. After analysing a set of 30 studies fo cusing on the 
+topic, Shahiri et al. [ 10 ] conclude that 6 attributes are used most frequently . At 
+the top of the list is the cumulative grade points average (CGP A), a lmost at the 
+same level as the attributes of internal assessment (marks after en tering higher 
+education such as assignments, exams, attendance, etc.). Demogra phic features 
+and external assessment (pre-university achievement classiﬁ cations) were the 
+second group of most used attributes. Finally , the third group of attributes that 
+the authors considered to be most used among the set of 6 are the on es related 
+to students’ extra-curricular activities and social interaction. 
+In a similar study to that by Shahiri et al. [ 10 ], but with the particularity 
+of focusing only on research related to students attending instituti ons of the 
+traditional on-site system, Del R ´ ıo and Insuasti [ 11 ] conclude that in order to 
+infer the ﬁnal mean of the degree course, the authors of a set of 5 1 studies 
+released between 2011 and August 2016 used, as predictive var iables, indicators 
+of academic performance obtained after entering higher educatio n in combina- 
+tion with another type of attribute in 51 .8% of the studies. In 37 .5% of the","by the IPB management bodies created the need to develop an academic success 
+predictive model, which ﬁts educational data mining ﬁeld. 
+This work presents a regression model based on the random forest algo- 
+rithm, developed with the aim to predict at an early stage the global academic 
+performance of IPB undergraduates at the terminus of their academic path. 
+After this introduction, the present paper is composed of the following sec- 
+tions: Sect. 2 – outline of related studies; Sect. 3 – presentation of the methodol- 
+ogy and of the data model developed; Sect. 4 – presentation of results and of the 
+prediction model of performance proposed; Sect. 5 – ﬁnal discussion of results 
+and respective conclusions. 
+2 Related Studies 
+The main goal of educational data mining (EDM) is to generate useful knowledge 
+which may ground and sustain decision-making targeted at improving student 
+communities’ learning as well as educational institutions’ eﬃciency . Several sys- 
+tematic literature reviews give evidence of the growing importance of EDM 
+throughout time and refer and analyse the main research topics in which EDM 
+has shown a remarkable contribution as a management analysis and support 
+tool. Also, such studies provide evidence of the usefulness, potential and eﬃcacy 
+of the most used data mining methods and algorithms. 
+Among the typology of tasks where EDM has shown a remarkable con- 
+tribution, we can ﬁnd the prediction of academic performance. This research 
+topic is normally approached from three diﬀerent perspectives : predicting school 
+dropout, predicting retention, or predicting academic success at the end of the 
+degree course. Literature on EDM has shown that within those studies, several 
+authors over time have studied a number of factors which promote academic suc- 
+cess or failure. The main goal of the studies was to conduct a review on 
+the most used and relevant factors for this kind of predictions. Simultaneously , 
+the authors also intended to determine the main data mining methods and algo- 
+rithms used in such studies. After analysing a set of 30 studies focusing on the 
+topic, Shahiri et al. conclude that 6 attributes are used most frequently . At 
+the top of the list is the cumulative grade points average (CGP A), almost at the 
+same level as the attributes of internal assessment (marks after entering higher 
+education such as assignments, exams, attendance, etc.). Demographic features 
+and external assessment (pre-university achievement classiﬁ cations) were the 
+second group of most used attributes. Finally , the third group of attributes that 
+the authors considered to be most used among the set of 6 are the ones related 
+to students’ extra-curricular activities and social interaction. 
+In a similar study to that by Shahiri et al., but with the particularity 
+of focusing only on research related to students attending institutions of the 
+traditional on-site system, Del R ´ ıo and Insuasti conclude that in order to 
+infer the ﬁnal mean of the degree course, the authors of a set of 5 1 studies 
+released between 2011 and August 2016 used, as predictive variables, indicators 
+of academic performance obtained after entering higher education in combina- 
+tion with another type of attribute in 51 .8% of the studies. In 37 .5% of the"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"A Data Mining Approach for Predicting Academic Success – A Case Study 47 
+papers, they only used information on academic performance within higher edu- 
+cation. Among the data mining methods most used in the EDM task, th e same 
+authors [ 11 ] highlight those regarding classiﬁcation, reported in 71 .4% of the 
+research works mentioned. The methods which followed were tho se of clustering 
+and association rules, present in 8 .9% and 7 .1% of the studies. 
+Regarding the predicting academic success at the end of the degr ee course, 
+the majority of the works related analyse academic performanc e restricted to one 
+degree course only , and use relatively small datasets. F or exam ple, Natek and 
+Zwilling [ 12 ] concluded that the factors most visibly inﬂuencing the ﬁnal mean of
+the undergraduates of the bachelor degree in Computer Science w ere connected 
+to information regarding access, demography and extra-curric ular activities. The 
+data were processed by the classiﬁcation algorithms RepT ree Mo del, J48 Model 
+and M5P Model, and concerned 42 students attending the 1st year of th e degree 
+course, 32 attending the 2nd year, and 32 attending the 3rd year. 
+The results of the study conducted by Asif, Merceron, Ali and Haid er [ 13 ]
+show that through algorithms Na ¨ ıve Bayes and random forest T r ees, it is possible 
+to predict, with a high level of precision, the global graduation perf ormance of 
+a four-year degree course, by using only pre-university mar ks and the marks 
+obtained in the course units of the 1st and 2nd years of university . 
+In the study by Migueis et al. [ 14 ], random forest, decision trees, support 
+vector machines, Na ¨ ıve Bayes, bagged trees and boosted trees wer e used to pre- 
+dict overall students academic performance based on the informa tion available 
+at the end of the ﬁrst academic year. Among the algorithms used, r andom for- 
+est was the one that showed the best predictive results, also prov iding evidence 
+that the most important factors to predict and explain the level of academic 
+success in ﬁve-year degree courses in Engineering are the means re garding uni- 
+versity access and university access examinations, as well a s the mean obtained 
+in the course units of the ﬁrst academic year. This study also propo ses a multi- 
+class segmentation structure, aiming an early classiﬁcation of stud ents, based on 
+their performance observed at the end of the ﬁrst academic year a nd on their 
+propensity for academic success revealed by the predictive m odel. 
+3 Methodology and Data Model 
+F or the creation of a predictive model which can predict students ’ academic 
+success at the terminus of their academic path, we chose to explor e data from 
+a universe of students from diﬀerent educational ﬁelds, attendin g about half a 
+hundred degree courses in an institution made up of 5 schools instea d of following 
+the most common procedure of delimiting the prediction to one single s peciﬁc 
+course. Hence, we intend to provide the institution with one single too l capable 
+of including the heterogeneity of the universe of students as well a s educational 
+dynamics. The aim is for this tool to be used at a central level b y the decision- 
+makers who are entitled to design actions to mitigate academic failure , thus 
+promoting a better educational experience for their students.","papers, they only used information on academic performance within higher edu- 
+cation. Among the data mining methods most used in the EDM task, th e same 
+authors highlight those regarding classiﬁcation, reported in 71 .4% of the 
+research works mentioned. The methods which followed were tho se of clustering 
+and association rules, present in 8 .9% and 7 .1% of the studies. 
+Regarding the predicting academic success at the end of the degr ee course, 
+the majority of the works related analyse academic performanc e restricted to one 
+degree course only , and use relatively small datasets. F or exam ple, Natek and 
+Zwilling concluded that the factors most visibly inﬂuencing the ﬁnal mean of
+the undergraduates of the bachelor degree in Computer Science w ere connected 
+to information regarding access, demography and extra-curric ular activities. The 
+data were processed by the classiﬁcation algorithms RepT ree Mo del, J48 Model 
+and M5P Model, and concerned 42 students attending the 1st year of th e degree 
+course, 32 attending the 2nd year, and 32 attending the 3rd year. 
+The results of the study conducted by Asif, Merceron, Ali and Haid er 
+show that through algorithms Na ¨ ıve Bayes and random forest T r ees, it is possible 
+to predict, with a high level of precision, the global graduation perf ormance of 
+a four-year degree course, by using only pre-university mar ks and the marks 
+obtained in the course units of the 1st and 2nd years of university . 
+In the study by Migueis et al. , random forest, decision trees, support 
+vector machines, Na ¨ ıve Bayes, bagged trees and boosted trees wer e used to pre- 
+dict overall students academic performance based on the informa tion available 
+at the end of the ﬁrst academic year. Among the algorithms used, r andom for- 
+est was the one that showed the best predictive results, also prov iding evidence 
+that the most important factors to predict and explain the level of academic 
+success in ﬁve-year degree courses in Engineering are the means re garding uni- 
+versity access and university access examinations, as well a s the mean obtained 
+in the course units of the ﬁrst academic year. This study also propo ses a multi- 
+class segmentation structure, aiming an early classiﬁcation of stud ents, based on 
+their performance observed at the end of the ﬁrst academic year a nd on their 
+propensity for academic success revealed by the predictive m odel. 
+3 Methodology and Data Model 
+F or the creation of a predictive model which can predict students ’ academic 
+success at the terminus of their academic path, we chose to explor e data from 
+a universe of students from diﬀerent educational ﬁelds, attendin g about half a 
+hundred degree courses in an institution made up of 5 schools instea d of following 
+the most common procedure of delimiting the prediction to one single s peciﬁc 
+course. Hence, we intend to provide the institution with one single too l capable 
+of including the heterogeneity of the universe of students as well a s educational 
+dynamics. The aim is for this tool to be used at a central level b y the decision- 
+makers who are entitled to design actions to mitigate academic failure , thus 
+promoting a better educational experience for their students."
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"48 M. P . G. Martins et al. 
+In this study , we chose to base our predictive model on the random fo rest 
+algorithm proposed by Breiman [ 1]. It has shown to have surpassed other tech- 
+niques in similar studies due to its predictive capacity and, more importa ntly , 
+it allows a good interpretation of its results, in contrast to other t echniques, 
+such as Neural Networks and Support V ector Machines, which ar e considered to 
+be black boxes. In fact, random forest presents the interesting f unctionality of 
+allowing ordering the importance of the predictors which sustain the model. 
+F ollowing the procedure commonly adopted, the predictive perf ormance 
+of the models considered was evaluated using a k-fold (with k = 10) cross- 
+validation. As for the model evaluation metrics, the determination c oeﬃcient 
+(R2) and the root mean squared error (RMSE) were used. 
+In order to determine students’ academic performance, the depend ent vari- 
+able introduced in expression ( 1) was used as a success indicator, 
+dv = average × ects aprov 
+ects aprov + ects disaprov , (1) 
+where average is the weighted average of the marks obtained in the completed 
+course units (CUs), ects aprov is the number of ECTS completed successfully 
+and ects disaprov is the number of ECTS in which students enrolled but did 
+not pass. Thus, the metric takes into account not only the studen ts’ classiﬁcation 
+average but also the fraction of matriculations in course units the y passed (ratio 
+of successful ‘attempts’). 
+It was possible to consider the time period comprised between 2007/ 2008 
+and 2015/2016, totalising 9 consecutive academic years. A choice w as made 
+to limit the study to the bachelor degree courses since they are the c ore of the 
+institution’s training oﬀer and they encompass a more complete set o f data. After 
+a cleaning of data and other pre-processing tasks, the data set th at this study 
+focuses on comprised 4530 matriculations in bachelor degree cour ses concluded in 
+the period between 2007/2008 and 2015/2016 and started in the period between 
+2007/2008 and 2013/2014. 
+Regarding the predictive variables of academic success, we co nsidered essen- 
+tially the same typology of variables used in the related works of refer ence, 
+namely academic data of sociodemographic nature and of access to higher edu- 
+cation. The variables under study can be classiﬁed in two impor tant subgroups: 
+variables with cumulative semestral curricular results and ‘tim eless’ variables – 
+variables whose values are unaltered throughout students’ aca demic path. T able 1
+presents all the 44 predictive variables considered in this study as w ell as the 
+dependent variable dv which will be used as a success indicator according to 
+Eq. ( 1). 
+A vast real data set was used in this study , so care was taken to cla ssify 
+(3rd column of the table) each one of the potential predictive varia bles of aca- 
+demic success according to their nature into ﬁve diﬀerent categ ories: curricular 
+(C), matriculation (M), demographic (D), socioeconomic (S) and access (A). 
+The attributes regarding semestral data (all in category C) are also easily dis- 
+tinguished from the others (timeless data) through the suﬃx ‘ s’. Note that the","In this study , we chose to base our predictive model on the random fo rest 
+algorithm proposed by Breiman [ 1]. It has shown to have surpassed other tech- 
+niques in similar studies due to its predictive capacity and, more importa ntly , 
+it allows a good interpretation of its results, in contrast to other t echniques, 
+such as Neural Networks and Support V ector Machines, which ar e considered to 
+be black boxes. In fact, random forest presents the interesting f unctionality of 
+allowing ordering the importance of the predictors which sustain the model. 
+F ollowing the procedure commonly adopted, the predictive perf ormance 
+of the models considered was evaluated using a k-fold (with k = 10) cross- 
+validation. As for the model evaluation metrics, the determination c oeﬃcient 
+(R2) and the root mean squared error (RMSE) were used. 
+In order to determine students’ academic performance, the depend ent vari- 
+able introduced in expression ( 1) was used as a success indicator, 
+where average is the weighted average of the marks obtained in the completed 
+course units (CUs), ects aprov is the number of ECTS completed successfully 
+and ects disaprov is the number of ECTS in which students enrolled but did 
+not pass. Thus, the metric takes into account not only the studen ts’ classiﬁcation 
+average but also the fraction of matriculations in course units the y passed (ratio 
+of successful ‘attempts’). 
+It was possible to consider the time period comprised between 2007/ 2008 
+and 2015/2016, totalising 9 consecutive academic years. A choice w as made 
+to limit the study to the bachelor degree courses since they are the c ore of the 
+institution’s training oﬀer and they encompass a more complete set o f data. After 
+a cleaning of data and other pre-processing tasks, the data set th at this study 
+focuses on comprised 4530 matriculations in bachelor degree cour ses concluded in 
+the period between 2007/2008 and 2015/2016 and started in the period between 
+2007/2008 and 2013/2014. 
+Regarding the predictive variables of academic success, we co nsidered essen- 
+tially the same typology of variables used in the related works of refer ence, 
+namely academic data of sociodemographic nature and of access to higher edu- 
+cation. The variables under study can be classiﬁed in two impor tant subgroups: 
+variables with cumulative semestral curricular results and ‘tim eless’ variables – 
+variables whose values are unaltered throughout students’ aca demic path. T able 1
+presents all the 44 predictive variables considered in this study as w ell as the 
+dependent variable dv which will be used as a success indicator according to 
+Eq. ( 1). 
+A vast real data set was used in this study , so care was taken to cla ssify 
+(3rd column of the table) each one of the potential predictive varia bles of aca- 
+demic success according to their nature into ﬁve diﬀerent categ ories: curricular 
+(C), matriculation (M), demographic (D), socioeconomic (S) and access (A). 
+The attributes regarding semestral data (all in category C) are also easily dis- 
+tinguished from the others (timeless data) through the suﬃx ‘ s’. Note that the"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"A Data Mining Approach for Predicting Academic Success – A Case Study 49 
+T able 1. List of variables sustaining the model. 
+Id Attribute Cat Type Min..max Meaning 
+1 curricular year s C Discrete 1..4 Student’s course year in the a.s. considered 
+2 academic year s C Discrete 07..15 Academic year of the a.s. considered 
+3 scholarship s C Continuous 0..1 Was the student a scholarship holder in the a.s.? 
+4 union member s C Continuous 0..1 Was the student a union leader in the a.s.? 
+5 ects aprov s C Discrete 0..60 N. of ECTS passed in the a.s. 
+6 ects disaprov s C Discrete 0..60 N. of ECTS failed in the a.s. (academic semester) 
+7 max s C Discrete 0..20 Maximum mark of the CUs passed in the a.s. 
+8 average s C Continuous 0..20 Average mark of the CUs passed in the a.s. 
+9 min s C Discrete 0..20 Minimum mark of the CUs passed in the a.s. 
+10 n assess disap s C Discrete 0..18 N. of assessments failed in the a.s. 
+11 n courses aprov s C Discrete 0..10 N. de CUs passed in the academic semester 
+12 n courses disap s C Discrete 0..10 N. of CUs failed in the academic semester 
+13 dv12 s(a) C Continuous − 20..20 Diﬀ. in performance from 1st to 2nd semester 
+14 dv23 s(a) C Continuous − 20..20 Diﬀ. in performance from 2nd to 3rd semester 
+15 dv34 s(a) C Continuous − 20..20 Diﬀ. in performance from 3rd to 4th semester 
+16 dv45 s(a) C Continuous − 20..20 Diﬀ. in performance from 4th to 5th semester 
+17 dv56 s(a) C Continuous − 20..20 Diﬀ. in performance from 5th to 6th semester 
+18 enrol year M Discrete 07..13 Year of enrolment 
+19 cod degree M Nominal 1..51 Code of the degree course 
+20 cod school M Nominal 1..5 Code of the school 
+21 cred ects tx M Discrete 0..100 Fraction of ECTS credited to the student 
+22 ects degree M Discrete 180..240 Number of ECTS of the degree course 
+23 enrol type M Nominal 1..9 Type of enrolment in the degree course 
+24 displaced D Binary 0..1 Is the student displaced from usual residence? 
+25 district D Nominal 1..28 Student’s district of origin 
+26 district n D Nominal 1..27 District of birth 
+27 age D Discrete 17..61 Student’s age at the time of enrolment 
+28 nationality D Nominal 1..15 Student’s nationality 
+29 gender D Nominal 1..2 Gender 
+30 cod job student S Nominal 1..12 Student’s job 
+31 cod job mother S Nominal 1..12 Mother’s job 
+32 cod job father S Nominal 1..12 Father’s job 
+33 educ level mother S Ordinal 1..13 Mother’s level of education 
+34 educ level father S Ordinal 1..13 Father’s level of education 
+35 prof sit student S Nominal 1..10 Student’s employment status 
+36 prof sit mother S Nominal 1..10 Mother’s employment status 
+37 prof sit father S Nominal 1..9 Father’s employment status 
+38 phase A Ordinal 1..3 Phase of enrolment 
+39 access grade A Continuous 0..200 Student’s entrance qualiﬁcation 
+40 a10 11 grade A Continuous 0..200 Mean obtained in the 10th and 11th grades 
+41 a12 grade A Continuous 0..200 Mean obtained in the 12th grade 
+42 access option A Ordinal 1..6 Order of the option when applying for university 
+43 access order A Discrete 1..322 Order of entrance among stud. admit. in course 
+44 access exams A Continuous 0..200 Mean obtained in the entrance examinations 
+45 dv (b) Continuous 0..20 Dependent var. with student’s ﬁnal performance 
+(a) dv ij s = dv j − dv i , with i = j − 1 and dv n the student’s performance in their umpteenth semester, 
+calculated using a metrics similar to that of dv (c.f. Eq. ( 1)). Each variable dv ij s is only present in 
+the models with cumulative data of j or more semesters. 
+(b) Dependent variable used as indicator of success.","T able 1. List of variables sustaining the model.
+Id Attribute Cat Type Min..max Meaning
+1 curricular year s C Discrete 1..4 Student’s course year in the a.s. considered
+2 academic year s C Discrete 07..15 Academic year of the a.s. considered
+3 scholarship s C Continuous 0..1 Was the student a scholarship holder in the a.s.?
+4 union member s C Continuous 0..1 Was the student a union leader in the a.s.?
+5 ects aprov s C Discrete 0..60 N. of ECTS passed in the a.s.
+6 ects disaprov s C Discrete 0..60 N. of ECTS failed in the a.s. (academic semester)
+7 max s C Discrete 0..20 Maximum mark of the CUs passed in the a.s.
+8 average s C Continuous 0..20 Average mark of the CUs passed in the a.s.
+9 min s C Discrete 0..20 Minimum mark of the CUs passed in the a.s.
+10 n assess disap s C Discrete 0..18 N. of assessments failed in the a.s.
+11 n courses aprov s C Discrete 0..10 N. de CUs passed in the academic semester
+12 n courses disap s C Discrete 0..10 N. of CUs failed in the academic semester
+13 dv12 s(a) C Continuous − 20..20 Diﬀ. in performance from 1st to 2nd semester
+14 dv23 s(a) C Continuous − 20..20 Diﬀ. in performance from 2nd to 3rd semester
+15 dv34 s(a) C Continuous − 20..20 Diﬀ. in performance from 3rd to 4th semester
+16 dv45 s(a) C Continuous − 20..20 Diﬀ. in performance from 4th to 5th semester
+17 dv56 s(a) C Continuous − 20..20 Diﬀ. in performance from 5th to 6th semester
+18 enrol year M Discrete 07..13 Year of enrolment
+19 cod degree M Nominal 1..51 Code of the degree course
+20 cod school M Nominal 1..5 Code of the school
+21 cred ects tx M Discrete 0..100 Fraction of ECTS credited to the student
+22 ects degree M Discrete 180..240 Number of ECTS of the degree course
+23 enrol type M Nominal 1..9 Type of enrolment in the degree course
+24 displaced D Binary 0..1 Is the student displaced from usual residence?
+25 district D Nominal 1..28 Student’s district of origin
+26 district n D Nominal 1..27 District of birth
+27 age D Discrete 17..61 Student’s age at the time of enrolment
+28 nationality D Nominal 1..15 Student’s nationality
+29 gender D Nominal 1..2 Gender
+30 cod job student S Nominal 1..12 Student’s job
+31 cod job mother S Nominal 1..12 Mother’s job
+32 cod job father S Nominal 1..12 Father’s job
+33 educ level mother S Ordinal 1..13 Mother’s level of education
+34 educ level father S Ordinal 1..13 Father’s level of education
+35 prof sit student S Nominal 1..10 Student’s employment status
+36 prof sit mother S Nominal 1..10 Mother’s employment status
+37 prof sit father S Nominal 1..9 Father’s employment status
+38 phase A Ordinal 1..3 Phase of enrolment
+39 access grade A Continuous 0..200 Student’s entrance qualiﬁcation
+40 a10 11 grade A Continuous 0..200 Mean obtained in the 10th and 11th grades
+41 a12 grade A Continuous 0..200 Mean obtained in the 12th grade
+42 access option A Ordinal 1..6 Order of the option when applying for university
+43 access order A Discrete 1..322 Order of entrance among stud. admit. in course
+44 access exams A Continuous 0..200 Mean obtained in the entrance examinations
+45 dv (b) Continuous 0..20 Dependent var. with student’s ﬁnal performance
+(a) dv ij s = dv j − dv i , with i = j − 1 and dv n the student’s performance in their umpteenth semester,
+calculated using a metrics similar to that of dv (c.f. Eq. ( 1)). Each variable dv ij s is only present in
+the models with cumulative data of j or more semesters.
+(b) Dependent variable used as indicator of success."
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"50 M. P . G. Martins et al. 
+curricular data (C) refers to semestral curricular results of aca demic performance 
+accumulated at the end of each of the student’s 6 ﬁrst semesters. 
+The selection of the dimensions regarding the student, which explain t heir 
+academic success, was carried out in two diﬀerent stages. Fir st, as explained 
+in Sect. 
+4.1 , we selected the student’s dimensions which best account for their
+success, which allowed a ﬁrst adjustment enabling the exclus ion of complete 
+groups of variables. Subsequently , as explained in Sect. 4.2 , we ﬁne-tuned the 
+selection of attributes which were not excluded in the ﬁrst stage. Th is approach 
+allowed the reduction of the data dimensionality without losing the mod el’s 
+predictive capacity . 
+Figure 1 depicts a scheme intended to characterise the predictive model 
+designed for this study . It shows the diﬀerent categories of pre dictive variables 
+used as input of the random forest algorithm. As we can see, for th e group of 
+curricular variables (C), the attributes used are the results accum ulated at the 
+end of each one of the student’s 6 ﬁrst semesters. Note that only one of the 6 
+entries of curricular data (C) is considered in each execution of the a lgorithm 
+(mutually exclusive entries). 
+Fig. 1. Scheme depicting the comparative study conducted. 
+4 Results 
+In the exploratory analysis of data which follows, we chose to keep the conﬁgu- 
+ration of the random forest algorithm ﬁxed for the study to focus o n the set of 
+predictive variables which sustain it. 
+4.1 Selection of Predictors Categories 
+As it is known, the assertiveness of a predictive model depends g reatly on the 
+set of predictive variables being considered in the analysis. Also, the best model 
+is not always the one which includes all the variables available. Although it","curricular data (C) refers to semestral curricular results of academic performance 
+accumulated at the end of each of the student’s 6 ﬁrst semesters. 
+The selection of the dimensions regarding the student, which explain their 
+academic success, was carried out in two diﬀerent stages. First, as explained 
+in Sect. 
+4.1 , we selected the student’s dimensions which best account for their
+success, which allowed a ﬁrst adjustment enabling the exclusion of complete 
+groups of variables. Subsequently , as explained in Sect. 4.2 , we ﬁne-tuned the 
+selection of attributes which were not excluded in the ﬁrst stage. This approach 
+allowed the reduction of the data dimensionality without losing the model’s 
+predictive capacity . 
+Figure 1 depicts a scheme intended to characterise the predictive model 
+designed for this study . It shows the diﬀerent categories of predictive variables 
+used as input of the random forest algorithm. As we can see, for the group of 
+curricular variables (C), the attributes used are the results accumulated at the 
+end of each one of the student’s 6 ﬁrst semesters. Note that only one of the 6 
+entries of curricular data (C) is considered in each execution of the algorithm 
+(mutually exclusive entries). 
+4 Results 
+In the exploratory analysis of data which follows, we chose to keep the conﬁgu- 
+ration of the random forest algorithm ﬁxed for the study to focus on the set of 
+predictive variables which sustain it. 
+4.1 Selection of Predictors Categories 
+As it is known, the assertiveness of a predictive model depends greatly on the 
+set of predictive variables being considered in the analysis. Also, the best model 
+is not always the one which includes all the variables available. Although it"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"A Data Mining Approach for Predicting Academic Success – A Case Study 51 
+is commonly acknowledged that random forests make an internal se lection of 
+variables, we still decided to run a test of inclusion, or not, of the ca tegories 
+of variables so as to understand the impact of the several dime nsions on the 
+capacity of the model. 
+T able 2 shows the diﬀerent categories of attributes chosen in each of thos e 
+studies. Although the aim is to develop a comprehensive study , it do es not seem 
+necessary to include all the possible combinations between the 5 groups of vari- 
+ables, which makes a total of 2 5 − 1 = 31 possibilities. In fact, since the group 
+of curricular data (C) is clearly the most determinant group of p redictors, great 
+diﬃculties are foreseen in the predictive precision of any model which does not 
+include it. Therefore, only one particular case is considered in which this group 
+of variables is not used: case MDSA (Study 6). With this simpliﬁcatio n, the 
+number of studies was reduced to almost a half, or more precisel y to 2 4 + 1 = 17. 
+T able 2. Categories of predictive variables used in the studies conducted.
+Study Label Curricular Matriculation Demographic Socioeconomic Access 
+1 CMDSA ✓ ✓ ✓ ✓ ✓
+2 CMDS ✓ ✓ ✓ ✓
+3 CMDA ✓ ✓ ✓ ✓
+4 CMSA ✓ ✓ ✓ ✓
+5 CDSA ✓ ✓ ✓ ✓
+6 MDSA ✓ ✓ ✓ ✓
+7 CMD ✓ ✓ ✓
+8 CMS ✓ ✓ ✓
+9 CMA ✓ ✓ ✓
+10 CDS ✓ ✓ ✓
+11 CDA ✓ ✓ ✓
+12 CSA ✓ ✓ ✓
+13 CM ✓ ✓
+14 CD ✓ ✓
+15 CS ✓ ✓
+16 CA ✓ ✓
+17 C ✓
+T able 3 contains for each of the studies the determination coeﬃcients (R 2)
+obtained by applying the random forest predictive algorithm to the se lected data 
+at the end of the student’s 6 ﬁrst academic semesters. F or a better und erstanding 
+of the results presented, take Study 8 as an example: the input of t he random 
+forest algorithm (see Fig. 1) was reduced to the groups of curricular (C), matric- 
+ulation (M) and socioeconomic (S) variables. In this study , as in a ll the others 
+(except for Study 6, which does not include the curricular data), th e random 
+forest algorithm was run 6 times in order to use the results accumu lated at the 
+end of each of the 6 semesters concerning the curricular data. Th e last column of 
+the table shows the weighted average of the determination coeﬃcie nts for those","is commonly acknowledged that random forests make an internal se lection of 
+variables, we still decided to run a test of inclusion, or not, of the ca tegories 
+of variables so as to understand the impact of the several dime nsions on the 
+capacity of the model. 
+T able 2 shows the diﬀerent categories of attributes chosen in each of thos e 
+studies. Although the aim is to develop a comprehensive study , it do es not seem 
+necessary to include all the possible combinations between the 5 groups of vari- 
+ables, which makes a total of 2 5 − 1 = 31 possibilities. In fact, since the group 
+of curricular data (C) is clearly the most determinant group of p redictors, great 
+diﬃculties are foreseen in the predictive precision of any model which does not 
+include it. Therefore, only one particular case is considered in which this group 
+of variables is not used: case MDSA (Study 6). With this simpliﬁcatio n, the 
+number of studies was reduced to almost a half, or more precisel y to 2 4 + 1 = 17. 
+T able 2. Categories of predictive variables used in the studies conducted.
+Study Label Curricular Matriculation Demographic Socioeconomic Access 
+1 CMDSA ✓ ✓ ✓ ✓ ✓
+2 CMDS ✓ ✓ ✓ ✓
+3 CMDA ✓ ✓ ✓ ✓
+4 CMSA ✓ ✓ ✓ ✓
+5 CDSA ✓ ✓ ✓ ✓
+6 MDSA ✓ ✓ ✓ ✓
+7 CMD ✓ ✓ ✓
+8 CMS ✓ ✓ ✓
+9 CMA ✓ ✓ ✓
+10 CDS ✓ ✓ ✓
+11 CDA ✓ ✓ ✓
+12 CSA ✓ ✓ ✓
+13 CM ✓ ✓
+14 CD ✓ ✓
+15 CS ✓ ✓
+16 CA ✓ ✓
+17 C ✓
+T able 3 contains for each of the studies the determination coeﬃcients (R 2)
+obtained by applying the random forest predictive algorithm to the se lected data 
+at the end of the student’s 6 ﬁrst academic semesters. F or a better und erstanding 
+of the results presented, take Study 8 as an example: the input of t he random 
+forest algorithm (see Fig. 1) was reduced to the groups of curricular (C), matric- 
+ulation (M) and socioeconomic (S) variables. In this study , as in a ll the others 
+(except for Study 6, which does not include the curricular data), th e random 
+forest algorithm was run 6 times in order to use the results accumu lated at the 
+end of each of the 6 semesters concerning the curricular data. Th e last column of 
+the table shows the weighted average of the determination coeﬃcie nts for those"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"52 M. P . G. Martins et al. 
+T able 3. Determination coeﬃcient R 2 of the predictive model, for diﬀerent groups of 
+predictive variables according to students’ academic semester . 
+Label 1st sem 2nd sem 3rd sem 4th sem 5th sem 6th sem Average (a) 
+Study 13 CM 80.4 86.5 92.0 94.3 96.6 97.9 88.4 
+Study 8 CMS 80.7 86.8 91.7 93.9 96.4 97.7 88.4 
+Study 4 CMSA 80.7 86.5 91.6 93.9 96.3 97.7 88.3 
+Study 1 CMDSA 80.3 86.3 91.3 93.7 96.2 97.6 88.1 
+Study 2 CMDS 80.3 86.4 91.4 93.7 96.3 97.7 88.1 
+Study 7 CMD 79.8 86.3 91.6 94.0 96.5 97.8 88.1 
+Study 9 CMA 79.9 86.2 91.6 94.0 96.4 97.7 88.1 
+Study 3 CMDA 79.7 86.1 91.4 93.8 96.3 97.7 87.9 
+Study 12 CSA 70.5 78.8 86.6 89.9 94.2 96.6 81.8 
+Study 15 CS 70.6 78.7 86.5 89.7 94.1 96.5 81.8 
+Study 5 CDSA 70.5 78.5 86.4 89.8 94.2 96.5 81.7 
+Study 10 CDS 70.7 78.3 86.2 89.6 94.1 96.4 81.6 
+Study 17 C 70.3 78.0 86.6 90.0 94.4 96.7 81.6 
+Study 16 CA 69.6 78.2 86.6 90.1 94.4 96.7 81.5 
+Study 11 CDA 69.8 78.2 86.3 89.9 94.3 96.6 81.4 
+Study 14 CD 70.1 77.8 86.3 89.6 94.2 96.6 81.4 
+Study 6 MDSA 64.4 64.4 64.4 64.4 64.4 64.4 64.4 
+Average (b) 75.2 82.4 89.0 91.9 95.3 97.2 84.9 
+(a) Weighted average of semestral values, with weights 6, 5, ..., 2, 1, for the 1st, 2nd, ..., 
+5th, 6th semesters, respectively . 
+(b) Average value without considering Study 6. 
+6 semesters. The choice fell on a weighted average of semestral R 2 in order to 
+value the results of the ﬁrst semesters at the expense of those obta ined in more 
+advanced stages of the student’s academic path – note, for examp le, that for 
+students who complete their training in 3 years, the predictive cap acity of the 
+model after the 6th semester is totally irrelevant. 
+The analysis of the values presented in the table, listed in a des cending order 
+of the average value of R 2 (last column), allows the following considerations: 
+– It was not the model ‘feeding’ on all the variables (Study 1 – CMDSA ) which 
+presented the best predictive capacities. Actually , 6 other mode ls achieved 
+similar or better performances with a lower number of predictive va riables. 
+– There is a visibly big diﬀerence in the performance of the 8 bes t classiﬁed 
+models and the remaining ones – note the sudden drop between Study 3 and 
+Study 12. If that sudden drop is clearly due to the loss of the matric ulation 
+data (M), while the one witnessed between studies 14 and 6 is due to t he loss 
+of the other subgroup of academic data, the curricular data (C).
+– Academic data (subgroups CM, Study 13), alone, justify the best s tudy result 
+(R 2 = 88 .4%), obtained in ex-aequo with Study 8 (CMS). 
+– As expected, the assertiveness of the model increases consiste ntly in line with 
+the course of students’ academic path. 
+– Although the results of Study 6 (MDSA), the only one not using the attributes 
+of category C, are far behind the others, they clearly conﬁrm that students’","Table 3. Determination coefficient R 2 of the predictive model, for different groups of predictive variables according to students’ academic semester.
+
+The choice fell on a weighted average of semestral R 2 in order to value the results of the ﬁrst semesters at the expense of those obtained in more advanced stages of the student’s academic path – note, for example, that for students who complete their training in 3 years, the predictive capacity of the model after the 6th semester is totally irrelevant.
+The analysis of the values presented in the table, listed in a descending order of the average value of R 2 (last column), allows the following considerations:
+– It was not the model ‘feeding’ on all the variables (Study 1 – CMDSA) which presented the best predictive capacities. Actually, 6 other models achieved similar or better performances with a lower number of predictive variables.
+– There is a visibly big difference in the performance of the 8 best classiﬁed models and the remaining ones – note the sudden drop between Study 3 and Study 12. If that sudden drop is clearly due to the loss of the matriculation data (M), while the one witnessed between studies 14 and 6 is due to the loss of the other subgroup of academic data, the curricular data (C).
+– Academic data (subgroups CM, Study 13), alone, justify the best study result (R 2 = 88 .4%), obtained in ex-aequo with Study 8 (CMS).
+– As expected, the assertiveness of the model increases consistently in line with the course of students’ academic path.
+– Although the results of Study 6 (MDSA), the only one not using the attributes of category C, are far behind the others, they clearly conﬁrm that students’"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"A Data Mining Approach for Predicting Academic Success – A Case Study 53 
+curricular data is the key contributor to the assertive capacity of the model, 
+probably not least because such data is not available at the beginnin g of the 
+academic path. Still, it is interesting to observe that even at a very e arly 
+stage of students’ academic course, namely in the 1st and 2nd seme sters, the 
+average determination coeﬃcient of the model showing the best performance 
+skyrockets from 64 .4% to values greater than 80% and 86%, respectively . 
+In light of the results presented in T able 3 and of the corresponding consider- 
+ations exposed, it seems pertinent to propose the groups of vari ables in Study 13 
+(categories CM) for the predictive model we intend to design. The s tudy achieves 
+the highest determination coeﬃcients using only 2 of the 5 possible ca tegories of 
+variables. Supporting the choice of the group CM (Study 13) as th e best study 
+is also the fact that this set of variables also revealed, in additional t ests, the 
+lowest Root Mean Square Error (0 .966 when the second lowest error was 0 .983 
+and the average 1 .105). 
+The comparative study conducted allowed the exclusion of three i rrelevant 
+groups of variables, from a predictive perspective: the demogr aphic, socioeco- 
+nomic and the access data. In the next stage, we will try to exclude va riables 
+presenting a negligible inﬂuence in the performance of the pred ictive model. 
+4.2 Additional Adjustment of the Model – Selection of Predictors 
+The performance of any predictive model to be proposed will be all t he more 
+valued as the earlier the moment in which it might be applied. In fact, t he 
+predictive relevance of a model is based on two crucial aspects : the veracity of 
+its predictions and the degree of anticipation of such predictions . Therefore, it 
+is now important to ﬁne-tune the CM model (which globally showed to b e the 
+most assertive) when applied right at the end of the student’s 1st semester, as 
+shown in the scheme in Fig. 
+2. More precisely , we will try to exclude from the set 
+of CM predictive variables (with the subgroup C including only the cur ricular 
+results of the student’s 1st semester) all those which do not cont ribute positively 
+and signiﬁcantly to the quality of the model. 
+Fig. 2. CM predictive model sustained by data from the 1st academic semest er.","curricular data is the key contributor to the assertive capacity of the model, 
+probably not least because such data is not available at the beginning of the 
+academic path. Still, it is interesting to observe that even at a very early 
+stage of students’ academic course, namely in the 1st and 2nd semesters, the 
+average determination coefficient of the model showing the best performance 
+skyrockets from 64.4% to values greater than 80% and 86%, respectively. 
+In light of the results presented in Table 3 and of the corresponding consider- 
+ations exposed, it seems pertinent to propose the groups of variables in Study 13 
+(categories CM) for the predictive model we intend to design. The study achieves 
+the highest determination coefficients using only 2 of the 5 possible categories of 
+variables. Supporting the choice of the group CM (Study 13) as the best study 
+is also the fact that this set of variables also revealed, in additional tests, the 
+lowest Root Mean Square Error (0.966 when the second lowest error was 0.983 
+and the average 1.105). 
+The comparative study conducted allowed the exclusion of three irrelevant 
+groups of variables, from a predictive perspective: the demographic, socioeco- 
+nomic and the access data. In the next stage, we will try to exclude variables 
+presenting a negligible influence in the performance of the predictive model. 
+
+4.2 Additional Adjustment of the Model – Selection of Predictors 
+The performance of any predictive model to be proposed will be all the more 
+valued as the earlier the moment in which it might be applied. In fact, the 
+predictive relevance of a model is based on two crucial aspects: the veracity of 
+its predictions and the degree of anticipation of such predictions. Therefore, it 
+is now important to fine-tune the CM model (which globally showed to be the 
+most assertive) when applied right at the end of the student’s 1st semester, as 
+shown in the scheme in Fig. 
+2. More precisely, we will try to exclude from the set 
+of CM predictive variables (with the subgroup C including only the curricular 
+results of the student’s 1st semester) all those which do not contribute positively 
+and significantly to the quality of the model. 
+
+Fig. 2. CM predictive model sustained by data from the 1st academic semester."
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"54 M. P . G. Martins et al. 
+Since the CM model did not make use of the socioeconomic and access data, 
+the categories with missing data in a signiﬁcant number of students, it was possi- 
+ble to use a wider and more comprehensive sample of matriculations co ntaining 
+complete data. Therefore, the size of the data set according to wh ich the CM 
+model will be adjusted increased from 2159 to 4530, the total size of the sample, 
+originating a slight decrease of the model assertiveness in the 1st semester, from 
+R2 = 80 .4 to 79 .0. W e believe that by using a larger sample of matriculations 
+in this second adjustment of the model, it will present greater gen eralization 
+capacity . 
+Before moving on to a more systematised process of ﬁne-tuning of th e CM 
+model, the random forest algorithm was run for the data set withou t vari- 
+ables n courses aprov s and n courses disap s, for considering them to have 
+a strong correlation with the attributes ects aprov s and ects disaprov s,
+respectively . After conﬁrming the pertinence of excluding thes e two attributes, 
+the possibility to exclude new variables among those reveali ng to be less infor- 
+mative, based on random forest ranking of variables in terms of impo rtance, was 
+assessed in successive iterations. The relevant data character ising those several 
+iterations is summarised in T able 4. The data shows that the loss of variables 
+maintained or slightly improved the assertiveness of the model. In a n utshell, 
+we were able to remove 7 out of the 18 attributes from the data set without 
+that aﬀecting negatively the model performance and actually achie ving a slight 
+improvement, though of little signiﬁcance. 
+T able 4. Removal of variables from the CM data set. 
+Iter. Excluded variables #var R2 RMSE 
+0 n courses aprov s n courses disap s 16 79.2 1.334 
+1 scholarship s union member s 14 79.2 1.335 
+2 min s 13 79.2 1.333 
+3 max s 12 79.3 1.329 
+4 n assess disap s 11 79.5 1.326 
+The 11 variables, which together justify the predictive capacity of the 
+model and therefore reveal to be the most determinant in antici pating the aca- 
+demic success of IPB’s bachelor degree students were ordered i n a descending 
+order of importance (given in brackets) as follows: ects disaprov s (2 .387), 
+cod degree (2 .011), average s (1 .785), ects aprov s (1 .461), cred ects tx 
+(1 .454), cod school (1 .230), ects degree (0 .359), enrol type (0 .274), 
+academic year s (0 .241), enrol year (0 .239), curricular year s (0 .176). 
+5 Discussion of Results and Conclusions 
+In this study , the random forest method was used to propose a predi ctive model 
+of the global academic success of IPB’s bachelor degree students at the terminus","Since the CM model did not make use of the socioeconomic and access data, the categories with missing data in a signiﬁcant number of students, it was possible to use a wider and more comprehensive sample of matriculations containing complete data. Therefore, the size of the data set according to which the CM model will be adjusted increased from 2159 to 4530, the total size of the sample, originating a slight decrease of the model assertiveness in the 1st semester, from R2 = 80 .4 to 79 .0. W e believe that by using a larger sample of matriculations in this second adjustment of the model, it will present greater generalization capacity .
+Before moving on to a more systematised process of ﬁne-tuning of the CM model, the random forest algorithm was run for the data set without variables n courses aprov s and n courses disap s, for considering them to have a strong correlation with the attributes ects aprov s and ects disaprov s, respectively . After conﬁrming the pertinence of excluding thes e two attributes, the possibility to exclude new variables among those reveali ng to be less informative, based on random forest ranking of variables in terms of impo rtance, was assessed in successive iterations. The relevant data character ising those several iterations is summarised in T able 4. The data shows that the loss of variables maintained or slightly improved the assertiveness of the model. In a n utshell, we were able to remove 7 out of the 18 attributes from the data set without that aﬀecting negatively the model performance and actually achie ving a slight improvement, though of little signiﬁcance.
+T able 4. Removal of variables from the CM data set.
+Iter. Excluded variables #var R2 RMSE
+0 n courses aprov s n courses disap s 16 79.2 1.334
+1 scholarship s union member s 14 79.2 1.335
+2 min s 13 79.2 1.333
+3 max s 12 79.3 1.329
+4 n assess disap s 11 79.5 1.326
+The 11 variables, which together justify the predictive capacity of the model and therefore reveal to be the most determinant in antici pating the academic success of IPB’s bachelor degree students were ordered i n a descending order of importance (given in brackets) as follows: ects disaprov s (2 .387), cod degree (2 .011), average s (1 .785), ects aprov s (1 .461), cred ects tx (1 .454), cod school (1 .230), ects degree (0 .359), enrol type (0 .274), academic year s (0 .241), enrol year (0 .239), curricular year s (0 .176).
+5 Discussion of Results and Conclusions
+In this study , the random forest method was used to propose a predi ctive model of the global academic success of IPB’s bachelor degree students at the terminus"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"A Data Mining Approach for Predicting Academic Success – A Case Study 55 
+of their academic path. Instead of following the commonly adopted p rocedure of 
+delimiting the prediction to one single speciﬁc course, the mod el was developed 
+from a vast real data set involving records of quite heterogeneou s undergraduates 
+from over half a hundred degree courses covering a wide varie ty of educational 
+ﬁelds taught in the ﬁve schools composing the institution and where each student 
+is characterized by more than four tens explanatory variables . Such speciﬁcity 
+allowed studying the inﬂuence of a new curricular factor taken into ac count 
+for the ﬁrst time in literature: the type of school. The results obtain ed allowed 
+concluding that students’ success also depends on the school the y attend. This 
+conclusion indicates that in order to mitigate retention and academ ic failure, it 
+might be necessary to adopt diﬀerentiated strategies of educatio nal promotion 
+according to each school. 
+The order of importance provided by the random forest algorithm a llowed the 
+identiﬁcation of the factors contributing to students’ success o r failure. It enabled 
+the observation that the factors regarding the curricular context of students’ 
+academic performance are paramount to the intended prediction , which con- 
+ﬁrms results previously obtained by [ 15 ], who stated that such factors can alone 
+account for academic performance. Note that all 11 attributes w hich revealed to 
+be signiﬁcant for the prediction belong, without exception, to the cu rricular or 
+matriculation categories. 
+The knowledge obtained allows the identiﬁcation of students at a high er 
+risk of retention and academic failure, which enables the institution al managers 
+to design more assertive educational or tutorial strategies towa rds educational 
+eﬃcacy and eﬃciency . 
+The kind of approach adopted in the identiﬁcation of students’ cha racteris- 
+tics which best account for their success seems to diﬀer from tha t usually used in 
+works related to the same topic. In the present work, the selectio n of those char- 
+acteristics was conducted in two diﬀerent stages. First, the selec tion of students’ 
+dimensions which best explain their success allowed a ﬁrst ad justment of the 
+model by eliminating complete groups of variables. Later, a ﬁne -tuned adjust- 
+ment led to the selection of the attributes which were not excluded in t he ﬁrst 
+stage. This approach enabled us, in addition to reduce the ‘plague ’ of the data 
+dimensionality at an early stage, to exclude completely categories of v ariables, 
+without losing the predictive capacity of the model. This feature is of particular 
+importance since it contributes to the reduction of the multidisciplina rity of the 
+predictors, thereby lowering some of the complexity of the predi ctive process, 
+and, more importantly , makes it possible to extend the study to othe r contexts, 
+where not all categories of variables initially considered in this study are avail- 
+able. 
+Note however, that a signiﬁcant part of the results obtained in this study 
+cannot be generalized to the whole context of higher education s ince they were 
+based on a data sample non-representative of that broader conte xt. This study 
+presented a case study focused on IPB, which for being an instituti on of the 
+polytechnic higher education subsystem and for being located in an in land region 
+with low population density cannot reach the same heterogeneity of students","of their academic path. Instead of following the commonly adopted p rocedure of 
+delimiting the prediction to one single speciﬁc course, the mod el was developed 
+from a vast real data set involving records of quite heterogeneou s undergraduates 
+from over half a hundred degree courses covering a wide varie ty of educational 
+ﬁelds taught in the ﬁve schools composing the institution and where each student 
+is characterized by more than four tens explanatory variables . Such speciﬁcity 
+allowed studying the inﬂuence of a new curricular factor taken into ac count 
+for the ﬁrst time in literature: the type of school. The results obtain ed allowed 
+concluding that students’ success also depends on the school the y attend. This 
+conclusion indicates that in order to mitigate retention and academ ic failure, it 
+might be necessary to adopt diﬀerentiated strategies of educatio nal promotion 
+according to each school. 
+The order of importance provided by the random forest algorithm a llowed the 
+identiﬁcation of the factors contributing to students’ success o r failure. It enabled 
+the observation that the factors regarding the curricular context of students’ 
+academic performance are paramount to the intended prediction , which con- 
+ﬁrms results previously obtained by , who stated that such factors can alone 
+account for academic performance. Note that all 11 attributes w hich revealed to 
+be signiﬁcant for the prediction belong, without exception, to the cu rricular or 
+matriculation categories. 
+The knowledge obtained allows the identiﬁcation of students at a high er 
+risk of retention and academic failure, which enables the institution al managers 
+to design more assertive educational or tutorial strategies towa rds educational 
+eﬃcacy and eﬃciency . 
+The kind of approach adopted in the identiﬁcation of students’ cha racteris- 
+tics which best account for their success seems to diﬀer from tha t usually used in 
+works related to the same topic. In the present work, the selectio n of those char- 
+acteristics was conducted in two diﬀerent stages. First, the selec tion of students’ 
+dimensions which best explain their success allowed a ﬁrst ad justment of the 
+model by eliminating complete groups of variables. Later, a ﬁne -tuned adjust- 
+ment led to the selection of the attributes which were not excluded in t he ﬁrst 
+stage. This approach enabled us, in addition to reduce the ‘plague ’ of the data 
+dimensionality at an early stage, to exclude completely categories of v ariables, 
+without losing the predictive capacity of the model. This feature is of particular 
+importance since it contributes to the reduction of the multidisciplina rity of the 
+predictors, thereby lowering some of the complexity of the predi ctive process, 
+and, more importantly , makes it possible to extend the study to othe r contexts, 
+where not all categories of variables initially considered in this study are avail- 
+able. 
+Note however, that a signiﬁcant part of the results obtained in this study 
+cannot be generalized to the whole context of higher education s ince they were 
+based on a data sample non-representative of that broader conte xt. This study 
+presented a case study focused on IPB, which for being an instituti on of the 
+polytechnic higher education subsystem and for being located in an in land region 
+with low population density cannot reach the same heterogeneity of students"
+A Data Mining Approach for Predicting Academic Success – A Case Study Helping Teachers Develop Rese.pdf,"56 M. P . G. Martins et al. 
+as other institutions located in large coastal urban centres. At best, the results 
+presented here may reﬂect the reality of higher education institut ions with similar 
+conditions to those of the IPB such as other polytechnic institutes located in 
+inland regions of the country far from the big urban centres. 
+Acknowledgments. This work was supported by the Portuguese F oundation for Sci- 
+ence and T echnology (FCT) under Project UID/EEA/04131/2013. The authors woul d 
+also like to thank the Polytechnic Institute of Bragan¸ ca for making a vailable the data 
+analysed in this study . 
+References 
+1. Breiman, L.: Random forests. Mach. Learn. 45 (1), 5–32 (2001) 
+2. Romero, C., V entura, S.: Educational data mining: a survey from 1995 to 2 005. 
+Expert Syst. Appl. 33 (1), 135–146 (2007) 
+3. Romero, C., V entura, S.: Educational data mining: a review of the stat e of the art. 
+IEEE T rans. Syst. Man Cybern. Part C (Appl. Rev.) 40 (6), 601–618 (2010) 
+4. Romero, C., V entura, S.: Data mining in education. Wiley Interdis c. Rev.: Data 
+Min. Knowl. Disc. 3(1), 12–27 (2013) 
+5. Baker, R.S.J.D., Y acef, K.: The state of educational data mining in 2009: a review 
+and future visions. JEDM-J. Educ. Data Min. 1(1), 3–17 (2009) 
+6. Huebner, R.A.: A survey of educational data-mining research. Res. Higher Educ. 
+J. 19 , 1–13 (2013) 
+7. Papamitsiou, Z.K., Economides, A.A.: Learning analytics and edu cational data 
+mining in practice: a systematic literature review of empirica l evidence. Educ. 
+T echnol. Soc. 17 (4), 49–64 (2014) 
+8. Pe˜ na-Ayala, A.: Educational data mining: a survey and a data minin g-based anal- 
+ysis of recent works. Expert Syst. Appl. 41 (4), 1432–1462 (2014) 
+9. Algarni, A.: Data mining in education. Int. J. Adv. Comput. Sci. Ap pl. 7, 456–461 
+(2016) 
+10. Shahiri, A.M., Husain, W., Rashid, N.A.: A review on predictin g student’s perfor- 
+mance using data mining techniques. Procedia Comput. Sci. 72 , 414–422 (2015) 
+11. Del R ´ ıo, C.A., Insuasti, J.A.P .: Predicting academic perform ance in traditional 
+environments at higher-education institutions using data mining: a review. Ecos 
+de la Academia. 2016 (7), 185–201 (2016) 
+12. Natek, S., Zwilling, M.: Student data mining solution-knowledge management sys- 
+tem related to higher education institutions. Expert Syst. Appl. 41 (14), 6400–6407 
+(2014) 
+13. Asif, R., Merceron, A., Ali, S.A., Haider, N.G.: Analyzing und ergraduate students’ 
+performance using educational data mining. Comput. Educ. 113 , 177–194 (2017) 
+14. Migu´ eis, V.L., F reitas, A., Garcia, P .J.V., Silva, A.: Earl y segmentation of students 
+according to their academic performance: a predictive modelling a pproach. Decis. 
+Support Syst. 115 , 36–51 (2018) 
+15. Manh˜ aes, L.M.B.: Predi¸ c˜ ao Do Desempenho Acadˆ emico De Graduandos Utilizando 
+Minera¸ c˜ ao De Dados Educacionais. Ph.D. thesis (T ese Doutorado), Univ ersidade 
+F ederal do Rio de Janeiro (2015) 
+View publication stats","as other institutions located in large coastal urban centres. At best, the results 
+presented here may reﬂect the reality of higher education institut ions with similar 
+conditions to those of the IPB such as other polytechnic institutes located in 
+inland regions of the country far from the big urban centres. 
+Acknowledgments. This work was supported by the Portuguese F oundation for Sci- 
+ence and T echnology (FCT) under Project UID/EEA/04131/2013. The authors woul d 
+also like to thank the Polytechnic Institute of Bragan¸ ca for making a vailable the data 
+analysed in this study ."

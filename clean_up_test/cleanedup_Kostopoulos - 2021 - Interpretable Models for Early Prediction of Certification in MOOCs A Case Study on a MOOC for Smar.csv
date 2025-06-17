@@ -1,0 +1,1170 @@
+source,page_content,cleaned_page_content
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"Received November 13, 2021, accepted November 30, 2021, date of publication December 10, 2021,
+date of current version December 23, 2021.
+Digital Object Identifier 10.1 109/ACCESS.2021.3134787
+Interpretable Models for Early Prediction of
+Certification in MOOCs: A Case Study
+on a MOOC for Smart City Professionals
+GEORGIOS KOSTOPOULOS
+1, THEODOR PANAGIOTAKOPOULOS
+1,2,
+SOTIRIS KOTSIANTIS
+ 3, CHRISTOS PIERRAKEAS4, AND ACHILLES KAMEAS1
+1School of Science and Technology, Hellenic Open University, 26335 Patras, Greece
+2School of Business, University of Nicosia, 2417 Nicosia, Cyprus
+3Department of Mathematics, University of Patras, 26500 Patras, Greece
+4Department of Management Science and Technology, University of Patras, 26500 Patras, Greece
+Corresponding author: Sotiris Kotsiantis (kotsiantis@upatras.gr)
+This work was supported by the Research Project DevOps, ‘‘DevOps Competences for Smart Cities’’ under Project
+601015-EPP-1-2018-1-EL-EPPKA2-SSA, Erasmus+ Program, KA2: Cooperation for innovation and the exchange of good practices-SSA.
+ABSTRACT Over the last few years, Massive Open Online Courses (MOOCs) have expanded rapidly and
+tend to become the most typical form of online and distance higher education. As a result, a tremendous
+amount of data is generated and stored on MOOCs online learning platforms. In any case, this data should
+be effectively transformed into knowledge, thus providing valuable feedback to learners, and enhancing
+decision making practices in the educational ﬁeld. Despite the beneﬁts and learning prospects that MOOCs
+offer to learners, there is a considerable divergence between enrollment and completion rates. In this context,
+the main scope of this study is to exploit predictive analytics and explainable artiﬁcial intelligence for the
+early prediction of student certiﬁcation in a 11-week MOOC for smart cities, namely DevOps. A plethora
+of Machine Learning models were built employing familiar classiﬁcation algorithms. The experimental
+results revealed that the models based on Gradient Boosting, Logistic Regression and Light Gradient Boosted
+Machine classiﬁers prevailed in terms of Accuracy, Area Under Curve, Recall, Precision, F1-score, Kappa,
+and Matthews Correlation Coefﬁcient, getting a predictive accuracy of 94.41% at the end of the second
+week of the course. Therefore, students who are less likely to obtain a certiﬁcate could be envisaged at an
+early enough stage to provide sufﬁcient support actions and targeted intervention strategies to them. Finally,
+the performance attributes (i.e., overall grades per week) proved to be the most important predictors for
+identifying students at risk of failure.
+INDEX TERMS MOOCs, certiﬁcation, early prediction, supervised learning, explainable artiﬁcial intelli-
+gence, interpretable predictive models, feature importance.
+I. INTRODUCTION
+Over the last few years, there is an increasing interest
+in Massive Open Online Courses (MOOCs) offered by
+top-quality universities worldwide. MOOCs have expanded
+rapidly nowadays and tend to become the most typical form of
+online and distance higher education [1]. In light of this new
+trend, diverse and large groups of learners, varying in several
+characteristics such as age, nationality, family obligations and
+educational level, may attend for free or at low-cost ﬂexible
+The associate editor coordinating the review of this manuscript and
+approving it for publication was Juan A. Lara
+.
+and short-term courses of their interest and study at their own
+pace without requiring physical attendance [2]. Additionally,
+even after registration has been completed, attendees differ
+signiﬁcantly with regard to their objectives, motivation, inter-
+ests, and interaction with the course content [3].
+As a result, a tremendous amount of data is generated
+and stored on MOOC platforms regarding student learning
+behavior and performance, engagement, social interactions,
+assignments scores, learning outcomes, and demographic
+information such as gender, ethnicity, education level,
+employment status and employment type, to name a few [4].
+However, this data should be mined and effectively trans-
+VOLUME 9, 2021 This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/ 165881","Interpretable Models for Early Prediction of
+Certification in MOOCs: A Case Study
+on a MOOC for Smart City Professionals
+GEORGIOS KOSTOPOULOS
+THEODOR PANAGIOTAKOPOULOS
+SOTIRIS KOTSIANTIS
+CHRISTOS PIERRAKEAS AND ACHILLES KAMEAS
+
+ABSTRACT Over the last few years, Massive Open Online Courses (MOOCs) have expanded rapidly and
+tend to become the most typical form of online and distance higher education. As a result, a tremendous
+amount of data is generated and stored on MOOCs online learning platforms. In any case, this data should
+be effectively transformed into knowledge, thus providing valuable feedback to learners, and enhancing
+decision making practices in the educational ﬁeld. Despite the beneﬁts and learning prospects that MOOCs
+offer to learners, there is a considerable divergence between enrollment and completion rates. In this context,
+the main scope of this study is to exploit predictive analytics and explainable artiﬁcial intelligence for the
+early prediction of student certiﬁcation in a 11-week MOOC for smart cities, namely DevOps. A plethora
+of Machine Learning models were built employing familiar classiﬁcation algorithms. The experimental
+results revealed that the models based on Gradient Boosting, Logistic Regression and Light Gradient Boosted
+Machine classiﬁers prevailed in terms of Accuracy, Area Under Curve, Recall, Precision, F1-score, Kappa,
+and Matthews Correlation Coefﬁcient, getting a predictive accuracy of 94.41% at the end of the second
+week of the course. Therefore, students who are less likely to obtain a certiﬁcate could be envisaged at an
+early enough stage to provide sufﬁcient support actions and targeted intervention strategies to them. Finally,
+the performance attributes (i.e., overall grades per week) proved to be the most important predictors for
+identifying students at risk of failure.
+INDEX TERMS MOOCs, certiﬁcation, early prediction, supervised learning, explainable artiﬁcial intelli-
+gence, interpretable predictive models, feature importance.
+I. INTRODUCTION
+Over the last few years, there is an increasing interest
+in Massive Open Online Courses (MOOCs) offered by
+top-quality universities worldwide. MOOCs have expanded
+rapidly nowadays and tend to become the most typical form of
+online and distance higher education. In light of this new
+trend, diverse and large groups of learners, varying in several
+characteristics such as age, nationality, family obligations and
+educational level, may attend for free or at low-cost ﬂexible
+and short-term courses of their interest and study at their own
+pace without requiring physical attendance. Additionally,
+even after registration has been completed, attendees differ
+signiﬁcantly with regard to their objectives, motivation, inter-
+ests, and interaction with the course content.
+As a result, a tremendous amount of data is generated
+and stored on MOOC platforms regarding student learning
+behavior and performance, engagement, social interactions,
+assignments scores, learning outcomes, and demographic
+information such as gender, ethnicity, education level,
+employment status and employment type, to name a few.
+However, this data should be mined and effectively trans-"
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+formed into knowledge, in order to provide valuable feed-
+back to students and enhance decision making practices in
+the educational ﬁeld [5]. Educational Data Mining (EDM)
+and Learning Analytics (LA) constitute powerful tools for
+uncovering valuable information from vast amount of raw
+data.
+EDM and LA have signiﬁcantly evolved over the past two
+decades and form an integral part of educational research [6].
+These different but complementary scientiﬁc ﬁelds aim pri-
+marily at enhancing learning experience and optimizing
+the quality of teaching [7]. More precisely, EDM concerns
+the development and implementation of Data Mining (DM)
+methods in data derived from different educational set-
+tings for addressing a wide range of learning problems [8].
+LA refers to the exploitation of educational data for sup-
+porting educational practices, understanding learning behav-
+ior and improving student performance [9]. Notwithstanding
+their common objective, the principal difference between
+them is that EDM tackles an educational problem from a
+technological viewpoint, while LA is mainly focused on its
+pedagogical aspects [10].
+One of the most studied problems in the ﬁelds of EDM
+and LA is prediction, which involves building a Machine
+Learning (ML) model for inferring future learning charac-
+teristics of students based on historical data and ML meth-
+ods [11]. This process is known as predictive analytics [12].
+Regarding MOOCs, prediction is an umbrella term for a wide
+array of speciﬁc predictive problems which have attracted
+the attention of many researchers. These problems encompass
+primarily the prediction of student behaviors and outcomes,
+such as dropout, retention, completion, certiﬁcation [13],
+ﬁnal exam grade and course grade [14]. The ﬁrst four
+problems refer to binary classiﬁcation tasks (i.e., the out-
+put attribute has two class labels), whereas grade prediction
+is a typical multiclass or regression task (i.e., the output
+attribute is a numerical one). In particular, concerning the
+term ‘‘certiﬁcation’’, which is the main focus of our research,
+it refers to the successful completion of a MOOC course [15]
+(i.e., achieving an average score above a predeﬁned
+threshold).
+Despite the educational beneﬁts and learning prospects
+that MOOCs offer to students, there is a considerable diver-
+gence between enrollment rates and completion rates [16].
+Lack of time and interactivity, course time-table and length,
+motivation, subject interest, isolation feelings, and poor back-
+ground knowledge are important factors of low comple-
+tion rates [17]. These factors can be classiﬁed into two
+main groups: student-related and course-related factors [2].
+Recent researches have shown that the success of a MOOC
+is directly linked to the provision of support services to
+potential low performer students, which could motivate
+them to successfully complete the course and receive a
+certiﬁcation [18].
+In this context, the main scope of this study is to exploit
+predictive analytics for predicting student certiﬁcation in a
+MOOC. The contribution of this study is three-fold. First,
+we examine whether predictive analytics could help us to gain
+insight into student online learning behavior and build highly
+effective learning models in predicting student certiﬁcation at
+the end of a 11-week course. Second, we intend to understand
+and explain the predictions made by a predictive model and
+specify the features of students which are of great impact
+on earning a course certiﬁcate. Explainable Artiﬁcial Intel-
+ligence (XAI) is a new research ﬁeld attempting to build ML
+models that are easier to interpret and understand than the so-
+called black-box models [19]. Finally, the results of the study
+provide evidence that students who are less likely to obtain
+a certiﬁcate could be envisaged at an early enough stage
+to provide sufﬁcient support actions and properly targeted
+intervention strategies to them.
+The rest of the paper is organized as follows. Section II
+presents a brief review of previous work in predicting stu-
+dent certiﬁcation in MOOCs. The dataset used in the study
+is described in Section III, whereas Section IV formulates
+the experimental design and analyzes the produced results.
+Finally, the paper concludes considering some thoughts for
+future research directions.
+II. RELATED WORK
+A great deal of existing research has focused on building
+predictive models for predicting student behaviors and out-
+comes in MOOCs. Additionally, several ML models have
+been utilized in recent years confronting the problem of
+MOOC unsuccessful completion.
+Coleman et al. applied Latent Dirichlet Allocation
+(LDA), an unsupervised probabilistic method, for uncov-
+ering behavioral patterns of students enrolled in a MITx
+course [20]. These patterns were then used for building a
+mixed-membership model to predict certiﬁcation of students.
+Al-Shabandar et al. examined the efﬁciency of various ML
+algorithms for predicting student certiﬁcation in 15 MOOC
+courses offered by Harvard and MIT [21]. To this end, they
+considered two feature datasets: the clickstream dataset (i.e.,
+video views, content interaction, access to assignments, and
+posts in discussion forums) and the demographic dataset
+(i.e., age, gender, and education level). Random Forests (RF)
+and Multilayer Perceptrons (MLPs) were found to prevail in
+terms of several metrics such as classiﬁcation accuracy and
+kappa.
+Four classiﬁcation algorithms (i.e., Logistic Regression
+(LR), k Nearest Neighbors (k -NN), Gradient Boosting and
+RF) were applied in [22] for the early prediction of student
+certiﬁcation. The produced models were evaluated in terms
+of F1-score and Area Under Curve (AUC) at the end of each
+one of the ﬁrst four weeks of the course.
+Very recently, Moore and Wang examined the inﬂuence of
+student motivational dispositions on completing a XarvardX
+MOOC [3]. For this purpose, they employed Latent Proﬁle
+Analysis (LPA) for detecting speciﬁc groups among course
+completers. Two latent proﬁles were identiﬁed regarding
+intrinsic and extrinsic motivation of students. What is more,
+165882 VOLUME 9, 2021","formed into knowledge, in order to provide valuable feed-
+back to students and enhance decision making practices in
+the educational ﬁeld. Educational Data Mining (EDM)
+and Learning Analytics (LA) constitute powerful tools for
+uncovering valuable information from vast amount of raw
+data.
+EDM and LA have signiﬁcantly evolved over the past two
+decades and form an integral part of educational research.
+These different but complementary scientiﬁc ﬁelds aim pri-
+marily at enhancing learning experience and optimizing
+the quality of teaching. More precisely, EDM concerns
+the development and implementation of Data Mining (DM)
+methods in data derived from different educational set-
+tings for addressing a wide range of learning problems.
+LA refers to the exploitation of educational data for sup-
+porting educational practices, understanding learning behav-
+ior and improving student performance. Notwithstanding
+their common objective, the principal difference between
+them is that EDM tackles an educational problem from a
+technological viewpoint, while LA is mainly focused on its
+pedagogical aspects.
+One of the most studied problems in the ﬁelds of EDM
+and LA is prediction, which involves building a Machine
+Learning (ML) model for inferring future learning charac-
+teristics of students based on historical data and ML meth-
+ods. This process is known as predictive analytics.
+Regarding MOOCs, prediction is an umbrella term for a wide
+array of speciﬁc predictive problems which have attracted
+the attention of many researchers. These problems encompass
+primarily the prediction of student behaviors and outcomes,
+such as dropout, retention, completion, certiﬁcation,
+ﬁnal exam grade and course grade. The ﬁrst four
+problems refer to binary classiﬁcation tasks (i.e., the out-
+put attribute has two class labels), whereas grade prediction
+is a typical multiclass or regression task (i.e., the output
+attribute is a numerical one). In particular, concerning the
+term ‘‘certiﬁcation’’, which is the main focus of our research,
+it refers to the successful completion of a MOOC course
+(i.e., achieving an average score above a predeﬁned
+threshold).
+Despite the educational beneﬁts and learning prospects
+that MOOCs offer to students, there is a considerable diver-
+gence between enrollment rates and completion rates.
+Lack of time and interactivity, course time-table and length,
+motivation, subject interest, isolation feelings, and poor back-
+ground knowledge are important factors of low comple-
+tion rates. These factors can be classiﬁed into two
+main groups: student-related and course-related factors.
+Recent researches have shown that the success of a MOOC
+is directly linked to the provision of support services to
+potential low performer students, which could motivate
+them to successfully complete the course and receive a
+certiﬁcation.
+In this context, the main scope of this study is to exploit
+predictive analytics for predicting student certiﬁcation in a
+MOOC. The contribution of this study is three-fold. First,
+we examine whether predictive analytics could help us to gain
+insight into student online learning behavior and build highly
+effective learning models in predicting student certiﬁcation at
+the end of a 11-week course. Second, we intend to understand
+and explain the predictions made by a predictive model and
+specify the features of students which are of great impact
+on earning a course certiﬁcate. Explainable Artiﬁcial Intel-
+ligence (XAI) is a new research ﬁeld attempting to build ML
+models that are easier to interpret and understand than the so-
+called black-box models. Finally, the results of the study
+provide evidence that students who are less likely to obtain
+a certiﬁcate could be envisaged at an early enough stage
+to provide sufﬁcient support actions and properly targeted
+intervention strategies to them.
+The rest of the paper is organized as follows. Section II
+presents a brief review of previous work in predicting stu-
+dent certiﬁcation in MOOCs. The dataset used in the study
+is described in Section III, whereas Section IV formulates
+the experimental design and analyzes the produced results.
+Finally, the paper concludes considering some thoughts for
+future research directions.
+II. RELATED WORK
+A great deal of existing research has focused on building
+predictive models for predicting student behaviors and out-
+comes in MOOCs. Additionally, several ML models have
+been utilized in recent years confronting the problem of
+MOOC unsuccessful completion.
+Coleman et al. applied Latent Dirichlet Allocation
+(LDA), an unsupervised probabilistic method, for uncov-
+ering behavioral patterns of students enrolled in a MITx
+course. These patterns were then used for building a
+mixed-membership model to predict certiﬁcation of students.
+Al-Shabandar et al. examined the efﬁciency of various ML
+algorithms for predicting student certiﬁcation in 15 MOOC
+courses offered by Harvard and MIT. To this end, they
+considered two feature datasets: the clickstream dataset (i.e.,
+video views, content interaction, access to assignments, and
+posts in discussion forums) and the demographic dataset
+(i.e., age, gender, and education level). Random Forests (RF)
+and Multilayer Perceptrons (MLPs) were found to prevail in
+terms of several metrics such as classiﬁcation accuracy and
+kappa.
+Four classiﬁcation algorithms (i.e., Logistic Regression
+(LR), k Nearest Neighbors (k -NN), Gradient Boosting and
+RF) were applied in [22] for the early prediction of student
+certiﬁcation. The produced models were evaluated in terms
+of F1-score and Area Under Curve (AUC) at the end of each
+one of the ﬁrst four weeks of the course.
+Very recently, Moore and Wang examined the inﬂuence of
+student motivational dispositions on completing a XarvardX
+MOOC. For this purpose, they employed Latent Proﬁle
+Analysis (LPA) for detecting speciﬁc groups among course
+completers. Two latent proﬁles were identiﬁed regarding
+intrinsic and extrinsic motivation of students."
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+it was found that educational background, gender, and latent
+proﬁle were all substantially related to the course grade.
+In a similar study, Gitinabard et al. combined forum posts
+and online activity log ﬁles for predicting student dropout and
+certiﬁcation in a MOOC course delivered by Coursera [23].
+To this end, LR and Support Vector Machines (SVMs)
+were applied, creating two classiﬁcation models. The pre-
+dictive accuracy was above 85% from the ﬁrst week of the
+course, whereas AUC exceeded 90%. Additionally, submis-
+sions and video watching were found to be the most inﬂuen-
+tial attributes. Video watching frequency per week was also
+conﬁrmed to be a signiﬁcant attribute for grade prediction in
+a weekly-organized MOOC [24], [25].
+III. DATA DESCRIPTION
+This study was conducted in the context of the Erasmus+
+Sector Skills Alliance project called ‘‘DevOps Competences
+for Smart Cities’’. 1 DevOps aims at equipping current and
+aspiring smart city professionals with appropriate skills
+to enable transformative urban innovation and support the
+technologically enhanced urban governance with a special
+emphasis on the DevOps methodology [26]. Registration
+in the DevOps MOOC 2 started at 15 September 2020 and
+lasted one month, whereas the start date of the course was
+19 October 2020.
+The course was organized in a weekly setup (11 weeks
+length in total), and it was structured at approximately
+1-2 modules per week 3 (15 modules in total). Each module
+was available in English and consisted of 2 to 5 learning
+units, each of which included an automatically graded mul-
+tiple choice assessment quiz. Weeks 7 and 11 were used as
+reﬂection weeks to help learners catch up on their study or get
+some free time to reﬂect on what has been taught. The course
+content was designed to address the European Qualiﬁcations
+Framework (EQF) level 5, since this is the requisite level of
+autonomy and responsibility for smart city professionals.
+The registration form comprised a questionnaire regarding
+personal, demographic and employment data of students,
+in which they were informed that all data would be acquired
+and used according to the GDPR regulation (EU 2016/679)
+for evaluating the quality of the course. Participants were
+asked to consent for the analysis of data; otherwise, they
+could skip the questionnaire and proceed with the registration
+providing only their full name and email. An overall number
+of 961 students enrolled in the course and 944 of them ﬁlled
+the questionnaire providing the full set of data.
+Considering that the quality of data is essential for building
+effective and robust ML models [27], a preprocess analysis
+was performed for cleaning and preparing the data before
+applying a ML algorithm. For this purpose, the missing val-
+ues of the numerical attributes were imputed employing the
+mean imputation method. Regarding the missing values of
+1https://devops.uth.gr/dev/
+2https://smartdevopsmooc.eu/moodle/pages/login.php
+3https://devops.uth.gr/dev/about-the-mooc/
+TABLE 1. Demographics set of attributes.
+TABLE 2. Performance set of attributes.
+TABLE 3. Activity set of attributes.
+the qualitative attributes, they were replaced with the constant
+‘‘unknown’’. Besides that, all zero activity records, during the
+course, were excluded. Finally, 936 records were ﬁltered and
+saved in a comma-separated values (.csv) format ﬁle, allow-
+ing to apply a plethora of DM methods and ML algorithms.
+The initial dataset comprised eleven qualitative attributes
+regarding personal information of students such as gen-
+der, educational background, employment, skills, previous
+MOOC experience, and average available study hours per
+week (Table 1). Therefore, it is called Demographics set of
+attributes. This dataset was gradually enriched with two other
+sets of attributes, namely Performance set and Activity set.
+The Performance set consisted of ten attributes about stu-
+dents’ learning achievements during the ﬁrst two weeks of
+the course, mainly considering grading scores in quizzes
+(100-point scale) and overall grade in modules 1 and 2
+(Table 2).
+The Activity behavior set comprised twelve numerical
+attributes concerning students’ recording activity in the
+online learning platform such as number of views, posts,
+discussions, and connections, as well as the total time devoted
+to the ﬁrst two modules of the course.
+VOLUME 9, 2021 165883","it was found that educational background, gender, and latent
+proﬁle were all substantially related to the course grade.
+In a similar study, Gitinabard et al. combined forum posts
+and online activity log ﬁles for predicting student dropout and
+certiﬁcation in a MOOC course delivered by Coursera.
+To this end, LR and Support Vector Machines (SVMs)
+were applied, creating two classiﬁcation models. The pre-
+dictive accuracy was above 85% from the ﬁrst week of the
+course, whereas AUC exceeded 90%. Additionally, submis-
+sions and video watching were found to be the most inﬂuen-
+tial attributes. Video watching frequency per week was also
+conﬁrmed to be a signiﬁcant attribute for grade prediction in
+a weekly-organized MOOC.
+III. DATA DESCRIPTION
+This study was conducted in the context of the Erasmus+
+Sector Skills Alliance project called ‘‘DevOps Competences
+for Smart Cities’’. 1 DevOps aims at equipping current and
+aspiring smart city professionals with appropriate skills
+to enable transformative urban innovation and support the
+technologically enhanced urban governance with a special
+emphasis on the DevOps methodology. Registration
+in the DevOps MOOC 2 started at 15 September 2020 and
+lasted one month, whereas the start date of the course was
+19 October 2020.
+The course was organized in a weekly setup (11 weeks
+length in total), and it was structured at approximately
+1-2 modules per week 3 (15 modules in total). Each module
+was available in English and consisted of 2 to 5 learning
+units, each of which included an automatically graded mul-
+tiple choice assessment quiz. Weeks 7 and 11 were used as
+reﬂection weeks to help learners catch up on their study or get
+some free time to reﬂect on what has been taught. The course
+content was designed to address the European Qualiﬁcations
+Framework (EQF) level 5, since this is the requisite level of
+autonomy and responsibility for smart city professionals.
+The registration form comprised a questionnaire regarding
+personal, demographic and employment data of students,
+in which they were informed that all data would be acquired
+and used according to the GDPR regulation (EU 2016/679)
+for evaluating the quality of the course. Participants were
+asked to consent for the analysis of data; otherwise, they
+could skip the questionnaire and proceed with the registration
+providing only their full name and email. An overall number
+of 961 students enrolled in the course and 944 of them ﬁlled
+the questionnaire providing the full set of data.
+Considering that the quality of data is essential for building
+effective and robust ML models, a preprocess analysis
+was performed for cleaning and preparing the data before
+applying a ML algorithm. For this purpose, the missing val-
+ues of the numerical attributes were imputed employing the
+mean imputation method. Regarding the missing values of
+the qualitative attributes, they were replaced with the constant
+‘‘unknown’’. Besides that, all zero activity records, during the
+course, were excluded. Finally, 936 records were ﬁltered and
+saved in a comma-separated values (.csv) format ﬁle, allow-
+ing to apply a plethora of DM methods and ML algorithms.
+The initial dataset comprised eleven qualitative attributes
+regarding personal information of students such as gen-
+der, educational background, employment, skills, previous
+MOOC experience, and average available study hours per
+week (Table 1). Therefore, it is called Demographics set of
+attributes. This dataset was gradually enriched with two other
+sets of attributes, namely Performance set and Activity set.
+The Performance set consisted of ten attributes about stu-
+dents’ learning achievements during the ﬁrst two weeks of
+the course, mainly considering grading scores in quizzes
+(100-point scale) and overall grade in modules 1 and 2
+(Table 2).
+The Activity behavior set comprised twelve numerical
+attributes concerning students’ recording activity in the
+online learning platform such as number of views, posts,
+discussions, and connections, as well as the total time devoted
+to the ﬁrst two modules of the course."
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+TABLE 4. Descriptive statistics of performance and activity attributes.
+The target attribute ‘‘Course Total Grade’’ is a binary
+one with two possible values {0,1}, where 0/1 means that
+a student has not/has obtained a certiﬁcation of successful
+completion of the course (i.e., a student achieved an average
+quiz score of 80% or more). As regards the distribution of the
+two output classes in the dataset, 75.75% of the records repre-
+sents students who obtained a certiﬁcation, whereas 24.25%
+corresponds to students who didn’t get a course certiﬁcate.
+Table 4 provides a descriptive statistic summary (i.e.,
+count, mean, standard deviation, minimum, 1 st quartile,
+median, 3 rd quartile and maximum) for each one of the
+performance and activity attributes in order to get a better
+understanding of the distribution of the data.
+In addition, a matrix heatmap is illustrated in Fig. 1
+depicting the correlation dependence between the numerical
+attributes of the dataset. Therefore, each square of the matrix
+represents the correlation between the attributes paired on the
+two axes. The red color indicates positive correlation between
+two attributes, whereas the blue one negative. Moreover, the
+intensity of the color implies how strongly these attributes
+are correlated, meaning that the deeper color corresponds to
+stronger correlation. A cursory reading of the matrix heatmap
+reveals that there is a perfect positive correlation between the
+performance attributes.
+IV. METHODOLOGY AND EXPERIMENTS
+A plethora of supervised learning algorithms were
+employed for building corresponding predictive models using
+PyCaret [28]. PyCaret is an open-source software ML library
+package in Python, which enables the implementation of
+several classiﬁcation methods. Speciﬁcally, the algorithms
+used in the experiments are as follows:
+- Adaptive Boosting (AdaBoost) classiﬁer [29], which
+was originally used for binary classiﬁcation problems.
+This is a meta-estimator that is seeking to build a strong
+classiﬁer exploiting a set of weak classiﬁers.
+- Gradient Boosting (GB) classiﬁer [30], another common
+boosting method which ﬁts a new estimator targeting the
+errors made by the previous one.
+- Classiﬁcation and Regression Tree (Cart) [31], a very
+powerful decision tree algorithm for both classiﬁ-
+cation and regression problems, using Gini coefﬁ-
+cient for splitting the dataset at the node with larger
+uncertainty.
+- Extremely Randomized Trees (Extra) [32], a very fast
+ensemble-based algorithm which chooses randomly the
+split point at each node.
+- Linear Discriminant Analysis (LDA) algorithm for
+two-class classiﬁcation problems [33], which employs
+the Bayes theorem for calculating the probability of the
+output class given the input attributes under the assump-
+tion that the output class is linearly separable.
+- Light Gradient Boosted Machine (LightGBM) ensem-
+ble method [34], a robust extended version of the
+GB classiﬁer.
+- Logistic Regression (LR) algorithm [35], a representa-
+tive statistical method for binary classiﬁcation problems,
+which models the probability of a student classiﬁed as
+certiﬁcated (with two possible outcomes: 0 and 1) given
+the values of the independent attributes.
+165884 VOLUME 9, 2021","TABLE 4. Descriptive statistics of performance and activity attributes.
+The target attribute ‘‘Course Total Grade’’ is a binary
+one with two possible values {0,1}, where 0/1 means that
+a student has not/has obtained a certiﬁcation of successful
+completion of the course (i.e., a student achieved an average
+quiz score of 80% or more). As regards the distribution of the
+two output classes in the dataset, 75.75% of the records repre-
+sents students who obtained a certiﬁcation, whereas 24.25%
+corresponds to students who didn’t get a course certiﬁcate.
+Table 4 provides a descriptive statistic summary (i.e.,
+count, mean, standard deviation, minimum, 1 st quartile,
+median, 3 rd quartile and maximum) for each one of the
+performance and activity attributes in order to get a better
+understanding of the distribution of the data.
+In addition, a matrix heatmap is illustrated in Fig. 1
+depicting the correlation dependence between the numerical
+attributes of the dataset. Therefore, each square of the matrix
+represents the correlation between the attributes paired on the
+two axes. The red color indicates positive correlation between
+two attributes, whereas the blue one negative. Moreover, the
+intensity of the color implies how strongly these attributes
+are correlated, meaning that the deeper color corresponds to
+stronger correlation. A cursory reading of the matrix heatmap
+reveals that there is a perfect positive correlation between the
+performance attributes.
+IV. METHODOLOGY AND EXPERIMENTS
+A plethora of supervised learning algorithms were
+employed for building corresponding predictive models using
+PyCaret. PyCaret is an open-source software ML library
+package in Python, which enables the implementation of
+several classiﬁcation methods. Speciﬁcally, the algorithms
+used in the experiments are as follows:
+- Adaptive Boosting (AdaBoost) classiﬁer, which
+was originally used for binary classiﬁcation problems.
+This is a meta-estimator that is seeking to build a strong
+classiﬁer exploiting a set of weak classiﬁers.
+- Gradient Boosting (GB) classiﬁer, another common
+boosting method which ﬁts a new estimator targeting the
+errors made by the previous one.
+- Classiﬁcation and Regression Tree (Cart), a very
+powerful decision tree algorithm for both classiﬁ-
+cation and regression problems, using Gini coefﬁ-
+cient for splitting the dataset at the node with larger
+uncertainty.
+- Extremely Randomized Trees (Extra), a very fast
+ensemble-based algorithm which chooses randomly the
+split point at each node.
+- Linear Discriminant Analysis (LDA) algorithm for
+two-class classiﬁcation problems, which employs
+the Bayes theorem for calculating the probability of the
+output class given the input attributes under the assump-
+tion that the output class is linearly separable.
+- Light Gradient Boosted Machine (LightGBM) ensem-
+ble method, a robust extended version of the
+GB classiﬁer.
+- Logistic Regression (LR) algorithm, a representa-
+tive statistical method for binary classiﬁcation problems,
+which models the probability of a student classiﬁed as
+certiﬁcated (with two possible outcomes: 0 and 1) given
+the values of the independent attributes."
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+FIGURE 1. Correlation matrix heatmap.
+- Random Forest (RF) [36], a popular bagging-based
+algorithm, which combines the output of several deci-
+sion trees trained on sub-samples of the dataset for pro-
+ducing the ﬁnal prediction via majority voting.
+Several studies indicate the effectiveness of these meth-
+ods for building highly accurate and robust predictive
+models in the ﬁelds of EDM and LA [11]. What is
+more, boosting and ensemble methods show top-performing
+results in both classiﬁcation and regression problems with-
+out any special parameter conﬁguration being required.
+The parameter settings of these methods are presented in
+Table 5. In most cases, the default parameter settings were
+adopted.
+Since the distribution of the two output classes in the
+dataset was imbalanced, we applied the Synthetic Minority
+Oversampling Technique (SMOTE) [37] for augmenting the
+minority class. In addition, the k-fold (k = 10) cross val-
+idation resampling procedure was used for evaluating the
+performance of the predictive models [38], [39]. Accordingly,
+the dataset was randomly divided into k folds of equal size.
+Each fold was used for evaluating the performance of the
+model trained on the rest folds, whereas the ﬁnal measure was
+the average value of the computed performance measures on
+each test fold.
+One of the main goals of our study was the early pre-
+diction of student certiﬁcation. Therefore, the experiments
+were performed in three consecutive steps each of which was
+linked to a speciﬁc time-point. Step 1 (Week 0) corresponded
+to the data available before the start of the course, whereas
+steps 2 and 3 corresponded to the time-point at the end of
+the ﬁrst (Week 1) and second week (Week 2) of the course
+respectively. The attributes used in each one of the experiment
+steps are shown in Table 6.
+V. RESULTS
+A broad variety of widely used evaluation metrics were calcu-
+lated to quantify the performance of the classiﬁcation models
+in each one of the experimental steps. More speciﬁcally, these
+metrics include accuracy (Acc), Area Under Curve (AUC),
+Recall, Precision, F1-score, Kappa, and Matthews Correla-
+tion Coefﬁcient (MCC).
+The results are shown in Tables 7-8, while the best value
+for each metric per step is bold highlighted. Overall, it is
+observed that GB, LightGBM and LR produce the best-
+performing models. All metrics increase over time, as could
+VOLUME 9, 2021 165885","FIGURE 1. Correlation matrix heatmap.
+- Random Forest (RF), a popular bagging-based
+algorithm, which combines the output of several deci-
+sion trees trained on sub-samples of the dataset for pro-
+ducing the ﬁnal prediction via majority voting.
+Several studies indicate the effectiveness of these meth-
+ods for building highly accurate and robust predictive
+models in the ﬁelds of EDM and LA. What is
+more, boosting and ensemble methods show top-performing
+results in both classiﬁcation and regression problems with-
+out any special parameter conﬁguration being required.
+The parameter settings of these methods are presented in
+Table 5. In most cases, the default parameter settings were
+adopted.
+Since the distribution of the two output classes in the
+dataset was imbalanced, we applied the Synthetic Minority
+Oversampling Technique (SMOTE) for augmenting the
+minority class. In addition, the k-fold (k = 10) cross val-
+idation resampling procedure was used for evaluating the
+performance of the predictive models. Accordingly,
+the dataset was randomly divided into k folds of equal size.
+Each fold was used for evaluating the performance of the
+model trained on the rest folds, whereas the ﬁnal measure was
+the average value of the computed performance measures on
+each test fold.
+One of the main goals of our study was the early pre-
+diction of student certiﬁcation. Therefore, the experiments
+were performed in three consecutive steps each of which was
+linked to a speciﬁc time-point. Step 1 (Week 0) corresponded
+to the data available before the start of the course, whereas
+steps 2 and 3 corresponded to the time-point at the end of
+the ﬁrst (Week 1) and second week (Week 2) of the course
+respectively. The attributes used in each one of the experiment
+steps are shown in Table 6.
+V. RESULTS
+A broad variety of widely used evaluation metrics were calcu-
+lated to quantify the performance of the classiﬁcation models
+in each one of the experimental steps. More speciﬁcally, these
+metrics include accuracy (Acc), Area Under Curve (AUC),
+Recall, Precision, F1-score, Kappa, and Matthews Correla-
+tion Coefﬁcient (MCC).
+The results are shown in Tables 7-8, while the best value
+for each metric per step is bold highlighted. Overall, it is
+observed that GB, LightGBM and LR produce the best-
+performing models. All metrics increase over time, as could"
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+TABLE 5. Parameters configuration settings.
+TABLE 6. Attributes used in each step.
+be expected, since new information about students is added
+from week to week. Accuracy is greater than 83% for all
+TABLE 7. Performance results of predictive models (week 0).
+TABLE 8. Performance results of predictive models (week 1).
+TABLE 9. Performance results of predictive models (week 2).
+models (except LDA) in Week 0 reaching 93.46% at the
+end of the ﬁrst week and 94.41% at the end of the second
+week. F1-score, which is the harmonic mean of precision and
+recall, achieves a value of 87.05% and 88.91% at Week 1 and
+Week 2 respectively. In addition, AUC ranges from 0.9376 to
+0.9863, showing that very precise models are created with
+high-level measure of class separability.
+Fig. 2 presents the learning curve for each one of the
+learning models together with the respective feature impor-
+tance plot. Each learning curve depicts the performance of
+the corresponding ML model over the number of training
+instances. The blue line represents the learning performance
+of the model in the training set, while the green one pro-
+vides the model’s generalization ability. It is noticed that the
+difference between training and 10-cross validation accuracy
+is very small, especially for a training size more than 400,
+indicating the models’ ability to minimize bias and variance.
+The feature importance plot displays how useful is each
+one of the 10 most important input attributes for predicting
+the target attribute for each learning model. Besides that,
+165886 VOLUME 9, 2021","TABLE 5. Parameters configuration settings.
+TABLE 6. Attributes used in each step.
+be expected, since new information about students is added
+from week to week. Accuracy is greater than 83% for all
+TABLE 7. Performance results of predictive models (week 0).
+TABLE 8. Performance results of predictive models (week 1).
+TABLE 9. Performance results of predictive models (week 2).
+models (except LDA) in Week 0 reaching 93.46% at the
+end of the ﬁrst week and 94.41% at the end of the second
+week. F1-score, which is the harmonic mean of precision and
+recall, achieves a value of 87.05% and 88.91% at Week 1 and
+Week 2 respectively. In addition, AUC ranges from 0.9376 to
+0.9863, showing that very precise models are created with
+high-level measure of class separability.
+Fig. 2 presents the learning curve for each one of the
+learning models together with the respective feature impor-
+tance plot. Each learning curve depicts the performance of
+the corresponding ML model over the number of training
+instances. The blue line represents the learning performance
+of the model in the training set, while the green one pro-
+vides the model’s generalization ability. It is noticed that the
+difference between training and 10-cross validation accuracy
+is very small, especially for a training size more than 400,
+indicating the models’ ability to minimize bias and variance.
+The feature importance plot displays how useful is each
+one of the 10 most important input attributes for predicting
+the target attribute for each learning model. Besides that,"
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+FIGURE 2. Learning curve and feature importance plot for each classification model.
+VOLUME 9, 2021 165887",FIGURE 2. Learning curve and feature importance plot for each classification model.
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+FIGURE 2. (Continued.) Learning curve and feature importance plot for each classification model.
+it provides valuable information for better understanding both
+the data and the model. Mostly, it is observed that the perfor-
+mance attributes are the most important, and especially the
+total grade in modules 1 and 2, as well as the quiz grades.
+Regarding the activity attributes, the number of views in
+the announcement forum and the number of connections in
+modules 1 and 2 seems to be the most signiﬁcant predictors.
+These ﬁndings are in line with the results of recent
+research, showing that certiﬁcate achievers engage in more
+course-associated and graded assessment quizzes in the
+course [40].
+Regarding the interpretability of the ML models, we also
+provide the SHAP (SHapley Additive exPlanations) summary
+plot [41] for the LightGBM (Fig. 3), GB (Fig.4) and RF
+models (Fig. 5). In these plots, the input attributes are ordered
+in descending importance from top to bottom and present
+their impact on the model output (red color for positive impact
+and blue color for negative). It is shown that a large total
+grade in module 2 increases the chance of a learner to earn
+a certiﬁcate. Therefore, a result that was previously made by
+a black-box method is now reasonably explainable and easily
+understandable.
+Finally, we made an attempt to build new classi-
+ﬁcation models based only on the two most impor-
+tant attributes in each step (Table 10). It is observed
+(Tables 11-13) that the effectiveness of all methods was
+slightly improved for all metrics showing that the integration
+of XAI may also contribute towards building more effec-
+tive and robust learning models regardless the ML method
+applied.
+165888 VOLUME 9, 2021","Learning curve and feature importance plot for each classification model.
+it provides valuable information for better understanding both
+the data and the model. Mostly, it is observed that the perfor-
+mance attributes are the most important, and especially the
+total grade in modules 1 and 2, as well as the quiz grades.
+Regarding the activity attributes, the number of views in
+the announcement forum and the number of connections in
+modules 1 and 2 seems to be the most signiﬁcant predictors.
+These ﬁndings are in line with the results of recent
+research, showing that certiﬁcate achievers engage in more
+course-associated and graded assessment quizzes in the
+course.
+Regarding the interpretability of the ML models, we also
+provide the SHAP (SHapley Additive exPlanations) summary
+plot for the LightGBM (Fig. 3), GB (Fig.4) and RF
+models (Fig. 5). In these plots, the input attributes are ordered
+in descending importance from top to bottom and present
+their impact on the model output (red color for positive impact
+and blue color for negative). It is shown that a large total
+grade in module 2 increases the chance of a learner to earn
+a certiﬁcate. Therefore, a result that was previously made by
+a black-box method is now reasonably explainable and easily
+understandable.
+Finally, we made an attempt to build new classi-
+ﬁcation models based only on the two most impor-
+tant attributes in each step (Table 10). It is observed
+(Tables 11-13) that the effectiveness of all methods was
+slightly improved for all metrics showing that the integration
+of XAI may also contribute towards building more effec-
+tive and robust learning models regardless the ML method
+applied."
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+FIGURE 3. SHAP value (impact on LightGBM model output).
+FIGURE 4. SHAP value (impact on GB model output).
+TABLE 10. Attributes used in each step.
+In conclusion, the results reveal that the produced predic-
+tive models could serve as an early alert system for identi-
+fying students at risk of failure from the very beginning of
+the course. Therefore, a series of targeted support actions
+and intervention strategies could be implemented to improve
+student learning outcomes [42]. It is important the prediction
+and therefore the intervention take place early enough, after
+the ﬁrst two weeks of the course, thus providing the ability
+FIGURE 5. SHAP value (impact on RF model output).
+TABLE 11. Performance results of predictive models (week 0).
+TABLE 12. Performance results of predictive models (week 1).
+TABLE 13. Performance results of predictive models (week 2).
+to educators to measure its effectiveness in addressing the
+learning needs and disabilities of learners during the next
+weeks of the course [43].
+VOLUME 9, 2021 165889","In conclusion, the results reveal that the produced predic-
+tive models could serve as an early alert system for identi-
+fying students at risk of failure from the very beginning of
+the course. Therefore, a series of targeted support actions
+and intervention strategies could be implemented to improve
+student learning outcomes. It is important the prediction
+and therefore the intervention take place early enough, after
+the ﬁrst two weeks of the course, thus providing the ability
+to educators to measure its effectiveness in addressing the
+learning needs and disabilities of learners during the next
+weeks of the course."
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+VI. CONCLUSION
+In the present study, an attempt was made to exploit predic-
+tive analytics for predicting student certiﬁcation in a MOOC
+for smart city professionals. Therefore, a plethora of high-
+performing ML models were produced employing a variety of
+classiﬁcation algorithms. The experiments were performed in
+three consecutive time-steps in correspondence with the ﬁrst
+two, out of eleven weeks of the course.
+The results revealed that students at risk of failure can be
+identiﬁed with an accuracy measure greater than 94% at the
+end of the second week of the course. Hence, each model may
+serve as an early alert system for educators, since students
+less likely to obtain a certiﬁcate could be identiﬁed at an
+early enough stage to provide sufﬁcient support actions and
+targeted intervention strategies to them. Moreover, it is of
+vital importance for universities to increase retention rates in
+MOOCs and offer high-quality education to learners. Further-
+more, we identiﬁed the features which are of great impact
+on earning a course certiﬁcate. Our ﬁndings indicate that
+performance attributes regarding student grading in quizzes
+and activities during the ﬁrst two weeks of the course are of
+great impact for accurately identifying low performers.
+Although our research is a case study, the ﬁndings are in
+line with recent research. Explainable learning models could
+provide more meticulous and expressive information about
+student learning behavior and performance [19]. To this end,
+for future work we intend to build predictive models based on
+the most informative features of the dataset and apply them
+to other MOOCs. In addition, we intend to experiment with
+new ML methods, such as Semi-Supervised Learning, which
+has been proven to be very effective in the EDM ﬁeld [44].
+REFERENCES
+[1] E. Handoko, S. L. Gronseth, S. G. McNeil, C. J. Bonk, and B. R. Robin,
+‘‘Goal setting and MOOC completion: A study on the role of self-regulated
+learning in student performance in massive open online courses,’’ Int. Rev.
+Res. Open Distrib. Learn., vol. 20, no. 3, pp. 1–21, Jul. 2019.
+[2] F. Dalipi, A. S. Imran, and Z. Kastrati, ‘‘MOOC dropout prediction using
+machine learning techniques: Review and research challenges,’’ in Proc.
+IEEE Global Eng. Educ. Conf. (EDUCON), Apr. 2018, pp. 1007–1014.
+[3] R. L. Moore and C. Wang, ‘‘Inﬂuence of learner motivational disposi-
+tions on MOOC completion,’’ J. Comput. Higher Educ., vol. 33, no. 1,
+pp. 121–134, Apr. 2021.
+[4] P. M. Moreno-Marcos, C. Alario-Hoyos, P. J. Munoz-Merino, and
+C. D. Kloos, ‘‘Prediction in MOOCs: A review and future research direc-
+tions,’’IEEE Trans. Learn. Technol., vol. 12, no. 3, pp. 384–401, Jul. 2019.
+[5] A. Pardo, O. Poquet, R. Martínez-Maldonado, and S. Dawson, ‘‘Provision
+of data-driven student feedback in LA & EDM,’’ in Handbook of Learning
+Analytics. AL, Canada: Soc. Learn. Anal. Res., 2017, pp. 163–174.
+[6] R. S. Baker and P. S. Inventado, ‘‘Educational data mining and learning
+analytics,’’ in Learning Analytics. New York, NY , USA: Springer, 2014,
+pp. 61–75.
+[7] C. Romero and S. Ventura, ‘‘Educational data mining and learning ana-
+lytics: An updated survey,’’ Wiley Interdiscipl. Rev., Data Mining Knowl.
+Discovery, vol. 10, no. 3, p. e1355, May 2020.
+[8] C. Romero and S. Ventura, ‘‘Data mining in education,’’ Wiley Interdiscipl.
+Rev., Data Mining Knowl. Discovery, vol. 3, no. 1, pp. 12–27, Jan. 2013,
+doi: 10.1002/WIDM.1075.
+[9] D. Clow, ‘‘An overview of learning analytics,’’ Teach. Higher Educ.,
+vol. 18, no. 6, pp. 683–695, 2013.
+[10] G. Siemens, ‘‘Learning analytics: Envisioning a research discipline and a
+domain of practice,’’ in Proc. 2nd Int. Conf. Learn. Anal. Knowl. (LAK),
+2012, pp. 4–8.
+[11] C. Brooks and C. Thompson, ‘‘Predictive modelling in teaching and learn-
+ing,’’ in Handbook of Learning Analytics. AL, Canada: Soc. Learn. Anal.
+Res., 2017, pp. 61–68.
+[12] G. Shmueli and O. R. Koppius, ‘‘Predictive analytics in information sys-
+tems research,’’ MIS Quart., vol. 35, no. 3, pp. 553–572, Sep. 2011.
+[13] J. Maldonado-Mahauad, M. Pérez-Sanagustín, P. M. Moreno-Marcos,
+C. Alario-Hoyos, P. J. Muñoz-Merino, and C. Delgado-Kloos, Predict-
+ing Learners’ Success in a Self-Paced MOOC Through Sequence Pat-
+terns of Self-Regulated Learning (Lecture Notes in Computer Science:
+Including Subseries Lecture Notes in Artiﬁcial Intelligence and Lecture
+Notes in Bioinformatics), vol. 11082. Cham, Switzerland: Springer, 2018,
+pp. 355–369, doi: 10.1007/978-3-319-98572-5_27.
+[14] J. Gardner and C. Brooks, ‘‘Student success prediction in MOOCs,’’ User
+Model. User-Adapted Interact., vol. 28, no. 2, pp. 127–203, Jun. 2018.
+[15] K. Jordan. (2015). MOOC Completion Rates: The Data. [Online]. Avail-
+able: http://www.katyjordan.com/MOOCproject.html
+[16] K. Jordan, ‘‘Massive open online course completion rates revisited: Assess-
+ment, length and attrition,’’ Int. Rev. Res. Open Distrib. Learn., vol. 16,
+no. 3, pp. 341–358, Jun. 2015.
+[17] H. Khalil and M. Ebner, ‘‘MOOCs completion rates and possible methods
+to improve retention—A literature review,’’ in Proc. EdMedia+ Innovate
+Learn., 2014, pp. 1305–1313.
+[18] J. Reich and J. A. Ruipérez-Valiente, ‘‘The MOOC pivot,’’ Science,
+vol. 363, no. 6423, pp. 130–131, Jan. 2019.
+[19] M. Saarela, V . Heilala, P. Jaaskela, A. Rantakaulio, and T. Karkkainen,
+‘‘Explainable student agency analytics,’’ IEEE Access, vol. 9,
+pp. 137444–137459, 2021.
+[20] C. A. Coleman, D. T. Seaton, and I. Chuang, ‘‘Probabilistic use cases:
+Discovering behavioral patterns for predicting certiﬁcation,’’ in Proc. 2nd
+ACM Conf. Learn. @ Scale, Mar. 2015, pp. 141–148.
+[21] R. Al-Shabandar, A. Hussain, A. Laws, R. Keight, J. Lunn, and N. Radi,
+‘‘Machine learning approaches to predict learning outcomes in massive
+open online courses,’’ in Proc. Int. Joint Conf. Neural Netw. (IJCNN),
+May 2017, pp. 713–720.
+[22] J. A. Ruipérez-Valiente, R. Cobos, P. J. Muñoz-Merino, Á. Andujar, and
+C. D. Kloos, ‘‘Early prediction and variable importance of certiﬁcate
+accomplishment in a MOOC,’’ in Proc. Eur. Conf. Massive Open Online
+Courses, 2017, pp. 263–272.
+[23] N. Gitinabard, F. Khoshnevisan, C. F. Lynch, and E. Y . Wang, ‘‘Your
+actions or your associates? Predicting certiﬁcation and dropout in MOOCs
+with behavioral and social features,’’ 2018, arXiv:1809.00052.
+[24] D. J. Lemay and T. Doleck, ‘‘Grade prediction of weekly assignments in
+MOOCS: Mining video-viewing behavior,’’ Educ. Inf. Technol., vol. 25,
+no. 2, pp. 1333–1342, Mar. 2020.
+[25] C.-H. Yu, J. Wu, and A.-C. Liu, ‘‘Predicting learning outcomes with
+MOOC clickstreams,’’ Educ. Sci., vol. 9, no. 2, p. 104, May 2019.
+[26] O. Iatrellis, T. Panagiotakopoulos, V . C. Gerogiannis, P. Fitsilis, and
+A. Kameas, ‘‘Cloud computing and semantic web technologies for ubiq-
+uitous management of smart cities-related competences,’’ Educ. Inf. Tech-
+nol., vol. 26, no. 2, pp. 2143–2164, Mar. 2021.
+[27] N. Fazakis, G. Kostopoulos, S. Kotsiantis, and I. Mporas, ‘‘Iterative
+robust semi-supervised missing data imputation,’’ IEEE Access, vol. 8,
+pp. 90555–90569, 2020, doi: 10.1109/ACCESS.2020.2994033.
+[28] M. Ali, ‘‘PyCaret: An open source, low-code machine learning library in
+Python,’’ Apr. 2020. [Online]. Available: https://www.pycaret.org
+[29] Y . Freund and R. E. Schapire, ‘‘A decision-theoretic generalization of on-
+line learning and an application to boosting,’’ J. Comput. Syst. Sci., vol. 55,
+pp. 119–139, Aug. 1995.
+[30] J. H. Friedman, ‘‘Greedy function approximation: A gradient boosting
+machine,’’Ann. Statist., vol. 29, no. 5, pp. 1189–1232, Oct. 2001.
+[31] L. Breiman, J. Friedman, C. J. Stone, and R. A. Olshen, Classiﬁcation and
+Regression Trees. Boca Raton, FL, USA: CRC Press, 1984.
+[32] P. Geurts, D. Ernst, and L. Wehenkel, ‘‘Extremely randomized trees,’’
+Mach. Learn., vol. 63, pp. 3–42, Apr. 2006.
+[33] G. J. McLachlan, Discriminant Analysis and Statistical Pattern Recogni-
+tion, vol. 544. Hoboken, NJ, USA: Wiley, 2004.
+[34] G. Ke, Q. Meng, T. Finley, T. Wang, W. Chen, W. Ma, Q. Ye, and T.-Y . Liu,
+‘‘LightGBM: A highly efﬁcient gradient boosting decision tree,’’ in Proc.
+Adv. Neural Inf. Process. Syst., vol. 30, 2017, pp. 3146–3154.
+[35] A. Y . Ng and M. I. Jordan, ‘‘On discriminative vs. generative classiﬁers:
+A comparison of logistic regression and naive Bayes,’’ in Proc. Adv. Neural
+Inf. Process. Syst., 2002, pp. 841–848.
+[36] L. Breiman, ‘‘Random forests,’’ Mach. Learn., vol. 45, no. 1, pp. 5–32,
+2001, doi: 10.1023/A:1010933404324.
+165890 VOLUME 9, 2021","VI. CONCLUSION
+In the present study, an attempt was made to exploit predic-
+tive analytics for predicting student certiﬁcation in a MOOC
+for smart city professionals. Therefore, a plethora of high-
+performing ML models were produced employing a variety of
+classiﬁcation algorithms. The experiments were performed in
+three consecutive time-steps in correspondence with the ﬁrst
+two, out of eleven weeks of the course.
+The results revealed that students at risk of failure can be
+identified with an accuracy measure greater than 94% at the
+end of the second week of the course. Hence, each model may
+serve as an early alert system for educators, since students
+less likely to obtain a certiﬁcate could be identiﬁed at an
+early enough stage to provide sufﬁcient support actions and
+targeted intervention strategies to them. Moreover, it is of
+vital importance for universities to increase retention rates in
+MOOCs and offer high-quality education to learners. Further-
+more, we identiﬁed the features which are of great impact
+on earning a course certiﬁcate. Our ﬁndings indicate that
+performance attributes regarding student grading in quizzes
+and activities during the ﬁrst two weeks of the course are of
+great impact for accurately identifying low performers.
+Although our research is a case study, the ﬁndings are in
+line with recent research. Explainable learning models could
+provide more meticulous and expressive information about
+student learning behavior and performance. To this end,
+for future work we intend to build predictive models based on
+the most informative features of the dataset and apply them
+to other MOOCs. In addition, we intend to experiment with
+new ML methods, such as Semi-Supervised Learning, which
+has been proven to be very effective in the EDM ﬁeld."
+Kostopoulos - 2021 - Interpretable Models for Early Prediction of Certification in MOOCs A Case Study on a MOOC for Smar.pdf,"G. Kostopouloset al.: Interpretable Models for Early Prediction of Certification in MOOCs
+[37] N. V . Chawla, K. W. Bowyer, L. O. Hall, and W. P. Kegelmeyer, ‘‘SMOTE:
+Synthetic minority over-sampling technique,’’ J. Artif. Intell. Res., vol. 16,
+no. 1, pp. 321–357, Jan. 2002.
+[38] M. Stone, ‘‘Cross-validatory choice and assessment of statistical predic-
+tions,’’J. Roy. Stat. Soc. B, Methodol., vol. 36, no. 2, pp. 111–133, 1974.
+[39] P. Burman, ‘‘A comparative study of ordinary cross-validation, v-fold
+cross-validation and the repeated learning-testing methods,’’ Biometrika,
+vol. 76, no. 3, pp. 503–514, Sep. 1989.
+[40] B. Liu, Y . Wu, W. Xing, G. Cheng, and S. Guo, ‘‘Exploring behavioural
+differences between certiﬁcate achievers and explorers in MOOCs,’’ Asia
+Paciﬁc J. Educ., pp. 1–13, 2021, doi: 10.1080/02188791.2020.1868974.
+[41] S. M. Lundberg and S.-I. Lee, ‘‘A uniﬁed approach to interpreting model
+predictions,’’ in Proc. 31st Int. Conf. Neural Inf. Process. Syst., 2017,
+pp. 4768–4777.
+[42] S. M. Jayaprakash, E. W. Moody, E. J. M. Lauría, J. R. Regan, and
+J. D. Baron, ‘‘Early alert of academically at-risk students: An open source
+analytics initiative,’’ J. Learn. Anal., vol. 1, no. 1, pp. 6–47, 2014.
+[43] D. Bevitt, C. Baldwin, and J. Calvert, ‘‘Intervening early: Attendance
+and performance monitoring as a trigger for ﬁrst year support in the
+biosciences,’’Biosci. Educ., vol. 15, no. 1, pp. 1–14, Jun. 2010.
+[44] G. Kostopoulos and S. Kotsiantis, ‘‘Exploiting semi-supervised learning
+in the education ﬁeld: A critical survey,’’ in Advances in Machine Learn-
+ing/Deep Learning-Based Technologies. Cham, Switzerland: Springer,
+2022, pp. 79–94.
+GEORGIOS KOSTOPOULOS was born in
+Agrinio, Greece, in 1971. He received the master’s
+degree in computer science and the Ph.D. degree
+in educational data mining from the Department
+of Mathematics, University of Patras, Greece,
+in 2015 and 2020, respectively. He is currently a
+High School Mathematics Teacher and teaching
+at the University of Peloponnese. He has several
+publications with enough citations. According to
+Google Scholar, his H-index is 11 and H10-index
+is 12. His research interests include machine learning, learning analytics, and
+educational data mining.
+THEODOR PANAGIOTAKOPOULOS received
+the Diploma and Ph.D. degrees from the Depart-
+ment of Electrical and Computer Engineering,
+University of Patras, Greece, in 2006 and 2011,
+respectively. He is currently a Senior Research
+Fellow with the Mobile and Pervasive Comput-
+ing, Quality, and Ambient Intelligence Laboratory,
+School of Science and Technology, Hellenic Open
+University. He has published more than 30 scien-
+tiﬁc articles in international book chapters, jour-
+nals, and conferences, and has participated in 15 European and national
+research programs holding key positions at a research, technical, and man-
+agerial level. His research interests include pervasive computing, the Internet
+of Things, machine learning, smart city applications, mobile health, fuzzy
+systems, and digital literacy.
+SOTIRIS KOTSIANTIS received the B.Sc., mas-
+ter’s, and Ph.D. degrees in computer science from
+the University of Patras, Patras, Greece, in 1999,
+2001, and 2005, respectively. He is a Mathemati-
+cian. He is currently an Assistant Professor with
+the Department of Mathematics, University of
+Patras. According to Google Scholar, his H-index
+is 34 and G-index is 118. He has a lot of publi-
+cations to his credit in international journals and
+conferences. His research interests include data
+mining, machine learning, and learning analytics.
+CHRISTOS PIERRAKEAS received the B.Sc.
+degree in mathematics and the Ph.D. degree in
+medical informatics from the University of Patras,
+Greece, in 1986 and 1994, respectively. He also
+holds two postgraduate certiﬁcates in ‘‘open and
+distance learning’’ and ‘‘adults education’’ from
+Hellenic Open University (HOU). He is currently
+an Associate Professor of design, analysis, and
+development of information technologies, with
+emphasis on educational technology, with the
+Department of Management Science and Technology, University of Patras,
+and has been a Tutor with the Department of Informatics, HOU, since 2000.
+His research interests include educational technology, applications of new
+ICT technologies in education, applications of innovative technologies in
+education (e-learning systems, tools, techniques, methodologies, applica-
+tions in MOOC, and STEM/STEM education), digital competences devel-
+opment (tools, techniques, applications, and methodologies), development
+and evaluation of educational material and educational processes, user mod-
+eling and learning analytics, design and development of information (and
+educational information) systems, and distance education.
+ACHILLES KAMEAS received the Engineering
+Diploma and Ph.D. degrees in human–computer
+interaction from the Department of Computer
+Engineering and Informatics, University of Patras,
+Greece, in 1989 and 1995, respectively. He also
+received formal education on adult education and
+open and distance education. He is a Professor at
+Hellenic Open University.
+VOLUME 9, 2021 165891","GEORGIOS KOSTOPOULOS was born in
+Agrinio, Greece, in 1971. He received the master’s
+degree in computer science and the Ph.D. degree
+in educational data mining from the Department
+of Mathematics, University of Patras, Greece,
+in 2015 and 2020, respectively. He is currently a
+High School Mathematics Teacher and teaching
+at the University of Peloponnese. He has several
+publications with enough citations. According to
+Google Scholar, his H-index is 11 and H10-index
+is 12. His research interests include machine learning, learning analytics, and
+educational data mining.
+THEODOR PANAGIOTAKOPOULOS received
+the Diploma and Ph.D. degrees from the Depart-
+ment of Electrical and Computer Engineering,
+University of Patras, Greece, in 2006 and 2011,
+respectively. He is currently a Senior Research
+Fellow with the Mobile and Pervasive Comput-
+ing, Quality, and Ambient Intelligence Laboratory,
+School of Science and Technology, Hellenic Open
+University. He has published more than 30 scien-
+tiﬁc articles in international book chapters, jour-
+nals, and conferences, and has participated in 15 European and national
+research programs holding key positions at a research, technical, and man-
+agerial level. His research interests include pervasive computing, the Internet
+of Things, machine learning, smart city applications, mobile health, fuzzy
+systems, and digital literacy.
+SOTIRIS KOTSIANTIS received the B.Sc., mas-
+ter’s, and Ph.D. degrees in computer science from
+the University of Patras, Patras, Greece, in 1999,
+2001, and 2005, respectively. He is a Mathemati-
+cian. He is currently an Assistant Professor with
+the Department of Mathematics, University of
+Patras. According to Google Scholar, his H-index
+is 34 and G-index is 118. He has a lot of publi-
+cations to his credit in international journals and
+conferences. His research interests include data
+mining, machine learning, and learning analytics.
+CHRISTOS PIERRAKEAS received the B.Sc.
+degree in mathematics and the Ph.D. degree in
+medical informatics from the University of Patras,
+Greece, in 1986 and 1994, respectively. He also
+holds two postgraduate certiﬁcates in ‘‘open and
+distance learning’’ and ‘‘adults education’’ from
+Hellenic Open University (HOU). He is currently
+an Associate Professor of design, analysis, and
+development of information technologies, with
+emphasis on educational technology, with the
+Department of Management Science and Technology, University of Patras,
+and has been a Tutor with the Department of Informatics, HOU, since 2000.
+His research interests include educational technology, applications of new
+ICT technologies in education, applications of innovative technologies in
+education (e-learning systems, tools, techniques, methodologies, applica-
+tions in MOOC, and STEM/STEM education), digital competences devel-
+opment (tools, techniques, applications, and methodologies), development
+and evaluation of educational material and educational processes, user mod-
+eling and learning analytics, design and development of information (and
+educational information) systems, and distance education.
+ACHILLES KAMEAS received the Engineering
+Diploma and Ph.D. degrees in human–computer
+interaction from the Department of Computer
+Engineering and Informatics, University of Patras,
+Greece, in 1989 and 1995, respectively. He also
+received formal education on adult education and
+open and distance education. He is a Professor at
+Hellenic Open University."

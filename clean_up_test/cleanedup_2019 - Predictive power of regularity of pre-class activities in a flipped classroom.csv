@@ -1,0 +1,1359 @@
+source,page_content,cleaned_page_content
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"Contents lists available atScienceDirect
+Computers & Education
+journal homepage: www.elsevier.com/locate/compedu
+Predictive power of regularity of pre-class activities in aﬂipped
+classroom
+Jelena Jovanovica,∗, Negin Mirriahib, Dragan Gaševićc, Shane Dawsonb,
+Abelardo Pardod
+a Faculty of Organizational Sciences, University of Belgrade, Jove Ilica 154, 11000, Belgrade, Serbia
+b Teaching Innovation Unit, University of South Australia, City West Campus, 160 Currie Street, Adelaide, South Australia, 5000, Australia
+c Faculty of Education, Monash University, 29 Ancora Imparo Way, Clayton, VIC, 3800, Australia
+d School of Electrical and Information Engineering, University of Sydney, Building J03, Maze Crescent, Darlington, NSW, 2006, Australia
+ARTICLE INFO
+Keywords:
+Improving classroom teaching
+Post-secondary education
+Teaching/learning strategies
+ABSTRACT
+Flipped classroom (FC) is an active learning design requiring students to complete assigned pre-
+class learning activities in preparation for face-to-face sessions. Students' timely, regular, and
+productive engagement with the pre-class activities is considered critical for the success of the
+overall FC design, as these activities serve to prepare students for eﬀective participation in face-
+to-face sessions. However, there is limited empirical evidence on the strength of association
+between students' regularity of engagement with the pre-class activities and their learning per-
+formance in a FC course. Hence, the current study uses learning trace data from three consecutive
+oﬀerings of a FC course to examine students' regularity of pre-class learning activities and its
+association with the students' course performance. In particular, the study derives several in-
+dicators of regularity from the trace data, including indicators related to time management and
+those reﬂecting regularity in the pattern of engagement with pre-class learning activities. The
+association with course performance is examined by building predictive regression models with
+the deﬁned indicators as features. To examine the relevance of incorporating the speciﬁcities of
+the instructional design in predictive models, we designed and compared two kinds of indicators:
+generic (i.e. course-design-agnostic) and course-design-speciﬁc indicators. The study identiﬁed
+several indicators of regularity of pre-class activities as signiﬁcant predictors of course perfor-
+mance. It also demonstrated that predictive models with only generic indicators were able to
+explain only a small portion of the overall variability in the students' course performance, and
+were signiﬁcantly outperformed by models that incorporated coursespeciﬁc indicators. Finally,
+the studyﬁndings point to the importance of assisting students in regulating their use of learning
+resources during class preparation activities in a FC.
+1. Introduction
+Flipped classroom (FC) is a form of active learning that requires students' participation in learning activities both before and
+during face-to-face sessions (Lage, Platt, & Tregua, 2000). Pre-class learning activities are considered critical for the success of the FC
+design, as they serve to adequately prepare students for productive participation in face-to-face sessions (Rahman et al., 2015;Yilmaz
+https://doi.org/10.1016/j.compedu.2019.02.011
+Received 26 February 2018; Received in revised form 18 February 2019; Accepted 19 February 2019
+∗ Corresponding author.
+E-mail addresses: jelena.jovanovic@fon.bg.ac.rs (J. Jovanovic),negin.mirriahi@unisa.edu.au (N. Mirriahi),dgasevic@acm.org (D. Gašević),
+shane.dawson@unisa.edu.au (S. Dawson),abelardo.pardo@sydney.edu.au (A. Pardo).
+Computers & Education 134 (2019) 156–168
+Available online 25 February 2019
+0360-1315/ © 2019 Elsevier Ltd. All rights reserved.
+T","Predictive power of regularity of pre-class activities in aﬂipped
+classroom
+
+1. Introduction
+Flipped classroom (FC) is a form of active learning that requires students' participation in learning activities both before and
+during face-to-face sessions (Lage, Platt, & Tregua, 2000). Pre-class learning activities are considered critical for the success of the FC
+design, as they serve to adequately prepare students for productive participation in face-to-face sessions (Rahman et al., 2015;Yilmaz"
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"& Baydas, 2017; Yılmaz, Olpak, & Yılmaz, 2017). In essence, it is anticipated that students will complete assigned pre-class tasks on
+time and with a high degree of regularity. However, meeting this requirement can be challenging for students who have diﬃculties
+with regulating their learning (Sletten, 2017). As a consequence, the level and consistency of their involvement in the learning
+process is often incompatible with the requirements of the FC instructional model (Lai & Hwang, 2016;Mason, Shuman, & Cook,
+2013). Nonetheless, students' regulation of learning in a FC in relation to their engagement with pre-class activities has received
+limited attention. To date, research on FC has been predominantly focused on collecting students' opinions and perceptions of a FC,
+and/or assessing the extent of improvement in students' performance based on pre- and post-tests and course grades (O'Flaherty &
+Phillips, 2015; Betihavas, Bridgman, Kornhaber, & Cross, 2016).
+Time management is an important component of regulating learning behaviour. It consists of study scheduling and allocating time
+for diﬀerent learning activities (Pintrich, 2004). Previous research has shown that students tend to lack time management skills and
+have diﬃculties in maintaining a regular study pattern, especially online (Panzarasa, Kujawski, Hammond, & Roberts, 2016; You,
+2016). The drawbacks associated with such irregularity of study– including poor academic outcomes, and even withdrawal from a
+course – have been well demonstrated in research. For example, research in cognitive psychology has shown that intensive learning in
+a relatively short time period does not lead to a deep understanding and long-term learning, but instead allows for short-term
+retention only (Kornell, 2009).
+Regulation of learning is also evident in the change or adaptation of learning strategies (Winne, 2006). Strategy changes are
+indicative of higher metacognitive monitoring (Hadwin, Nesbit, Jamieson-Noel, Code, & Winne, 2007), and thus suggest higher
+regulation of learning. Nonetheless, not all strategy changes lead to desired learning outcomes, as learners tend to mismanage their
+learning (Bjork, Dunlosky, & Kornell, 2013) and choose suboptimal tactics and strategies (Winne & Jamieson-Noel, 2003). As a result,
+students might not use the available learning resources in a way that can maximize their learning outcomes (Lust, Elen, & Clarebout,
+2013). In our earlier work, we found that students had a tendency to change their learning strategy related to pre-class learning
+activities in a FC course (Jovanovic, Gasevic, Dawson, Pardo, & Mirriahi, 2017). In particular, we detected that 'patterns' of student
+engagement with pre-class learning activities tended to change over the duration of the course. However, we did not study the
+association of the observed irregularity of the engagement patterns - considered as manifestations of learning strategies - with the
+students' course performance.
+Considering the above givenﬁndings and gaps in the literature, the present study aimed to contribute to the understanding of
+students' regulation of learning in a FC context. More precisely, the objective was to examine the association between students'
+regularity and time-management of pre-class activities and their learning performance in a FC. To that end, we relied on the trace
+data collected from a Learning Management System (LMS) in three consecutive oﬀerings of a course with a FC design. The trace data
+originated from the pre-class activities that students were requested to complete prior to the scheduled face-to-face sessions in aﬁrst-
+year undergraduate course in computer engineering. From the trace data, we derived several indicators of regularity and examined
+their association with course performance (operationalized through theﬁnal course exam) by building predictive regression models.
+2. Background
+2.1. Self-regulation of learning in aﬂipped classroom
+Self-regulation of learning is a crucial factor for improving learning outcomes in online education (Broadbent & Poon, 2015;Sun,
+Tsai, Finger, Chen, & Yeh, 2008; Wang, Shannon, & Ross, 2013). The present research is framed on the constructivist, metacognitive
+model of self-regulated learning propounded by Winne and Hadwin (Winne, 2006; Winne
+& Hadwin, 1998). According to this model,
+learners are active agents employing a set of cognitive, physical, and digital tools to operate on raw information in order to create
+learning artefacts or products. Learning is regulated by continuously evaluating the quality of the products and eﬀectiveness of the
+chosen study tools and tactics. This process, known as metacognitive monitoring, is inﬂuenced by internal and external conditions.
+The former includes, for example, a learner's level of motivation, prior knowledge, and aﬀective states. External conditions are
+determined by elements of the instructional design (e.g., the teacher's role, course requirements, and availability of feedback).
+In the present study, we focused on the established instructional tasks (i.e., the pre-class activities), as an important component of
+the external conditions impacting student self-regulated learning processes. The eﬀect of instructional conditions on self-regulation of
+learning has been examined and demonstrated in several studies (e.g.,Azevedo, Moos, Greene, Winters, & Cromley, 2008; Garrison &
+Cleveland-Innes, 2005; Trigwell, Prosser, & Waterhouse, 1999). It has also been shown that computational models aimed at pre-
+dicting student performance need to account for the instructional conditions to aid understanding and improve the learning process
+(see Section2.2).
+FC is an active instructional design that requires students' timely and regular engagement, and has higher requirements in terms of
+regulation of learning than more traditional designs (Lai & Hwang, 2016;Mason et al., 2013; Sletten, 2015). In particular, due to its
+relative novelty in educational practice and its emphasis on learner's agency, FC may require students to develop new or adapt their
+existing learning strategies to ensure regular engagement with learning activities. To do that successfully, students need a well-
+developed ability to regulate their learning. Yet, students often have underdeveloped self-regulation skills (Bjork et al., 2013; Winne
+& Jamieson-Noel, 2003). Hence, the importance of examining self-regulation in the FC instructional context.
+Nonetheless, there is a paucity of studies that have examined students' regulation of learning in the instructional context of a FC
+course. In particular, how students manage and regulate pre-class activities, a distinctive feature of the FC instructional model, and
+how that aﬀects their course performance has received limited attention. Among the rare contributions to understanding self-reg-
+ulation of learning in a FC context is a recent study bySletten (2017). In examining the relationship between students' perceptions of
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+157","In essence, it is anticipated that students will complete assigned pre-class tasks on
+time and with a high degree of regularity. However, meeting this requirement can be challenging for students who have diﬃculties
+with regulating their learning (Sletten, 2017). As a consequence, the level and consistency of their involvement in the learning
+process is often incompatible with the requirements of the FC instructional model (Lai & Hwang, 2016;Mason, Shuman, & Cook,
+2013). Nonetheless, students' regulation of learning in a FC in relation to their engagement with pre-class activities has received
+limited attention. To date, research on FC has been predominantly focused on collecting students' opinions and perceptions of a FC,
+and/or assessing the extent of improvement in students' performance based on pre- and post-tests and course grades (O'Flaherty &
+Phillips, 2015; Betihavas, Bridgman, Kornhaber, & Cross, 2016).
+Time management is an important component of regulating learning behaviour. It consists of study scheduling and allocating time
+for diﬀerent learning activities (Pintrich, 2004). Previous research has shown that students tend to lack time management skills and
+have diﬃculties in maintaining a regular study pattern, especially online (Panzarasa, Kujawski, Hammond, & Roberts, 2016; You,
+2016). The drawbacks associated with such irregularity of study– including poor academic outcomes, and even withdrawal from a
+course – have been well demonstrated in research. For example, research in cognitive psychology has shown that intensive learning in
+a relatively short time period does not lead to a deep understanding and long-term learning, but instead allows for short-term
+retention only (Kornell, 2009).
+Regulation of learning is also evident in the change or adaptation of learning strategies (Winne, 2006). Strategy changes are
+indicative of higher metacognitive monitoring (Hadwin, Nesbit, Jamieson-Noel, Code, & Winne, 2007), and thus suggest higher
+regulation of learning. Nonetheless, not all strategy changes lead to desired learning outcomes, as learners tend to mismanage their
+learning (Bjork, Dunlosky, & Kornell, 2013) and choose suboptimal tactics and strategies (Winne & Jamieson-Noel, 2003). As a result,
+students might not use the available learning resources in a way that can maximize their learning outcomes (Lust, Elen, & Clarebout,
+2013). In our earlier work, we found that students had a tendency to change their learning strategy related to pre-class learning
+activities in a FC course (Jovanovic, Gasevic, Dawson, Pardo, & Mirriahi, 2017). In particular, we detected that 'patterns' of student
+engagement with pre-class learning activities tended to change over the duration of the course. However, we did not study the
+association of the observed irregularity of the engagement patterns - considered as manifestations of learning strategies - with the
+students' course performance.
+Considering the above givenﬁndings and gaps in the literature, the present study aimed to contribute to the understanding of
+students' regulation of learning in a FC context. More precisely, the objective was to examine the association between students'
+regularity and time-management of pre-class activities and their learning performance in a FC. To that end, we relied on the trace
+data collected from a Learning Management System (LMS) in three consecutive oﬀerings of a course with a FC design. The trace data
+originated from the pre-class activities that students were requested to complete prior to the scheduled face-to-face sessions in aﬁrst-
+year undergraduate course in computer engineering. From the trace data, we derived several indicators of regularity and examined
+their association with course performance (operationalized through theﬁnal course exam) by building predictive regression models.
+2. Background
+2.1. Self-regulation of learning in aﬂipped classroom
+Self-regulation of learning is a crucial factor for improving learning outcomes in online education (Broadbent & Poon, 2015;Sun,
+Tsai, Finger, Chen, & Yeh, 2008; Wang, Shannon, & Ross, 2013). The present research is framed on the constructivist, metacognitive
+model of self-regulated learning propounded by Winne and Hadwin (Winne, 2006; Winne
+& Hadwin, 1998). According to this model,
+learners are active agents employing a set of cognitive, physical, and digital tools to operate on raw information in order to create
+learning artefacts or products. Learning is regulated by continuously evaluating the quality of the products and eﬀectiveness of the
+chosen study tools and tactics. This process, known as metacognitive monitoring, is inﬂuenced by internal and external conditions.
+The former includes, for example, a learner's level of motivation, prior knowledge, and aﬀective states. External conditions are
+determined by elements of the instructional design (e.g., the teacher's role, course requirements, and availability of feedback).
+In the present study, we focused on the established instructional tasks (i.e., the pre-class activities), as an important component of
+the external conditions impacting student self-regulated learning processes. The eﬀect of instructional conditions on self-regulation of
+learning has been examined and demonstrated in several studies (e.g.,Azevedo, Moos, Greene, Winters, & Cromley, 2008; Garrison &
+Cleveland-Innes, 2005; Trigwell, Prosser, & Waterhouse, 1999). It has also been shown that computational models aimed at pre-
+dicting student performance need to account for the instructional conditions to aid understanding and improve the learning process
+(see Section2.2).
+FC is an active instructional design that requires students' timely and regular engagement, and has higher requirements in terms of
+regulation of learning than more traditional designs (Lai & Hwang, 2016;Mason et al., 2013; Sletten, 2015). In particular, due to its
+relative novelty in educational practice and its emphasis on learner's agency, FC may require students to develop new or adapt their
+existing learning strategies to ensure regular engagement with learning activities. To do that successfully, students need a well-
+developed ability to regulate their learning. Yet, students often have underdeveloped self-regulation skills (Bjork et al., 2013; Winne
+& Jamieson-Noel, 2003). Hence, the importance of examining self-regulation in the FC instructional context.
+Nonetheless, there is a paucity of studies that have examined students' regulation of learning in the instructional context of a FC
+course. In particular, how students manage and regulate pre-class activities, a distinctive feature of the FC instructional model, and
+how that aﬀects their course performance has received limited attention. Among the rare contributions to understanding self-reg-
+ulation of learning in a FC context is a recent study bySletten (2017)."
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"a FC and self-regulated learning (SRL) strategies, Sletten found that students' perceptions of the FC model positively predicted their
+use of several types of SRL strategies (e.g., study strategies, metacognition, and eﬀort). However, no relationship was detected
+between student perceptions of FC model and their course achievement (i.e. grades), neither directly nor indirectly, through SRL
+strategy use. This could be partly explained by the small sample size (N = 76) and the inherent bias of students' self-reports (Winne &
+Jamieson-Noel, 2003). In a related study,Yilmaz and Baydas (2017)examined undergraduate students’ awareness of metacognition,
+the adopted metacognitive strategies, and learning performance in pre-class activities in a FC. The researchers found a noticeable
+increase in the students' use of metacognitive strategies as the course progressed, suggesting that students needed time to adapt their
+strategies to the FC context. UnlikeSletten (2017), Yilmaz and Baydas (2017)reported a highly signiﬁcant positive association
+between students' metacognitive strategies and learning performance.
+The scarcity of empirical evidence about the relationship between self-regulation of learning and learning performance in FC and
+the diversity ofﬁndings of the existing studies suggest that this line of research requires further exploration.
+2.2. Prediction of learning performance
+2.2.1. The relevance of instructional design
+To date, research on Learning Analytics and Educational Data Mining has largely centred on predicting students at risk of failing a
+course and/or predicting students' overall academic performance (Bowers, Sprott, & Taﬀ, 2013; Brooks & Thompson, 2017; Dawson,
+Gašević, Siemens, & Joksimovic, 2014; Siemens, Dawson, & Lynch, 2014). Early research eﬀorts were oriented towards identifying a
+set of‘generic’ predictors of student performance that could be applied across diﬀering courses and institutions (Jayaprakash, Moody,
+Lauría, Regan, & Baron, 2014). However, focusing only on‘generic’ predictors such as demographic and behavioural indicators, fails
+to account for the speciﬁcities of course design and disciplinary context (Finnegan, Morris, & Lee, 2008;Macfadyen & Dawson, 2010).
+The use of such‘generic’ indicators tended to produce inconsistent and even conﬂicting ﬁndings from one course to the next. For
+instance, in their study examining indicators of academic performance in 22 courses,Finnegan et al. (2008)did not ﬁnd a single
+predictor that was shared amongst the three investigated disciplines. Likewise,Gašević, Dawson, Rogers, and Gašević (2016) found
+that the predictive power of the same behavioural indicators varied among courses– even courses from the same disciplinary area.
+The importance of the pedagogical and disciplinary context for establishing robust predictive models has been conﬁrmed in more
+recent studies (Gašević et
+al., 2016; Tempelaar, Rienties, & Giesbers, 2015). These and related studies comparing predictive models
+across multiple courses (e.g.Agudo-Peregrina, Iglesias-Pradas, Conde-Gonzalez, & Hernandez-Garcia, 2014) have demonstrated that
+indicators have to include elements of the course context.Gašević et al. (2016)emphasised this point in recommending that any
+attempts to establish predictive models of academic success must also incorporate the speciﬁc instructional conditions.
+The aforementioned studies are consistent with contemporary learning theories that state the importance of the elements of a
+speciﬁc learning situation, including student and teacher intentions and mutual interaction (Winne, 2006; Zimmerman, 2008). In
+other words, contemporary learning theory recognizes that the pedagogical context eﬀectively shapes how students approach and
+manage their learning tasks, and consequently makes an impact on the academic performance. This further implies that predictive
+models should account for important diﬀerences among the elements that shape learning in diﬀerent courses.
+2.3. Regularity as a predictor of learning performance
+There is a limited number of empirical studies employing learning traces (i.e., log data) to examine the predictive power of
+regularity of learning on student course performance. Most recently, a few studies have attempted to make use of student learning
+traces, typically collected from a Learning Management System (LMS), to examine whether and to what extent diﬀerent indicators of
+regularity and time management can predict student course performance. For example,You (2016) examined the association be-
+tween students' course achievement and several indicators derived from the data collected from an LMS used in a university-level
+online course. The study results showed that the indicator of regularity of learning activities (based on the pattern of accessing and
+watching the course videos) was the strongest predictor of course achievement, followed by the number of late submissions, number
+of sessions, and proof of reading the course-related information.You (2015) also demonstrated the importance of regularity and
+timeliness of learning activities in his study on the eﬀect of academic procrastination on course achievement. Procrastination is
+considered here as a failure in self-regulation of learning (Steel, 2007). Two indicators of procrastination were used: delayed access to
+and/or incomplete viewing of the lecture videos (primary course material), and late submission of assignments. A regression model
+with these two indicators explained 59.7% of the variability in the students’ course achievement.
+Asarta and Schmidt (2013) examined the eﬀects of the timing, volume, intensity, and consistency of learning activities on
+achievement in a blended introductory statistics course. They deﬁned and used several indicators of regularity: pacing (indicates if a
+student kept up with the prescribed learning schedule as the course proceeded), anti-cramming (indicates if a student avoided
+delayed initial access to the course materials until a short period of time before the associated exam), reviewing (indicates if a student
+accessed lecture materials without much delay and revisited them before an exam), and consistency (indicates if a student accessed
+lecture materials between adjacent class sessions). The study found pacing, anti-cramming, and consistency as signiﬁcant predictors
+of course achievement after controlling for the students’ GPA and math skills.
+Panzarasa et al. (2016)found that trainees involved in a specialist e-learning medical programme tended to exhibit non-uniform
+and irregular (bursty) temporal patterns in interaction with online learning activities. They also detected students' tendency to
+concentrate their involvement in online sessions around speciﬁc points in time that coincided with days preceding exams. These
+ﬁndings are in line with earlier related studies (Michinov, Brunot, Le Bohec, Juhel, & Delaval, 2011; Steel, 2007).
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+158","a FC and self-regulated learning (SRL) strategies, Sletten found that students' perceptions of the FC model positively predicted their
+use of several types of SRL strategies (e.g., study strategies, metacognition, and eﬀort). However, no relationship was detected
+between student perceptions of FC model and their course achievement (i.e. grades), neither directly nor indirectly, through SRL
+strategy use. This could be partly explained by the small sample size (N = 76) and the inherent bias of students' self-reports. In a related study,Yilmaz and Baydas (2017)examined undergraduate students’ awareness of metacognition,
+the adopted metacognitive strategies, and learning performance in pre-class activities in a FC. The researchers found a noticeable
+increase in the students' use of metacognitive strategies as the course progressed, suggesting that students needed time to adapt their
+strategies to the FC context. UnlikeSletten (2017), Yilmaz and Baydas (2017)reported a highly signiﬁcant positive association
+between students' metacognitive strategies and learning performance.
+The scarcity of empirical evidence about the relationship between self-regulation of learning and learning performance in FC and
+the diversity ofﬁndings of the existing studies suggest that this line of research requires further exploration.
+2.2. Prediction of learning performance
+2.2.1. The relevance of instructional design
+To date, research on Learning Analytics and Educational Data Mining has largely centred on predicting students at risk of failing a
+course and/or predicting students' overall academic performance. Early research eﬀorts were oriented towards identifying a
+set of‘generic’ predictors of student performance that could be applied across diﬀering courses and institutions. However, focusing only on‘generic’ predictors such as demographic and behavioural indicators, fails
+to account for the speciﬁcities of course design and disciplinary context.
+The use of such‘generic’ indicators tended to produce inconsistent and even conﬂicting ﬁndings from one course to the next. For
+instance, in their study examining indicators of academic performance in 22 courses,Finnegan et al. (2008)did not ﬁnd a single
+predictor that was shared amongst the three investigated disciplines. Likewise,Gašević, Dawson, Rogers, and Gašević (2016) found
+that the predictive power of the same behavioural indicators varied among courses– even courses from the same disciplinary area.
+The importance of the pedagogical and disciplinary context for establishing robust predictive models has been conﬁrmed in more
+recent studies. These and related studies comparing predictive models
+across multiple courses (e.g.Agudo-Peregrina, Iglesias-Pradas, Conde-Gonzalez, & Hernandez-Garcia, 2014) have demonstrated that
+indicators have to include elements of the course context.Gašević et al. (2016)emphasised this point in recommending that any
+attempts to establish predictive models of academic success must also incorporate the speciﬁc instructional conditions.
+The aforementioned studies are consistent with contemporary learning theories that state the importance of the elements of a
+speciﬁc learning situation, including student and teacher intentions and mutual interaction. In
+other words, contemporary learning theory recognizes that the pedagogical context eﬀectively shapes how students approach and
+manage their learning tasks, and consequently makes an impact on the academic performance. This further implies that predictive
+models should account for important diﬀerences among the elements that shape learning in diﬀerent courses.
+2.3. Regularity as a predictor of learning performance
+There is a limited number of empirical studies employing learning traces (i.e., log data) to examine the predictive power of
+regularity of learning on student course performance. Most recently, a few studies have attempted to make use of student learning
+traces, typically collected from a Learning Management System (LMS), to examine whether and to what extent diﬀerent indicators of
+regularity and time management can predict student course performance. For example,You (2016) examined the association be-
+tween students' course achievement and several indicators derived from the data collected from an LMS used in a university-level
+online course. The study results showed that the indicator of regularity of learning activities (based on the pattern of accessing and
+watching the course videos) was the strongest predictor of course achievement, followed by the number of late submissions, number
+of sessions, and proof of reading the course-related information.You (2015) also demonstrated the importance of regularity and
+timeliness of learning activities in his study on the eﬀect of academic procrastination on course achievement. Procrastination is
+considered here as a failure in self-regulation of learning (Steel, 2007). Two indicators of procrastination were used: delayed access to
+and/or incomplete viewing of the lecture videos (primary course material), and late submission of assignments. A regression model
+with these two indicators explained 59.7% of the variability in the students’ course achievement.
+Asarta and Schmidt (2013) examined the eﬀects of the timing, volume, intensity, and consistency of learning activities on
+achievement in a blended introductory statistics course. They deﬁned and used several indicators of regularity: pacing (indicates if a
+student kept up with the prescribed learning schedule as the course proceeded), anti-cramming (indicates if a student avoided
+delayed initial access to the course materials until a short period of time before the associated exam), reviewing (indicates if a student
+accessed lecture materials without much delay and revisited them before an exam), and consistency (indicates if a student accessed
+lecture materials between adjacent class sessions). The study found pacing, anti-cramming, and consistency as signiﬁcant predictors
+of course achievement after controlling for the students’ GPA and math skills.
+Panzarasa et al. (2016)found that trainees involved in a specialist e-learning medical programme tended to exhibit non-uniform
+and irregular (bursty) temporal patterns in interaction with online learning activities. They also detected students' tendency to
+concentrate their involvement in online sessions around speciﬁc points in time that coincided with days preceding exams. These
+ﬁndings are in line with earlier related studies."
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"Saqr, Fors, and Tedre (2017)examined the extent to which students' online activities can predict their performance in a blended
+course where there was no explicit requirement for students to use the course LMS, but were free to use it based on their self-
+perceived beneﬁt. In addition to simple counts of various kinds of online activities, the study usedﬁve indicators that reﬂected
+regularity of diﬀerent kinds of learning activities and accounted for the fact that students were prone to short periods of high activity
+followed by prolonged periods of inactivity (Panzarasa et al., 2016). The indicators were derived from the LMS logins, course
+material views, discussion forum posts, time spent on online course materials, and the use of weekly formative assessment. These
+indicators showed more consistent and higher correlation coeﬃcients withﬁnal grades than simple counts of activities. Among them,
+the login-based indicator and the formative assessment indicator had the highest correlation withﬁnal grades.
+Jo, Kim, and Yoon (2015)examined time management strategies of adult learners in an online course. Using the data collected
+from the course LMS, they deﬁned and used three indicators of the adopted time management strategy: total login time (as a proxy of
+time allocated to learning (Cotton & Savard, 1981)), login frequency, and regularity of intervals between consecutive logins. Only the
+indicator of regularity of logins had a signiﬁcant eﬀect on course achievement.
+Most of the aforementioned studies used both generic and course speciﬁc indicators, though none of them made an attempt to
+compare the predictive power of the two kinds of indicators.
+2.4. The study objective and research questions
+As shown in the previous section, empirical evidence for association of regularity of study and learning performance is still scarce.
+Nonetheless, the literature does provide some evidence for the relevance of regularity for achieving the desired learning outcomes
+(e.g., Arnott & Dust, 2012; Kornell, 2009). Regularity of learning is especially relevant in the context of active learning designs (Bell &
+Kozlowski, 2008; Michael, 2006), such as FC, where students are expected or required to take responsibility for their learning and
+manage their approach to learning. This suggests that indicators of regularity of learning could be signiﬁcant predictors of course
+outcomes in a FC setting. To explore the validity of this assumption, the study reported in this paper examines whether and to what
+extent indicators ofregularity of engagement with pre-class learning activitiesin a FC course can predict student course performance.
+We examine regularity from two perspectives, as (i) regular and timely engagement with the pre-class learning activities
+throughout the course, and as (ii) regular distribution of eﬀorts over the learning resources (e.g., videos, exercises, quizzes, etc.) made
+available for the class preparation tasks. Whereas theﬁrst aspect is about time management, the latter is related to the adopted
+learning strategies and their consistency or change during the course. Since to our knowledge the relevance of course design speciﬁc
+predictors has not been empirically veriﬁed in the FC context, we design and compare generic (i.e., course design agnostic) indicators
+and course design speciﬁc indicators of regularity of pre-class learning activities in a FC. To increase the robustness of theﬁndings,
+the two kinds of predictors are compared in three consecutive oﬀerings of the same FC course.
+Considering the above, the following research questions were deﬁned:
+RQ1: To what extent do generic (i.e. course-design-agnostic) indicators of regularity of engagement with pre-class learning activities in a FC
+course can predict students' course performance?
+RQ2: To what extent do context-speciﬁc (i.e. course-design-speciﬁc) indicators of regularity of engagement with pre-class learning activities
+in a FC course can improve the prediction of students' course performance (over the prediction enabled by the generic indicators)?
+In theﬁrst research question (RQ1), focused on generic indicators, regularity of learning refers only to the timely and consistent
+engagement with the pre-class learning activities throughout the course (i.e., the time management component of regulation). Being
+course-design agnostic, generic indicators can only be derived from general forms of engagement with learning resources, such as
+learning sessions or active days. The second question (RQ2) is focused on the course design speciﬁc
+ indicators, and thus allows for
+examining both: (i) timely and consistent engagement with the class preparation activities throughout the course; and (ii) regularity
+in allocating eﬀorts to diﬀerent kinds of learning resources during class preparation tasks (i.e. consistency of the employed learning
+strategies).
+We restrict our focus on the trace data and indicators of regularity in spite of our awareness that the inclusion of other variables in
+a predictive model (e.g., socio-demographic and those related to previous performance) might improve the predictive power of the
+model (Rienties et al., 2016;Tempelaar et al., 2015). While such variables are important in certain contexts, they are also limited in
+terms of informing the instructional design (Saqr al., 2017), and thus cannot add to the objective of providing teaching staﬀ with
+actionable analytics (Conde & Hernandez-Garcıa, 2015; Gašević et al., 2016). On the other hand, variables associated with students'
+regularity of learning can act as indicators of functional risk (i.e., risk associated with low levels of attendance and involvement) thus
+allowing for the detection of students who would beneﬁt from support interventions (Reschly & Christenson, 2012).
+3. Method
+3.1. Study context
+The data for the study originates from a FC that was deployed in aﬁrst-year engineering course at an Australian university. The
+data were collected from three consecutive oﬀerings of the course, in 2014, 2015, and 2016. In each year, the course lasted 13 weeks.
+The course recorded a yearly increase in student enrolment numbers ranging from 290 to 486 students (Table 1). In all three years,
+students had limited previous experience with FC models of teaching.
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+159","Saqr, Fors, and Tedre (2017)examined the extent to which students' online activities can predict their performance in a blended
+course where there was no explicit requirement for students to use the course LMS, but were free to use it based on their self-
+perceived beneﬁt. In addition to simple counts of various kinds of online activities, the study usedﬁve indicators that reﬂected
+regularity of diﬀerent kinds of learning activities and accounted for the fact that students were prone to short periods of high activity
+followed by prolonged periods of inactivity (Panzarasa et al., 2016). The indicators were derived from the LMS logins, course
+material views, discussion forum posts, time spent on online course materials, and the use of weekly formative assessment. These
+indicators showed more consistent and higher correlation coeﬃcients withﬁnal grades than simple counts of activities. Among them,
+the login-based indicator and the formative assessment indicator had the highest correlation withﬁnal grades.
+Jo, Kim, and Yoon (2015)examined time management strategies of adult learners in an online course. Using the data collected
+from the course LMS, they deﬁned and used three indicators of the adopted time management strategy: total login time (as a proxy of
+time allocated to learning (Cotton & Savard, 1981)), login frequency, and regularity of intervals between consecutive logins. Only the
+indicator of regularity of logins had a signiﬁcant eﬀect on course achievement.
+Most of the aforementioned studies used both generic and course speciﬁc indicators, though none of them made an attempt to
+compare the predictive power of the two kinds of indicators.
+2.4. The study objective and research questions
+As shown in the previous section, empirical evidence for association of regularity of study and learning performance is still scarce.
+Nonetheless, the literature does provide some evidence for the relevance of regularity for achieving the desired learning outcomes
+(e.g., Arnott & Dust, 2012; Kornell, 2009). Regularity of learning is especially relevant in the context of active learning designs (Bell &
+Kozlowski, 2008; Michael, 2006), such as FC, where students are expected or required to take responsibility for their learning and
+manage their approach to learning. This suggests that indicators of regularity of learning could be signiﬁcant predictors of course
+outcomes in a FC setting. To explore the validity of this assumption, the study reported in this paper examines whether and to what
+extent indicators ofregularity of engagement with pre-class learning activitiesin a FC course can predict student course performance.
+We examine regularity from two perspectives, as (i) regular and timely engagement with the pre-class learning activities
+throughout the course, and as (ii) regular distribution of eﬀorts over the learning resources (e.g., videos, exercises, quizzes, etc.) made
+available for the class preparation tasks. Whereas theﬁrst aspect is about time management, the latter is related to the adopted
+learning strategies and their consistency or change during the course. Since to our knowledge the relevance of course design speciﬁc
+predictors has not been empirically veriﬁed in the FC context, we design and compare generic (i.e., course design agnostic) indicators
+and course design speciﬁc indicators of regularity of pre-class learning activities in a FC. To increase the robustness of theﬁndings,
+the two kinds of predictors are compared in three consecutive oﬀerings of the same FC course.
+Considering the above, the following research questions were deﬁned:
+RQ1: To what extent do generic (i.e. course-design-agnostic) indicators of regularity of engagement with pre-class learning activities in a FC
+course can predict students' course performance?
+RQ2: To what extent do context-speciﬁc (i.e. course-design-speciﬁc) indicators of regularity of engagement with pre-class learning activities
+in a FC course can improve the prediction of students' course performance (over the prediction enabled by the generic indicators)?
+In theﬁrst research question (RQ1), focused on generic indicators, regularity of learning refers only to the timely and consistent
+engagement with the pre-class learning activities throughout the course (i.e., the time management component of regulation). Being
+course-design agnostic, generic indicators can only be derived from general forms of engagement with learning resources, such as
+learning sessions or active days. The second question (RQ2) is focused on the course design speciﬁc
+ indicators, and thus allows for
+examining both: (i) timely and consistent engagement with the class preparation activities throughout the course; and (ii) regularity
+in allocating eﬀorts to diﬀerent kinds of learning resources during class preparation tasks (i.e. consistency of the employed learning
+strategies).
+We restrict our focus on the trace data and indicators of regularity in spite of our awareness that the inclusion of other variables in
+a predictive model (e.g., socio-demographic and those related to previous performance) might improve the predictive power of the
+model (Rienties et al., 2016;Tempelaar et al., 2015). While such variables are important in certain contexts, they are also limited in
+terms of informing the instructional design (Saqr al., 2017), and thus cannot add to the objective of providing teaching staﬀ with
+actionable analytics (Conde & Hernandez-Garcıa, 2015; Gašević et al., 2016). On the other hand, variables associated with students'
+regularity of learning can act as indicators of functional risk (i.e., risk associated with low levels of attendance and involvement) thus
+allowing for the detection of students who would beneﬁt from support interventions (Reschly & Christenson, 2012).
+3. Method
+3.1. Study context
+The data for the study originates from a FC that was deployed in aﬁrst-year engineering course at an Australian university. The
+data were collected from three consecutive oﬀerings of the course, in 2014, 2015, and 2016. In each year, the course lasted 13 weeks.
+The course recorded a yearly increase in student enrolment numbers ranging from 290 to 486 students (Table 1). In all three years,
+students had limited previous experience with FC models of teaching."
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"The two key elements of the FC design included a set of pre-class online activities to be completed prior to the face-to-face session
+with the instructor (i.e., the lecture), as well as a redesigned lecture framed as an active learning session. To actively participate in
+collaborative problem solving tasks during face-to-face sessions, students had to undertake the preparation tasks (Pardo & Mirriahi,
+2017).
+The study focused on student interaction with the pre-class learning activities. These activities retained the same structure and
+ﬂow in all three studied oﬀerings of the course. The activities relied on the following digital learning resources:
+● Videos with multiple-choice questions (MCQs): short videos introduced and explained relevant concepts. Each video was accom-
+panied by MCQs covering the concepts discussed in the video and promoting simple factual recall. Students could answer a
+question, have their answer evaluated, and if it was incorrect, they could either request to see the solution or try again. These
+MCQs served as formative assessment.
+● Documents with embedded MCQs: the students were required to read the document and answer the embedded MCQs. These
+questions were conceptually the same as MCQs that followed course videos, in terms of the students' interaction with them, and
+also served as formative assessment.
+● Problem (exercise) sequences: these were framed as summative assessment. If an exercise was correctly solved, the student's score
+was increased, and the exercise was removed from the sequence. Alternatively, a new exercise was randomly selected and the
+current problem remained in the sequence. Students received exercises randomly until they solved all of them correctly. To be
+counted towards theirﬁnal course mark, the exercises had to be solved before the start of the weekly lecture. This requirement
+was introduced as an incentive for students to prepare for the lecture.
+Students were provided with real-time feedback on their level of engagement with the pre-class activities and the activity scores
+via an analytics dashboard (Khan & Pardo, 2016). Through the dashboard, students could monitor their engagement with the video
+resources, their success in answering formative MCQs, as well as their performance on summative assessment exercises. The dash-
+board also displayed the overall class scores, thus allowing for a level of social comparison. The displayed data was updated every
+15 min, and the magnitudes were reset weekly since each week students were provided with new pre-class tasks.
+In addition to this real-time feedback available via the dashboard, during theﬁrst half of the, 2015 course oﬀering, students were
+provided with personalized feedback (via email) on a weekly basis. In the third year (2016), the same kind of weekly personalized
+feedback was provided throughout the course. In both cases, the personalized feedback was generated at the end of each week based
+on an analysis of student engagement and performance on the pre-class tasks assigned for that week (Pardo, Jovanovic, Dawson,
+Gasevic, & Mirriahi, 2017). The introduction of personalized feedback represents the only change in the instructional design across
+the three course oﬀerings.
+Detailed description of the FC design, including task examples and feedback oﬀered through the dashboard, is presented in (Pardo
+& Mirriahi, 2017).
+3.2. Indicators of regularity
+3.2.1. Data source
+The study relied on learning trace data obtained from the students’ interaction with and completion of the pre-class learning
+activities during the active period (weeks 2– 13, excluding week 6 which was preparation for the midterm exam) of the three course
+oﬀerings. In particular, the analyses were based on the events data collected from the course LMS. Each event is represented as a tuple
+comprising seven elements described inTable 2.
+To compute the indicators, we extracted learning sessions from the events data. A session was identiﬁed as a continuous sequence
+of events where any two consecutive events are no more than 15 min apart. The threshold of 15 min was chosen based on the analysis
+of the distribution of time gaps between consecutive events in all three course oﬀerings. We have removed sessions that were less
+than 30 s long as these were unlikely to represent genuine engagement in learning activities (Panzarasa et al., 2016). In addition,
+when computing the indicators, we excluded events and sessions from weeks 1 and 6. Week 1 was the introductory week and as such
+did not have any pre-class activities. Week 6 was the time period when students prepared for their forthcoming midterm exam.
+During week 6, learning behaviour was considerably diﬀerent to other,‘regular’ course weeks.Table 1outlines the resultant counts of
+sessions and events for the 3 course oﬀerings (2014, 2015, 2016) used in the analyses.
+In addition to the trace data, students’ scores on theﬁnal exam were collected and used as the dependent (response) variable in
+the analyses. The scores were in the range [0– 40]
+ and were computed as the sum of scores on individual multiple-choice and open-
+ended questions that constituted theﬁnal exam.
+Table 1
+Data used in the analyses: number of students, sessions, and events in each course oﬀer.
+Year N students N sessions N events
+2014 290 17,237 448,338
+2015 371 27,173 726,925
+2016 486 33,902 1,218,280
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+160","The two key elements of the FC design included a set of pre-class online activities to be completed prior to the face-to-face session
+with the instructor (i.e., the lecture), as well as a redesigned lecture framed as an active learning session. To actively participate in
+collaborative problem solving tasks during face-to-face sessions, students had to undertake the preparation tasks.
+The study focused on student interaction with the pre-class learning activities. These activities retained the same structure and
+ﬂow in all three studied oﬀerings of the course. The activities relied on the following digital learning resources:
+● Videos with multiple-choice questions (MCQs): short videos introduced and explained relevant concepts. Each video was accom-
+panied by MCQs covering the concepts discussed in the video and promoting simple factual recall. Students could answer a
+question, have their answer evaluated, and if it was incorrect, they could either request to see the solution or try again. These
+MCQs served as formative assessment.
+● Documents with embedded MCQs: the students were required to read the document and answer the embedded MCQs. These
+questions were conceptually the same as MCQs that followed course videos, in terms of the students' interaction with them, and
+also served as formative assessment.
+● Problem (exercise) sequences: these were framed as summative assessment. If an exercise was correctly solved, the student's score
+was increased, and the exercise was removed from the sequence. Alternatively, a new exercise was randomly selected and the
+current problem remained in the sequence. Students received exercises randomly until they solved all of them correctly. To be
+counted towards theirﬁnal course mark, the exercises had to be solved before the start of the weekly lecture. This requirement
+was introduced as an incentive for students to prepare for the lecture.
+Students were provided with real-time feedback on their level of engagement with the pre-class activities and the activity scores
+via an analytics dashboard. Through the dashboard, students could monitor their engagement with the video
+resources, their success in answering formative MCQs, as well as their performance on summative assessment exercises. The dash-
+board also displayed the overall class scores, thus allowing for a level of social comparison. The displayed data was updated every
+15 min, and the magnitudes were reset weekly since each week students were provided with new pre-class tasks.
+In addition to this real-time feedback available via the dashboard, during theﬁrst half of the, 2015 course oﬀering, students were
+provided with personalized feedback (via email) on a weekly basis. In the third year (2016), the same kind of weekly personalized
+feedback was provided throughout the course. In both cases, the personalized feedback was generated at the end of each week based
+on an analysis of student engagement and performance on the pre-class tasks assigned for that week. The introduction of personalized feedback represents the only change in the instructional design across
+the three course oﬀerings.
+Detailed description of the FC design, including task examples and feedback oﬀered through the dashboard, is presented in.
+
+3.2. Indicators of regularity
+3.2.1. Data source
+The study relied on learning trace data obtained from the students’ interaction with and completion of the pre-class learning
+activities during the active period (weeks 2– 13, excluding week 6 which was preparation for the midterm exam) of the three course
+oﬀerings. In particular, the analyses were based on the events data collected from the course LMS. Each event is represented as a tuple
+comprising seven elements described inTable 2.
+To compute the indicators, we extracted learning sessions from the events data. A session was identiﬁed as a continuous sequence
+of events where any two consecutive events are no more than 15 min apart. The threshold of 15 min was chosen based on the analysis
+of the distribution of time gaps between consecutive events in all three course oﬀerings. We have removed sessions that were less
+than 30 s long as these were unlikely to represent genuine engagement in learning activities. In addition,
+when computing the indicators, we excluded events and sessions from weeks 1 and 6. Week 1 was the introductory week and as such
+did not have any pre-class activities. Week 6 was the time period when students prepared for their forthcoming midterm exam.
+During week 6, learning behaviour was considerably diﬀerent to other,‘regular’ course weeks.Table 1outlines the resultant counts of
+sessions and events for the 3 course oﬀerings (2014, 2015, 2016) used in the analyses.
+In addition to the trace data, students’ scores on theﬁnal exam were collected and used as the dependent (response) variable in
+the analyses. The scores were in the range [0– 40]
+Table 1
+Data used in the analyses: number of students, sessions, and events in each course oﬀer.
+Year N students N sessions N events
+2014 290 17,237 448,338
+2015 371 27,173 726,925
+2016 486 33,902 1,218,280"
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"3.2.2. Generic indicators
+Based on theﬁndings of previous related studies (see Section2.2), we deﬁned and examined several generic indicators of timely
+and regular engagement with the pre-class activities (GRI_1 - GRI_5,Table 3). To control for the eﬀect of the level (i.e. intensity) of
+engagement with pre-class activities on the course performance, we have also included generic indicators of engagement (GEI_1 -
+GEI_4, Table 3). These were deﬁned based on the types of engagement indicators that proved relevant in the previous studies (e.g.,
+Davies and Graﬀ(2005); Saqr et al. (2017)).
+The ﬁrst two generic indicators of regularity (GRI_1, GRI_2) measure the regularity of engagement with the pre-class activities
+throughout the course. They measure the variability in the distribution of study sessions over the course weeks. Before computation
+of these two indicators, weekly counts were rescaled to neutralise the eﬀect of diﬀerent numbers of course topics per week.
+Speciﬁcally, weekly counts were scaled to unit length using the Euclidean (L2) norm.
+The ﬁrst indicator of regularity and a few others (i.e., GRI_3 and GRI_5) were based on entropy. Entropy measures the uniformity
+of a discrete probability function. For example, in the case of the GRI_1 indicator, probabilities were computed by dividing the
+number of weekly sessions, for each course week, with the total number of sessions (over all the course weeks). Entropy reaches its
+maximum value when all the probabilities are uniformly distributed, that is, in the context of GRI_1, when weekly counts of sessions
+are the same. This suggests that the higher the entropy, the higher the regularity of learning activities.
+Indicators GRI_3 and GRI_4 served as measures of timely and planned (in the sense of time management) engagement with the
+pre-class learning activities. The entropy of session counts per weekday (GRI_3) measured the variability in distribution of study
+sessions over a course week (the higher the entropy, the lower the variability). Indicator GRI_4 measured how frequently a student
+changed their‘pattern’ of engagement with the pre-class activities over the days of a week. It was computed as follows: based on the
+weekday session counts, proportions of study sessions per weekday were computed for each course week. These proportions can be
+thought of as the probability distribution of session counts over the days of a week. Then, the change (i.e., diﬀerence) from one week
+to the next was computed as the mean squared diﬀerence between every two consecutive weeks (where each week was represented as
+a vector of proportions). Mean squared diﬀerence was used to increase the impact of large diﬀerences in proportions. Finally, for each
+student, we computed the number of times (throughout the course) his/her week-to-week change was above a certain threshold, and
+thus could be considered as an indicator of a change in time management. As the threshold, we looked for a value that would be well
+above regular changes that might have been caused by the weekly diﬀerences in the course requirements. Accordingly, we selected
+the 3rd quartile, computed for the given week-to-week diﬀerence over the entire class (i.e., all the students).
+Indicator GRI_5 was computed as the entropy of weekly counts of active days, where an active day is the day when a student had
+at least one study session. By focusing on active days, this indicator did not measure the variability in the level (i.e., intensity) of
+engagement, but the variability in the‘presence’ of engagement. Thus, it could be considered a measure of regularity in the‘attention’
+given to the pre-class activities. As with indicators GRI_1 and GRI_2, before the entropy was computed, weekly session counts were
+rescaled (to unit length, using L2) to neutralise the eﬀect of diﬀerent numbers of course topics per week.
+The ﬁrst two generic indicators of the level of engagement (GEI_1, GEI_2) were based on the number of weeks of a student's high
+activity. That is, weeks when a student's session count was higher than the average study session count for that week. These indicators
+Table 2
+Structure of the original data that were collected from the course LMS.
+Item Description
+event id Unique event identiﬁer
+student id Unique student identiﬁer; fully anonymized
+course week A number in the range [2– 13] identifying the week of the event
+course topic Identiﬁer of the course topic the learning event is related to
+timestamp Date and time of the event
+type of learning action The type of learning action that occurred within the event; for the current study, we focused on those types that correspond toi) the
+types of pre-class learning activities listed in Sect. 3.1,ii) interaction with the dashboard,iii) access to the course syllabus and
+orientation pages.
+learning action details A string of learning action speci ﬁc information; e.g., for an MCQ-related event, this string would hold an indicator of the answer's
+correctness and the unique identiﬁer (URL) of the MCQ
+Table 3
+Overview of generic indicators of regularity and level of engagement that were used in the study.
+Label Description
+Regularity GRI_1 Entropy of weekly session counts
+GRI_2 Median absolute deviation (MAD) of weekly session proportions
+GRI_3 Entropy of weekday session counts
+GRI_4 Frequency of change in the‘pattern’ of engagement over the week days
+GRI_5 Entropy of weekly counts of active days
+Engagement GEI_1, GEI_2 Number of weeks with above average session counts before (GEI_1) and after (GEI_2) the midterm.
+GEI_3, GEI_4 Number of weeks, before (GEI_3) and after (GEI_4) the midterm, when the number of active days (i.e. days with at least one session) was
+in the top quartile.
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+161","3.2.2. Generic indicators
+Based on theﬁndings of previous related studies (see Section2.2), we deﬁned and examined several generic indicators of timely
+and regular engagement with the pre-class activities (GRI_1 - GRI_5,Table 3). To control for the eﬀect of the level (i.e. intensity) of
+engagement with pre-class activities on the course performance, we have also included generic indicators of engagement (GEI_1 -
+GEI_4, Table 3). These were deﬁned based on the types of engagement indicators that proved relevant in the previous studies (e.g.,
+Davies and Graﬀ(2005); Saqr et al. (2017)).
+The ﬁrst two generic indicators of regularity (GRI_1, GRI_2) measure the regularity of engagement with the pre-class activities
+throughout the course. They measure the variability in the distribution of study sessions over the course weeks. Before computation
+of these two indicators, weekly counts were rescaled to neutralise the eﬀect of diﬀerent numbers of course topics per week.
+Speciﬁcally, weekly counts were scaled to unit length using the Euclidean (L2) norm.
+The ﬁrst indicator of regularity and a few others (i.e., GRI_3 and GRI_5) were based on entropy. Entropy measures the uniformity
+of a discrete probability function. For example, in the case of the GRI_1 indicator, probabilities were computed by dividing the
+number of weekly sessions, for each course week, with the total number of sessions (over all the course weeks). Entropy reaches its
+maximum value when all the probabilities are uniformly distributed, that is, in the context of GRI_1, when weekly counts of sessions
+are the same. This suggests that the higher the entropy, the higher the regularity of learning activities.
+Indicators GRI_3 and GRI_4 served as measures of timely and planned (in the sense of time management) engagement with the
+pre-class learning activities. The entropy of session counts per weekday (GRI_3) measured the variability in distribution of study
+sessions over a course week (the higher the entropy, the lower the variability). Indicator GRI_4 measured how frequently a student
+changed their‘pattern’ of engagement with the pre-class activities over the days of a week. It was computed as follows: based on the
+weekday session counts, proportions of study sessions per weekday were computed for each course week. These proportions can be
+thought of as the probability distribution of session counts over the days of a week. Then, the change (i.e., diﬀerence) from one week
+to the next was computed as the mean squared diﬀerence between every two consecutive weeks (where each week was represented as
+a vector of proportions). Mean squared diﬀerence was used to increase the impact of large diﬀerences in proportions. Finally, for each
+student, we computed the number of times (throughout the course) his/her week-to-week change was above a certain threshold, and
+thus could be considered as an indicator of a change in time management. As the threshold, we looked for a value that would be well
+above regular changes that might have been caused by the weekly diﬀerences in the course requirements. Accordingly, we selected
+the 3rd quartile, computed for the given week-to-week diﬀerence over the entire class (i.e., all the students).
+Indicator GRI_5 was computed as the entropy of weekly counts of active days, where an active day is the day when a student had
+at least one study session. By focusing on active days, this indicator did not measure the variability in the level (i.e., intensity) of
+engagement, but the variability in the‘presence’ of engagement. Thus, it could be considered a measure of regularity in the‘attention’
+given to the pre-class activities. As with indicators GRI_1 and GRI_2, before the entropy was computed, weekly session counts were
+rescaled (to unit length, using L2) to neutralise the eﬀect of diﬀerent numbers of course topics per week.
+The ﬁrst two generic indicators of the level of engagement (GEI_1, GEI_2) were based on the number of weeks of a student's high
+activity. That is, weeks when a student's session count was higher than the average study session count for that week. These indicators
+Table 2
+Structure of the original data that were collected from the course LMS.
+Item Description
+event id Unique event identiﬁer
+student id Unique student identiﬁer; fully anonymized
+course week A number in the range [2– 13] identifying the week of the event
+course topic Identiﬁer of the course topic the learning event is related to
+timestamp Date and time of the event
+type of learning action The type of learning action that occurred within the event; for the current study, we focused on those types that correspond toi) the
+types of pre-class learning activities listed in Sect. 3.1,ii) interaction with the dashboard,iii) access to the course syllabus and
+orientation pages.
+learning action details A string of learning action speci ﬁc information; e.g., for an MCQ-related event, this string would hold an indicator of the answer's
+correctness and the unique identiﬁer (URL) of the MCQ
+Table 3
+Overview of generic indicators of regularity and level of engagement that were used in the study.
+Label Description
+Regularity GRI_1 Entropy of weekly session counts
+GRI_2 Median absolute deviation (MAD) of weekly session proportions
+GRI_3 Entropy of weekday session counts
+GRI_4 Frequency of change in the‘pattern’ of engagement over the week days
+GRI_5 Entropy of weekly counts of active days
+Engagement GEI_1, GEI_2 Number of weeks with above average session counts before (GEI_1) and after (GEI_2) the midterm.
+GEI_3, GEI_4 Number of weeks, before (GEI_3) and after (GEI_4) the midterm, when the number of active days (i.e. days with at least one session) was
+in the top quartile."
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"captured the intensity of student engagement in the period before the midterm (GEI_1; weeks 2– 5) and after the midterm (GEI_2;
+weeks 7– 13). The other two indicators of engagement, GEI_3 and GEI_4, captured the frequency of engagement during a week, by
+‘awarding’ students who had a high number of weekdays with at least one session. More precisely, if a student was in the top quartile
+based on the number of active days during a particular week, a value of 1 was added to the indicator; GEI_3 was the sum computed
+over weeks before the midterm, whereas GEI_4 was the sum over the post-midterm weeks.
+3.2.3. Course speciﬁc indicators
+This group of indicators (Table 4) were deﬁned based on the types of learning resources that were made available to the students
+for pre-class activities and the requirements and expectations regarding the completion of those activities. It was also partially based
+on our previous insight into the patterns of learning behaviour of students in this course (Jovanovic et al., 2017).
+For all the indicators that are based on entropy calculation (CSRI_1 - CSRI_11), weekly counts were scaled before entropy was
+calculated. This was done by dividing weekly resource use counts by the number of subject matter topics covered in the given week;
+thus, the scaling was also informed by the course design.
+The CSRI_12 indicator of regularity measured how frequently a student was changing his/her‘pattern’ of engagement with the
+pre-class learning activities over the course weeks, and could be considered an indicator of a change in study strategy. It was
+determined as follows: for each student, weﬁrst computed weekly use of diﬀerent kinds of learning resources (e.g., MCQs, exercises,
+and videos), and based on that, weekly proportions of diﬀerent learning resource type use in the pre-class activities. Thus, we
+obtained weekly proportions formed as a vector of six elements (one for each learning resource type) for the corresponding week.
+This could be considered as the probability distribution of learning resource type use over a particular week. Next, a change in weekly
+proportions was computed between each two consecutive weeks. As in the case of generic indicator GRI_4, mean squared diﬀerence
+was used to compute this week-to-week change. Finally, for each student, we have computed the number of times (throughout the
+course) when his/her week-to-week change in the distribution of learning resource type use was above a certain threshold, and thus
+could be considered a sign of strategy change. As in the case of the GRI_4 indicator, the threshold was set to the 3rd quartile of the
+considered week-to-week change for the entire class (i.e. all the students). The CSRI_13 indicator was computed in a similar manner;
+the only diﬀerence being that instead of weekly counts of diﬀerent learning resource type use, the computations were based on the
+counts of diﬀerent assessment outcomes, namely the outcomes used for deﬁning the CSRI_7 - CSRI_11 indicators (Table 4).
+Course speciﬁc engagement indicators (CSEI_1 - CSEI_6) were computed at the week level, based on the following principle: a
+score of one was given to a student (for a given week), if he/she had used certain kinds of resources (e.g., video) more than the
+average (median) use of the same resource type in the given week. The total score for a particular resource type was computed by
+summing the weekly scores. These course-speciﬁc indicators correspond to the generic indicator of engagement GEI_1, GEI_2, and
+were used only to control for the eﬀect of the engagement level on the course performance.
+3.3. Data analysis
+To address our research questions, we used multiple linear regression as the primary statistical method. Several regression models
+were built, each one with students’ scores on theﬁnal exam as the dependent variable (discrete numerical variable with value range
+[0,40]). For each course oﬀering (2014, 2015, and 2016), the following models were built:
+● Models with generic indicators only (MGI):
+Table 4
+Overview of course speciﬁc indicators of regularity and level of engagement used in the study.
+Label Description
+Regularity CSRI_1 - CSRI_6 Entropy of weekly use (i.e. counts) of di ﬀerent kinds of learning resources available for the pre-class activities:
+ multiple-choice questions (MCQs),
+ exercises,
+ short videos,
+ readings from the course e-book,
+ readings oﬀering instructions and guidance for pre-class activities,
+ resources supporting metacognition (dashboard and pages with course and lesson objectives and the expected outcomes).
+There is one indicator per each learning resource type (6 in total).
+CSRI_7 - CSRI_11 Entropy of weekly assessment outcomes:
+ correctly solved formative assessment item (MCQ)
+ incorrectly solved formative MCQ
+ request to see a solution for a formative MCQ
+ correctly solved summative assessment item (exercise)
+ incorrectly solved summative exercise.
+There was an indicator for each outcome (5 in total).
+CSRI_12 Frequency of change in the ‘pattern’ of use of learning resources during the class preparation activities.
+CSRI_13 Frequency of change in the ‘pattern’ of weekly assessment outcomes during the class preparation activities.
+Engagement CSEI_1 - CSEI_6 Number of weeks of high engagement with a particular learning resource type (MCQs, exercises, videos, etc.). These
+indicators were computed separately for each learning resource type.
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+162","captured the intensity of student engagement in the period before the midterm (GEI_1; weeks 2– 5) and after the midterm (GEI_2;
+weeks 7– 13). The other two indicators of engagement, GEI_3 and GEI_4, captured the frequency of engagement during a week, by
+‘awarding’ students who had a high number of weekdays with at least one session. More precisely, if a student was in the top quartile
+based on the number of active days during a particular week, a value of 1 was added to the indicator; GEI_3 was the sum computed
+over weeks before the midterm, whereas GEI_4 was the sum over the post-midterm weeks.
+3.2.3. Course speciﬁc indicators
+This group of indicators (Table 4) were deﬁned based on the types of learning resources that were made available to the students
+for pre-class activities and the requirements and expectations regarding the completion of those activities. It was also partially based
+on our previous insight into the patterns of learning behaviour of students in this course.
+For all the indicators that are based on entropy calculation (CSRI_1 - CSRI_11), weekly counts were scaled before entropy was
+calculated. This was done by dividing weekly resource use counts by the number of subject matter topics covered in the given week;
+thus, the scaling was also informed by the course design.
+The CSRI_12 indicator of regularity measured how frequently a student was changing his/her‘pattern’ of engagement with the
+pre-class learning activities over the course weeks, and could be considered an indicator of a change in study strategy. It was
+determined as follows: for each student, weﬁrst computed weekly use of diﬀerent kinds of learning resources (e.g., MCQs, exercises,
+and videos), and based on that, weekly proportions of diﬀerent learning resource type use in the pre-class activities. Thus, we
+obtained weekly proportions formed as a vector of six elements (one for each learning resource type) for the corresponding week.
+This could be considered as the probability distribution of learning resource type use over a particular week. Next, a change in weekly
+proportions was computed between each two consecutive weeks. As in the case of generic indicator GRI_4, mean squared diﬀerence
+was used to compute this week-to-week change. Finally, for each student, we have computed the number of times (throughout the
+course) when his/her week-to-week change in the distribution of learning resource type use was above a certain threshold, and thus
+could be considered a sign of strategy change. As in the case of the GRI_4 indicator, the threshold was set to the 3rd quartile of the
+considered week-to-week change for the entire class (i.e. all the students). The CSRI_13 indicator was computed in a similar manner;
+the only diﬀerence being that instead of weekly counts of diﬀerent learning resource type use, the computations were based on the
+counts of diﬀerent assessment outcomes, namely the outcomes used for deﬁning the CSRI_7 - CSRI_11 indicators (Table 4).
+Course speciﬁc engagement indicators (CSEI_1 - CSEI_6) were computed at the week level, based on the following principle: a
+score of one was given to a student (for a given week), if he/she had used certain kinds of resources (e.g., video) more than the
+average (median) use of the same resource type in the given week. The total score for a particular resource type was computed by
+summing the weekly scores. These course-speciﬁc indicators correspond to the generic indicator of engagement GEI_1, GEI_2, and
+were used only to control for the eﬀect of the engagement level on the course performance.
+3.3. Data analysis
+To address our research questions, we used multiple linear regression as the primary statistical method. Several regression models
+were built, each one with students’ scores on theﬁnal exam as the dependent variable (discrete numerical variable with value range
+[0,40]). For each course oﬀering (2014, 2015, and 2016), the following models were built:
+● Models with generic indicators only (MGI):
+Table 4
+Overview of course speciﬁc indicators of regularity and level of engagement used in the study.
+Label Description
+Regularity CSRI_1 - CSRI_6 Entropy of weekly use (i.e. counts) of di ﬀerent kinds of learning resources available for the pre-class activities:
+ multiple-choice questions (MCQs),
+ exercises,
+ short videos,
+ readings from the course e-book,
+ readings oﬀering instructions and guidance for pre-class activities,
+ resources supporting metacognition (dashboard and pages with course and lesson objectives and the expected outcomes).
+There is one indicator per each learning resource type (6 in total).
+CSRI_7 - CSRI_11 Entropy of weekly assessment outcomes:
+ correctly solved formative assessment item (MCQ)
+ incorrectly solved formative MCQ
+ request to see a solution for a formative MCQ
+ correctly solved summative assessment item (exercise)
+ incorrectly solved summative exercise.
+There was an indicator for each outcome (5 in total).
+CSRI_12 Frequency of change in the ‘pattern’ of use of learning resources during the class preparation activities.
+CSRI_13 Frequency of change in the ‘pattern’ of weekly assessment outcomes during the class preparation activities.
+Engagement CSEI_1 - CSEI_6 Number of weeks of high engagement with a particular learning resource type (MCQs, exercises, videos, etc.). These
+indicators were computed separately for each learning resource type."
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"○ MGI_Reg included, as independent variables, all generic indicators of regularity listed inTable 3, namely GRI_1 - GRI_5.
+○ MGI_Final included indicators of regularity that proved signiﬁcant in theMGI_Reg model and the generic indicators of the level
+(GEI_1, GEI_2) and frequency (GEI_3, GEI_4) of engagement with the pre-class activities.
+● Models with generic and course-speciﬁc indicators (MGSI):
+○ MGSI_Reg included, as independent variables, all course-speciﬁc indicators of regularity listed inTable 4(CSRI_1 - CSRI_13), as
+well as two generic indicators of timely and planned (in the sense of time management) engagement with the pre-class learning
+activities (GRI_3, GRI_4). The other generic indicators of regularity (listed inTable 3) were highly correlated with the course-
+speciﬁc indicators of regularity, and thus were not included in the model. With GRI_3 and GRI_4 multi-collinearity was not an
+issue, as among course speciﬁc indicators none was related to regularity of engagement at the week level.
+○ MGSI_Final included indicators of regularity that proved signiﬁcant in theMGSI_Reg model, and the indicators of the level/
+intensity of engagement with the diﬀerent kinds of learning resources available for the pre-class activities (CSEI_1 - CSEI_6).
+Models MGI_Reg and MGI_Final were used to address ourﬁrst research question (RQ1), whereas modelsMGSI_Reg and MGSI_Final
+served to answer the second question (RQ2). The reason for diﬀerentiating between regularity-only models (MGI_Reg, MGSI_Reg) and
+models that include both regularity and engagement level (i.e. intensity) indicators (MGI_Final, MGSI_Final) is that we wanted to
+examine if the regularity indicators remained relevant even after accounting for students' level of engagement.
+Creation of each model was preceded by correlation analysis to detect and remove highly correlated independent variables.
+Subsequently, after the models were built, they were examined for multicollinearity, using variance inﬂation factor (VIF), and if
+multicollinearity was detected, predictors with the highest VIF value were removed from the model. In addition, for all the models, all
+other assumptions for linear models were veriﬁed, including linearity, normality and homoscedasticity of residuals, the absence of
+inﬂuential points, and the absence of correlation between residuals and predictors. In case of presence of inﬂuential points, robust
+linear models were built. Robust linear regression (Fox, 1997) is an alternative to traditional linear regression in cases when there are
+inﬂuential points, which are, in robust models, weighted with lower values based on how well such data points behave.
+The signiﬁcance level of 0.05 was used in all statistical tests. All the analyses were done using R statistical language. Robust linear
+models were built using therobust R package (Wang et al., 2017).
+4. Results
+Due to the space limits, we present in detail only the results of theﬁnal regression models (MGI_Final and MGSI_Final) for the three
+course oﬀerings (2014, 2015, 2016).
+4.1. Predictive power of generic indicators of regularity
+Table
+5 presents the results of theﬁnal set of multiple linear regression models with generic indicators (MGI_Final) for the three
+course oﬀerings. Only indicators that proved signiﬁcant are reported.
+As the table indicates, the predictive power of the model for the 2016 course oﬀering diﬀers substantially from the predictive
+power of the models for the two earlier course oﬀerings. In particular, the 2016 model explains about 24% of variability in theﬁnal
+course exam (R2 = 0.250, adj. R2 = 0.239); whereas, for the 2015 and 2014 oﬀerings of the course, the examined generic indicators
+explain only about 12% and 16% of variability in theﬁnal exam score, respectively, (2015: R2 = 0.121, adj. R2 = 0.111; 2014:
+R2 = 0.163, adj. R2 = 0.152).
+Even though the models diﬀer with respect to the signiﬁcant indicators, some common patterns do occur. First, in all three
+Table 5
+Results for theMGI_Final models for the 3 course oﬀerings; only signiﬁcant indicators are shown.
+Course oﬀering Predictors Coe ﬃcients St. Error St. coe ﬃcients p
+2016
+R2 = 0.250
+Adjusted R2 = 0.239
+GRI_1 - entropy of weekly session counts 7.582 1.954 3.88 0.0001
+GRI_2 - MAD of weekly session proportions −20.696 7.652 −2.70 0.0071
+GRI_3 - entropy of weekday session counts 5.669 1.857 3.05 0.0024
+GRI_4 - change in the‘pattern’ of engagement over the weekdays −0.519 0.245 −2.12 0.0349
+GEI_1 - number of weeks with above average session counts before the
+midterm
+1.202 0.383 3.14 0.0018
+GEI_3 - number of pre-midterm weeks with the number of active days in
+the top quartile
+−1.277 0.594 −2.15 0.0320
+2015
+R
+2 = 0.121
+Adjusted R2 = 0.111
+GRI_1 - entropy of weekly session counts 9.128 3.071 2.97 0.0031
+GRI_4 - change in the‘pattern’ of engagement over the weekdays −0.919 0.245 −3.76 0.0002
+GEI_3 - number of pre-midterm weeks with the number of active days in
+the top quartile
+−1.363 0.692 −1.97 0.0498
+2014
+R
+2 = 0.163
+Adjusted R2 = 0.152
+GRI_1 - entropy of weekly session counts 10.975 4.055 2.71 0.0072
+GEI_1 - number of weeks with above average session counts before the
+midterm
+1.860 0.470 3.96 < 0.0001
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+163","○ MGI_Reg included, as independent variables, all generic indicators of regularity listed inTable 3, namely GRI_1 - GRI_5.
+○ MGI_Final included indicators of regularity that proved signiﬁcant in theMGI_Reg model and the generic indicators of the level
+(GEI_1, GEI_2) and frequency (GEI_3, GEI_4) of engagement with the pre-class activities.
+● Models with generic and course-speciﬁc indicators (MGSI):
+○ MGSI_Reg included, as independent variables, all course-speciﬁc indicators of regularity listed inTable 4(CSRI_1 - CSRI_13), as
+well as two generic indicators of timely and planned (in the sense of time management) engagement with the pre-class learning
+activities (GRI_3, GRI_4). The other generic indicators of regularity (listed inTable 3) were highly correlated with the course-
+speciﬁc indicators of regularity, and thus were not included in the model. With GRI_3 and GRI_4 multi-collinearity was not an
+issue, as among course speciﬁc indicators none was related to regularity of engagement at the week level.
+○ MGSI_Final included indicators of regularity that proved signiﬁcant in theMGSI_Reg model, and the indicators of the level/
+intensity of engagement with the diﬀerent kinds of learning resources available for the pre-class activities (CSEI_1 - CSEI_6).
+Models MGI_Reg and MGI_Final were used to address ourﬁrst research question (RQ1), whereas modelsMGSI_Reg and MGSI_Final
+served to answer the second question (RQ2). The reason for diﬀerentiating between regularity-only models (MGI_Reg, MGSI_Reg) and
+models that include both regularity and engagement level (i.e. intensity) indicators (MGI_Final, MGSI_Final) is that we wanted to
+examine if the regularity indicators remained relevant even after accounting for students' level of engagement.
+Creation of each model was preceded by correlation analysis to detect and remove highly correlated independent variables.
+Subsequently, after the models were built, they were examined for multicollinearity, using variance inﬂation factor (VIF), and if
+multicollinearity was detected, predictors with the highest VIF value were removed from the model. In addition, for all the models, all
+other assumptions for linear models were veriﬁed, including linearity, normality and homoscedasticity of residuals, the absence of
+inﬂuential points, and the absence of correlation between residuals and predictors. In case of presence of inﬂuential points, robust
+linear models were built. Robust linear regression (Fox, 1997) is an alternative to traditional linear regression in cases when there are
+inﬂuential points, which are, in robust models, weighted with lower values based on how well such data points behave.
+The signiﬁcance level of 0.05 was used in all statistical tests. All the analyses were done using R statistical language. Robust linear
+models were built using therobust R package (Wang et al., 2017).
+4. Results
+Due to the space limits, we present in detail only the results of theﬁnal regression models (MGI_Final and MGSI_Final) for the three
+course oﬀerings (2014, 2015, 2016).
+4.1. Predictive power of generic indicators of regularity
+Table
+5 presents the results of theﬁnal set of multiple linear regression models with generic indicators (MGI_Final) for the three
+course oﬀerings. Only indicators that proved signiﬁcant are reported.
+As the table indicates, the predictive power of the model for the 2016 course oﬀering diﬀers substantially from the predictive
+power of the models for the two earlier course oﬀerings. In particular, the 2016 model explains about 24% of variability in theﬁnal
+course exam (R2 = 0.250, adj. R2 = 0.239); whereas, for the 2015 and 2014 oﬀerings of the course, the examined generic indicators
+explain only about 12% and 16% of variability in theﬁnal exam score, respectively, (2015: R2 = 0.121, adj. R2 = 0.111; 2014:
+R2 = 0.163, adj. R2 = 0.152).
+Even though the models diﬀer with respect to the signiﬁcant indicators, some common patterns do occur. First, in all three"
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"models, at least one indicator of regularity of engagement with the pre-class activities throughout the course proved signiﬁcant. In
+particular, entropy of weekly session counts (GRI_1) proved a signiﬁcant regularity indicator in all three course oﬀerings. Its positive
+coeﬃcient indicates that the larger the entropy, that is, the more uniformly distributed the students' weekly session counts were, the
+higher theﬁnal exam scores were. In the 2016 model, the association between regularity of engagement with the pre-class activities
+throughout the course and theﬁnal exam performance was also featured in the negative and signiﬁcant coeﬃcient for the MAD of
+weekly session proportions (GRI_2). This is another conﬁrmation that higher regularity, i.e. smaller variance in the session counts
+over course weeks, is associated to higher exam scores.
+Second, in the 2015 and 2016 models, the frequency of change in the‘pattern’ of engagement over the weekdays (GRI_4) proved
+to have a negative association with theﬁnal exam performance. This indicator measures how many times during the course a student
+changed, from one week to the next, the distribution of his/her eﬀort (i.e., engagement with the pre-class activities) over the days of a
+week. More changes suggest higher regulation of learning (Hadwin et al., 2007), and thus one might expect better course perfor-
+mance. However, that was not the case in the 2015 and 2016 oﬀerings of the examined course, as shown by the negative value of the
+coeﬃcients associated with theGRI_4 indicator in the corresponding models. This might suggest that those students who did not have
+a regular pattern of engagement over the weekdays were not successful in regulating their learning, a problem that other studies have
+also reported on (e.g.,Lust et al., 2013; Winne & Jamieson-Noel, 2003). However, considering the correlational nature of the study,
+no causal conclusions can be drawn.
+In the 2016 model, entropy of weekday session counts (GRI_3), an indicator of regularity of engagement with the pre-class
+activities at the week level, proved to have signiﬁcant positive association with theﬁnal exam performance. This suggests that pre-
+class activities more evenly distributed over the days of a week were associated with higherﬁnal exam performance.
+As stated in the Methods section, indicators of the level of engagement were introduced to serve as control factors. That is, to
+allow us to examine whether regularity of engagement with pre-class activities remains a signiﬁcant predictor of the course per-
+formance even after accounting for the intensity of engagement. Theﬁnal set of models with generic indicators only (MGI_Final)
+conﬁrms that even after introducing engagement intensity in a model (in particular, inMGI_Reg models), regularity remains a
+signiﬁcant predictor of the course performance. Also, the addition of indicators of engagement level and frequency (toMGI_Reg
+models) led to only a small increase in the level of variance of the outcome variable (i.e. the exam performance) that a model can
+explain (adjusted R2 increased by 0.023 in 2016, by 0.005 in 2015, and by 0.071 in 2014 model). Still, it is interesting to note that the
+indicator of intensity of engagement (GRI_1) proved to be positively associated with theﬁnal exam score, whereas the indicator of
+frequency of engagement (GRI_3) was negatively associated with the exam performance. This suggests that it is not suﬃcient for
+students to frequently engage with pre-class activities, but also to devote more time and eﬀort to those activities.
+4.2. Improving predictive power with course-speciﬁc indicators of regularity
+Table 6 presents the results for theﬁnal set of multiple linear regression models with generic and course speciﬁc indicators
+(MGSI_Final) for the three course oﬀerings. As inTable 5, only signiﬁcant indicators are shown.
+The predictive power of these models is signiﬁcantly higher than of their counterparts based on the generic indicators only
+(MGI_Final, Table 5). In particular, for the 2016 oﬀering of the course, the predictive power of theMGSI_Final model is about 52%
+higher than that of the model with generic indicators only (speciﬁcally, R2 is 50.80% and adjusted R2 52.72% higher). For the 2015
+course oﬀering, the increase is the highest, as the R2 and adjusted R2 are about 3 times higher than that for the best model with
+generic indicators only. For the year 2014, the predictive power ofMGSI_Final model is about 84% higher than that of theMGI_Final
+(speciﬁcally, R2 is 82.82% and adjusted R2 84.87% higher).
+Among the examined course speciﬁc indicators of regularity, entropy of weekly use of summative exercises (CSRI_2) and the
+Table 6
+Results for theMGSI_Final models for the 3 course oﬀerings. Only signiﬁcant indicators are shown.
+Course oﬀering Predictors Coe ﬃcients St. Error St. coe ﬃcients p-value
+2016 course oﬀering
+R2 = 0.377
+Adjusted R2 = 0.365
+GRI_3 - entropy of weekday session counts 4.892 1.898 2.58 0.0102
+CSRI_2 - entropy of weekly use of summative exercises 5.033 1.777 2.83 0.0048
+CSRI_3 - entropy of weekly use of course videos for the pre-class activities 2.996 0.908 3.30 0.0010
+CSRI_4 - entropy of weekly access to the course e-book 4.083 1.054 3.87 0.0001
+CSRI_9 - entropy of requests to see a solution for a formative MCQ −2.058 0.864 −2.38 0.0177
+CSRI_12 - change in the‘pattern’ of learning resource use during pre-class
+activities
+−0.727 0.262 −2.77 0.0058
+CSEI_2 - number of weeks of high engagement with summative exercises−1.236 0.170 −7.27 < 0.0001
+2015 course oﬀering
+R
+2 = 0.363
+Adjusted R2 = 0.353
+GRI_4 - change in the‘pattern’ of engagement over the weekdays −0.771 0.258 −2.99 0.0030
+CSRI_2 - entropy of weekly use of summative exercises 6.061 1.732 3.50 0.0005
+CSRI_4 - entropy of weekly access to the course e-book 3.088 1.132 2.73 0.0067
+CSEI_2 - number of weeks of high engagement with summative exercises−1.560 0.158 −9.86 < 0.0001
+2014 course oﬀering
+R2 = 0.298
+Adjusted R2 = 0.281
+GRI_4 - change in the‘pattern’ of engagement over the weekdays −0.551 0.277 −1.992 0.0474
+CSRI_3 - entropy of weekly use of course videos for the pre-class activities 3.254 0.878 3.704 0.0002
+CSEI_2 - number of weeks of high engagement with summative exercises−0.988 0.149 −6.649 < 0.0001
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+164","models, at least one indicator of regularity of engagement with the pre-class activities throughout the course proved signiﬁcant. In
+particular, entropy of weekly session counts (GRI_1) proved a signiﬁcant regularity indicator in all three course oﬀerings. Its positive
+coeﬃcient indicates that the larger the entropy, that is, the more uniformly distributed the students' weekly session counts were, the
+higher theﬁnal exam scores were. In the 2016 model, the association between regularity of engagement with the pre-class activities
+throughout the course and theﬁnal exam performance was also featured in the negative and signiﬁcant coeﬃcient for the MAD of
+weekly session proportions (GRI_2). This is another conﬁrmation that higher regularity, i.e. smaller variance in the session counts
+over course weeks, is associated to higher exam scores.
+Second, in the 2015 and 2016 models, the frequency of change in the‘pattern’ of engagement over the weekdays (GRI_4) proved
+to have a negative association with theﬁnal exam performance. This indicator measures how many times during the course a student
+changed, from one week to the next, the distribution of his/her eﬀort (i.e., engagement with the pre-class activities) over the days of a
+week. More changes suggest higher regulation of learning, and thus one might expect better course perfor-
+mance. However, that was not the case in the 2015 and 2016 oﬀerings of the examined course, as shown by the negative value of the
+coeﬃcients associated with theGRI_4 indicator in the corresponding models. This might suggest that those students who did not have
+a regular pattern of engagement over the weekdays were not successful in regulating their learning, a problem that other studies have
+also reported on. However, considering the correlational nature of the study,
+no causal conclusions can be drawn.
+In the 2016 model, entropy of weekday session counts (GRI_3), an indicator of regularity of engagement with the pre-class
+activities at the week level, proved to have signiﬁcant positive association with theﬁnal exam performance. This suggests that pre-
+class activities more evenly distributed over the days of a week were associated with higherﬁnal exam performance.
+As stated in the Methods section, indicators of the level of engagement were introduced to serve as control factors. That is, to
+allow us to examine whether regularity of engagement with pre-class activities remains a signiﬁcant predictor of the course per-
+formance even after accounting for the intensity of engagement. Theﬁnal set of models with generic indicators only (MGI_Final)
+conﬁrms that even after introducing engagement intensity in a model (in particular, inMGI_Reg models), regularity remains a
+signiﬁcant predictor of the course performance. Also, the addition of indicators of engagement level and frequency (toMGI_Reg
+models) led to only a small increase in the level of variance of the outcome variable (i.e. the exam performance) that a model can
+explain (adjusted R2 increased by 0.023 in 2016, by 0.005 in 2015, and by 0.071 in 2014 model). Still, it is interesting to note that the
+indicator of intensity of engagement (GRI_1) proved to be positively associated with theﬁnal exam score, whereas the indicator of
+frequency of engagement (GRI_3) was negatively associated with the exam performance. This suggests that it is not suﬃcient for
+students to frequently engage with pre-class activities, but also to devote more time and eﬀort to those activities.
+4.2. Improving predictive power with course-speciﬁc indicators of regularity
+Table 6 presents the results for theﬁnal set of multiple linear regression models with generic and course speciﬁc indicators
+(MGSI_Final) for the three course oﬀerings. As inTable 5, only signiﬁcant indicators are shown.
+The predictive power of these models is signiﬁcantly higher than of their counterparts based on the generic indicators only
+(MGI_Final, Table 5). In particular, for the 2016 oﬀering of the course, the predictive power of theMGSI_Final model is about 52%
+higher than that of the model with generic indicators only (speciﬁcally, R2 is 50.80% and adjusted R2 52.72% higher). For the 2015
+course oﬀering, the increase is the highest, as the R2 and adjusted R2 are about 3 times higher than that for the best model with
+generic indicators only. For the year 2014, the predictive power ofMGSI_Final model is about 84% higher than that of theMGI_Final
+(speciﬁcally, R2 is 82.82% and adjusted R2 84.87% higher).
+Among the examined course speciﬁc indicators of regularity, entropy of weekly use of summative exercises (CSRI_2) and the"
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"course e-book (CSRI_4) proved to have positive and signiﬁcant association with the students'ﬁnal exam scores in the 2015 and 2016
+course oﬀerings. Furthermore, signiﬁcant positive association was detected in 2014 and 2016 for the regular use of course videos
+(CSRI_3). On the other hand, in 2016, we have detected a signiﬁcant negative association of regular requests to see the solution of
+formative MCQs (CSRI_9). This might suggest that some students - those who made regular requests to see MCQ solutions - were not
+learning from those solutions. That is, it could be the case that they were not making eﬀective use of the available formative
+assessment. However, it could have also been the case that those students had a lower level of prior knowledge and thus needed to see
+the solution multiple times to understand it. Since we did not have access to the data about the students' prior knowledge, we identify
+this as an issue to be examined in a future study. Next, in 2016, a signiﬁcant negative eﬀect was detected for the frequency of change
+in a student's“ pattern” of engagement with the pre-class activities from one week to the next (CSRI_12). This might suggest that
+students from the 2016 cohort who did not maintain a regular pattern of engagement with the pre-class activities were not successful
+in regulating their use of the available learning resources, i.e., they were using the resources in a suboptimal way.
+The examined generic indicators of time management of pre-class activities demonstrated a signiﬁcant association with theﬁnal
+exam score in all three course oﬀerings. In particular, the indicator of regularity of engagement with the pre-class activities at the
+week level (GRI_3) proved to be a signiﬁcant positive predictor in 2016. On the other hand, the frequency of change in the‘pattern’ of
+engagement with the pre-class activities during a week (GRI_4) had a negative association with course performance in the 2014 and
+2015 course oﬀerings. This indicates that those students who did not exhibit a regular and consistent study pattern across weeks
+tended to have lower course performance.
+Regarding the course speciﬁc indicators of the engagement level, common to theMGSI_Final models for all three course oﬀerings
+is a signiﬁcant negative association between an above average focus on summative assessment (i.e., exercises) (CSEI_2) and theﬁnal
+exam performance. Considering that the engagement indicators were introduced just to control for their eﬀect on the outcome, we
+observe that even though CSEI_2 signiﬁcantly contributed to the prediction of the outcome variable (p < 0.0001), it did not neu-
+tralise the predictive power of regularity. Still, the examined course speciﬁc indicators of engagement intensity contributed far more
+to the models' predictive power than their generic counterparts (see Sect. 4.1). This is particularly the case for the 2014 and 2015
+models: by comparing theMGSI_Final to MGSI_Reg models, we observed that when the course speciﬁc engagement indicators (CSRIs)
+are not considered, the level of explained variance (i.e., adjusted R
+2) drops from 0.353 to 0.169 in 2015, and from 0.281 to 0.158 in
+2014 (in 2016, the drop is far less, namely from 0.365 to 0.294).
+5. Discussion
+The results presented in Section4.1 answer our ﬁrst research question (RQ1, Section2.3). In particular, they demonstrate that
+predictive models of student academic performance established from generic indicators of regularity and level of engagement lack
+suﬃcient explanatory power. For the three examined oﬀerings of the studied FC course, predictive models with generic indicators
+only (Table 5) accounted for between 12% and 24% of the observed variability in the students'ﬁnal exam score.
+In all three course oﬀerings, entropy of weekly session counts (GRI_1) proved a signiﬁcant regularity indicator, positively as-
+sociated withﬁnal exam performance. This conﬁrms that the more uniformly distributed the students' weekly session counts are, that
+is, the more they regularly engage with the pre-class activities throughout the course, the higher theirﬁnal exam performance tends
+to be. This was further conﬁrmed in the 2016 model with the variance in weekly session proportions (GRI_2) having signiﬁcant
+negative association with exam performance.
+In the 2015 and 2016 course oﬀerings, we detected a negative association between changes in the‘pattern’ of engagement over
+the weekdays (GRI_4) and the students'ﬁnal exam performance. This indicates that those students who did not have a stable pattern
+of engagement with the pre-class activities over the weekdays had lower course performance. Change in the pattern of engagement is
+considered an indicator of regularity of learning (Hadwin et al., 2007). Hence, the detected negative association might suggest that
+those students who altered their‘pattern’ of engagement over the weekdays were having diﬃculties in managing their time and
+consistency of interaction with the weekly assigned pre-class activities.Panzarasa et al. (2016)and Dvorak and Jia (2016)also
+detected week-level irregularities in students' engagement with online activities. However, they did not examine if the patterns of
+irregularity changed over the course, nor the eﬀect of the potential change.
+The second research question (RQ2) was designed to assess the importance of course speciﬁc indicators of regularity for a
+predictive model of students' exam performance. The results presented in Section4.2 suggest that indicators of regularity and level of
+engagement derived from the design of the pre-class activities can improve the prediction of students’ ﬁnal exam score over and
+above the prediction enabled by generic indicators. In particular, the results (Table 6) demonstrate that the increase in the predictive
+power is in the range between 52% (in 2016) and over 300% (in 2015).
+Among the signiﬁcant course speciﬁc indicators, particularly distinguished are those related to the students' interaction with
+summative assessment (CSRI_2), course videos (CSRI_3), and the course e-book (CSRI_4). Regular weekly use of course videos
+(CSRI_3) proved to have a positive association with the students'ﬁnal exam performance in 2014 and 2016. Similar eﬀect of regular
+use of the course e-book and regular engagement with summative exercises (CSRI_2) was detected in the 2015 and 2016 course
+oﬀerings. However, too much focus on summative assessment (CSEI_2) was negatively associated withﬁnal exam performance in all
+three course oﬀerings.
+ This ﬁnding is consistent with our earlier analysis of the same course (Jovanovic et al., 2017), as well as
+studies that examined student's interaction with diﬀerent kinds of learning resources and identiﬁed that selective use of resources was
+not associated with high study performance (Kovanovic, Gasevic, Joksimović, Hatala, & Adesope, 2015; Li & Tsai, 2017). It is also
+consistent with theﬁndings of an extensive review of reported empirical studies that examined student interaction with LMS (Lust,
+Juarez Collazo, Elen, & Clarebout, 2012). Speciﬁcally, the review found that students did not use the available tools adequately and
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+165","course e-book (CSRI_4) proved to have positive and signiﬁcant association with the students'ﬁnal exam scores in the 2015 and 2016
+course oﬀerings. Furthermore, signiﬁcant positive association was detected in 2014 and 2016 for the regular use of course videos
+(CSRI_3). On the other hand, in 2016, we have detected a signiﬁcant negative association of regular requests to see the solution of
+formative MCQs (CSRI_9). This might suggest that some students - those who made regular requests to see MCQ solutions - were not
+learning from those solutions. That is, it could be the case that they were not making eﬀective use of the available formative
+assessment. However, it could have also been the case that those students had a lower level of prior knowledge and thus needed to see
+the solution multiple times to understand it. Since we did not have access to the data about the students' prior knowledge, we identify
+this as an issue to be examined in a future study. Next, in 2016, a signiﬁcant negative eﬀect was detected for the frequency of change
+in a student's“ pattern” of engagement with the pre-class activities from one week to the next (CSRI_12). This might suggest that
+students from the 2016 cohort who did not maintain a regular pattern of engagement with the pre-class activities were not successful
+in regulating their use of the available learning resources, i.e., they were using the resources in a suboptimal way.
+The examined generic indicators of time management of pre-class activities demonstrated a signiﬁcant association with theﬁnal
+exam score in all three course oﬀerings. In particular, the indicator of regularity of engagement with the pre-class activities at the
+week level (GRI_3) proved to be a signiﬁcant positive predictor in 2016. On the other hand, the frequency of change in the‘pattern’ of
+engagement with the pre-class activities during a week (GRI_4) had a negative association with course performance in the 2014 and
+2015 course oﬀerings. This indicates that those students who did not exhibit a regular and consistent study pattern across weeks
+tended to have lower course performance.
+Regarding the course speciﬁc indicators of the engagement level, common to theMGSI_Final models for all three course oﬀerings
+is a signiﬁcant negative association between an above average focus on summative assessment (i.e., exercises) (CSEI_2) and theﬁnal
+exam performance. Considering that the engagement indicators were introduced just to control for their eﬀect on the outcome, we
+observe that even though CSEI_2 signiﬁcantly contributed to the prediction of the outcome variable (p < 0.0001), it did not neu-
+tralise the predictive power of regularity. Still, the examined course speciﬁc indicators of engagement intensity contributed far more
+to the models' predictive power than their generic counterparts (see Sect. 4.1). This is particularly the case for the 2014 and 2015
+models: by comparing theMGSI_Final to MGSI_Reg models, we observed that when the course speciﬁc engagement indicators (CSRIs)
+are not considered, the level of explained variance (i.e., adjusted R
+2) drops from 0.353 to 0.169 in 2015, and from 0.281 to 0.158 in
+2014 (in 2016, the drop is far less, namely from 0.365 to 0.294).
+5. Discussion
+The results presented in Section4.1 answer our ﬁrst research question (RQ1, Section2.3). In particular, they demonstrate that
+predictive models of student academic performance established from generic indicators of regularity and level of engagement lack
+suﬃcient explanatory power. For the three examined oﬀerings of the studied FC course, predictive models with generic indicators
+only (Table 5) accounted for between 12% and 24% of the observed variability in the students'ﬁnal exam score.
+In all three course oﬀerings, entropy of weekly session counts (GRI_1) proved a signiﬁcant regularity indicator, positively as-
+sociated withﬁnal exam performance. This conﬁrms that the more uniformly distributed the students' weekly session counts are, that
+is, the more they regularly engage with the pre-class activities throughout the course, the higher theirﬁnal exam performance tends
+to be. This was further conﬁrmed in the 2016 model with the variance in weekly session proportions (GRI_2) having signiﬁcant
+negative association with exam performance.
+In the 2015 and 2016 course oﬀerings, we detected a negative association between changes in the‘pattern’ of engagement over
+the weekdays (GRI_4) and the students'ﬁnal exam performance. This indicates that those students who did not have a stable pattern
+of engagement with the pre-class activities over the weekdays had lower course performance. Change in the pattern of engagement is
+considered an indicator of regularity of learning (Hadwin et al., 2007). Hence, the detected negative association might suggest that
+those students who altered their‘pattern’ of engagement over the weekdays were having diﬃculties in managing their time and
+consistency of interaction with the weekly assigned pre-class activities.Panzarasa et al. (2016)and Dvorak and Jia (2016)also
+detected week-level irregularities in students' engagement with online activities. However, they did not examine if the patterns of
+irregularity changed over the course, nor the eﬀect of the potential change.
+The second research question (RQ2) was designed to assess the importance of course speciﬁc indicators of regularity for a
+predictive model of students' exam performance. The results presented in Section4.2 suggest that indicators of regularity and level of
+engagement derived from the design of the pre-class activities can improve the prediction of students’ ﬁnal exam score over and
+above the prediction enabled by generic indicators. In particular, the results (Table 6) demonstrate that the increase in the predictive
+power is in the range between 52% (in 2016) and over 300% (in 2015).
+Among the signiﬁcant course speciﬁc indicators, particularly distinguished are those related to the students' interaction with
+summative assessment (CSRI_2), course videos (CSRI_3), and the course e-book (CSRI_4). Regular weekly use of course videos
+(CSRI_3) proved to have a positive association with the students'ﬁnal exam performance in 2014 and 2016. Similar eﬀect of regular
+use of the course e-book and regular engagement with summative exercises (CSRI_2) was detected in the 2015 and 2016 course
+oﬀerings. However, too much focus on summative assessment (CSEI_2) was negatively associated withﬁnal exam performance in all
+three course oﬀerings.
+ This ﬁnding is consistent with our earlier analysis of the same course (Jovanovic et al., 2017), as well as
+studies that examined student's interaction with diﬀerent kinds of learning resources and identiﬁed that selective use of resources was
+not associated with high study performance (Kovanovic, Gasevic, Joksimović, Hatala, & Adesope, 2015; Li & Tsai, 2017). It is also
+consistent with theﬁndings of an extensive review of reported empirical studies that examined student interaction with LMS (Lust,
+Juarez Collazo, Elen, & Clarebout, 2012). Speciﬁcally, the review found that students did not use the available tools adequately and"
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"often either underused or overused them, trying to game the system. Furthermore, the detected diﬀerences in tool use were found to
+be associated with performance.
+Generic indicators of regularity related to time management at the week level proved signiﬁcant even after introducing course
+speciﬁc indicators (Table 6). In particular, more evenly distributed pre-class activities over the week days (GRI_3) were associated
+with better exam performance in the 2016 course oﬀering. This is consistent with previous studies that examined the association
+between time management indicators and student performance (e.g.Asarta & Schmidt, 2013;Jo et al., 2015; Saqr et al., 2017). In the
+other two years, 2014 and 2015, the frequency of change in the pattern of engagement over the weekdays was negatively associated
+with exam performance. This suggests that students with an irregular pattern of engagement would beneﬁt from assistance related to
+time management skills.
+It is worth noting a gradual increase in the variety of types of digital learning resources that, if used regularly, proved to be
+positively associated with exam performance. In 2014, it was just one type of learning resource (course videos, CSRI_3); in 2015, two
+kinds of resources (summative exercises (CSRI_2) and the course e-book (CSRI_4)), and in 2016, three kinds of digital resources
+(course videos, exercises, and the course e-book). This widening of the signiﬁcant learning resource types might be associated with
+the personalized feedback students received in theﬁrst half of the 2015 course and throughout the 2016 course oﬀering (see Section
+3.1). The feedback was focused on learning processes and self-regulation, and, as suggested byHattie and Timperley (2007), aimed at
+facilitating self-assessment and clarifying expectations (Pardo et al., 2017). This change in instructional conditions may have in-
+ﬂuenced the students' decision to use the available learning resources (Winne, Jamieson-Noel, & Muis, 2002). However, it seems that
+not all students were successful in regulating their use of available digital resources as evident in the negative association between the
+change in the‘pattern’ of learning resource use (CSRI_12) and exam performance in 2016, as well as in the negative eﬀect of regular
+requests to see solutions for the formative MCQs (CSRI_9). This suggests that the provision and framing of the personalized feedback
+requires some reﬁnement.
+Though the present study was not focused on students' level of engagement, but rather used this measure as a control factor, it is
+worth observing that only when they were deﬁned in terms of course-speciﬁc activities, indicators of the students' intensity of
+engagement signiﬁcantly contributed to the predictive power of the regression model. In particular, in the models with generic
+indicators of regularity (MGI_Final), the addition of indicators of engagement intensity led to only a small increase in the model's
+explanatory power (increase in adjusted R
+2 ranged from 0.005 in 2015, to 0.071 in 2014). However, in the case of models with course
+speciﬁc indicators (MGSI_Final) the increase was several times larger (increase in adjusted R2 ranged from 0.071 in 2016 to 0.184 in
+2015 model). This shows that not only for regularity indicators, but also for engagement indicators, it is important that the measures
+are derived from the course design.
+It is worth noting that the indicators of engagement and regularity examined in this study are based on the class preparation
+activities only. We did not have access to the data about student engagement and regularity in face-to-face sessions (lectures and
+labs), and these could also be associated with students'ﬁnal exam scores. Hence, students’ engagement with and regularity of class
+preparation activities is considered a proxy for their overall engagement and regularity in the course. This limitation of the present
+study could be, at least partially, overcome with a follow-up multi-modal study where learning traces from online pre-class activities
+would be combined with data collected from face-to-face sessions through the use of adequate sensor technologies. Latest devel-
+opments in Multi-Modal Learning Analytics (MMLA) make such studies increasingly possible (Blikstein & Worsley, 2016). For ex-
+ample, Schneider, Di Mitri, Limbu, and Drachsler, (2018)developed Multimodal Learning Hub, a system that allows for collecting
+and integrating multimodal data from custom conﬁgurations of ubiquitous data providers.Rodríguez-Triana, Prieto, Martínez-Monés,
+Asensio-Pérez, and Dimitriadis (2018)proposed a method for customizing MMLA solutions with active teacher participation in the
+process, so that a generic MMLA solution is adapted to the needs of a particular blended learning context.
+6. Conclusions
+The study ﬁndings indicate how crucial the role of the course design is in the analytical process. In particular, the results
+demonstrate that a set of indicators that did not take into account the particularities of course design and its goals explained only a
+small percentage of the overall variability in the students' academic performance. However, when the indicators were constructed
+taking into account the learning objectives and activities speciﬁc to the course design, their value increased considerably. For ex-
+ample, knowledge about the instructional interventions adopted to promote sustained and deep engagement with the course e-book
+led to the creation of indicators that reﬂected the regularity and intensity of student engagement with it. In particular, in the
+examined FC, students received personalized feedback and suggestions, based on measures of their prior engagement (Pardo et al.,
+2017), on how to better prepare for the face-to-face class time by reviewing material and activities contained in the e-book. This
+intervention was deployed in the 2015 and 2016 oﬀerings of the course which is when the e-book related indicators become pro-
+minent in the analysis. This example shows how data analysis needs to be situated in the context of the course design. A course design
+i sar eﬂection of the instructional goals and objectives set for a particular course. These goals and their representation in the design
+are an essential ingredient to consider in the process of deriving indicators and predictive models.
+A comparison of the models with course speciﬁc indicators (Table 6) suggests that changes in the course design over the three
+examined years reﬂect on the student behaviour. The behavioural diﬀerences were evidenced in the diﬀerences of signiﬁcant pre-
+dictors in the three consecutive course deliveries. The diﬀerences were especially prominent between theﬁrst (2014) and the two
+subsequent course oﬀerings (2015 and 2016). This can be, at least partially, explained by the gradual introduction of personalized
+feedback starting from the, 2015 course oﬀering (see Section3.1). This further conﬁrms the importance of course speciﬁc indicators
+for designing and validating instructional interventions (personalized feedback, in this case). More generally, it points to a relevant
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+166","often either underused or overused them, trying to game the system. Furthermore, the detected diﬀerences in tool use were found to
+be associated with performance.
+Generic indicators of regularity related to time management at the week level proved signiﬁcant even after introducing course
+speciﬁc indicators (Table 6). In particular, more evenly distributed pre-class activities over the week days (GRI_3) were associated
+with better exam performance in the 2016 course oﬀering. This is consistent with previous studies that examined the association
+between time management indicators and student performance (e.g.
+In the other two years, 2014 and 2015, the frequency of change in the pattern of engagement over the weekdays was negatively associated
+with exam performance. This suggests that students with an irregular pattern of engagement would beneﬁt from assistance related to
+time management skills.
+It is worth noting a gradual increase in the variety of types of digital learning resources that, if used regularly, proved to be
+positively associated with exam performance. In 2014, it was just one type of learning resource (course videos, CSRI_3); in 2015, two
+kinds of resources (summative exercises (CSRI_2) and the course e-book (CSRI_4)), and in 2016, three kinds of digital resources
+(course videos, exercises, and the course e-book). This widening of the signiﬁcant learning resource types might be associated with
+the personalized feedback students received in theﬁrst half of the 2015 course and throughout the 2016 course oﬀering (see Section
+3.1). The feedback was focused on learning processes and self-regulation, and, as suggested by aimed at
+facilitating self-assessment and clarifying expectations. This change in instructional conditions may have in-
+ﬂuenced the students' decision to use the available learning resources. However, it seems that
+not all students were successful in regulating their use of available digital resources as evident in the negative association between the
+change in the‘pattern’ of learning resource use (CSRI_12) and exam performance in 2016, as well as in the negative eﬀect of regular
+requests to see solutions for the formative MCQs (CSRI_9). This suggests that the provision and framing of the personalized feedback
+requires some reﬁnement.
+Though the present study was not focused on students' level of engagement, but rather used this measure as a control factor, it is
+worth observing that only when they were deﬁned in terms of course-speciﬁc activities, indicators of the students' intensity of
+engagement signiﬁcantly contributed to the predictive power of the regression model. In particular, in the models with generic
+indicators of regularity (MGI_Final), the addition of indicators of engagement intensity led to only a small increase in the model's
+explanatory power (increase in adjusted R
+2 ranged from 0.005 in 2015, to 0.071 in 2014). However, in the case of models with course
+speciﬁc indicators (MGSI_Final) the increase was several times larger (increase in adjusted R2 ranged from 0.071 in 2016 to 0.184 in
+2015 model). This shows that not only for regularity indicators, but also for engagement indicators, it is important that the measures
+are derived from the course design.
+It is worth noting that the indicators of engagement and regularity examined in this study are based on the class preparation
+activities only. We did not have access to the data about student engagement and regularity in face-to-face sessions (lectures and
+labs), and these could also be associated with students'ﬁnal exam scores. Hence, students’ engagement with and regularity of class
+preparation activities is considered a proxy for their overall engagement and regularity in the course. This limitation of the present
+study could be, at least partially, overcome with a follow-up multi-modal study where learning traces from online pre-class activities
+would be combined with data collected from face-to-face sessions through the use of adequate sensor technologies. Latest devel-
+opments in Multi-Modal Learning Analytics (MMLA) make such studies increasingly possible. For ex-
+ample, Schneider, Di Mitri, Limbu, and Drachsler, (2018)developed Multimodal Learning Hub, a system that allows for collecting
+and integrating multimodal data from custom conﬁgurations of ubiquitous data providers.Rodríguez-Triana, Prieto, Martínez-Monés,
+Asensio-Pérez, and Dimitriadis (2018)proposed a method for customizing MMLA solutions with active teacher participation in the
+process, so that a generic MMLA solution is adapted to the needs of a particular blended learning context.
+6. Conclusions
+The study ﬁndings indicate how crucial the role of the course design is in the analytical process. In particular, the results
+demonstrate that a set of indicators that did not take into account the particularities of course design and its goals explained only a
+small percentage of the overall variability in the students' academic performance. However, when the indicators were constructed
+taking into account the learning objectives and activities speciﬁc to the course design, their value increased considerably. For ex-
+ample, knowledge about the instructional interventions adopted to promote sustained and deep engagement with the course e-book
+led to the creation of indicators that reﬂected the regularity and intensity of student engagement with it. In particular, in the
+examined FC, students received personalized feedback and suggestions, based on measures of their prior engagement, on how to better prepare for the face-to-face class time by reviewing material and activities contained in the e-book. This
+intervention was deployed in the 2015 and 2016 oﬀerings of the course which is when the e-book related indicators become pro-
+minent in the analysis. This example shows how data analysis needs to be situated in the context of the course design. A course design
+i sar eﬂection of the instructional goals and objectives set for a particular course. These goals and their representation in the design
+are an essential ingredient to consider in the process of deriving indicators and predictive models.
+A comparison of the models with course speciﬁc indicators (Table 6) suggests that changes in the course design over the three
+examined years reﬂect on the student behaviour. The behavioural diﬀerences were evidenced in the diﬀerences of signiﬁcant pre-
+dictors in the three consecutive course deliveries. The diﬀerences were especially prominent between theﬁrst (2014) and the two
+subsequent course oﬀerings (2015 and 2016). This can be, at least partially, explained by the gradual introduction of personalized
+feedback starting from the, 2015 course oﬀering (see Section3.1). This further conﬁrms the importance of course speciﬁc indicators
+for designing and validating instructional interventions (personalized feedback, in this case). More generally, it points to a relevant"
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"feedback loop between the analytical process and the instructional design: using the enacted design to deﬁne the analytical model,
+and then using the insights derived from the model to inform changes in the design itself (Gašević, Dawson, & Siemens, 2014;
+Jovanovic, Gasevic, Pardo, Mirriahi, & Dawson, 2018).
+The detected negative association between changes in the study strategy and course performance implies the importance of
+helping students make eﬀective use of learning resources during class preparation activities. In other words, students need to be
+assisted in regulating their use of learning resources in a manner aligned with the course design (Lust et al., 2013). Recent studies by
+Yilmaz and Baydas (2017)and Sletten (2017), which examined self-regulated learning in a FC, also stressed the importance of
+providing students with appropriate assistance and/or guidance to speed up their adaptation to the FC context. This can be achieved
+through appropriate scaﬀolds and nudges informed by insights obtained through analytics (Mor, Ferguson, & Wasson, 2015), and
+iteratively and incrementally improved through a cyclical process at the intersection of learning analytics and design based research
+(Reimann, 2016).
+References
+Agudo-Peregrina, A. F., Iglesias-Pradas, S., Conde-Gonzalez, M. A., & Hernandez-Garcia, A. (2014). Can we predict success from log data in VLEs? Classiﬁcation of
+interactions for learning analytics and their relation with performance in VLE-supported F2F and online learning.Computers in Human Behavior, 31, 542– 550.
+Arnott, E., & Dust, M. (2012). Combating unintended consequences of in-class revision using study skills training.Psychology Learning and Teaching, 11,9 9– 104.
+Asarta, C. J., & Schmidt, J. R. (2013). Access patterns of online materials in a blended course.Decision Sciences Journal of Innovative Education, 11(1), 107– 123.
+Azevedo, R., Moos, D. C., Greene, J. A., Winters, F. I., & Cromley, J. G. (2008). Why is externally-facilitated regulated learning more eﬀective than self-regulated
+learning with hypermedia?Educational Technology Research & Development, 56(1), 45– 72. https://doi.org/10.1007/s11423-007-9067-0.
+Bell, B. S., & Kozlowski, S. W. J. (2008). Active learning: Eﬀects of core training design elements on self-regulatory processes, learning, and adaptability.Journal of
+Applied Psychology, 93(2), 296– 316. https://doi.org/10.1037/0021-9010.93.2.296.
+Betihavas, V., Bridgman, H., Kornhaber, R., & Cross, M. (2016). The evidence for“ﬂipping out”: A systematic review of theﬂipped classroom in nursing education.
+Nurse Education Today, 38,1 5– 21. https://doi.org/10.1016/j.nedt.2015.12.010.
+Bjork, R. A., Dunlosky, J., & Kornell, N. (2013). Self-regulated learning: Beliefs, techniques, and illusions.Annual Review of Psychology, 64(1), 417– 444.
+Blikstein, P., & Worsley, M. (2016). Multimodal learning analytics and education data mining: Using computational technologies to measure complex learning tasks.
+Journal of Learning Analytics, 3(2), 220– 238. https://doi.org/10.18608/jla.2016.32.11.
+Bowers, A. J., Sprott, R., & Taﬀ, S. A. (2013). Do we know who will drop out?: A review of the predictors of dropping out of high school: Precision, sensitivity, and
+speciﬁcity. High School Journal, 96(2), 77– 100. https://doi.org/10.1353/hsj.2013.0000.
+Broadbent, J., & Poon, W. L. (2015). Self-regulated learning strategies & academic achievement in online higher education learning environments: A systematic review.
+The Internet and Higher Education, 27,1 – 13. https://doi.org/10.1016/j.iheduc.2015.04.007.
+Brooks, C., & Thompson, C. (2017). Predictive modelling in teaching and learning. In C. Lang, G. Siemens, A. F. Wise, & D. Gasevic (Eds.).The handbook of learning
+analytics (pp. 61– 68). Alberta, Canada: Society for Learning Analytics Research (SoLAR).
+Conde, M.Á., & Hernández-García, Á. (2015). Learning analytics for educational decision making.Computers in Human Behavior, 47,1 – 3. https://doi.org/10.1016/j.
+chb.2014.12.034.
+Cotton,
+K., & Savard, G. W. (1981). Time factors in learning. Research on school eﬀectiveness project: Topic summary report.https://eric.ed.gov/?id=ED214706.
+Davies, J., & Graﬀ, M. (2005). Performance in e-learning: Online participation and student grades.British Journal of Educational Technology, 36(4), 657– 663.
+Dawson, S., Gašević, D., Siemens, G., & Joksimovic, S. (2014). Current state and future trends: A citation network analysis of the learning analyticsﬁeld. Proceedings of
+the fourth international conference on learning analytics and knowledge(pp. 231– 240). New York, NY, USA: ACM.https://doi.org/10.1145/2567574.2567585.
+Dvorak, T., & Jia, M. (2016). Do the timeliness, regularity, and intensity of online work habits predict academic performance.Journal of Learning Analytics, 3(3),
+318– 330. https://doi.org/10.18608/jla.2016.33.15.
+Finnegan, C., Morris, L. V., & Lee, K. (2008). Diﬀerences by course discipline on student behavior, persistence, and achievement in online courses of undergraduate
+general education. Journal of College Student Retention: Research, Theory & Practice, 10,3 9– 54.
+Fox, J. (1997).Applied regression analysis, linear models, and related methods.Sage Publications, Inc.
+Garrison, D. R., & Cleveland-Innes, M. (2005). Facilitating cognitive presence in online learning: Interaction is not enough.American Journal of Distance Education,
+19(3), 133– 148. https://doi.org/10.1207/s15389286ajde1903_2.
+Gašević, D., Dawson, S., Rogers, T., & Gašević, D. (2016). Learning analytics should not promote one sizeﬁts all: The eﬀects of instructional conditions in predicting
+academic success.The Internet and Higher Education, 28,6 8– 84.
+Gašević, D., Dawson, S., & Siemens, G. (2014). Let's not forget: Learning analytics are about learning.TechTrends, 59(1), 64– 71. https://doi.org/10.1007/s11528-014-
+0822-x.
+Hadwin, A. F., Nesbit, J. C., Jamieson-Noel, D., Code, J., & Winne, P. H. (2007). Examining trace data to explore self-regulated learning.Metacognition and Learning,
+2(2– 3), 107– 124.
+Hattie, J., & Timperley, H. (2007). The power of feedback.Review of Educational Research, 77(1), 81– 112. https://doi.org/10.3102/003465430298487.
+Jayaprakash, S. M., Moody, E. W., Lauría, E. J. M., Regan, J. R., & Baron, J. D. (2014). Early alert of academically at-risk students: An open source analytics initiative.
+Journal of Learning Analytics, 1(1), 6– 47.
+Jo, I. H., Kim, D., & Yoon, M. (2015). Constructing proxy variables to measure adult learners' time management strategies in LMS.Educational Technology & Society,
+18(3), 214– 225.
+Jovanovic, J., Gasevic, D., Dawson, S., Pardo, A., & Mirriahi, N. (2017). Learning analytics to unveil learning strategies in aﬂipped classroom.The Internet and Higher
+Education, 33,7 4– 85.
+Jovanovic, J., Gasevic, D., Pardo, A., Mirriahi, N., & Dawson, S. (2018). An analytics-based framework to support teaching and learning in aﬂipped classroom. In J. M.
+Lodge, J. C. Horvath, & L. Corrin (Eds.).Learning analytics in the classroom: Translating research for teachers. Abingdon, UK: Routledge.
+Khan, I., & Pardo, A. (2016). Data2U: Scalable real time student feedback in active learning environments.Proceedings of the 6th international learning analytics and
+knowledge conference (pp. 249– 253). New York, NY, USA: ACM.https://doi.org/10.1145/2883851.2883911.
+Kornell, N. (2009). Optimising learning usingﬂashcards: Spacing is more eﬀective than cramming.Applied Cognitive Psychology, 23(9), 1297– 1317.
+Kovanovic, V., Gasevic, D., Joksimović, S., Hatala, M., & Adesope, O. (2015). Analytics of communities of inquiry: Eﬀects of learning technology use on cognitive
+presence in asynchronous online discussions.The Internet and Higher Education, 27,7 4– 89. https://doi.org/10.1016/j.iheduc.2015.06.002.
+Lage, M. J., Platt, G. J., & Tregua, M. (2000). Inverting the classroom: A gateway to creating an inclusive learning environment.The Journal of Economic Education,
+31(1), 30– 43. https://doi.org/10.2307/1183338.
+Lai, C.-L., & Hwang, G.-J. (2016). A self-regulatedﬂipped classroom approach to improving students' learning performance in a mathematics course.Computers &
+Education, 100, 126– 140. https://doi.org/10.1016/j.compedu.2016.05.006.
+Li, L.-Y., & Tsai, C.-C. (2017). Accessing online learning material: Quantitative behavior patterns and their eﬀects on motivation and learning performance.Computers
+& Education, 114, 286– 297. https://doi.org/10.1016/j.compedu.2017.07.007.
+Lust, G., Elen, J., & Clarebout, G. (2013). Regulation of tool-use within a blended course: Student diﬀerences and performance eﬀects. Computers & Education, 60(1),
+385– 395. https://doi.org/10.1016/j.compedu.2012.09.001.
+Lust,
+G., Juarez Collazo, N. A., Elen, J., & Clarebout, G. (2012). Content management systems: Enriched learning opportunities for all?Computers in Human Behavior,
+J. Jovanovic, et al. Computers & Education 134 (2019) 156–168
+167","The detected negative association between changes in the study strategy and course performance implies the importance of
+helping students make eﬀective use of learning resources during class preparation activities. In other words, students need to be
+assisted in regulating their use of learning resources in a manner aligned with the course design (Lust et al., 2013). Recent studies by
+Yilmaz and Baydas (2017)and Sletten (2017), which examined self-regulated learning in a FC, also stressed the importance of
+providing students with appropriate assistance and/or guidance to speed up their adaptation to the FC context. This can be achieved
+through appropriate scaﬀolds and nudges informed by insights obtained through analytics (Mor, Ferguson, & Wasson, 2015), and
+iteratively and incrementally improved through a cyclical process at the intersection of learning analytics and design based research
+(Reimann, 2016)."
+2019 - Predictive power of regularity of pre-class activities in a flipped classroom.pdf,"28(3), 795– 808. https://doi.org/10.1016/j.chb.2011.12.009.
+Macfadyen, L., & Dawson, S. (2010). Mining LMS data to develop an ""early warning system"" for educators: A proof of concept.Computers & Education, 54, 588– 599.
+Mason, G. S., Shuman, T. R., & Cook, K. E. (2013). Comparing the eﬀectiveness of an inverted classroom to a traditional classroom in an upper-division engineering
+course. IEEE Transactions on Education, 56(4), 430– 435. https://doi.org/10.1109/TE.2013.2249066.
+Michael, J. (2006). Where's the evidence that active learning works?Advances in Physiology Education, 30(4), 159– 167. https://doi.org/10.1152/advan.00053.2006.
+Michinov, N., Brunot, S., Le Bohec, O., Juhel, J., & Delaval, M. (2011). Procrastination, participation, and performance in online learning environments.Computers &
+Education, 56, 243– 252.
+Mor, Y., Ferguson, R., & Wasson, B. (2015). Learning design, teacher inquiry into student learning and learning analytics: A call for action.British Journal of Educational
+Technology, 46, 221– 229. https://doi.org/10.1111/bjet.12273.
+O'Flaherty, J., & Phillips, C. (2015). The use ofﬂipped classrooms in higher education: A scoping review.The Internet and Higher Education, 25,8 5– 95. https://doi.org/
+10.1016/j.iheduc.2015.02.002.
+Panzarasa, P., Kujawski, B., Hammond, E. J., & Roberts, C. M. (2016). Temporal patterns and dynamics of e-learning usage in medical education.Educational
+Technology Research & Development, 64(1), 13– 35. https://doi.org/10.1007/s11423-015-9407-4.
+Pardo, A., Jovanovic, J., Dawson, S., Gasevic, D., & Mirriahi, N. (2017). Using learning analytics to scale the provision of personalised feedback.British Journal of
+Educational Technology. https://doi.org/10.1111/bjet.12592.
+Pardo, A., & Mirriahi, N. (2017). Design, deployment and evaluation of aﬂipped learningﬁrst year engineering course. In C. Reidsema, L. Kavanagh, R. Hadgraft, & N.
+Smith (Eds.).Flipping the classroom: Practice and practices in higher education. Singapore: Springer.
+Pintrich, P. R. (2004). A conceptual framework for assessing motivation and self-regulated learning in college students.Educational Psychology Review, 16, 385– 407.
+https://doi.org/10.1007/s10648-004-0006-x.
+Rahman, A. A., Aris, B., Rosli, M. S., Mohamed, H., Abdullah, Z., & Mohd Zaid, N. (2015). Signiﬁcance of preparedness inﬂipped classroom.Advanced Science Letters,
+21(10), 3388– 3390. https://doi.org/10.1166/asl.2015.6514.
+Reimann, P. (2016). Connecting learning analytics with learning research: The role of design-based research.Learning: Research and Practice, 2(2), 130– 142. https://
+doi.org/10.1080/23735082.2016.1210198.
+Reschly,
+A. L., & Christenson, S. L. (2012). Jingle, jangle, and conceptual haziness: Evolution and future directions of the engagement construct.Handbook of research
+on student engagement(pp. 3– 19). Boston, MA: Springer Retrieved fromhttps://link.springer.com/chapter/10.1007/978-1-4614-2018-7_1.
+Rienties, B., Boroowa, A., Cross, S., Kubiak, C., Mayles, K., & Murphy, S. (2016). Analytics4Action evaluation framework: A review of evidence-based learning analytics
+interventions at the open university UK.Journal of Interactive Media in Education,(1), 2. 2016http://doi.org/10.5334/jime.394.
+Rodríguez-Triana, M. J., Prieto, L. P., Martínez-Monés, A., Asensio-Pérez, J. I., & Dimitriadis, Y. (2018). The teacher in the loop: Customizing multimodal learning
+analytics for blended learning.Proceedings of the 8th international conference on learning analytics and knowledge(pp. 417– 426). New York, NY, USA: ACM.https://
+doi.org/10.1145/3170358.3170364.
+Saqr, M., Fors, U., & Tedre, M. (2017). How learning analytics can early predict under-achieving students in a blended medical education course.Medical Teacher, 0(0),
+1– 11. https://doi.org/10.1080/0142159X.2017.1309376.
+Schneider, J., Di Mitri, D., Limbu, B., & Drachsler, H. (2018). Multimodal learning Hub: A tool for capturing customizable multimodal learning experiences. In V.
+Pammer-Schindler, M. Pérez-Sanagustín, H. Drachsler, R. Elferink, & M. Scheﬀel (Eds.).Lifelong technology-enhanced learning(pp. 45– 58). Springer International
+Publishing.
+Siemens, G., Dawson, S., & Lynch, G. (2014).Improving the quality and productivity of the higher education sector: Policy and strategy for systems-level deployment of learning
+analytics. Strawberry Hills, New South Wales, Australia: Oﬃce for Learning and Teaching. Retrieved fromhttp://hdl.voced.edu.au/10707/327861.
+Sletten, S. R. (2015). Investigating self-regulated learning strategies in theﬂipped classroom. In D. Rutledge, & D. Slykhuis (Eds.).Proceedings of society for information
+technology & teacher education international conference 2015(pp. 497– 501). Chesapeake, VA: Association for the Advancement of Computing in Education (AACE)
+Retrieved from:https://www.learntechlib.org/p/150041.
+Sletten, S. R. (2017). Investigatingﬂipped learning: Student self-regulated learning, perceptions, and achievement in an introductory biology course.Journal of Science
+Education and Technology, 3(26), 347– 358.
+Steel, P. (2007). The nature of procrastination: A meta-analytic and theoretical review of quintessential self-regulatory failure.Psychological Bulletin, 133,6 5– 94.
+Sun, P. C., Tsai, R. J., Finger, G., Chen, Y. Y., & Yeh, D. (2008). What drives a successful e-learning? An empirical investigation of the critical factors inﬂuencing learner
+satisfaction. Computers & Education, 50(4), 1183– 1202.
+Tempelaar, D. T., Rienties, B., & Giesbers, B. (2015). In search for the most informative data for feedback generation: Learning analytics in a data-rich context.
+Computers in Human Behavior, 47, 157– 167.
+Trigwell, K., Prosser, M., & Waterhouse, F. (1999). Relations between teachers' approaches to teaching and students' approaches to learning.Higher Education, 37(1),
+57– 70. https://doi.org/10.1023/A:1003548313194.
+Wang,
+J., Zamar, R., Marazzi, A., Yohai, V., Salibian-Barrera, M., Maronna, R., et al. (2017).Manual for R package‘robust’. Version 0.4-18.Retrieved fromhttps://cran.
+r-project.org/web/packages/robust/robust.pdf.
+Wang, C. H., Shannon, D. M., & Ross, M. E. (2013). Students' characteristics, self-regulated learning, technology self-eﬃcacy, and course outcomes in online learning.
+Distance Education, 34(3), 302– 323.
+Winne, P. H. (2006). How software technologies can improve research on learning and bolster school reform.Educational Psychologist, 41(1), 5– 17. https://doi.org/10.
+1207/s15326985ep4101_3.
+Winne, P. H., & Hadwin, A. F. (1998). Studying as self-regulated learning. In D. J. Hacker, J. Dunlosky, & A. C. Graesser (Eds.).Metacognition in educational theory and
+practice (pp. 277– 304). Mahwah, NJ, US: Lawrence Erlbaum Associates Publishers.
+Winne, P. H., & Jamieson-Noel, D. L. (2003). Self-regulating studying by objectives for learning: Students' reports compared to a model.Contemporary Educational
+Psychology, 28, 259– 276.
+Winne, P. H., Jamieson-Noel, D. L., & Muis, K. (2002). Methodological issues and advances in researching tactics, strategies and self-regulated learning. In P. R.
+Pintrich, & M. L. Maehr (Vol. Eds.),Advances in motivation and achievement: New directions in measures and methods: Vol. 12, (pp. 121– 155). Greenwich, CT: JAJ
+Press.
+Yilmaz, R. M., & Baydas, O. (2017). An examination of undergraduates' metacognitive strategies in pre-class asynchronous activity in aﬂipped classroom.Educational
+Technology Research & Development, 65(6), 1547– 1567. https://doi.org/10.1007/s11423-017-9534-1.
+You, J. W. (2015). Examining the eﬀect of academic procrastination on achievement using LMS data in E-learning.Educational Technology & Society, 18(3), 64– 74.
+You, J. W. (2016). Identifying signiﬁcant indicators using LMS data to predict course achievement in online learning.The Internet and Higher Education, 29,2 3– 30.
+https://doi.org/10.1016/j.iheduc.2015.11.003.
+Yılmaz, F. G. K., Olpak, Y. Z., & Yılmaz, R. (2017). The eﬀect of the metacognitive support via pedagogical agent on self-regulation skills.Journal of Educational
+Computing Research. 0735633117707696 https://doi.org/10.1177/0735633117707696.
+Zimmerman, B. J. (2008). Investigating self-regulation and motivation: Historical background, methodological developments, and future prospects.American
+Educational Research Journal, 45(1), 166– 183. https://doi.org/10.3102/0002831207312909.
+J.
+Jovanovic, et al. Computers & Education 134 (2019) 156–168
+168","Jovanovic, et al. Computers & Education 134 (2019) 156–168"

@@ -1,0 +1,1567 @@
+source,page_content,cleaned_page_content
+2017 - MOOC Dropout Prediction.pdf,"MOOC Dropout Prediction:
+L
+essons Learned from Making Pipelines Interpretable
+Saurabh Nagrecha
+iCeNSA,
+Department of Computer
+Science and Engineering,
+University of Notre Dame,
+Notre Dame, Indiana 46556
+snagrech@nd.edu
+John Z. Dillon
+iCeNSA,
+Department of Computer
+Science and Engineering,
+University of Notre Dame,
+Notre Dame, Indiana 46556
+jdillon5@nd.edu
+Nitesh V . Chawla
+iCeNSA,
+Department of Computer
+Science and Engineering,
+University of Notre Dame,
+Notre Dame, Indiana 46556
+nchawla@nd.edu
+ABSTRACT
+Dropout prediction in MOOCs is a well-researched problem
+where we classify which students are likely to persist or drop
+out of a course. Most research into creating models which
+can predict outcomes is based on student engagement data.
+Why these students might be dropping out has only been
+studied through retroactive exit surveys. This helps iden-
+tify an important extension area to dropout prediction—
+how can we interpret dropout predictions at the student
+and model level? We demonstrate how existing MOOC
+dropout prediction pipelines can be made interpretable, all
+while having predictive performance close to existing tech-
+niques. We explore each stage of the pipeline as design com-
+ponents in the context of interpretability. Our end result is
+a layer which longitudinally interprets both predictions and
+entire classiﬁcation models of MOOC dropout to provide re-
+searchers with in-depth insights of why a student is likely to
+dropout.
+CCS Concepts
+•Information systems → Personalization; •Computing
+methodologies → Supervised learning by classiﬁcation;
+•Applied computing → Learning management systems;
+Keywords
+MOOC; Dropout; Machine Learning; Visualization
+1. INTRODUCTION
+Massive Online Open Courses (MOOCs) democratize ac-
+cess to education for students all around the world. How-
+ever, the most prominent downside to MOOCs is their high
+attrition rates [23, 15, 20]. This has catalyzed considerable
+research towards identifying students likely to drop out of
+these courses [31, 16, 13]. Using past student data, these ap-
+proaches train classiﬁers to predict whether a student will
+c⃝ 2017 International W orld Wide W eb Conference Committee
+(IW3C2), published under Creative Commons CC BY 4.0 License.
+WWW’17 Companion , April 3–7, 2017, Perth, Australia.
+ACM 978-1-4503-4914-7/17/04.
+http://dx.doi.org/10.1145/3041021.3054162
+Prediction probabilities
+Dropout
+Complete
+Dropout
+0.12
+0.88
+Feature
+num_plays
+num_pc
+num_devices
+num_phone
+perc_watched
+Value
+202.00
+1.00
+2.00
+1.00
+44.65
+num_plays
+num_pc
+num_devices
+num_phone
+perc_watched
+0.16
+0.06
+0.05
+0.02
+0.04
+Complete
+Prediction probabilities
+Dropout
+Complete
+Dropout
+0.51
+0.49
+Feature
+num_plays
+perc_rewatch
+num_pc
+num_devices
+seeks_time
+Value
+203.00
+5.50
+1.00
+2.00
+0.00
+num_plays
+perc_rewatch
+num_pc
+num_devices
+seeks_time
+0.16
+0.06
+0.05
+0.03
+0.04
+Complete
+Week 2 prediction
+Week 1 prediction
+Figure 1: A n Interpreted Prediction for a sample stu-
+dent. Dropout prediction’s role ends at providing a set of
+labels at each week. Our model provides probability esti-
+mates similar to [13] and then links the predicted outcome
+to signals from the feature values.
+persist in the following week or drop out. Though signiﬁcant
+work has been devoted to identifying who is likely to drop
+out, the why has largely been investigated through retroac-
+tive surveys [20, 11]. Through this paper, we expand on the
+work done on dropout prediction by taking a deeper look
+into the models learned and predictions made.
+Dropout predictions are meant to be used by MOOC cre-
+ators and researchers for intervention eﬀorts and to gain
+greater insight into reﬁning future versions of the MOOC.
+Instead of just obtaining “anecdotal” predictions about each
+student we argue that it is more insightful to interpret the
+classiﬁer at the model and the instance level. In Figure 1,
+the classiﬁer trained on Week 1 data predicted that this
+student was likely to complete the course, whereas given
+the next week’s data, the classiﬁer predicted that the stu-
+dent was likely to drop out. Using our model, we can go
+beyond these binary predictions and suggest 1) probability
+estimates (similar to the approach followed in [13]) and 2)
+possible signals from feature values which contributed to-
+wards the classiﬁer’s predicted output. Our solution here
+uses Local Interpretable Model-Agnostic Explanations (or
+LIME for short) to reconcile the who with a possible signal
+for why from the data [21].
+351","MOOC Dropout Prediction:
+Lessons Learned from Making Pipelines Interpretable
+ABSTRACT
+Dropout prediction in MOOCs is a well-researched problem
+where we classify which students are likely to persist or drop
+out of a course. Most research into creating models which
+can predict outcomes is based on student engagement data.
+Why these students might be dropping out has only been
+studied through retroactive exit surveys. This helps iden-
+tify an important extension area to dropout prediction—
+how can we interpret dropout predictions at the student
+and model level? We demonstrate how existing MOOC
+dropout prediction pipelines can be made interpretable, all
+while having predictive performance close to existing tech-
+niques. We explore each stage of the pipeline as design com-
+ponents in the context of interpretability. Our end result is
+a layer which longitudinally interprets both predictions and
+entire classiﬁcation models of MOOC dropout to provide re-
+searchers with in-depth insights of why a student is likely to
+dropout.
+CCS Concepts
+•Information systems → Personalization; •Computing
+methodologies → Supervised learning by classiﬁcation;
+•Applied computing → Learning management systems;
+Keywords
+MOOC; Dropout; Machine Learning; Visualization
+1. INTRODUCTION
+Massive Online Open Courses (MOOCs) democratize ac-
+cess to education for students all around the world. How-
+ever, the most prominent downside to MOOCs is their high
+attrition rates. This has catalyzed considerable
+research towards identifying students likely to drop out of
+these courses. Using past student data, these ap-
+proaches train classiﬁers to predict whether a student will
+persist in the following week or drop out. Though signiﬁcant
+work has been devoted to identifying who is likely to drop
+out, the why has largely been investigated through retroac-
+tive surveys. Through this paper, we expand on the
+work done on dropout prediction by taking a deeper look
+into the models learned and predictions made.
+Dropout predictions are meant to be used by MOOC cre-
+ators and researchers for intervention eﬀorts and to gain
+greater insight into reﬁning future versions of the MOOC.
+Instead of just obtaining “anecdotal” predictions about each
+student we argue that it is more insightful to interpret the
+classiﬁer at the model and the instance level. In Figure 1,
+the classiﬁer trained on Week 1 data predicted that this
+student was likely to complete the course, whereas given
+the next week’s data, the classiﬁer predicted that the stu-
+dent was likely to drop out. Using our model, we can go
+beyond these binary predictions and suggest 1) probability
+estimates (similar to the approach followed in [13]) and 2)
+possible signals from feature values which contributed to-
+wards the classiﬁer’s predicted output. Our solution here
+uses Local Interpretable Model-Agnostic Explanations (or
+LIME for short) to reconcile the who with a possible signal
+for why from the data.
+
+Figure 1: A n Interpreted Prediction for a sample stu-
+dent. Dropout prediction’s role ends at providing a set of
+labels at each week. Our model provides probability esti-
+mates similar to [13] and then links the predicted outcome
+to signals from the feature values."
+2017 - MOOC Dropout Prediction.pdf,"intercept
+num_plays
+num_pc
+perc_rewatch0
+0.4
+0.3
+0.2
+0.1
+Coef. values
+Week 1 Week 2 Week 3
+Completer (+) Dropout (-)
+Figure 2: I nterpreting Linear Models . Dropout predic-
+tion models trained at each week prioritize features diﬀer-
+ently. In this ﬁgure, we visualize the relative importance of
+various features by plotting linear model coeﬃcients (and
+intercept) relative to each other. Longitudinal trends can
+be inferred tracing these coeﬃcient values across time for
+retrained classiﬁers. We color code each feature according
+to the sign of its coeﬃcient, which in turn is an indication
+of which class it nudges the classiﬁer towards.
+Echoing this argument for the models used for dropout
+prediction, we would like to know how the classiﬁer discrim-
+inates signals for dropouts versus persisters at each week
+in the MOOC. Model inference on interpretable classiﬁers
+is the most intuitive way to achieve this [9]. An example
+of this is shown in Figure 2, where we interpret the coef-
+ﬁcients and intercept of logistic regression classiﬁer over a
+set of weeks. Here, we visualize the coeﬃcients and inter-
+cept of the trained linear model on a real axis. Coeﬃcients
+contributing to each class are color coded for ease of vi-
+sualization. For classiﬁers other than the small subset we
+identify as interpretable, we suggest alternative techniques
+from literature to simulate this level of interpretability in
+Subsection 4.2.
+While a MOOC is in session, these predictive models are
+re-trained each week and as a result, a given student might
+have multiple such predictions made during the course of
+their interaction with the MOOC. This imparts a longitu-
+dinal component to these models and predictions, shown
+in Figures 1 and 2. A predictive model evolves over time
+and the target student now has a traceable history of pre-
+dicted outcomes. We see that the coeﬃcients for a given
+feature can be traced across various weekly models. This re-
+prioritization is useful in characterizing the changing proﬁle
+of dropouts at each week.
+Our proposed approach to interpretability of dropout pre-
+diction can thus be broken down into the following compo-
+nents: 1) Model inference, 2) individual prediction inference,
+and 3) tracing models and predictions longitudinally.
+We demonstrate how each of these components can be
+implemented in a real MOOC by providing a fully outlined
+case-study. Our data comes from an edX MOOC hosted at a
+Midwest university in 2015. Out of the 14,809 students that
+participated in the course 1,941 completed the course, result-
+ing in completion rate of 13.1% which is typical of MOOCs.
+Following the clickstream-based approach used by [16], we
+implement an automated machine learning based dropout
+predictor. This framework observes past student data every
+week and predicts whether a student s active in the MOOC
+during week i is likely to drop out in the next week ( i + 1).
+Our deﬁnition of dropout is the same as [28], which com-
+bines participation and learning objective components of the
+MOOC. If a student has not ﬁnished the ﬁnal “certiﬁcation”
+module of the course and has no interaction with the MOOC
+between time t and the course-end date, then we say that
+the student has dropped out.
+Given this pipeline, our approach helps interpret individ-
+ual predictions and classiﬁcation models. It provides an in-
+terpretation at each week, and longitudinally across weeks,
+creating a contextualized history of models and their pre-
+dictions. Establishing a link between signals recorded in
+clickstreams and likely outcomes is extremely valuable to
+MOOC researchers and content creators. The models them-
+selves can be used to describe proﬁles of successful students
+and can directly be fed into learning management systems.
+Various types of signals which predict dropout can be used
+to create tailor-made intervention strategies.
+Contributions This paper’s main contributions are in
+the form of answers to the following questions:
+• How can MOOC dropout prediction pipelines be made
+interpretable? What is an interpretable model? What
+parts of the pipeline can we interpret and what are
+some current limitations?
+• What machine learning techniques does one need to
+consider? We explore feature engineering, data pre-
+processing, model selection and metrics as design pa-
+rameters in the context of interpretability.
+• Can this be generalized to other MOOCs? We show
+how our analyses could be extended to MOOCs which
+diﬀer from ours in format and platform (Coursera,
+Udacity, Udemy, etc).
+2. RELA TED WORK
+MOOCs serve as an excellent testing ground for multi-
+disciplinary research and have attracted the attention of
+experts in computer science, applied statistics, education,
+psychology and economics. This mixed expertise has made
+it possible to attack problems like low completion rates in
+MOOCs from various fronts. Some of the relevant compo-
+nents of the dropout prediction problem are described below:
+Dropout Deﬁnition.
+The broadest deﬁnition of dropout is the lack of engage-
+ment by students. Student engagement can be notoriously
+diﬃcult to quantify [10] as a result, various proxy measures
+are used in literature. Deﬁnitions of dropout depend on the
+MOOC’s intended pedagogical and engagement goals, and
+target student generated signals which capture these forms
+of engagement. Two distinct forms of engagement which
+inﬂuence dropout deﬁnitions are participation and comple-
+tion of learning objectives. Lack of participation in MOOCs
+can be deﬁned as a lack of interaction with the MOOC [2,
+16], submission of assignments and quizzes [25, 27], viewing
+video content [24], or participating in discussion forums [31].
+Some researchers focus on whether the student has achieved
+the learning objectives of the MOOC, deﬁning dropout as
+not earning a certiﬁcate in the course [13] or not being able
+to ﬁnish a certain set of modules [7]. Hybrid deﬁnitions aim
+to capture both these components of engagement and label
+the absence on both fronts as “dropout” [12, 28]. One such
+example used in [12] is as follows: if a student has been
+absent from the course for more than 1 month and/or has
+352","intercept
+num_plays
+num_pc
+perc_rewatch
+
+Figure 2: I nterpreting Linear Models . Dropout prediction models trained at each week prioritize features diﬀerently. In this ﬁgure, we visualize the relative importance of various features by plotting linear model coeﬃcients (and intercept) relative to each other. Longitudinal trends can be inferred tracing these coeﬃcient values across time for retrained classiﬁers. We color code each feature according to the sign of its coeﬃcient, which in turn is an indication of which class it nudges the classiﬁer towards.
+Echoing this argument for the models used for dropout prediction, we would like to know how the classiﬁer discriminates signals for dropouts versus persisters at each week in the MOOC. Model inference on interpretable classiﬁers is the most intuitive way to achieve this. An example of this is shown in Figure 2, where we interpret the coefﬁcients and intercept of logistic regression classiﬁer over a set of weeks. Here, we visualize the coeﬃcients and intercept of the trained linear model on a real axis. Coeﬃcients contributing to each class are color coded for ease of vi-
+sualization. For classiﬁers other than the small subset we
+identify as interpretable, we suggest alternative techniques
+from literature to simulate this level of interpretability in
+Subsection 4.2.
+While a MOOC is in session, these predictive models are
+re-trained each week and as a result, a given student might
+have multiple such predictions made during the course of
+their interaction with the MOOC. This imparts a longitu-
+dinal component to these models and predictions, shown
+in Figures 1 and 2. A predictive model evolves over time
+and the target student now has a traceable history of pre-
+dicted outcomes. We see that the coeﬃcients for a given
+feature can be traced across various weekly models. This re-
+prioritization is useful in characterizing the changing proﬁle
+of dropouts at each week.
+Our proposed approach to interpretability of dropout pre-
+diction can thus be broken down into the following compo-
+nents: 1) Model inference, 2) individual prediction inference,
+and 3) tracing models and predictions longitudinally.
+We demonstrate how each of these components can be
+implemented in a real MOOC by providing a fully outlined
+case-study. Our data comes from an edX MOOC hosted at a
+Midwest university in 2015. Out of the 14,809 students that
+participated in the course 1,941 completed the course, result-
+ing in completion rate of 13.1% which is typical of MOOCs.
+Following the clickstream-based approach used by we
+implement an automated machine learning based dropout
+predictor. This framework observes past student data every
+week and predicts whether a student s active in the MOOC
+during week i is likely to drop out in the next week ( i + 1).
+Our deﬁnition of dropout is the same as , which com-
+bines participation and learning objective components of the
+MOOC. If a student has not ﬁnished the ﬁnal “certiﬁcation”
+module of the course and has no interaction with the MOOC
+between time t and the course-end date, then we say that
+the student has dropped out.
+Given this pipeline, our approach helps interpret individ-
+ual predictions and classiﬁcation models. It provides an in-
+terpretation at each week, and longitudinally across weeks,
+creating a contextualized history of models and their pre-
+dictions. Establishing a link between signals recorded in
+clickstreams and likely outcomes is extremely valuable to
+MOOC researchers and content creators. The models them-
+selves can be used to describe proﬁles of successful students
+and can directly be fed into learning management systems.
+Various types of signals which predict dropout can be used
+to create tailor-made intervention strategies.
+Contributions This paper’s main contributions are in
+the form of answers to the following questions:
+• How can MOOC dropout prediction pipelines be made
+interpretable? What is an interpretable model? What
+parts of the pipeline can we interpret and what are
+some current limitations?
+• What machine learning techniques does one need to
+consider? We explore feature engineering, data pre-
+processing, model selection and metrics as design pa-
+rameters in the context of interpretability.
+• Can this be generalized to other MOOCs? We show
+how our analyses could be extended to MOOCs which
+diﬀer from ours in format and platform (Coursera,
+Udacity, Udemy, etc).
+2. RELA TED WORK
+MOOCs serve as an excellent testing ground for multi-
+disciplinary research and have attracted the attention of
+experts in computer science, applied statistics, education,
+psychology and economics. This mixed expertise has made
+it possible to attack problems like low completion rates in
+MOOCs from various fronts. Some of the relevant compo-
+nents of the dropout prediction problem are described below:
+Dropout Deﬁnition.
+The broadest deﬁnition of dropout is the lack of engage-
+ment by students. Student engagement can be notoriously
+diﬃcult to quantify as a result, various proxy measures
+are used in literature. Deﬁnitions of dropout depend on the
+MOOC’s intended pedagogical and engagement goals, and
+target student generated signals which capture these forms
+of engagement. Two distinct forms of engagement which
+inﬂuence dropout deﬁnitions are participation and comple-
+tion of learning objectives. Lack of participation in MOOCs
+can be deﬁned as a lack of interaction with the MOOC, submission of assignments and quizzes, viewing
+video content, or participating in discussion forums.
+Some researchers focus on whether the student has achieved
+the learning objectives of the MOOC, deﬁning dropout as
+not earning a certiﬁcate in the course or not being able
+to ﬁnish a certain set of modules. Hybrid deﬁnitions aim
+to capture both these components of engagement and label
+the absence on both fronts as “dropout”. One such
+example used in is as follows: if a student has been
+absent from the course for more than 1 month and/or has"
+2017 - MOOC Dropout Prediction.pdf,"viewed fewer than 50% of the videos in the course, then they
+a
+re labeled as dropouts. In this paper, we use the deﬁnition
+used by [28]: if a student has no interaction between day t
+into the MOOC and the end of the MOOC and they have
+not completed the ﬁnal “certiﬁcation” module, then they are
+labeled as dropouts.
+F eature Selection and Engineering.
+The electronic nature of MOOC instruction makes cap-
+turing signals of student engagement extremely challenging,
+giving rise to proxy measures for various use-cases. Click-
+streams [16, 24, 27, 13], assignment grades [12, 14], social
+networks [2, 31] and even demographic information has been
+used in literature as potential sources of feature data to
+predict dropout. In more recent approaches like [28], data
+from across various MOOCs was pooled together to predict
+dropout using transfer learning. In this paper, we focus on
+dropout centered around a single MOOC using clickstream
+and video data. The idea behind using clickstreams is to
+reconstruct a story from the trail of digital breadcrumbs left
+behind by users. Most MOOCs contain video content and
+student interactions with these videos has been shown to
+quantify engagement and ultimately predict dropout [16,
+24]. We deliberately restrict ourselves to features which
+are available across MOOC platforms, namely— access pat-
+terns, user agent data and video features.
+Interpretability.
+Most existing works and this paper structure MOOC dropout
+prediction as a supervised classiﬁcation problem. Making
+these models and predictions interpretable entails challenges
+at several levels of the pipeline. Preprocessing steps like
+principal component analysis used in [16, 27] render other-
+wise interpretable input features uninterpretable. Prevail-
+ing solutions to making interpretable classiﬁcation models
+is to use “interpretable” classiﬁcation algorithms [1], or to
+be model-agnostic and analyze the predictions post-hoc. In-
+terpretable classiﬁcation techniques identiﬁed in [22] include
+linear models [13], decision trees [26], falling rule lists [30].
+Examples of non-interpretable classiﬁers include recurrent
+neural networks [8] and stacking multiple classiﬁers [29].
+On the other hand, model-agnostic interpretability is eas-
+ier to integrate into existing pipelines using wrappers like
+Parzen [1] and Local Interpretable Model-Agnostic Expla-
+nations (LIME) [21]. These explain individual predictions
+by training locally interpretable models. The model ag-
+nosticity of these solutions helps them bypass the ﬁdelity-
+interpretability trade-oﬀ. Student-centric stories like those
+shown in Figure 1 from [13] help illustrate their likelihood
+of dropout over time. As Figure 2 shows, we extend this
+metaphor by showing the feature values of a student in a
+given week which contribute towards their probability score.
+3. DA T A DESCRIPTION
+“I Heart Stats” was an introductory statistics course of-
+fered by the University of Notre Dame. A major objec-
+tive of this course was to alleviate student anxiety towards
+statistics [7]. This course was made available through edX 1
+from April 15 to June 17, 2015 spanning a total of 64 days.
+We describe the format of how this course was oﬀered and
+how this shaped our dropout deﬁnition. Throughout this
+1h ttps://www.edx.org/ is a popular MOOC platform.
+Table 1: Glossary of symbols
+Symbol Description
+Si S et of students by week i
+S(i− 1,i)
+i Set of students in week i also existing
+in week i − 1
+sij The jth student by week i
+Xi Feature data on Si
+X(i− 1,i)
+i Feature data on S(i− 1,i)
+i
+xij Feature data for student j by week i
+Yi Set of labels for students by week i
+yij Label of the jth student by week i
+process, we ensure reproducibility of our methods on other
+s
+uch MOOCs and generalizability beyond our chosen learn-
+ing platform (edX).
+3.1 Course Format
+The course contained eight modules covering various in-
+troductory statistical topics from levels of measurement to
+ANOVA, designed to be completed in sequential order. How-
+ever, since all the modules were released to the students
+from the ﬁrst day of the MOOC, students had the choice
+to complete them at their own pace and in the order they
+chose. The key content in this course was delivered via 96
+videos spread throughout the course. Under the Clark Tax-
+onomy of MOOCs [5], this MOOC has traits largely similar
+to asynchMOOCs, in that students have the freedom to — 1)
+join and leave any time during the MOOC, 2) consume con-
+tents in the order they choose. One notable trait here is that
+the students can only access the MOOC during the window
+of a set start and end date, which is a trait of synchMOOCs.
+How can we generalize this analysis to other MOOC
+formats? Even though this paper uses a largely asynch-
+MOOC for its analyses, the steps described here can be easily
+generalized to MOOCs which follow a diﬀerent format. We
+consider two alternative MOOC formats (not mutually ex-
+clusive) that represent a special case of the one followed in
+“I Heart Stats” :
+1. Courses which require registration from the start of the
+course— If we only consider the subset of students
+enrolled from day one in our MOOC, then it becomes
+analogous to such a format.
+2. Courses which do not disseminate all of their content
+from day one and impose a set assessment schedule—
+If such a course follows the same deﬁnition of dropout
+as used in [28] and this paper then this paper’s analy-
+ses can be used without modiﬁcation. Typically, such
+courses use a dropout deﬁnition based on attrition in-
+stead [11]. We discuss how this can be treated as a
+modiﬁed version of our MOOC in Subsection 3.3.
+3.2 edX Clickstream Data
+Platforms like edX make course their data available to
+MOOC providers in the form of raw, queriable logs. Typ-
+ically, these capture information on course content, learner
+progress, discussion forum interactions and (clickstream) track-
+ing logs. In this paper, we use the “student
+events” from
+t
+he “tracking log” data for feature extraction and “course-
+w
+are studentmodule” from the “learner progress” to label
+m
+odule (and therefore course) completion.
+353","re labeled as dropouts. In this paper, we use the deﬁnition
+used by [28]: if a student has no interaction between day t
+into the MOOC and the end of the MOOC and they have
+not completed the ﬁnal “certiﬁcation” module, then they are
+labeled as dropouts.
+F eature Selection and Engineering.
+The electronic nature of MOOC instruction makes cap-
+turing signals of student engagement extremely challenging,
+giving rise to proxy measures for various use-cases. Click-
+streams [16, 24, 27, 13], assignment grades [12, 14], social
+networks [2, 31] and even demographic information has been
+used in literature as potential sources of feature data to
+predict dropout. In more recent approaches like [28], data
+from across various MOOCs was pooled together to predict
+dropout using transfer learning. In this paper, we focus on
+dropout centered around a single MOOC using clickstream
+and video data. The idea behind using clickstreams is to
+reconstruct a story from the trail of digital breadcrumbs left
+behind by users. Most MOOCs contain video content and
+student interactions with these videos has been shown to
+quantify engagement and ultimately predict dropout [16,
+24]. We deliberately restrict ourselves to features which
+are available across MOOC platforms, namely— access pat-
+terns, user agent data and video features.
+Interpretability.
+Most existing works and this paper structure MOOC dropout
+prediction as a supervised classiﬁcation problem. Making
+these models and predictions interpretable entails challenges
+at several levels of the pipeline. Preprocessing steps like
+principal component analysis used in [16, 27] render other-
+wise interpretable input features uninterpretable. Prevail-
+ing solutions to making interpretable classiﬁcation models
+is to use “interpretable” classiﬁcation algorithms [1], or to
+be model-agnostic and analyze the predictions post-hoc. In-
+terpretable classiﬁcation techniques identiﬁed in [22] include
+linear models [13], decision trees [26], falling rule lists [30].
+Examples of non-interpretable classiﬁers include recurrent
+neural networks [8] and stacking multiple classiﬁers [29].
+On the other hand, model-agnostic interpretability is eas-
+ier to integrate into existing pipelines using wrappers like
+Parzen [1] and Local Interpretable Model-Agnostic Expla-
+nations (LIME) [21]. These explain individual predictions
+by training locally interpretable models. The model ag-
+nosticity of these solutions helps them bypass the ﬁdelity-
+interpretability trade-oﬀ. Student-centric stories like those
+shown in Figure 1 from [13] help illustrate their likelihood
+of dropout over time. As Figure 2 shows, we extend this
+metaphor by showing the feature values of a student in a
+given week which contribute towards their probability score.
+3. DA T A DESCRIPTION
+“I Heart Stats” was an introductory statistics course of-
+fered by the University of Notre Dame. A major objec-
+tive of this course was to alleviate student anxiety towards
+statistics [7]. This course was made available through edX
+from April 15 to June 17, 2015 spanning a total of 64 days.
+We describe the format of how this course was oﬀered and
+how this shaped our dropout deﬁnition. Throughout this
+process, we ensure reproducibility of our methods on other
+s
+uch MOOCs and generalizability beyond our chosen learn-
+ing platform (edX).
+3.1 Course Format
+The course contained eight modules covering various in-
+troductory statistical topics from levels of measurement to
+ANOVA, designed to be completed in sequential order. How-
+ever, since all the modules were released to the students
+from the ﬁrst day of the MOOC, students had the choice
+to complete them at their own pace and in the order they
+chose. The key content in this course was delivered via 96
+videos spread throughout the course. Under the Clark Tax-
+onomy of MOOCs [5], this MOOC has traits largely similar
+to asynchMOOCs, in that students have the freedom to — 1)
+join and leave any time during the MOOC, 2) consume con-
+tents in the order they choose. One notable trait here is that
+the students can only access the MOOC during the window
+of a set start and end date, which is a trait of synchMOOCs.
+How can we generalize this analysis to other MOOC
+formats? Even though this paper uses a largely asynch-
+MOOC for its analyses, the steps described here can be easily
+generalized to MOOCs which follow a diﬀerent format. We
+consider two alternative MOOC formats (not mutually ex-
+clusive) that represent a special case of the one followed in
+“I Heart Stats” :
+1. Courses which require registration from the start of the
+course— If we only consider the subset of students
+enrolled from day one in our MOOC, then it becomes
+analogous to such a format.
+2. Courses which do not disseminate all of their content
+from day one and impose a set assessment schedule—
+If such a course follows the same deﬁnition of dropout
+as used in [28] and this paper then this paper’s analy-
+ses can be used without modiﬁcation. Typically, such
+courses use a dropout deﬁnition based on attrition in-
+stead [11]. We discuss how this can be treated as a
+modiﬁed version of our MOOC in Subsection 3.3.
+3.2 edX Clickstream Data
+Platforms like edX make course their data available to
+MOOC providers in the form of raw, queriable logs. Typ-
+ically, these capture information on course content, learner
+progress, discussion forum interactions and (clickstream) track-
+ing logs. In this paper, we use the “student
+events” from
+t
+he “tracking log” data for feature extraction and “course-
+w
+are studentmodule” from the “learner progress” to label
+m
+odule (and therefore course) completion."
+2017 - MOOC Dropout Prediction.pdf,"It should be noted that the clickstream data used for pre-
+d
+iction in this paper does not include ﬁelds like IP address,
+location, ISP, referrers, landing search queries. These are
+typically available via proprietary tools like Adobe Analyt-
+ics [17]. In this paper, we restrict our analysis to features
+extracted from video viewing patterns and device informa-
+tion. In line with most MOOCs, this course’s oﬀerings are
+in the form of videos. This is a basic proxy for student ac-
+cess patterns, how they interact with the course content and
+what kind of device experience they have when accessing the
+course.
+How can we generalize this analysis to other MOOC
+platforms? Echoing the argument made by [16], we per-
+form our analyses using a relatively small subset of available
+feature data to demonstrate the predictive value of click-
+stream data that is most commonly available across MOOC
+platforms. We deliberately select two of the most commonly
+available feature-sets that are available across most popu-
+lar MOOC platforms. These features have been found in
+dropout prediction implementations in literature across plat-
+forms like edX [2], MITx [27], Harvardx [28] (both hosted on
+edX), and Coursera [16, 13]. We believe that these features
+can be similarly found in clickstream logs for other MOOC
+platforms not listed here.
+3.3 Deﬁning Dropout Labels
+Our deﬁnition of dropout is a slightly modiﬁed version
+of [28]. Instead of a certiﬁcate, we use the completion of
+the ﬁnal module as part of the course design to denote com-
+pletion of learning objectives. As a result, our deﬁnition of
+dropout is as below—
+A student s has stopped out by time t if and only
+if: s does not complete the ﬁnal module and s
+takes no further action between time t and the
+course-end date when certiﬁcates are issued
+The learning objective component of this deﬁnition en-
+sures that we correctly label students who complete the
+course’s objectives as “Completers” . This is a direct result
+of the course format oﬀering students all of the content to
+study at their own pace. The participation component en-
+sures that we correctly label students who do not interact
+with the course as “Dropouts” . In alternative course formats
+where content is not distributed all at once, the special case
+of this deﬁnition becomes equivalent to [2], which is purely
+participation dependent.
+4. MAKING THE DROPOUT PREDICTION
+PIPELINE INTERPRET ABLE
+We describe each component of the dropout prediction
+pipeline and discuss its role in our interpretablity goals. Us-
+ing this pipeline, we train predictors each week to get models
+and predictions. We use this to create a longitudinal inter-
+pretation of how the models and predictions evolve in the
+MOOC. We take a deeper look into the interplay between
+these two phenomena to trace individual predictions back to
+student feature data.
+4.1 Overview of the pipeline
+Dropout prediction follows the simple idea of learn on
+past student behavior to predict future outcomes . This dic-
+tates the way authors have structured pipelines to approach
+0 10 20 30 40 50 60
+Da
+ys into MOOC
+0
+2000
+4000
+6000
+8000
+10000
+12000
+14000
+16000# of students
+Train Test
+Figure 3: S ize of training and testing data at each
+stage: We train on the cumulative number of students we
+have observed by each week, and so the number of students
+in the training data keeps increasing monotonically.
+0 10 20 30 40 50 60
+Da
+ys into MOOC
+0
+20
+40
+60
+80
+100% students
+Train
+Test
+Baseline
+Figure 4: P ercent minority class (completers) over
+time. Students who are active into the latter days of the
+MOOC are more likely to complete the course. This ratio
+for the training set approaches the overall completion ratio
+(black dashed line) towards the end of the MOOC.
+this problem. Dropout prediction is an imbalanced class
+problem at heart and in keeping with machine learning con-
+vention, we label the minority class (“Completers” ) as 1 and
+the majority class (“Dropouts” ) as 0 throughout this paper.
+F eature Engineering.
+Even though we limit our treatment to video interaction
+and user-agent data, the feature engineering lessons here are
+generalizable to any other dataset which also uses these or
+similar variables. This data is recorded in the form of JSON-
+type events, which we then structure into columnar feature
+form as described below.
+Video interaction data in edX is recorded for each user-
+generated event separately. Each row in the raw clickstream
+logs records actions like load, start, play, pause, stop, seek
+(from timestamp T1 to T2 in the video) and change of play-
+back speed. We aggregate these into simple, interpretable
+features for each video
+id-student id pair: percent watched,
+354","It should be noted that the clickstream data used for prediction in this paper does not include ﬁelds like IP address, location, ISP, referrers, landing search queries. These are typically available via proprietary tools like Adobe Analytics. In this paper, we restrict our analysis to features extracted from video viewing patterns and device information. In line with most MOOCs, this course’s oﬀerings are in the form of videos. This is a basic proxy for student access patterns, how they interact with the course content and what kind of device experience they have when accessing the course.
+How can we generalize this analysis to other MOOC platforms? Echoing the argument made by , we perform our analyses using a relatively small subset of available feature data to demonstrate the predictive value of clickstream data that is most commonly available across MOOC platforms. We deliberately select two of the most commonly available feature-sets that are available across most popular MOOC platforms. These features have been found in dropout prediction implementations in literature across platforms like edX , MITx , Harvardx (both hosted on edX), and Coursera . We believe that these features can be similarly found in clickstream logs for other MOOC platforms not listed here.
+3.3 Deﬁning Dropout Labels
+Our deﬁnition of dropout is a slightly modiﬁed version of . Instead of a certiﬁcate, we use the completion of the ﬁnal module as part of the course design to denote completion of learning objectives. As a result, our deﬁnition of dropout is as below—
+A student s has stopped out by time t if and only
+if: s does not complete the ﬁnal module and s
+takes no further action between time t and the
+course-end date when certiﬁcates are issued
+The learning objective component of this deﬁnition ensures that we correctly label students who complete the course’s objectives as “Completers” . This is a direct result of the course format oﬀering students all of the content to study at their own pace. The participation component ensures that we correctly label students who do not interact with the course as “Dropouts” . In alternative course formats where content is not distributed all at once, the special case of this deﬁnition becomes equivalent to [2], which is purely participation dependent.
+4. MAKING THE DROPOUT PREDICTION
+PIPELINE INTERPRET ABLE
+We describe each component of the dropout prediction pipeline and discuss its role in our interpretablity goals. Using this pipeline, we train predictors each week to get models and predictions. We use this to create a longitudinal interpretation of how the models and predictions evolve in the MOOC. We take a deeper look into the interplay between these two phenomena to trace individual predictions back to student feature data.
+4.1 Overview of the pipeline
+Dropout prediction follows the simple idea of learn on past student behavior to predict future outcomes . This dictates the way authors have structured pipelines to approach this problem. Dropout prediction is an imbalanced class problem at heart and in keeping with machine learning convention, we label the minority class (“Completers” ) as 1 and the majority class (“Dropouts” ) as 0 throughout this paper.
+F eature Engineering.
+Even though we limit our treatment to video interaction and user-agent data, the feature engineering lessons here are generalizable to any other dataset which also uses these or similar variables. This data is recorded in the form of JSON-type events, which we then structure into columnar feature form as described below.
+Video interaction data in edX is recorded for each user-generated event separately. Each row in the raw clickstream logs records actions like load, start, play, pause, stop, seek (from timestamp T1 to T2 in the video) and change of playback speed. We aggregate these into simple, interpretable features for each video
+id-student id pair: percent watched,
+
+Figure 3: S ize of training and testing data at each
+stage: We train on the cumulative number of students we
+have observed by each week, and so the number of students
+in the training data keeps increasing monotonically.
+
+Figure 4: P ercent minority class (completers) over
+time. Students who are active into the latter days of the
+MOOC are more likely to complete the course. This ratio
+for the training set approaches the overall completion ratio
+(black dashed line) towards the end of the MOOC."
+2017 - MOOC Dropout Prediction.pdf,"percent re-watched, total time of seeks, number of forwards,
+p
+lays, seeks and speed changes. Each of these captures var-
+ious latent factors in a student’s consumption of the video
+content. This is still too granular for our study since we need
+features at the student level, so we aggregate these video
+id-
+s
+tudent id pairs for each day of the MOOC. We average out
+t
+he fractional quantities (percentage of video watched and
+rewatched) and add the rest of the variables which represent
+raw counts.
+Clickstreams record user agent data as raw strings which
+need further processing to be made into features. Pars-
+ing this string returns categorical features which describe
+the device, browser and operating system in intricate de-
+tail. In addition to this parsed information, we would like
+to know if the device is a pc, tablet or phone and whether
+it is touch capable or not. These signals inﬂuence the de-
+gree to which the user is able to interact with the MOOC
+at large. These categorical variables are then encoded into
+one-hot encoded versions of their respective value. Similar
+to our treatment of video interaction features, we aggregate
+user
+agent-student id pairs by adding their absolute counts.
+S
+o, if a student uses Chrome on a Windows PC and Chrome
+on an Android phone, their feature-space would record 2
+Chrome browsers, 1 Windows OS and 1 Android OS.
+Preprocessing.
+Like most MOOCs, our dataset also suﬀers from class im-
+balance, where the number of dropouts far outweighs the
+number of completers. Class imbalance is a well documented
+problem in machine learning [4], where the presence of im-
+balance can bias a predictor to output the majority class.
+In dropout prediction, this can cause a classiﬁer to aggres-
+sively predict that students are likely to dropout. This is
+especially dangerous for those students who in reality are
+completers, but are mislabeled by such a biased model as
+dropouts. The metrics and evaluation angle to this problem
+is discussed in greater detail in Evaluation. Though the
+severity of class imbalance has been recognized by MOOC
+researchers, measures to mitigate its eﬀects in biasing pre-
+dictors are surprisingly absent.
+An eﬀective technique to overcome this bias is to resample
+the data to alter the distribution of labels in the training set.
+Approaches range in complexity from randomly undersam-
+pling the majority class to creating synthetic instances of the
+minority class [3]. In educational data mining, these tech-
+niques have been proven useful when predicting dropout in
+Mexican high schools [19]. In this paper, we predict dropout
+both with and without random undersampling of the major-
+ity class to demonstrate the value of overcoming this bias.
+Classiﬁcation.
+For each week ( i), we train a classiﬁer on Xi− 1 student
+data observed from the start of the MOOC till the end of
+week i − 1 and observed labels Yi− 1. Cross validation of our
+trained model ensures that we do not overﬁt on our training
+set and can generalize to test data. We then predict whether
+students active at the beginning of week i (S(i− 1,i)
+i ) are likely
+to drop out. The outcomes of these students are used as
+true labels for evaluation at each stage and repeat the pro-
+cess for each consecutive week. In our pipeline, we com-
+pare examples of both interpretable and non-interpretable
+classiﬁcation techniques. We select the two most directly
+interpretable classiﬁcation techniques— Decision Trees and
+Figure 5: R esampling data helps achieve better AUC .
+It should be noted that the Y-axis is magniﬁed for greater
+clarity.
+Figure 6: C omparison across classiﬁcation techniques
+on the same test data. Signiﬁcance testing done using
+conﬁdence intervals of 99%.
+Logistic Regression and pit them against non-interpretable
+techniques like Random Forest and Gradient Boosted Trees.
+For this example, our goal is to select the best model out of a
+set of classiﬁers, which is why we restrict this experiment to
+these algorithms. A detailed analysis of suitable alternative
+approaches is presented in Subsection 4.2.
+Evaluation.
+Perhaps the most notable aspect of imbalanced class pre-
+diction is how it is evaluated. Given an imbalanced class
+problem with 99:1 imbalance, a naive predictor which al-
+ways predicts the majority class will eﬀortlessly achieve 99%
+accuracy. In our MOOC, a simple classiﬁer which predicts
+that everyone will drop out scores an accuracy of 86.9% (=
+100% - minority class abundance). In light of the misleading
+nature of accuracy, MOOC researchers have borrowed sev-
+eral metrics used in imbalanced class learning and informa-
+tion retrieval. Several alternatives include Speciﬁcity [12],
+Recall [12], Kappa Statistic [24] and Area Under the ROC
+355","percent re-watched, total time of seeks, number of forwards,
+plays, seeks and speed changes. Each of these captures var-
+ious latent factors in a student’s consumption of the video
+content. This is still too granular for our study since we need
+features at the student level, so we aggregate these video
+id-
+s
+tudent id pairs for each day of the MOOC. We average out
+t
+he fractional quantities (percentage of video watched and
+rewatched) and add the rest of the variables which represent
+raw counts.
+Clickstreams record user agent data as raw strings which
+need further processing to be made into features. Pars-
+ing this string returns categorical features which describe
+the device, browser and operating system in intricate de-
+tail. In addition to this parsed information, we would like
+to know if the device is a pc, tablet or phone and whether
+it is touch capable or not. These signals inﬂuence the de-
+gree to which the user is able to interact with the MOOC
+at large. These categorical variables are then encoded into
+one-hot encoded versions of their respective value. Similar
+to our treatment of video interaction features, we aggregate
+user
+agent-student id pairs by adding their absolute counts.
+S
+o, if a student uses Chrome on a Windows PC and Chrome
+on an Android phone, their feature-space would record 2
+Chrome browsers, 1 Windows OS and 1 Android OS.
+Preprocessing.
+Like most MOOCs, our dataset also suﬀers from class im-
+balance, where the number of dropouts far outweighs the
+number of completers. Class imbalance is a well documented
+problem in machine learning, where the presence of im-
+balance can bias a predictor to output the majority class.
+In dropout prediction, this can cause a classiﬁer to aggres-
+sively predict that students are likely to dropout. This is
+especially dangerous for those students who in reality are
+completers, but are mislabeled by such a biased model as
+dropouts. The metrics and evaluation angle to this problem
+is discussed in greater detail in Evaluation. Though the
+severity of class imbalance has been recognized by MOOC
+researchers, measures to mitigate its eﬀects in biasing pre-
+dictors are surprisingly absent.
+An eﬀective technique to overcome this bias is to resample
+the data to alter the distribution of labels in the training set.
+Approaches range in complexity from randomly undersam-
+pling the majority class to creating synthetic instances of the
+minority class. In educational data mining, these tech-
+niques have been proven useful when predicting dropout in
+Mexican high schools. In this paper, we predict dropout
+both with and without random undersampling of the major-
+ity class to demonstrate the value of overcoming this bias.
+Classiﬁcation.
+For each week ( i), we train a classiﬁer on Xi− 1 student
+data observed from the start of the MOOC till the end of
+week i − 1 and observed labels Yi− 1. Cross validation of our
+trained model ensures that we do not overﬁt on our training
+set and can generalize to test data. We then predict whether
+students active at the beginning of week i (S(i− 1,i)
+i ) are likely
+to drop out. The outcomes of these students are used as
+true labels for evaluation at each stage and repeat the pro-
+cess for each consecutive week. In our pipeline, we com-
+pare examples of both interpretable and non-interpretable
+classiﬁcation techniques. We select the two most directly
+interpretable classiﬁcation techniques— Decision Trees and
+Figure 5: R esampling data helps achieve better AUC .
+It should be noted that the Y-axis is magniﬁed for greater
+clarity.
+Figure 6: C omparison across classiﬁcation techniques
+on the same test data. Signiﬁcance testing done using
+conﬁdence intervals of 99%.
+Logistic Regression and pit them against non-interpretable
+techniques like Random Forest and Gradient Boosted Trees.
+For this example, our goal is to select the best model out of a
+set of classiﬁers, which is why we restrict this experiment to
+these algorithms. A detailed analysis of suitable alternative
+approaches is presented in Subsection 4.2.
+Evaluation.
+Perhaps the most notable aspect of imbalanced class pre-
+diction is how it is evaluated. Given an imbalanced class
+problem with 99:1 imbalance, a naive predictor which al-
+ways predicts the majority class will eﬀortlessly achieve 99%
+accuracy. In our MOOC, a simple classiﬁer which predicts
+that everyone will drop out scores an accuracy of 86.9% (=
+100% - minority class abundance). In light of the misleading
+nature of accuracy, MOOC researchers have borrowed sev-
+eral metrics used in imbalanced class learning and informa-
+tion retrieval. Several alternatives include Speciﬁcity,
+Recall, Kappa Statistic and Area Under the ROC"
+2017 - MOOC Dropout Prediction.pdf,"Days
+Features
+7
+numberplays
+perc_watched
+14 21 28 35 42 49 56
+seeks_time
+speedchanges
+perc_rewatch
+numberseeks
+forwards
+num_pc
+browser_Firefox
+browser_Chrome
+os_Ubuntu
+num_touch
+num_phone
+device_Other
+Figure 7: M odel Interpretability— Rank ordering
+Feature Importances . Decision trees and ensembles us-
+ing decision trees as base estimators can be inspected using
+their feature importance scores. This colormap charts their
+relative ranks across weeks for Random Forests.
+Curve (often abbreviated as “AUC” ) [28, 13]. In the interest
+of comparison with existing literature, we use AUC as our
+metric of choice in this paper. A perfect predictor would
+score 1.0, whereas a random predictor would score 0.5 on
+AUC. The AUC values are computed for each week, on all
+classiﬁers and summarized in Figure 6. Now that we have a
+set of classiﬁers and their respective performance scores, we
+ﬁnd out which model is the most suitable in a given dropout
+prediction pipeline.
+Model Selection.
+We identify two key traits which guide our model selection
+process—1) consistently high predictive performance and 2)
+(in case of a tie in 1),...) greater interpretability. This can
+be answered using the AUC scores and the signiﬁcance anal-
+ysis illustrated in Figure 6. Decision Trees perform better
+than, or equivalent to competing techniques consistently and
+emerge as the classiﬁer of choice on both of our desired crite-
+ria. We note that a singular algorithm may not always out-
+perform competing techniques at all points in the MOOC.
+These predictive models are based on a small subset of fea-
+tures available to competing techniques, and yet they come
+within striking distance of AUC scores like 0.88 [27], 0.87 [13]
+and 0.850 (AT1x) to 0.907 (SW12.2x) [28].
+4.2 Model Level Interpretability
+Interpretability in models can be approached in three ways
+using— 1) intrinsically intepretable models, 2) partially in-
+terpretable models and 3) after-the-fact approaches which
+treat the classiﬁer as a black-box. Since these operate at
+very diﬀerent stages in the prediction process, these are not
+necessarily mutually exclusive.
+Intrinsically Interpretable.
+We make a case for readily interpretable classiﬁcation al-
+gorithms Decision Trees and Linear Models and describe the
+steps to draw inferences from them [9]. Decision trees encode
+multiple sets of rules in the form of hierarchical nodes which
+subset the instance space till a stopping criteria is achieved.
+Each node is a logical test on a feature value and each path-
+to-leaf represents a distinct “rule” followed exclusively by the
+instances in that leaf. Decision Trees for dropout prediction
+resemble the one shown in Figure 8, where values of engage-
+ment deﬁne dropout-intensifying or completion-intensifying
+signals. In the interest of being interpretable, these trees are
+often pre-pruned to be limited in their depth. The decision
+trees used in this paper are similarly pre-pruned to a depth
+of 5. However, for brevity of illustration, we demonstrate 3
+consecutive trees limited at depth 3 in Figure 8.
+Immediate observations can be drawn from this ﬁgure at
+each week and across weeks. Three distinct proﬁles of Com-
+pleters exist at Week 3, these are inferred from paths to
+leaves indicating label = Completer. These proﬁles are 1)
+“Students who log in through one or no PCs, hit play more
+than 52 times on a video and do not use Firefox” , 2) “stu-
+dents who use 1 or 2 PCs” and 3) “students who use more
+than 2 PCs” . The last two demographics can be merged to-
+gether into one segment: “students who use 1 or more PCs” .
+Across the weeks, the changes in the topology and node val-
+ues of the tree indicate a change in the behavior of students
+who drop out. By Week 2, it does not matter if the student
+uses Windows OS or Chrome as their browser, instead these
+are replaced by how much percent on average they rewatch
+video content. In Week 3, we see that Firefox usage indicates
+Completion in students with 1 or no PC with more than 52
+video play interactions and the total number of devices does
+not matter.
+Similar inferences can be drawn for Logistic Regression
+models shown in Figure 2. At the model level, instead of
+features values, the respective feature coeﬃcients and inter-
+cept term are of interest. The intercept term is the base-
+line tendency of the linear model to predict a given class
+in absence of any signal, which here for the ﬁrst 3 weeks
+points towards Dropout consistently. On the other hand,
+the magnitude of coeﬃcient values indicates their relative
+importance and their sign (positive or negative) corresponds
+directly with the predicted classes (Completers or Dropouts,
+respectively). So, in the ﬁrst week, Completers are likely to
+be associated with a high number of PCs logged in through
+and high number of video play interactions. Over time, the
+signal from the number of times a student hits play in videos
+intensiﬁes in its eﬀect on Completion tendencies, and the
+number of PCs becomes less important. During Week 3,
+a new signal becomes important in reinforcing Dropout be-
+havior, i.e. the percentage of video content re-watched. This
+signal at Week 3 is useful to MOOC researchers by being a
+direct link to content consumption.
+356","Features
+numberplays
+perc_watched
+seeks_time
+speedchanges
+perc_rewatch
+numberseeks
+forwards
+num_pc
+browser_Firefox
+browser_Chrome
+os_Ubuntu
+num_touch
+num_phone
+device_Other
+Figure 7: M odel Interpretability— Rank ordering
+Feature Importances . Decision trees and ensembles us-
+ing decision trees as base estimators can be inspected using
+their feature importance scores. This colormap charts their
+relative ranks across weeks for Random Forests.
+Curve (often abbreviated as “AUC” ) . In the interest
+of comparison with existing literature, we use AUC as our
+metric of choice in this paper. A perfect predictor would
+score 1.0, whereas a random predictor would score 0.5 on
+AUC. The AUC values are computed for each week, on all
+classiﬁers and summarized in Figure 6. Now that we have a
+set of classiﬁers and their respective performance scores, we
+ﬁnd out which model is the most suitable in a given dropout
+prediction pipeline.
+Model Selection.
+We identify two key traits which guide our model selection
+process—1) consistently high predictive performance and 2)
+(in case of a tie in 1),...) greater interpretability. This can
+be answered using the AUC scores and the signiﬁcance anal-
+ysis illustrated in Figure 6. Decision Trees perform better
+than, or equivalent to competing techniques consistently and
+emerge as the classiﬁer of choice on both of our desired crite-
+ria. We note that a singular algorithm may not always out-
+perform competing techniques at all points in the MOOC.
+These predictive models are based on a small subset of fea-
+tures available to competing techniques, and yet they come
+within striking distance of AUC scores like 0.88, 0.87
+and 0.850 (AT1x) to 0.907 (SW12.2x).
+
+4.2 Model Level Interpretability
+Interpretability in models can be approached in three ways
+using— 1) intrinsically intepretable models, 2) partially in-
+terpretable models and 3) after-the-fact approaches which
+treat the classiﬁer as a black-box. Since these operate at
+very diﬀerent stages in the prediction process, these are not
+necessarily mutually exclusive.
+Intrinsically Interpretable.
+We make a case for readily interpretable classiﬁcation al-
+gorithms Decision Trees and Linear Models and describe the
+steps to draw inferences from them. Decision trees encode
+multiple sets of rules in the form of hierarchical nodes which
+subset the instance space till a stopping criteria is achieved.
+Each node is a logical test on a feature value and each path-
+to-leaf represents a distinct “rule” followed exclusively by the
+instances in that leaf. Decision Trees for dropout prediction
+resemble the one shown in Figure 8, where values of engage-
+ment deﬁne dropout-intensifying or completion-intensifying
+signals. In the interest of being interpretable, these trees are
+often pre-pruned to be limited in their depth. The decision
+trees used in this paper are similarly pre-pruned to a depth
+of 5. However, for brevity of illustration, we demonstrate 3
+consecutive trees limited at depth 3 in Figure 8.
+Immediate observations can be drawn from this ﬁgure at
+each week and across weeks. Three distinct proﬁles of Com-
+pleters exist at Week 3, these are inferred from paths to
+leaves indicating label = Completer. These proﬁles are 1)
+“Students who log in through one or no PCs, hit play more
+than 52 times on a video and do not use Firefox” , 2) “stu-
+dents who use 1 or 2 PCs” and 3) “students who use more
+than 2 PCs” . The last two demographics can be merged to-
+gether into one segment: “students who use 1 or more PCs” .
+Across the weeks, the changes in the topology and node val-
+ues of the tree indicate a change in the behavior of students
+who drop out. By Week 2, it does not matter if the student
+uses Windows OS or Chrome as their browser, instead these
+are replaced by how much percent on average they rewatch
+video content. In Week 3, we see that Firefox usage indicates
+Completion in students with 1 or no PC with more than 52
+video play interactions and the total number of devices does
+not matter.
+Similar inferences can be drawn for Logistic Regression
+models shown in Figure 2. At the model level, instead of
+features values, the respective feature coeﬃcients and inter-
+cept term are of interest. The intercept term is the base-
+line tendency of the linear model to predict a given class
+in absence of any signal, which here for the ﬁrst 3 weeks
+points towards Dropout consistently. On the other hand,
+the magnitude of coeﬃcient values indicates their relative
+importance and their sign (positive or negative) corresponds
+directly with the predicted classes (Completers or Dropouts,
+respectively). So, in the ﬁrst week, Completers are likely to
+be associated with a high number of PCs logged in through
+and high number of video play interactions. Over time, the
+signal from the number of times a student hits play in videos
+intensiﬁes in its eﬀect on Completion tendencies, and the
+number of PCs becomes less important. During Week 3,
+a new signal becomes important in reinforcing Dropout be-
+havior, i.e. the percentage of video content re-watched. This
+signal at Week 3 is useful to MOOC researchers by being a
+direct link to content consumption."
+2017 - MOOC Dropout Prediction.pdf,"(a) Week 1
+ (b) Week 2
+(c) Week 3
+F
+igure 8: Decision Trees over the ﬁrst 3 weeks in the MOOC . Changes in the structure are a direct reﬂection of
+dropouts and completions in the MOOC.
+These extremely detailed insights from model inference
+exhibit the power of using Decision Trees and Sparse Linear
+Models. Their predictive performance from Figure 6 fur-
+ther supports their predictive power. Other approaches like
+Interpretable Decision Sets are designed with the primary
+purpose of being interpretable [18], but may not always be
+easy to integrate into existing pipelines.
+P artially Interpretable.
+A possible way to achieve partial interpretability in Ran-
+dom Forests and other ensemble approaches is to visual-
+ize each constituent classiﬁer, or to characterize them in
+terms of their feature importances. Typically, an ensem-
+ble can have hundreds, if not thousands of classiﬁers and
+as such make it tedious to interpret each component ev-
+ery week, which makes feature importances a more conve-
+nient choice. A compact metaphor to visualize feature im-
+portances is shown in Figure 7 in the form of a colormap.
+Though we cannot make granular inferences like we did from
+Figure 8, we can still comment on the broad-stroke role the
+features play in dropout prediction. This high-level treat-
+ment still echoes lessons learned from Logistic Regression
+(Figure 2) and Decision Trees (Figure 8). In both Logistic
+Regression and Decision Trees, we see that the percentage
+of rewatched videos starts gaining importance from Week 2
+and 4 onwards.
+Interpreting the uninterpretable.
+Model-agnostic black-box approaches operate after-the-
+fact on trained models. They approximate the behavior of
+the original classiﬁer using an interpretable classiﬁer and
+provide an interpretability layer, much the same as this pa-
+per aims to do with dropout detection as a whole. Popular
+approaches include decision-tree approximations [6], linear-
+model approximations [21], and perturbation based model
+inference [1]. In cases where it is impossible to swap out the
+uninterpretable predictor, we recommend that these wrapper-
+based approaches be used.
+4.3 Instance Level Interpretability
+The goal of instance level interpretability is to identify
+key feature values which contributed towards a predicted
+outcome for a given instance. Readily interpretable models
+give rise to readily interpretable predictions. In the case of
+Decision Trees, the path-to-leaf in a decision tree is the ex-
+planation of an instance’s prediction and the terminal leaf
+node is the predicted outcome label. Linear Models can be
+interpreted by multiplying feature values with the learned
+coeﬃcients and adding the intercept. The highest magni-
+tude of coeﬃcient multiplied by feature value is the most
+informative of an instance’s prediction. Other instance-level
+interpretations are discussed in [9].
+In the interest of being an interpretability layer, this pa-
+per uses Locally Interpretable Model-Agnostic Explanations
+(LIME) [21], which, as the name suggests is a model-agnostic
+wrapper technique. LIME trains an interpretable linear ap-
+proximation of the black-box classiﬁer around the test in-
+stance. It then returns the approximate linear model coef-
+ﬁcients, intercept and probability scores to oﬀer an expla-
+nation that is faithful to the black-box model for that given
+instance. We use LIME at each stage of the dropout pre-
+diction pipeline to provide explanations for any student’s
+predicted outcome from any classiﬁer model.
+Using LIME on a given student’s dropout predictions over
+time gives us probability scores for likelihood of dropout
+and possible linear model explainers. Figure 9 shows how
+we can extract a student-centric storyboard from these ex-
+plained predictions. From the probability score, we see that
+the student initially only shows leanings towards completion
+and then exhibits stronger signs of completing the course.
+Barring a minor hiccup in Week 2, this student’s comple-
+357","Figure 8: Decision Trees over the ﬁrst 3 weeks in the MOOC . Changes in the structure are a direct reﬂection of
+dropouts and completions in the MOOC.
+These extremely detailed insights from model inference
+exhibit the power of using Decision Trees and Sparse Linear
+Models. Their predictive performance from Figure 6 fur-
+ther supports their predictive power. Other approaches like
+Interpretable Decision Sets are designed with the primary
+purpose of being interpretable, but may not always be
+easy to integrate into existing pipelines.
+P artially Interpretable.
+A possible way to achieve partial interpretability in Ran-
+dom Forests and other ensemble approaches is to visual-
+ize each constituent classiﬁer, or to characterize them in
+terms of their feature importances. Typically, an ensem-
+ble can have hundreds, if not thousands of classiﬁers and
+as such make it tedious to interpret each component ev-
+ery week, which makes feature importances a more conve-
+nient choice. A compact metaphor to visualize feature im-
+portances is shown in Figure 7 in the form of a colormap.
+Though we cannot make granular inferences like we did from
+Figure 8, we can still comment on the broad-stroke role the
+features play in dropout prediction. This high-level treat-
+ment still echoes lessons learned from Logistic Regression
+(Figure 2) and Decision Trees (Figure 8). In both Logistic
+Regression and Decision Trees, we see that the percentage
+of rewatched videos starts gaining importance from Week 2
+and 4 onwards.
+Interpreting the uninterpretable.
+Model-agnostic black-box approaches operate after-the-
+fact on trained models. They approximate the behavior of
+the original classiﬁer using an interpretable classiﬁer and
+provide an interpretability layer, much the same as this pa-
+per aims to do with dropout detection as a whole. Popular
+approaches include decision-tree approximations, linear-
+model approximations, and perturbation based model
+inference. In cases where it is impossible to swap out the
+uninterpretable predictor, we recommend that these wrapper-
+based approaches be used.
+4.3 Instance Level Interpretability
+The goal of instance level interpretability is to identify
+key feature values which contributed towards a predicted
+outcome for a given instance. Readily interpretable models
+give rise to readily interpretable predictions. In the case of
+Decision Trees, the path-to-leaf in a decision tree is the ex-
+planation of an instance’s prediction and the terminal leaf
+node is the predicted outcome label. Linear Models can be
+interpreted by multiplying feature values with the learned
+coeﬃcients and adding the intercept. The highest magni-
+tude of coeﬃcient multiplied by feature value is the most
+informative of an instance’s prediction. Other instance-level
+interpretations are discussed in .
+In the interest of being an interpretability layer, this pa-
+per uses Locally Interpretable Model-Agnostic Explanations
+(LIME), which, as the name suggests is a model-agnostic
+wrapper technique. LIME trains an interpretable linear ap-
+proximation of the black-box classiﬁer around the test in-
+stance. It then returns the approximate linear model coef-
+ﬁcients, intercept and probability scores to oﬀer an expla-
+nation that is faithful to the black-box model for that given
+instance. We use LIME at each stage of the dropout pre-
+diction pipeline to provide explanations for any student’s
+predicted outcome from any classiﬁer model.
+Using LIME on a given student’s dropout predictions over
+time gives us probability scores for likelihood of dropout
+and possible linear model explainers. Figure 9 shows how
+we can extract a student-centric storyboard from these ex-
+plained predictions. From the probability score, we see that
+the student initially only shows leanings towards completion
+and then exhibits stronger signs of completing the course.
+Barring a minor hiccup in Week 2, this student’s comple-"
+2017 - MOOC Dropout Prediction.pdf,"Figure 9: L ongitudinal Explainers throughout the MOOC for a sample student with their predicted probabil-
+ities of Completion . We see the various feature values speciﬁc to this student who persists through the MOOC till Week 5
+and completes the course.
+tion is largely owing to adherence to watching videos (the
+high number of video play events points to this). This stu-
+dent tends to watch a small portion of the video content
+and hence rewatches a certain portion of those videos. This
+nudges the probability score away from Completion, but not
+enough to lower it enough to predict Dropout.
+5. CONCLUSION
+Our paper is a ﬁrst-step in the direction of incorporating
+interpretability in MOOC dropout prediction. We realize
+that the problem of MOOC dropout has its roots in student
+engagement and cannot be studied in isolation, spurring the
+need to answer the much needed why? in student dropout.
+How can MOOC dropout prediction pipelines be
+made interpretable? An interpretable pipeline needs to
+begin with interpretable features. Features which encom-
+pass elements of student engagement need to be chosen such
+that they are available for the entire set of students we wish
+to predict on. Preprocessing steps like PCA which obfus-
+cate interpretability should not be used. Given that student
+dropout is an imbalanced class problem, resampling tech-
+niques help alleviate its negative eﬀect on prediction.
+What machine learning techniques does one need
+to consider? We show how model selection should be im-
+plemented to select the best possible model at each stage.
+We provide guidelines and metrics to identify the best mix of
+interpretable and high-performance models. Interpretabil-
+ity can be introduced using various approaches. We demon-
+strate implementations ranging from intrinsically interpretable
+to black-box model inference approaches to interpret models
+and predictions.
+Can this be generalized to other MOOCs? We show
+how our analyses could be extended to MOOCs which dif-
+fer from ours in format and platform (Coursera, Udacity,
+Udemy, etc).
+Our solution to interpretable dropout prediction pipelines
+enables us to analyze both models and predictions longitu-
+dinally. In the future, we aim to expand this research to
+evaluating its eﬀectiveness on intervention eﬀorts in a live
+MOOC.
+6. ACKNOWLEDGMENTS
+This research was supported in part by the NSF Grant
+IIS-1447795.
+7. REFERENCES
+[1] D. Baehrens, T. Schroeter, S. Harmeling,
+M. Kawanabe, K. Hansen, and K.-R. M ˜Aˇ zller. How to
+explain individual classiﬁcation decisions. Journal of
+Machine Learning Research , 11(Jun):1803–1831, 2010.
+[2] G. Balakrishnan and D. Coetzee. Predicting student
+retention in massive open online courses using hidden
+markov models. Electrical Engineering and Computer
+Sciences University of California at Berkeley , 2013.
+[3] N. V. Chawla, K. W. Bowyer, L. O. Hall, and W. P.
+Kegelmeyer. Smote: synthetic minority over-sampling
+technique. Journal of artiﬁcial intelligence research ,
+16:321–357, 2002.
+[4] N. V. Chawla, N. Japkowicz, and A. Kotcz. Editorial:
+special issue on learning from imbalanced data sets.
+ACM Sigkdd Explorations Newsletter , 6(1):1–6, 2004.
+[5] D. Clark. Moocs: taxonomy of 8 types of mooc.
+Donald Clark Paln B , 2013.
+[6] M. W. Craven and J. W. Shavlik. Extracting
+tree-structured representations of trained networks.
+Advances in neural information processing systems ,
+pages 24–30, 1996.
+[7] J. Dillon, N. Bosch, M. Chetlur, N. Wanigasekara,
+G. A. Ambrose, B. Sengupta, and S. K. D’Mello.
+Student emotion, co-occurrence, and dropout in a
+MOOC context. The 9th International Conference on
+Educational Data Mining , pages 353–357, 2016.
+[8] M. Fei and D.-Y. Yeung. Temporal models for
+predicting student dropout in massive open online
+courses. In 2015 IEEE International Conference on
+Data Mining Workshop (ICDMW) , pages 256–263.
+IEEE, 2015.
+[9] A. A. Freitas. Comprehensible classiﬁcation models: a
+position paper. ACM SIGKDD explorations
+newsletter, 15(1):1–10, 2014.
+[10] P. J. Guo, J. Kim, and R. Rubin. How video
+production aﬀects student engagement: An empirical
+study of mooc videos. In Proceedings of the ﬁrst ACM
+conference on Learning@ scale conference , pages
+41–50. ACM, 2014.
+[11] C. G ¨utl, R. H. Rizzardini, V. Chang, and M. Morales.
+Attrition in mooc: Lessons learned from drop-out
+students. In International Workshop on Learning
+Technology for Education in Cloud , pages 37–48.
+Springer, 2014.
+[12] S. Halawa, D. Greene, and J. Mitchell. Dropout
+prediction in moocs using learner activity features.
+358","Figure 9: L ongitudinal Explainers throughout the MOOC for a sample student with their predicted probabil-
+ities of Completion . We see the various feature values speciﬁc to this student who persists through the MOOC till Week 5
+and completes the course.
+tion is largely owing to adherence to watching videos (the
+high number of video play events points to this). This stu-
+dent tends to watch a small portion of the video content
+and hence rewatches a certain portion of those videos. This
+nudges the probability score away from Completion, but not
+enough to lower it enough to predict Dropout.
+5. CONCLUSION
+Our paper is a ﬁrst-step in the direction of incorporating
+interpretability in MOOC dropout prediction. We realize
+that the problem of MOOC dropout has its roots in student
+engagement and cannot be studied in isolation, spurring the
+need to answer the much needed why? in student dropout.
+How can MOOC dropout prediction pipelines be
+made interpretable? An interpretable pipeline needs to
+begin with interpretable features. Features which encom-
+pass elements of student engagement need to be chosen such
+that they are available for the entire set of students we wish
+to predict on. Preprocessing steps like PCA which obfus-
+cate interpretability should not be used. Given that student
+dropout is an imbalanced class problem, resampling tech-
+niques help alleviate its negative eﬀect on prediction.
+What machine learning techniques does one need
+to consider? We show how model selection should be im-
+plemented to select the best possible model at each stage.
+We provide guidelines and metrics to identify the best mix of
+interpretable and high-performance models. Interpretabil-
+ity can be introduced using various approaches. We demon-
+strate implementations ranging from intrinsically interpretable
+to black-box model inference approaches to interpret models
+and predictions.
+Can this be generalized to other MOOCs? We show
+how our analyses could be extended to MOOCs which dif-
+fer from ours in format and platform (Coursera, Udacity,
+Udemy, etc).
+Our solution to interpretable dropout prediction pipelines
+enables us to analyze both models and predictions longitu-
+dinally. In the future, we aim to expand this research to
+evaluating its eﬀectiveness on intervention eﬀorts in a live
+MOOC.
+6. ACKNOWLEDGMENTS
+This research was supported in part by the NSF Grant
+IIS-1447795.
+7. REFERENCES"
+2017 - MOOC Dropout Prediction.pdf,"Experiences and best practices in and around MOOCs ,
+7
+:3–12, 2014.
+[13] J. He, J. Bailey, B. I. Rubinstein, and R. Zhang.
+Identifying at-risk students in massive open online
+courses. In AAAI, pages 1749–1755, Austin Texas,
+USA, 2015. AAAI Press.
+[14] G. Kennedy, C. Coﬀrin, P. de Barba, and L. Corrin.
+Predicting success: how learners’ prior knowledge,
+skills and activities predict mooc performance. In
+Proceedings of the Fifth International Conference on
+Learning Analytics And Knowledge , pages 136–140,
+New York, NY, USA, 2015. ACM, ACM New York,
+NY, USA 2015.
+[15] H. Khalil and M. Ebner. Moocs completion rates and
+possible methods to improve retention - a literature
+review. In J. Viteli and M. Leikomaa, editors,
+Proceedings of EdMedia: World Conference on
+Educational Media and Technology 2014 , pages
+1305–1313, Tampere, Finland, June 2014. Association
+for the Advancement of Computing in Education
+(AACE).
+[16] M. Kloft, F. Stiehler, Z. Zheng, and N. Pinkwart.
+Predicting mooc dropout over weeks using machine
+learning methods. In Proceedings of the EMNLP 2014
+Workshop on Analysis of Large Scale Social
+Interaction in MOOCs , pages 60–65, Doha, Qatar,
+2014.
+[17] B. Kocol. Web page link-tracking system, Mar. 10
+2009. US Patent 7,502,994.
+[18] H. Lakkaraju, S. H. Bach, and J. Leskovec.
+Interpretable decision sets: A joint framework for
+description and prediction. In Proceedings of the 22Nd
+ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining , KDD ’16,
+pages 1675–1684, New York, NY, USA, 2016. ACM.
+[19] C. M´ arquez-Vera, A. Cano, C. Romero, A. Y. M.
+Noaman, H. Mousa Fardoun, and S. Ventura. Early
+dropout prediction using data mining: a case study
+with high school students. Expert Systems ,
+33(1):107–124, 2016.
+[20] D. F. Onah, J. Sinclair, and R. Boyatt. Dropout rates
+of massive open online courses: behavioural patterns.
+EDULEARN14 Proceedings, pages 5825–5834, 2014.
+[21] M. T. Ribeiro, S. Singh, and C. Guestrin. ” why
+should i trust you?” : Explaining the predictions of any
+classiﬁer. arXiv preprint arXiv:1602.04938 ,
+abs/1602.04938, 2016.
+[22] M. T. Ribeiro, S. Singh, and C. Guestrin.
+Model-agnostic interpretability of machine learning.
+arXiv preprint arXiv:1606.05386 , 2016.
+[23] R. Rivard. Measuring the mooc dropout rate. Inside
+Higher Ed , 8:2013, 2013.
+[24] T. Sinha, P. Jermann, N. Li, and P. Dillenbourg. Your
+click decides your fate: Inferring information
+processing and attrition behavior from mooc video
+clickstream interactions. arXiv preprint
+arXiv:1407.7131, 2014.
+[25] R. M. Stein and G. Allione. Mass attrition: An
+analysis of drop out from a principles of
+microeconomics mooc. Social Science Research
+Network, pages 1–19, 2014.
+[26] J. K. Tang, H. Xie, and T.-L. Wong. A big data
+framework for early identiﬁcation of dropout students
+in mooc. In International Conference on Technology in
+Education, pages 127–132. Springer, 2015.
+[27] C. Taylor, K. Veeramachaneni, and U.-M. O’Reilly.
+Likely to stop? predicting stopout in massive open
+online courses. arXiv preprint arXiv:1408.3382 , 2014.
+[28] J. Whitehill, J. J. Williams, G. Lopez, C. A. Coleman,
+and J. Reich. Beyond prediction: First steps toward
+automatic intervention in mooc student stopout.
+Social Science Research Network , 2015.
+[29] W. Xing, X. Chen, J. Stein, and M. Marcinkowski.
+Temporal predication of dropouts in moocs: Reaching
+the low hanging fruit through stacking generalization.
+Computers in Human Behavior , 58:119–129, 2016.
+[30] K. Xu, J. Ba, R. Kiros, K. Cho, A. Courville,
+R. Salakhutdinov, R. S. Zemel, and Y. Bengio. Show,
+attend and tell: Neural image caption generation with
+visual attention. arXiv preprint arXiv:1502.03044 ,
+2(3):5, 2015.
+[31] D. Yang, T. Sinha, D. Adamson, and C. P. Rose. Turn
+on, Tune in, Drop out: Anticipating student dropouts
+in Massive Open Online Courses. In Proceedings of the
+2013 NIPS Data-driven education workshop ,
+volume 11, page 14, Lake Tahoe, Nevada, USA, 2013.
+359",

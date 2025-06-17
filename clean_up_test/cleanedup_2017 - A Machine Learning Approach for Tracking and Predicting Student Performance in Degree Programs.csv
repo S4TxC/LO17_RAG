@@ -1,0 +1,2426 @@
+source,page_content,cleaned_page_content
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"742 IEEE JOURNAL OF SELECTED TOPICS IN SIGNAL PROCESSING, VOL. 11, NO. 5, AUGUST 2017
+A Machine Learning Approach for Tracking and
+Predicting Student Performance in Degree Programs
+Jie Xu , Member , IEEE, Kyeong Ho Moon , Student Member , IEEE , and Mihaela van der Schaar , Fellow, IEEE
+Abstract—Accurately predicting students’ future performance
+based on their ongoing academic records is crucial for effectively
+carrying out necessary pedagogical interventions to ensure
+students’ on-time and satisfactory graduation. Although there is
+a rich literature on predicting student performance when solving
+problems or studying for courses using data-driven approaches,
+predicting student performance in completing degrees (e.g.,
+college programs) is much less studied and faces new challenges:
+1) Students differ tremendously in terms of backgrounds and
+selected courses; 2) courses are not equally informative for making
+accurate predictions; and 3) students’ evolving progress needs to be
+incorporated into the prediction. In this paper, we develop a novel
+machine learning method for predicting student performance in
+degree programs that is able to address these key challenges. The
+proposed method has two major features. First, a bilayered struc-
+ture comprising multiple base predictors and a cascade of ensemble
+predictors is developed for making predictions based on students’
+evolving performance states. Second, a data-driven approach
+based on latent factor models and probabilistic matrix factoriza-
+tion is proposed to discover course relevance, which is important
+for constructing efﬁcient base predictors. Through extensive sim-
+ulations on an undergraduate student dataset collected over three
+years at University of California, Los Angeles, we show that the
+proposed method achieves superior performance to benchmark
+approaches.
+Index T erms—Data-driven course clustering, personalized edu-
+cation, student performance prediction.
+I. I NTRODUCTION
+M
+AKING higher education affordable has a signiﬁcant im-
+pact on ensuring the nation’s economic prosperity and
+represents a central focus of the government when making ed-
+ucation policies [1]. Yet student loan debt in the United States
+has blown past the trillion-dollar mark, exceeding Americans’
+combined credit card and auto loan debts [2]. As the cost in
+Manuscript received October 15, 2016; revised February 16, 2017; accepted
+February 21, 2017. Date of publication April 7, 2017; date of current version
+July 18, 2017. This work was supported by National Science Foundation under
+Grants ECCS 1407712 and PFI:BIC 1533983. The guest editor coordinating the
+review of this paper and approving for publication was Dr. Richard G. Baraniuk.
+(Corresponding author: Mihaela van der Schaar .)
+J. Xu is with the Department of Electrical and Computer Engineering, Uni-
+versity of Miami, Coral Gables, FL 33146 USA (e-mail: jiexu@miami.edu).
+K. H. Moon is with the Department of Electrical Engineering, University of
+California, Los Angeles, CA 90095 USA (e-mail: kmoon0320@ucla.edu).
+M. van der Schaar is with the Department of Electrical Engineering, Univer-
+sity of California, Los Angeles, CA 90095 USA, and also with the Oxford-Man
+Institute of Quantitative Finance and the Department of Engineering Science,
+Oxford University, Oxford OX1 3PA, U.K. (e-mail: mihaela@ee.ucla.edu).
+Color versions of one or more of the ﬁgures in this paper are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/JSTSP .2017.2692560
+college education (tuitions, fees and living expenses) has sky-
+rocketed over the past few decades, prolonged graduation time
+has become a crucial contributing factor to the ever-growing
+student loan debt. In fact, recent studies show that only 50 of the
+more than 580 public four-year institutions in the United States
+have on-time graduation rates at or above 50 percent for their
+full-time students [2].
+To make college more affordable, it is thus crucial to ensure
+that many more students graduate on time through early inter-
+ventions on students whose performance will be unlikely to meet
+the graduation criteria of the degree program on time. A criti-
+cal step towards effective intervention is to build a system that
+can continuously keep track of students’ academic performance
+and accurately predict their future performance, such as when
+they are likely to graduate and their estimated ﬁnal GPAs, given
+the current progress. Although predicting student performance
+has been extensively studied in the literature, it was primarily
+studied in the contexts of solving problems in Intelligent Tutor-
+ing Systems (ITSs) [3]–[6], or completing courses in classroom
+settings or in Massive Open Online Courses (MOOC) platforms
+[7][8]. However, predicting student performance within a de-
+gree program (e.g. college program) is signiﬁcantly different
+and faces new challenges.
+First, students can differ tremendously in terms of back-
+grounds as well as their chosen areas (majors, specializations),
+resulting in different selected courses as well as course se-
+quences. On the other hand, the same course can be taken by
+students in different areas. Since predicting student performance
+in a particular course relies on the student past performance in
+other courses, a key challenge for training an effective predictor
+is how to handle heterogeneous student data due to different
+areas and interests. In contrast, solving problems in ITSs often
+follow routine steps which are the same for all students [9].
+Similarly, predictions of students’ performance in courses are
+often based on in-course assessments which are designed to be
+the same for all students [7].
+Second, students may take many courses but not all courses
+are equally informative for predicting students’ future perfor-
+mance. Utilizing the student’s past performance in all courses
+that he/she has completed not only increases complexity but
+also introduces noise in the prediction, thereby degrading the
+prediction performance. For instance, while it makes sense to
+consider a student’s grade in the course “Linear Algebra” for
+predicting his/her grade in the course “Linear Optimization”,
+the student’s grade in the course “Chemistry Lab” may have
+much weaker predictive power. However, the course correlation
+1932-4553 © 2017 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications standards/publications/rights/index.html for more information.
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","Abstract—Accurately predicting students’ future performance
+based on their ongoing academic records is crucial for effectively
+carrying out necessary pedagogical interventions to ensure
+students’ on-time and satisfactory graduation. Although there is
+a rich literature on predicting student performance when solving
+problems or studying for courses using data-driven approaches,
+predicting student performance in completing degrees (e.g.,
+college programs) is much less studied and faces new challenges:
+1) Students differ tremendously in terms of backgrounds and
+selected courses; 2) courses are not equally informative for making
+accurate predictions; and 3) students’ evolving progress needs to be
+incorporated into the prediction. In this paper, we develop a novel
+machine learning method for predicting student performance in
+degree programs that is able to address these key challenges. The
+proposed method has two major features. First, a bilayered struc-
+ture comprising multiple base predictors and a cascade of ensemble
+predictors is developed for making predictions based on students’
+evolving performance states. Second, a data-driven approach
+based on latent factor models and probabilistic matrix factoriza-
+tion is proposed to discover course relevance, which is important
+for constructing efﬁcient base predictors. Through extensive sim-
+ulations on an undergraduate student dataset collected over three
+years at University of California, Los Angeles, we show that the
+proposed method achieves superior performance to benchmark
+approaches.
+Index T erms—Data-driven course clustering, personalized edu-
+cation, student performance prediction.
+I. I NTRODUCTION
+M
+AKING higher education affordable has a signiﬁcant im-
+pact on ensuring the nation’s economic prosperity and
+represents a central focus of the government when making ed-
+ucation policies. Yet student loan debt in the United States
+has blown past the trillion-dollar mark, exceeding Americans’
+combined credit card and auto loan debts. As the cost in
+college education (tuitions, fees and living expenses) has sky-
+rocketed over the past few decades, prolonged graduation time
+has become a crucial contributing factor to the ever-growing
+student loan debt. In fact, recent studies show that only 50 of the
+more than 580 public four-year institutions in the United States
+have on-time graduation rates at or above 50 percent for their
+full-time students.
+To make college more affordable, it is thus crucial to ensure
+that many more students graduate on time through early inter-
+ventions on students whose performance will be unlikely to meet
+the graduation criteria of the degree program on time. A criti-
+cal step towards effective intervention is to build a system that
+can continuously keep track of students’ academic performance
+and accurately predict their future performance, such as when
+they are likely to graduate and their estimated ﬁnal GPAs, given
+the current progress. Although predicting student performance
+has been extensively studied in the literature, it was primarily
+studied in the contexts of solving problems in Intelligent Tutor-
+ing Systems (ITSs), or completing courses in classroom
+settings or in Massive Open Online Courses (MOOC) platforms. However, predicting student performance within a de-
+gree program (e.g. college program) is signiﬁcantly different
+and faces new challenges.
+First, students can differ tremendously in terms of back-
+grounds as well as their chosen areas (majors, specializations),
+resulting in different selected courses as well as course se-
+quences. On the other hand, the same course can be taken by
+students in different areas. Since predicting student performance
+in a particular course relies on the student past performance in
+other courses, a key challenge for training an effective predictor
+is how to handle heterogeneous student data due to different
+areas and interests. In contrast, solving problems in ITSs often
+follow routine steps which are the same for all students.
+Similarly, predictions of students’ performance in courses are
+often based on in-course assessments which are designed to be
+the same for all students.
+Second, students may take many courses but not all courses
+are equally informative for predicting students’ future perfor-
+mance. Utilizing the student’s past performance in all courses
+that he/she has completed not only increases complexity but
+also introduces noise in the prediction, thereby degrading the
+prediction performance. For instance, while it makes sense to
+consider a student’s grade in the course “Linear Algebra” for
+predicting his/her grade in the course “Linear Optimization”,
+the student’s grade in the course “Chemistry Lab” may have
+much weaker predictive power. However, the course correlation"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"XU et al. : MACHINE LEARNING APPROACH FOR TRACKING AND PREDICTING STUDENT PERFORMANCE 743
+is not always as obvious as in this case. Therefore, discovering
+the underlying correlation among courses is of great importance
+for making accurate performance predictions.
+Third, predicting student performance in a degree program is
+not a one-time task; rather, it requires continuous tracking and
+updating as the student ﬁnishes new courses over time. An im-
+portant consideration in this regard is that the prediction needs
+to be made based on not only the most recent snapshot of the
+student accomplishments but also the evolution of the student
+progress, which may contain valuable information for making
+more accurate predictions. However, the complexity can easily
+explode since even mathematically representing the evolution of
+student progress itself can be a daunting task. However, treating
+the past progress equally as the current performance when pre-
+dicting the future may not be a wise choice either since intuition
+tells us that old information tends to be outdated.
+In light of the aforementioned challenges, in this paper, we
+propose a novel method for predicting student performance in a
+degree program. We focus on predicting students’ GPAs but the
+general framework can be used for other student performance
+prediction tasks. Our main contributions are three-fold.
+1) We develop a novel algorithm for making predictions based
+on students’ progressive performance states. It adopts a bilay-
+ered structure comprising a base predictor layer and an ensemble
+predictor layer. In the base layer, multiple base predictors make
+local predictions given the snapshot of the student’s current per-
+formance state in each academic term. In the ensemble layer,
+an ensemble predictor issues a prediction of the student’s future
+performance by synthesizing the local predictions results as well
+as the previous-term ensemble prediction. The cascading of en-
+semble predictor over academic terms enables the incorporation
+of students’ evolving progress into the prediction while keeping
+the complexity low. We also derive a performance guarantee for
+our proposed algorithm.
+2) We develop a data-driven course clustering method based
+on probabilistic matrix factorization, which automatically out-
+puts course clusters based on large, heterogeneous and sparse
+student course grade data. Base predictors are trained using a
+variety of state-of-the-art machine learning techniques based
+on the discovered course clustering results. Speciﬁcally, only
+relevant courses in the same cluster are used as input to the
+base predictors. This not only reduces the training complexity
+but also removes irrelevant information and reduces noise in
+making the prediction.
+3) We perform extensive simulation studies on an undergrad-
+uate student dataset collected over three years across 1169 stu-
+dents at the Mechanical and Aerospace Engineering department
+at UCLA. The results show that our proposed method is able to
+signiﬁcantly outperform benchmark methods while preserving
+educational interpretability.
+The rest of this paper is organized as follows. Section II dis-
+cusses the related work. Section III formulates the student per-
+formance prediction problem and provides an overview of the
+proposed method. Section IV describes how to discover course
+correlations and train the term-wise base predictors. Section V
+proposes a novel progressive prediction algorithm to incorporate
+students’ evolving performance into the prediction. Section VI
+presents the dataset and experimental results. Section VII con-
+cludes the paper.
+II. R ELA TEDWORK
+A. Student Performance Prediction
+Machine learning for education has gained much attention in
+recent years. A substantial amount of literature focuses on pre-
+dicting student performance in solving problems or completing
+courses [10]. Many machine learning techniques, such as deci-
+sion trees [11], artiﬁcial neural networks [12], matrix factoriza-
+tion [13], collaborative ﬁlters [14] and probabilistic graphical
+models [6], [15], have been applied to develop prediction al-
+gorithms. Most of this work ignores the temporal/sequential
+effect that students improve their knowledge over time and
+treats the prediction as a one-time task. To take the tempo-
+ral/sequential effect into account, a three-mode tensor factor-
+ization (on student/problem/time) technique was developed for
+predicting student performance in solving problems in ITSs [16]
+and a similarity-based algorithm was proposed to issue predic-
+tions of student grades in courses only when a certain conﬁdence
+level is reached [17]. However, due to the aforementioned sub-
+stantial differences of predicting student performance in degree
+programs, these methods are not applicable in our setting.
+Our progressive prediction algorithm uses the ensemble learn-
+ing technique, in particular, the Exponentially Weighted Av-
+erage Forecaster (EW AF) [18] as a building block to enable
+progressive prediction of student performance and online up-
+dating of the predictor as new student data is received. The
+major difference from the conventional EW AF algorithm is that
+an ensemble predictor has access to multiple base predictors (ex-
+perts) as well as the previous-term ensemble predictor, whose
+output summarizes the outputs of all previous-term base predic-
+tors (experts) whereas the conventional EW AF algorithm has
+access to all experts directly. To our best knowledge, this is
+a novel architecture for designing predictors for progressively
+expanding input spaces, which signiﬁcantly reduces design and
+implementation complexity and easily scales with the number
+of academic terms. In this setting, we prove that each ensemble
+predictor still performs asymptotically no worse than the best
+base predictor in hindsight among all previous-term base pre-
+dictors in the worst case, thereby providing strong performance
+guarantee. More importantly, when the best base predictor is bi-
+ased towards current-term base predictors, our algorithm is able
+to achieve better expected regret than the conventional method
+that has access to all experts directly and treats them equally.
+B. Course Relevance Discovery
+Our course relevance discovery method is based on the latent
+factor model [19] and uses the probabilistic matrix factorization
+algorithm [20] to perform course clustering, which are exten-
+sively used in recommender systems [21]–[23]. The problem
+faced by recommender systems is similar to that for student
+performance prediction: the dataset in recommender systems is
+sparse in the sense that each user has rated only a small set of
+items in the entire item space whereas in our case, each student
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","is not always as obvious as in this case. Therefore, discovering
+the underlying correlation among courses is of great importance
+for making accurate performance predictions.
+Third, predicting student performance in a degree program is
+not a one-time task; rather, it requires continuous tracking and
+updating as the student ﬁnishes new courses over time. An im-
+portant consideration in this regard is that the prediction needs
+to be made based on not only the most recent snapshot of the
+student accomplishments but also the evolution of the student
+progress, which may contain valuable information for making
+more accurate predictions. However, the complexity can easily
+explode since even mathematically representing the evolution of
+student progress itself can be a daunting task. However, treating
+the past progress equally as the current performance when pre-
+dicting the future may not be a wise choice either since intuition
+tells us that old information tends to be outdated.
+In light of the aforementioned challenges, in this paper, we
+propose a novel method for predicting student performance in a
+degree program. We focus on predicting students’ GPAs but the
+general framework can be used for other student performance
+prediction tasks. Our main contributions are three-fold.
+1) We develop a novel algorithm for making predictions based
+on students’ progressive performance states. It adopts a bilay-
+ered structure comprising a base predictor layer and an ensemble
+predictor layer. In the base layer, multiple base predictors make
+local predictions given the snapshot of the student’s current per-
+formance state in each academic term. In the ensemble layer,
+an ensemble predictor issues a prediction of the student’s future
+performance by synthesizing the local predictions results as well
+as the previous-term ensemble prediction. The cascading of en-
+semble predictor over academic terms enables the incorporation
+of students’ evolving progress into the prediction while keeping
+the complexity low. We also derive a performance guarantee for
+our proposed algorithm.
+2) We develop a data-driven course clustering method based
+on probabilistic matrix factorization, which automatically out-
+puts course clusters based on large, heterogeneous and sparse
+student course grade data. Base predictors are trained using a
+variety of state-of-the-art machine learning techniques based
+on the discovered course clustering results. Speciﬁcally, only
+relevant courses in the same cluster are used as input to the
+base predictors. This not only reduces the training complexity
+but also removes irrelevant information and reduces noise in
+making the prediction.
+3) We perform extensive simulation studies on an undergrad-
+uate student dataset collected over three years across 1169 stu-
+dents at the Mechanical and Aerospace Engineering department
+at UCLA. The results show that our proposed method is able to
+signiﬁcantly outperform benchmark methods while preserving
+educational interpretability.
+The rest of this paper is organized as follows. Section II dis-
+cusses the related work. Section III formulates the student per-
+formance prediction problem and provides an overview of the
+proposed method. Section IV describes how to discover course
+correlations and train the term-wise base predictors. Section V
+proposes a novel progressive prediction algorithm to incorporate
+students’ evolving performance into the prediction. Section VI
+presents the dataset and experimental results. Section VII con-
+cludes the paper.
+II. R ELA TEDWORK
+A. Student Performance Prediction
+Machine learning for education has gained much attention in
+recent years. A substantial amount of literature focuses on pre-
+dicting student performance in solving problems or completing
+courses. Many machine learning techniques, such as deci-
+sion trees, artiﬁcial neural networks, matrix factoriza-
+tion, collaborative ﬁlters and probabilistic graphical
+models, have been applied to develop prediction al-
+gorithms. Most of this work ignores the temporal/sequential
+effect that students improve their knowledge over time and
+treats the prediction as a one-time task. To take the tempo-
+ral/sequential effect into account, a three-mode tensor factor-
+ization (on student/problem/time) technique was developed for
+predicting student performance in solving problems in ITSs
+and a similarity-based algorithm was proposed to issue predic-
+tions of student grades in courses only when a certain conﬁdence
+level is reached. However, due to the aforementioned sub-
+stantial differences of predicting student performance in degree
+programs, these methods are not applicable in our setting.
+Our progressive prediction algorithm uses the ensemble learn-
+ing technique, in particular, the Exponentially Weighted Av-
+erage Forecaster (EW AF) as a building block to enable
+progressive prediction of student performance and online up-
+dating of the predictor as new student data is received. The
+major difference from the conventional EW AF algorithm is that
+an ensemble predictor has access to multiple base predictors (ex-
+perts) as well as the previous-term ensemble predictor, whose
+output summarizes the outputs of all previous-term base predic-
+tors (experts) whereas the conventional EW AF algorithm has
+access to all experts directly. To our best knowledge, this is
+a novel architecture for designing predictors for progressively
+expanding input spaces, which signiﬁcantly reduces design and
+implementation complexity and easily scales with the number
+of academic terms. In this setting, we prove that each ensemble
+predictor still performs asymptotically no worse than the best
+base predictor in hindsight among all previous-term base pre-
+dictors in the worst case, thereby providing strong performance
+guarantee. More importantly, when the best base predictor is bi-
+ased towards current-term base predictors, our algorithm is able
+to achieve better expected regret than the conventional method
+that has access to all experts directly and treats them equally.
+B. Course Relevance Discovery
+Our course relevance discovery method is based on the latent
+factor model and uses the probabilistic matrix factorization
+algorithm to perform course clustering, which are exten-
+sively used in recommender systems. The problem
+faced by recommender systems is similar to that for student
+performance prediction: the dataset in recommender systems is
+sparse in the sense that each user has rated only a small set of
+items in the entire item space whereas in our case, each student"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"744 IEEE JOURNAL OF SELECTED TOPICS IN SIGNAL PROCESSING, VOL. 11, NO. 5, AUGUST 2017
+Fig. 1. Part of the prerequisite graph of MAE program at UCLA.
+has taken only a small set of courses in the entire course space.
+The latent factor model is therefore used to discover the hidden
+latent factor that resolves the sparsity problem. While recom-
+mender systems use the discovered latent factor to enable simi-
+larity matching among users and make item recommendations,
+our system uses the discovered latent factor to cluster relevant
+courses. It is worth noting that, in the learning context, sparse
+factor analysis is used to estimate a learner’s knowledge of the
+concepts underlying a domain and the relationships among a
+collection of questions and those concepts [24].
+In [25], the authors make a different connection between rec-
+ommender systems and student performance prediction. They
+develop a collaborative ﬁltering algorithm, which is used in rec-
+ommender systems to recommend items to users based on user
+similarity. In this paper, we do not develop collaborative ﬁlter-
+ing prediction algorithms, although they can be adopted as base
+predictors in our method. More broadly, there is a rich litera-
+ture on recommending relevant courses or problems to students
+based on their associated knowledge level, learning styles, and
+feedbacks [26]–[28]. Course sequence recommendation, which
+considers the speciﬁc course constraints, was studied in [29].
+To utilize logged data for course sequence recommendations
+and curriculum design, an off-policy estimator was developed
+to estimate how an unobserved policy performs given an ob-
+served policy [30]. A rank aggregation framework is adapted
+for the discovery of optimal course sequences at the university
+level [31]. However, whereas this literature aims to recommend
+courses/course sequences based on student backgrounds and
+past performance, the purpose of the current work is to pre-
+dict future performance based on student backgrounds and past
+performance for a given curriculum.
+III. P ROBLEM FORMULA TION
+A. System Model
+We consider a degree program in which students must com-
+plete a set of courses to graduate in T academic terms. Courses
+have prerequisite dependencies, namely a course can be taken
+only when certain prerequisite courses have been taken and
+passed. In general, the prerequisite dependency can be described
+as a directed acyclic graph (DAG) (see Fig. 1 for an example).
+There can be multiple specialized areas in a program which re-
+quire different subsets of courses to be completed for students to
+graduate. We will focus on the prediction problem for one area
+in this department. Nevertheless, data from other areas will still
+be utilized for our prediction tasks. The reason is that data from
+a single area is often limited while different areas still share
+many common courses.
+Fig. 1 illustrates part of the prerequisite graph of the under-
+graduate program in the Mechanical and Aerospace Engineering
+(MAE) department at UCLA. In this department, there are two
+areas, namely Mechanical Engineering (ME) and Aerospace En-
+gineering (AE). Since the complete prerequisite graph is huge,
+Fig. 1 only lists some lower-level courses and a few higher-
+level courses. As we can see, ME and AE areas share most
+of the lower level courses but they have distinct upper-level
+courses.
+Students start the program with different backgrounds (e.g.
+high school GPAs and SA T scores). Denote student i’s back-
+grounds by θi ∈ Θ where Θ is the space that includes all pos-
+sible backgrounds. Student backgrounds are considered as the
+static features of students which do not change as the students
+advance in the program. In each term t, student i takes a subsets
+of courses St
+i ⊂J and receives a grade xi(j) for each of these
+courses j ∈S t
+i . The courses that student i has taken by term t are
+denoted by ¯St
+i = ∪t
+τ =1 Sτ
+i . The performance state of student i
+at the end of term t is represented by xt
+i ∈X t
+i ≜ [xmin,xmax]| ¯St
+i |
+where each entry corresponds to the grade of the course taken
+so far. Therefore, the performance state is expanding over time,
+namely xt
+i ⪯ xt+1
+i ,∀t =1 ,2, .... We assume the 4.0 GPA scale.
+The performance state is considered as the dynamic feature of
+students which is evolving over time. The department usually
+recommends for each area a sequence in which the students
+should take the courses. In reality, students mostly follow the
+recommended sequence of core courses. Hence, by disregard-
+ing the elective courses, St
+i is more or less the same for all
+students having the same area. In this paper, we will focus on
+the core courses and neglect the elective courses which can
+be vastly different across students. Predicting performance in
+elective courses will be our future work.
+B. Objective
+Our objective is to predict the ﬁnal cumulative GPA (of the
+core courses) of a student in a certain area at the end of each
+term t. Speciﬁcally, at the end of each term t, the predictor out-
+puts a prediction ˆGPA
+t
+i = Ft(θi,x1
+i ,x2
+i , ...,xt
+i) given student
+i’ backgrounds θi and the evolving performance x1
+i ,x2
+i , ...,xt
+i.
+However, because the cumulative GPA is a function of all
+course grades, namely the weighted average of all course grades
+GPAi = ∑
+j∈J c(j)xi(j)/∑
+j∈J c(j), where c(j) is the credit
+of course j, the GPA prediction will be more accurate by split-
+ting the known course grades and the unknown course grades.
+Therefore, the ﬁnal GPA can be predicted by
+ˆGPA
+t
+i =
+∑
+j∈ ¯St c(j)xi(j)+ ∑
+j∈J \ ¯St c(j)ˆxi(j)∑
+j∈J c(j) (1)
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","Fig. 1. Part of the prerequisite graph of MAE program at UCLA.
+has taken only a small set of courses in the entire course space.
+The latent factor model is therefore used to discover the hidden
+latent factor that resolves the sparsity problem. While recom-
+mender systems use the discovered latent factor to enable simi-
+larity matching among users and make item recommendations,
+our system uses the discovered latent factor to cluster relevant
+courses. It is worth noting that, in the learning context, sparse
+factor analysis is used to estimate a learner’s knowledge of the
+concepts underlying a domain and the relationships among a
+collection of questions and those concepts.
+In [25], the authors make a different connection between rec-
+ommender systems and student performance prediction. They
+develop a collaborative ﬁltering algorithm, which is used in rec-
+ommender systems to recommend items to users based on user
+similarity. In this paper, we do not develop collaborative ﬁlter-
+ing prediction algorithms, although they can be adopted as base
+predictors in our method. More broadly, there is a rich litera-
+ture on recommending relevant courses or problems to students
+based on their associated knowledge level, learning styles, and
+feedbacks [26]–[28]. Course sequence recommendation, which
+considers the speciﬁc course constraints, was studied in [29].
+To utilize logged data for course sequence recommendations
+and curriculum design, an off-policy estimator was developed
+to estimate how an unobserved policy performs given an ob-
+served policy [30]. A rank aggregation framework is adapted
+for the discovery of optimal course sequences at the university
+level [31]. However, whereas this literature aims to recommend
+courses/course sequences based on student backgrounds and
+past performance, the purpose of the current work is to pre-
+dict future performance based on student backgrounds and past
+performance for a given curriculum.
+III. P ROBLEM FORMULA TION
+A. System Model
+We consider a degree program in which students must com-
+plete a set of courses to graduate in T academic terms. Courses
+have prerequisite dependencies, namely a course can be taken
+only when certain prerequisite courses have been taken and
+passed. In general, the prerequisite dependency can be described
+as a directed acyclic graph (DAG) (see Fig. 1 for an example).
+There can be multiple specialized areas in a program which re-
+quire different subsets of courses to be completed for students to
+graduate. We will focus on the prediction problem for one area
+in this department. Nevertheless, data from other areas will still
+be utilized for our prediction tasks. The reason is that data from
+a single area is often limited while different areas still share
+many common courses.
+Fig. 1 illustrates part of the prerequisite graph of the under-
+graduate program in the Mechanical and Aerospace Engineering
+(MAE) department at UCLA. In this department, there are two
+areas, namely Mechanical Engineering (ME) and Aerospace En-
+gineering (AE). Since the complete prerequisite graph is huge,
+Fig. 1 only lists some lower-level courses and a few higher-
+level courses. As we can see, ME and AE areas share most
+of the lower level courses but they have distinct upper-level
+courses.
+Students start the program with different backgrounds (e.g.
+high school GPAs and SA T scores). Denote student i’s back-
+grounds by θi ∈ Θ where Θ is the space that includes all pos-
+sible backgrounds. Student backgrounds are considered as the
+static features of students which do not change as the students
+advance in the program. In each term t, student i takes a subsets
+of courses St
+i ⊂J and receives a grade xi(j) for each of these
+courses j ∈S t
+i . The courses that student i has taken by term t are
+denoted by ¯St
+i = ∪t
+τ =1 Sτ
+i . The performance state of student i
+at the end of term t is represented by xt
+i ∈X t
+i ≜ [xmin,xmax]| ¯St
+i |
+where each entry corresponds to the grade of the course taken
+so far. Therefore, the performance state is expanding over time,
+namely xt
+i ⪯ xt+1
+i ,∀t =1 ,2, .... We assume the 4.0 GPA scale.
+The performance state is considered as the dynamic feature of
+students which is evolving over time. The department usually
+recommends for each area a sequence in which the students
+should take the courses. In reality, students mostly follow the
+recommended sequence of core courses. Hence, by disregard-
+ing the elective courses, St
+i is more or less the same for all
+students having the same area. In this paper, we will focus on
+the core courses and neglect the elective courses which can
+be vastly different across students. Predicting performance in
+elective courses will be our future work.
+B. Objective
+Our objective is to predict the ﬁnal cumulative GPA (of the
+core courses) of a student in a certain area at the end of each
+term t. Speciﬁcally, at the end of each term t, the predictor out-
+puts a prediction ˆGPA
+t
+i = Ft(θi,x1
+i ,x2
+i , ...,xt
+i) given student
+i’ backgrounds θi and the evolving performance x1
+i ,x2
+i , ...,xt
+i.
+However, because the cumulative GPA is a function of all
+course grades, namely the weighted average of all course grades
+GPAi = ∑
+j∈J c(j)xi(j)/∑
+j∈J c(j), where c(j) is the credit
+of course j, the GPA prediction will be more accurate by split-
+ting the known course grades and the unknown course grades.
+Therefore, the ﬁnal GPA can be predicted by"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"XU et al. : MACHINE LEARNING APPROACH FOR TRACKING AND PREDICTING STUDENT PERFORMANCE 745
+In other words, instead of predicting the ﬁnal GPA directly, we
+will focus on predicting the grade of every course j ∈J ∗\ ¯St
+that has not been taken by the student yet where J ∗ is the
+set of required courses by the area under consideration. Let
+ˆyi(j)= ft
+j (θi,x1
+i ,x2
+i , ...,xt
+i) denote the predicted grade of
+course j given the student’s backgrounds and evolving per-
+formance state up to term t. Note that ˆyi(j)=ˆxi(j) in (1). We
+use different letters to better differentiate what is known (i.e.
+xt
+i) and what is to be predicted (i.e. yt
+i (j)) in a given term t.W e
+also highlight that the predictor is using not only a single per-
+formance state xt
+i but all the performance states in the previous
+terms x1
+i , ...,xt−1
+i , thereby incorporating the evolution of the
+student’s performance. However, the input space of the predic-
+tor grows exponentially in the number of terms, thereby making
+the predictor construction even more challenging. For exposi-
+tional brevity, we neglect the index j for the targeted course in
+ft
+j whenever it is clear.
+C. Overview of the Proposed Method
+In this paper, we propose a novel method for designing pre-
+dictors based on the evolving progress of students. The key idea
+is that since the input xt
+i of predictor ft for term t is a superset
+of the input xt−1
+i of predictor ft−1 for term t − 1, ft can capi-
+talize on the prediction output ˆyt−1
+i of ft−1 by incorporating the
+incrementally new information xt
+i. This signiﬁcantly reduces
+the complexity of constructing ft and makes the prediction al-
+gorithm scalable.
+Our approach to enable such progressive predictions is based
+on the ensemble learning technique and integrates ofﬂine learn-
+ing and online learning. The proposed architecture consists of
+two layers — a base prediction layer and an ensemble prediction
+layer.
+1) In the base prediction layer, we construct a set of base
+predictors H implemented using different prediction algorithms.
+For each base predictor h ∈H ,l e t zt
+h,i = h(θi,xt
+i) denote the
+prediction result of h for student i given the student’s static
+feature and the current performance state xt
+i. The base predictors
+are trained using a dataset consisting of all student data in the
+department without differentiating areas to maximally utilize the
+data. In fact, predictor h may even be trained differently for each
+term t’s prediction task. Therefore, we write ht(θi,xt
+i) rather
+than h(θi,xt
+i). Learning the base predictors is done ofﬂine.
+2) In the ensemble prediction layer, we construct an ensemble
+predictor for each term. The ensemble predictor ft for term t
+synthesizes the previous ensemble output ˆyt−1
+i and output of
+the base predictors zt
+h,i ,∀h ∈H t and makes a ﬁnal prediction
+ˆyt
+i based on ˆyt−1
+i and zt
+h,i ,∀h ∈H t. The ensemble predictor is
+learned using student data in the same area since students having
+different areas take different courses and in different sequences
+and hence, the temporal correlation is likely to be different.
+Learning the ensemble predictors is done online.
+A system block diagram of the proposed bilayered architec-
+ture for the term t ensemble learning is illustrated in Fig. 2. Al-
+though the proposed architecture is easy to understand, a couple
+of challenges must be addressed in order to achieve good pre-
+diction performance. The ﬁrst challenge is how to construct the
+Fig. 2. System Block Diagram.
+base predictors. Although existing off-the-shelf machine learn-
+ing algorithms can be used to perform the prediction task, we
+would like to construct a base predictor that is customized to
+the considered course grade prediction problem to improve its
+prediction performance. A speciﬁc consideration in this regard
+is what information should be included in the training of the
+predictor as well as making the prediction. The second chal-
+lenge is how to construct the ensemble predictors and take the
+temporal correlation into account. Speciﬁcally, this is to answer
+how to synthesize the prediction results of the multiple base pre-
+dictors as well as the prediction from the previous term. In the
+next sections, we will develop novel methods to address these
+challenges.
+IV . O FFLINE LEARNING BASE PREDICTORS
+In this section, we describe how to learn a base predictor h.
+In fact, we will learn term-wise base predictors ht,∀t, which
+are the same predictor h trained on different training datasets.
+Speciﬁcally, to learn ht, we will utilize a training dataset Dt =
+{xt
+i,yi}i∈I that contains the performance state xt
+i up to term t
+for a number of students who have graduated and earned grades
+yi for the targeted course. Note that the students, although they
+are in the same department, are in different areas. One may
+also wonder why not simply train a single base predictor h
+based on DT and use it for every term. This is because in
+term t<T , much information in DT is unavailable yet which
+may negatively affect the prediction accuracy given the current
+performance xt
+i.
+A. Method Overview
+An important question when training ht is how to construct
+the (input) feature vector given the student performance states
+xt
+i,∀i ∈I . Because students come from different areas as well
+as have different interests, the courses in the performance states
+can be very different. A straightforward way is to construct a
+large feature vector that contains the grade of courses that have
+appeared in Dt. Entries corresponding to courses that a student
+did not take in this vector are ﬁlled with null values. In this
+way, students have the same feature vector format. However,
+there are two major drawbacks for this method. First, the fea-
+ture vector can be very large, especially in the later terms of the
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","In other words, instead of predicting the ﬁnal GPA directly, we
+will focus on predicting the grade of every course j ∈J ∗\ ¯St
+that has not been taken by the student yet where J ∗ is the
+set of required courses by the area under consideration. Let
+ˆyi(j)= ft
+j (θi,x1
+i ,x2
+i , ...,xt
+i) denote the predicted grade of
+course j given the student’s backgrounds and evolving per-
+formance state up to term t. Note that ˆyi(j)=ˆxi(j) in (1). We
+use different letters to better differentiate what is known (i.e.
+xt
+i) and what is to be predicted (i.e. yt
+i (j)) in a given term t.W e
+also highlight that the predictor is using not only a single per-
+formance state xt
+i but all the performance states in the previous
+terms x1
+i , ...,xt−1
+i , thereby incorporating the evolution of the
+student’s performance. However, the input space of the predic-
+tor grows exponentially in the number of terms, thereby making
+the predictor construction even more challenging. For exposi-
+tional brevity, we neglect the index j for the targeted course in
+ft
+j whenever it is clear.
+C. Overview of the Proposed Method
+In this paper, we propose a novel method for designing pre-
+dictors based on the evolving progress of students. The key idea
+is that since the input xt
+i of predictor ft for term t is a superset
+of the input xt−1
+i of predictor ft−1 for term t − 1, ft can capi-
+talize on the prediction output ˆyt−1
+i of ft−1 by incorporating the
+incrementally new information xt
+i. This signiﬁcantly reduces
+the complexity of constructing ft and makes the prediction al-
+gorithm scalable.
+Our approach to enable such progressive predictions is based
+on the ensemble learning technique and integrates ofﬂine learn-
+ing and online learning. The proposed architecture consists of
+two layers — a base prediction layer and an ensemble prediction
+layer.
+1) In the base prediction layer, we construct a set of base
+predictors H implemented using different prediction algorithms.
+For each base predictor h ∈H ,l e t zt
+h,i = h(θi,xt
+i) denote the
+prediction result of h for student i given the student’s static
+feature and the current performance state xt
+i. The base predictors
+are trained using a dataset consisting of all student data in the
+department without differentiating areas to maximally utilize the
+data. In fact, predictor h may even be trained differently for each
+term t’s prediction task. Therefore, we write ht(θi,xt
+i) rather
+than h(θi,xt
+i). Learning the base predictors is done ofﬂine.
+2) In the ensemble prediction layer, we construct an ensemble
+predictor for each term. The ensemble predictor ft for term t
+synthesizes the previous ensemble output ˆyt−1
+i and output of
+the base predictors zt
+h,i ,∀h ∈H t and makes a ﬁnal prediction
+ˆyt
+i based on ˆyt−1
+i and zt
+h,i ,∀h ∈H t. The ensemble predictor is
+learned using student data in the same area since students having
+different areas take different courses and in different sequences
+and hence, the temporal correlation is likely to be different.
+Learning the ensemble predictors is done online.
+A system block diagram of the proposed bilayered architec-
+ture for the term t ensemble learning is illustrated in Fig. 2. Al-
+though the proposed architecture is easy to understand, a couple
+of challenges must be addressed in order to achieve good pre-
+diction performance. The ﬁrst challenge is how to construct the
+Fig. 2. System Block Diagram.
+base predictors. Although existing off-the-shelf machine learn-
+ing algorithms can be used to perform the prediction task, we
+would like to construct a base predictor that is customized to
+the considered course grade prediction problem to improve its
+prediction performance. A speciﬁc consideration in this regard
+is what information should be included in the training of the
+predictor as well as making the prediction. The second chal-
+lenge is how to construct the ensemble predictors and take the
+temporal correlation into account. Speciﬁcally, this is to answer
+how to synthesize the prediction results of the multiple base pre-
+dictors as well as the prediction from the previous term. In the
+next sections, we will develop novel methods to address these
+challenges.
+IV . O FFLINE LEARNING BASE PREDICTORS
+In this section, we describe how to learn a base predictor h.
+In fact, we will learn term-wise base predictors ht,∀t, which
+are the same predictor h trained on different training datasets.
+Speciﬁcally, to learn ht, we will utilize a training dataset Dt =
+{xt
+i,yi}i∈I that contains the performance state xt
+i up to term t
+for a number of students who have graduated and earned grades
+yi for the targeted course. Note that the students, although they
+are in the same department, are in different areas. One may
+also wonder why not simply train a single base predictor h
+based on DT and use it for every term. This is because in
+term t<T , much information in DT is unavailable yet which
+may negatively affect the prediction accuracy given the current
+performance xt
+i.
+A. Method Overview
+An important question when training ht is how to construct
+the (input) feature vector given the student performance states
+xt
+i,∀i ∈I . Because students come from different areas as well
+as have different interests, the courses in the performance states
+can be very different. A straightforward way is to construct a
+large feature vector that contains the grade of courses that have
+appeared in Dt. Entries corresponding to courses that a student
+did not take in this vector are ﬁlled with null values. In this
+way, students have the same feature vector format. However,
+there are two major drawbacks for this method. First, the fea-
+ture vector can be very large, especially in the later terms of the"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"746 IEEE JOURNAL OF SELECTED TOPICS IN SIGNAL PROCESSING, VOL. 11, NO. 5, AUGUST 2017
+Fig. 3. Illustration of matrix factorization.
+program when students have taken more courses. The problem
+is more severe since even though students in different areas may
+have many courses in common, they also have considerably
+many distinct courses. In addition to the increased complexity,
+the second drawback is the possible degraded prediction accu-
+racy due to added noise since not all courses, even the courses
+within the same area, have predictive power for predicting the
+grade of the targeted course. Therefore, we will learn the set
+of courses that are more relevant to the targeted course. Notice
+that for different targeted courses, the relevant courses will also
+be different. Once the relevant courses are found, the feature
+vector is constructed using only elements in xt
+i that corresponds
+to the relevant courses. Then our method will utilize various
+state-of-the-art supervised learning algorithms to train the base
+predictors. In this paper, we do not invent new supervised learn-
+ing algorithms but only focus on learning the relevant courses.
+B. Learning Relevant Courses
+One way to determine the relevant courses is by using the
+educational domain knowledge. For instance, the prerequisite
+dependencies of courses can be used to determine the relevance
+of different courses. Suppose we want to predict for course j,
+then only courses that are prerequisites of j are considered as
+the input courses.
+Our method in this paper adopts a data-driven approach to
+learn the relevant courses in addition to utilizing the educational
+domain knowledge. We aim to ﬁnd course clusters where rel-
+evant courses are grouped in the same cluster. To this end, we
+construct a matrix X of size I × J based on DT where the
+rows represent students and the columns represent courses that
+appeared in DT . We aim to ﬁnd a factorization on X such that
+X = UT V where U is the compressed grade matrix of size
+K × I and V is the course-cluster matrix of size K × J.T h e
+physical meaning of this factorization is as follows. K is the
+number of course clusters that we try to ﬁnd. The matrix V
+represents how the courses are grouped in these K clusters.
+In particular, Vk,j represents the relevance weight of course j
+with respect to cluster k. A higher value of Vk,j means that
+course j is more likely to be grouped in cluster k. The matrix
+U represents the students’ performance (grades) in each cluster.
+In particular, Uk,i represents student i’s average performance
+(grade) in courses belonging to cluster k. Fig. 3 illustrates the
+idea of matrix factorization.
+The above problem can be solved using Singular V alue De-
+composition (SVD), which aims to minimize ∥X − UT V ∥.
+However, student grade matrix X can be sparse since it is con-
+structed using data from multiple areas and students only take
+a subset of courses. When X is constructed using all courses
+not only limited to the core courses, it can be highly sparse. The
+sparsity results in a difﬁcult non-convex optimization problem
+which cannot be solved using standard SVD implementations.
+In this paper, we leverage the probabilistic matrix factorization
+method proposed in [20] to deal with the sparse matrix X, which
+is detailed as follows.
+Probabilistic Matrix Factorization: We deﬁne the conditional
+distribution over the observed course grades as p(X|U, V, σ2)=∏ I
+i=1
+∏ J
+j=1 [N(Xij |UT
+i Vj ,σ 2)]1ij , where N(x|u, σ2) is the
+probability density function of the Gaussian distribution with
+mean μ and variance σ2, and 1ij is the indicator function that is
+equal to 1 if student i takes course j and equal to 0 otherwise.
+We also place zero-mean spherical Gaussian priors on student
+and course feature vectors:
+p(U|σ2
+U )=
+I∏
+i=1
+N(Ui|0,σ 2
+U I),p(V |σ2
+V )=
+J∏
+j=1
+N(Vj |0,σ 2
+V I)
+The log of the posterior distribution over the student and
+course features is given by
+lnp(U, V|X,σ 2,σ 2
+V ,σ 2
+U )
+= − 1
+2σ2
+I∑
+i=1
+J∑
+j=1
+1ij (Xij − UT
+i Vj )2
+− 1
+2σ2
+U
+I∑
+i=1
+UT
+i Ui − 1
+2σ2
+V
+M∑
+j=1
+V T
+j Vj (2)
+− 1
+2
+⎛
+⎝
+⎛
+⎝
+I∑
+i=1
+J∑
+j=1
+1ij
+⎞
+⎠ lnσ2 + IK lnσ2
+U + JK lnσ2
+V
+⎞
+⎠+C
+where C is a constant that does not depend on the parameters.
+Fix σ2,σ 2
+U ,σ 2
+V , maximizing the log-posterior over U and V is
+equivalent to minimizing the following regularized problem
+min
+U,V
+1
+2
+I∑
+i=1
+J∑
+j=1
+1ij (Xij − UT
+i Vj )+ λU
+2 ∥U∥2
+F + λV
+2 ∥V ∥2
+F
+where λU = σ2
+σ2
+U
+, λV = σ2
+σ2
+V
+and ∥·∥F denotes the Frobenius
+norm. A local minimum of the objective function can be found
+by performing gradient descent in U and V . This model can
+be viewed as a probabilistic extension of the SVD model. In
+particular, if all course grades have been observed, the objective
+reduces to the SVD objective in the limit of prior variances
+going to inﬁnity.
+In order to estimate the best values of the parameters Ω ≜
+(σ2,σ 2
+U ,σ 2
+V ), we utilize the Expectation-Maximization (EM)
+algorithm. The objective is to ﬁnd the maximum likelihood
+estimate of Ω such that
+ˆΩ = arg max
+Ω
+p(X|Ω) = arg max
+Ω
+∫
+p(X,U,V |Ω)dUdV
+The EM algorithm works iteratively. In the r-th iter-
+ation, the EM algorithm performs two steps: Expecta-
+tion Step . Compute g(Ω) = E(U,V |X, ˆΩ(r −1) )[lnp(U, V|X, Ω)],
+where lnp(U, V|X, Ω) is given in (2) and ˆΩ(r−1) is the estimate
+from the last iteration. Since the expectation is not in closed
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","Fig. 3. Illustration of matrix factorization.
+program when students have taken more courses. The problem
+is more severe since even though students in different areas may
+have many courses in common, they also have considerably
+many distinct courses. In addition to the increased complexity,
+the second drawback is the possible degraded prediction accu-
+racy due to added noise since not all courses, even the courses
+within the same area, have predictive power for predicting the
+grade of the targeted course. Therefore, we will learn the set
+of courses that are more relevant to the targeted course. Notice
+that for different targeted courses, the relevant courses will also
+be different. Once the relevant courses are found, the feature
+vector is constructed using only elements in xt
+i that corresponds
+to the relevant courses. Then our method will utilize various
+state-of-the-art supervised learning algorithms to train the base
+predictors. In this paper, we do not invent new supervised learn-
+ing algorithms but only focus on learning the relevant courses.
+B. Learning Relevant Courses
+One way to determine the relevant courses is by using the
+educational domain knowledge. For instance, the prerequisite
+dependencies of courses can be used to determine the relevance
+of different courses. Suppose we want to predict for course j,
+then only courses that are prerequisites of j are considered as
+the input courses.
+Our method in this paper adopts a data-driven approach to
+learn the relevant courses in addition to utilizing the educational
+domain knowledge. We aim to ﬁnd course clusters where rel-
+evant courses are grouped in the same cluster. To this end, we
+construct a matrix X of size I × J based on DT where the
+rows represent students and the columns represent courses that
+appeared in DT . We aim to ﬁnd a factorization on X such that
+X = UT V where U is the compressed grade matrix of size
+K × I and V is the course-cluster matrix of size K × J.T h e
+physical meaning of this factorization is as follows. K is the
+number of course clusters that we try to ﬁnd. The matrix V
+represents how the courses are grouped in these K clusters.
+In particular, Vk,j represents the relevance weight of course j
+with respect to cluster k. A higher value of Vk,j means that
+course j is more likely to be grouped in cluster k. The matrix
+U represents the students’ performance (grades) in each cluster.
+In particular, Uk,i represents student i’s average performance
+(grade) in courses belonging to cluster k. Fig. 3 illustrates the
+idea of matrix factorization.
+The above problem can be solved using Singular V alue De-
+composition (SVD), which aims to minimize ∥X − UT V ∥.
+However, student grade matrix X can be sparse since it is con-
+structed using data from multiple areas and students only take
+a subset of courses. When X is constructed using all courses
+not only limited to the core courses, it can be highly sparse. The
+sparsity results in a difﬁcult non-convex optimization problem
+which cannot be solved using standard SVD implementations.
+In this paper, we leverage the probabilistic matrix factorization
+method proposed in [20] to deal with the sparse matrix X, which
+is detailed as follows.
+Probabilistic Matrix Factorization: We deﬁne the conditional
+distribution over the observed course grades as p(X|U, V, σ2)=∏ I
+i=1
+∏ J
+j=1 [N(Xij |UT
+i Vj ,σ 2)]1ij , where N(x|u, σ2) is the
+probability density function of the Gaussian distribution with
+mean μ and variance σ2, and 1ij is the indicator function that is
+equal to 1 if student i takes course j and equal to 0 otherwise.
+We also place zero-mean spherical Gaussian priors on student
+and course feature vectors:
+p(U|σ2
+U )=
+I∏
+i=1
+N(Ui|0,σ 2
+U I),p(V |σ2
+V )=
+J∏
+j=1
+N(Vj |0,σ 2
+V I)
+The log of the posterior distribution over the student and
+course features is given by
+lnp(U, V|X,σ 2,σ 2
+V ,σ 2
+U )
+= − 1
+2σ2
+I∑
+i=1
+J∑
+j=1
+1ij (Xij − UT
+i Vj )2
+− 1
+2σ2
+U
+I∑
+i=1
+UT
+i Ui − 1
+2σ2
+V
+M∑
+j=1
+V T
+j Vj (2)
+− 1
+2
+⎛
+⎝
+⎛
+⎝
+I∑
+i=1
+J∑
+j=1
+1ij
+⎞
+⎠ lnσ2 + IK lnσ2
+U + JK lnσ2
+V
+⎞
+⎠+C
+where C is a constant that does not depend on the parameters.
+Fix σ2,σ 2
+U ,σ 2
+V , maximizing the log-posterior over U and V is
+equivalent to minimizing the following regularized problem
+min
+U,V
+1
+2
+I∑
+i=1
+J∑
+j=1
+1ij (Xij − UT
+i Vj )+ λU
+2 ∥U∥2
+F + λV
+2 ∥V ∥2
+F
+where λU = σ2
+σ2
+U
+, λV = σ2
+σ2
+V
+and ∥·∥F denotes the Frobenius
+norm. A local minimum of the objective function can be found
+by performing gradient descent in U and V . This model can
+be viewed as a probabilistic extension of the SVD model. In
+particular, if all course grades have been observed, the objective
+reduces to the SVD objective in the limit of prior variances
+going to inﬁnity.
+In order to estimate the best values of the parameters Ω ≜
+(σ2,σ 2
+U ,σ 2
+V ), we utilize the Expectation-Maximization (EM)
+algorithm. The objective is to ﬁnd the maximum likelihood
+estimate of Ω such that
+ˆΩ = arg max
+Ω
+p(X|Ω) = arg max
+Ω
+∫
+p(X,U,V |Ω)dUdV
+The EM algorithm works iteratively. In the r-th iter-
+ation, the EM algorithm performs two steps: Expecta-
+tion Step . Compute g(Ω) = E(U,V |X, ˆΩ(r −1) )[lnp(U, V|X, Ω)],
+where lnp(U, V|X, Ω) is given in (2) and ˆΩ(r−1) is the estimate
+from the last iteration. Since the expectation is not in closed"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"XU et al. : MACHINE LEARNING APPROACH FOR TRACKING AND PREDICTING STUDENT PERFORMANCE 747
+form, we draw Gibbs samples and compute the Monte Carlo
+mean. Maximization Step .F i n d ˆΩ(r) = arg maxΩ g(Ω).
+Once U and V are found through probabilistic matrix fac-
+torization, course clustering can then be performed. There are
+several ways to perform the clustering, below we describe two.
+Method 1 : Each course j is assigned to a single cluster k in
+which the value of the cluster-course matrix V has the highest
+value among all possible K course clusters. Let k(j) denote
+the cluster that course j belongs to, then k(j) = arg maxk Vk,j .
+Method 2 : Course clusters are determined using a threshold-
+ing rule. Speciﬁcally, course j belongs to cluster k if Vk,j > ¯v
+where ¯v is a predeﬁned threshold value. In this case, a course
+may belong to multiple clusters. Our simulations adopt Method
+1 to perform course clustering.
+C. Training Base Predictors
+Given the course clustering results, the base predictors are
+constructed by implementing off-the-shelf machine learning al-
+gorithms, such as linear regression, logistic regression, support
+vector machines, artiﬁcial neural networks etc. As we men-
+tioned before, even for the same predictor, multiple instances
+are trained, one for each term. In term t, students in the area
+under consideration have taken courses ¯St following the rec-
+ommended course sequence. Let Nk(j∗) be the course cluster to
+which the targeted course belongs to. For term t base predic-
+tor ht, the feature vector ˜xt
+i has a size equal to | ¯St ∩N k(j∗)|.
+That is, only relevant courses that have been taken by term t are
+used in the training for ht. If a student did not take a course in
+¯St ∩N k(j∗) (e.g. the student is in a different area), then the cor-
+responding entry is set to NULL. Clearly ˜xt
+i is also expanding
+over t since ¯St is expanding. Given the new dataset {˜xt
+i,yi}i∈I,
+ht can be trained by using any of the off-the-shelf algorithms.
+V. O NLINE LEARNING ENSEMBLE PREDICTORS
+So far we have obtained a set of base predictors Ht for each
+term t.L e t H = |Ht| denote the number of base predictors
+per term. The next question is how to make predictions using
+these base predictors for new students. There would not be any
+problem if there were just one term, i.e. T =1 and one base
+predictor, i.e. H =1 . However, multiple base predictors and
+multiple terms introduce new challenges of (1) how to synthesize
+the prediction outcome of base predictors in each term and
+(2) how to incorporate the prediction outcome from previous
+terms. The second challenge is of particular interest since it is
+closely related to incorporating students’ evolving performance.
+In this section, we propose an online progressive prediction
+architecture based on ensemble learning techniques.
+A. Problem F ormulation
+To formalize the problem, we consider a stochastic setting
+where new students arrive in sequence i =1 ,2, .... Such a
+stochastic setting is in fact suitable for both ofﬂine training and
+online updating. Given an ofﬂine training dataset, the student
+arrival sequence can be easily generated according to a random
+process. In the online scenario, the ensemble predictors are able
+to keep improving themselves using the new student data. Each
+student belongs to a student group depending on θi the static
+feature of the student (e.g. high school GPAs and SA Ts). The
+student group can be created by a variety of state-of-the-art clus-
+tering algorithms. Let gi ∈G be the group of student i and G be
+the group space. For instance, G can consist of a high SA T score
+student group and a low SA T score student group.
+In each term t, each of the base predictor ht ∈H t makes a
+prediction zt
+h,i = ht(θi, ˜xt
+i) of the grade of a targeted course
+j∗ that student i is supposed to take in a later term using the
+static feature θi as well as the performance vector ˜xt
+i restricted
+to the relevant courses. Therefore, in term t, we have a total
+number of t × H prediction results per targeted course, namely
+zτ
+h,i ,∀τ ≤ t. Our task is to synthesize these base prediction
+results and output a ﬁnal prediction ˆyt
+i . The reason why we want
+to utilize all these base prediction results is that even though one
+particular base predictor performs the best in the ofﬂine testing,
+it may not be the best in the online setting since the underlying
+distribution of new students may not be exactly the same as that
+of students in the existing dataset. Sticking to one particular
+base predictor may end up with a very suboptimal performance.
+Note that base predictor ht may not necessarily perform better
+than ht−1 since it is possible that the newly added course grade
+information represents noise.
+Before presenting our algorithm, we deﬁne a performance
+measure which will be useful for the description and the
+analysis of our algorithm. The cumulative loss for a term t
+base predictor h ∈H t with respect to group g up to student
+n is deﬁned as Ln (h|g)= ∑ n
+i=1 l(zt
+i,h ,yi)1{gi = g}, where
+l(y′,y ) is a loss function that characterizes the prediction er-
+ror. For instance, l(y′,y )=( y − y′)2 for the regression case
+and l(y′,y )= 1{y ̸= y′} for the classiﬁcation case. The overall
+cumulative loss for a term t base predictor h up to student n
+is thus Ln (h)= ∑
+g∈G Ln (h|g). These loss functions can be
+easily computed using the individual prediction of the base pre-
+dictors and the realized performance of student 1 through n.L e t
+h∗(t|g) = arg minh∈Hτ ,∀τ ≤t Ln (h|g) be the best base predictor
+for group g among all base predictors up to term t in hindsight
+and L∗,t
+n (g)= Ln (h∗(t|g)|g) be the corresponding minimal cu-
+mulative loss.
+Similarly, we deﬁne the cumulative loss for a term t ensem-
+ble predictor ft with respect to group g of student 1 through
+n as Ln (ft|g)= ∑ n
+i=1 l(ˆyt
+i ,yi)1{gi = g} and the overall cu-
+mulative loss as Ln (ft)= ∑
+g∈G Ln (ft|g). These cumulative
+loss functions will depend on how the ensemble prediction is
+made based on the base prediction results. Our objective is to
+synthesize the local prediction results such that the long-term
+performance of the ensemble predictor is at least as good as that
+of the optimal individual base predictor in hindsight.
+B. Progressive Prediction
+A major challenge in utilizing all the base prediction results
+zt
+h,i ,∀τ ≤ t is that the number of these prediction results grows
+linearly with the number of terms and can be very large when
+t is large. Moreover, even though the previous-term predictors
+hτ ,τ <t may still add valuable information, in general their
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","Method 1 : Each course j is assigned to a single cluster k in
+which the value of the cluster-course matrix V has the highest
+value among all possible K course clusters. Let k(j) denote
+the cluster that course j belongs to, then k(j) = arg maxk Vk,j .
+Method 2 : Course clusters are determined using a threshold-
+ing rule. Speciﬁcally, course j belongs to cluster k if Vk,j > ¯v
+where ¯v is a predeﬁned threshold value. In this case, a course
+may belong to multiple clusters. Our simulations adopt Method
+1 to perform course clustering.
+
+C. Training Base Predictors
+Given the course clustering results, the base predictors are
+constructed by implementing off-the-shelf machine learning al-
+gorithms, such as linear regression, logistic regression, support
+vector machines, artiﬁcial neural networks etc. As we men-
+tioned before, even for the same predictor, multiple instances
+are trained, one for each term. In term t, students in the area
+under consideration have taken courses ¯St following the rec-
+ommended course sequence. Let Nk(j∗) be the course cluster to
+which the targeted course belongs to. For term t base predic-
+tor ht, the feature vector ˜xt
+i has a size equal to | ¯St ∩N k(j∗)|.
+That is, only relevant courses that have been taken by term t are
+used in the training for ht. If a student did not take a course in
+¯St ∩N k(j∗) (e.g. the student is in a different area), then the cor-
+responding entry is set to NULL. Clearly ˜xt
+i is also expanding
+over t since ¯St is expanding. Given the new dataset {˜xt
+i,yi}i∈I,
+ht can be trained by using any of the off-the-shelf algorithms.
+
+V. O NLINE LEARNING ENSEMBLE PREDICTORS
+So far we have obtained a set of base predictors Ht for each
+term t.L e t H = |Ht| denote the number of base predictors
+per term. The next question is how to make predictions using
+these base predictors for new students. There would not be any
+problem if there were just one term, i.e. T =1 and one base
+predictor, i.e. H =1 . However, multiple base predictors and
+multiple terms introduce new challenges of (1) how to synthesize
+the prediction outcome of base predictors in each term and
+(2) how to incorporate the prediction outcome from previous
+terms. The second challenge is of particular interest since it is
+closely related to incorporating students’ evolving performance.
+In this section, we propose an online progressive prediction
+architecture based on ensemble learning techniques.
+
+A. Problem F ormulation
+To formalize the problem, we consider a stochastic setting
+where new students arrive in sequence i =1 ,2, .... Such a
+stochastic setting is in fact suitable for both oﬂline training and
+online updating. Given an ofﬂine training dataset, the student
+arrival sequence can be easily generated according to a random
+process. In the online scenario, the ensemble predictors are able
+to keep improving themselves using the new student data. Each
+student belongs to a student group depending on θi the static
+feature of the student (e.g. high school GPAs and SA Ts). The
+student group can be created by a variety of state-of-the-art clus-
+tering algorithms. Let gi ∈G be the group of student i and G be
+the group space. For instance, G can consist of a high SA T score
+student group and a low SA T score student group.
+In each term t, each of the base predictor ht ∈H t makes a
+prediction zt
+h,i = ht(θi, ˜xt
+i) of the grade of a targeted course
+j∗ that student i is supposed to take in a later term using the
+static feature θi as well as the performance vector ˜xt
+i restricted
+to the relevant courses. Therefore, in term t, we have a total
+number of t × H prediction results per targeted course, namely
+zτ
+h,i ,∀τ ≤ t. Our task is to synthesize these base prediction
+results and output a ﬁnal prediction ˆyt
+i . The reason why we want
+to utilize all these base prediction results is that even though one
+particular base predictor performs the best in the ofﬂine testing,
+it may not be the best in the online setting since the underlying
+distribution of new students may not be exactly the same as that
+of students in the existing dataset. Sticking to one particular
+base predictor may end up with a very suboptimal performance.
+Note that base predictor ht may not necessarily perform better
+than ht−1 since it is possible that the newly added course grade
+information represents noise.
+Before presenting our algorithm, we deﬁne a performance
+measure which will be useful for the description and the
+analysis of our algorithm. The cumulative loss for a term t
+base predictor h ∈H t with respect to group g up to student
+n is deﬁned as Ln (h|g)= ∑ n
+i=1 l(zt
+i,h ,yi)1{gi = g}, where
+l(y′,y ) is a loss function that characterizes the prediction er-
+ror. For instance, l(y′,y )=( y − y′)2 for the regression case
+and l(y′,y )= 1{y ̸= y′} for the classiﬁcation case. The overall
+cumulative loss for a term t base predictor h up to student n
+is thus Ln (h)= ∑
+g∈G Ln (h|g). These loss functions can be
+easily computed using the individual prediction of the base pre-
+dictors and the realized performance of student 1 through n.L e t
+h∗(t|g) = arg minh∈Hτ ,∀τ ≤t Ln (h|g) be the best base predictor
+for group g among all base predictors up to term t in hindsight
+and L∗,t
+n (g)= Ln (h∗(t|g)|g) be the corresponding minimal cu-
+mulative loss.
+Similarly, we deﬁne the cumulative loss for a term t ensem-
+ble predictor ft with respect to group g of student 1 through
+n as Ln (ft|g)= ∑ n
+i=1 l(ˆyt
+i ,yi)1{gi = g} and the overall cu-
+mulative loss as Ln (ft)= ∑
+g∈G Ln (ft|g). These cumulative
+loss functions will depend on how the ensemble prediction is
+made based on the base prediction results. Our objective is to
+synthesize the local prediction results such that the long-term
+performance of the ensemble predictor is at least as good as that
+of the optimal individual base predictor in hindsight.
+
+B. Progressive Prediction
+A major challenge in utilizing all the base prediction results
+zt
+h,i ,∀τ ≤ t is that the number of these prediction results grows
+linearly with the number of terms and can be very large when
+t is large. Moreover, even though the previous-term predictors
+hτ ,τ <t may still add valuable information, in general their"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"748 IEEE JOURNAL OF SELECTED TOPICS IN SIGNAL PROCESSING, VOL. 11, NO. 5, AUGUST 2017
+predictive power is less than the current-term predictor ht and
+hence should be treated differently. To address these two is-
+sues, we propose a progressive prediction architecture based on
+ensemble learning techniques. Speciﬁcally, for each term t we
+construct an ensemble predictor ft. The input to ft is the pre-
+diction results of the term t base predictors Ht and the ensemble
+prediction from the previous term. Due to the cascading struc-
+ture, the prediction results of all base predictors up to term t is
+implicitly taken into account.
+The term t ensemble predictor is learned using the exponen-
+tially weighted average forecaster (EW AF) algorithm. Speciﬁ-
+cally, each base predictor ht is associated with a weight vector
+wi(ht) and the previous term ensemble predictor ft−1 is asso-
+ciated with a weight vector vi(ft−1). All these weight vectors
+have a size |G| equal to the number of student groups. Therefore,
+weights are maintained for each student group. The weights are
+updated when the student performance in the targeted course
+j∗ is realized and hence are changing over the student index i.
+All weight vectors are initialized to be (1, ...,1). For student
+i, at the beginning of term t, the ensemble predictor ft makes
+a prediction ˆyt
+i based on a weighted average of the base pre-
+diction results zt
+h,i ,∀h ∈H t and the previous-term ensemble
+prediction results ˆyt−1
+i . Depending on whether the prediction is
+a regression problem or a classiﬁcation problem, the weighted
+averaging is deterministic or probabilistic as follows.
+Regression: The ensemble prediction is the weighted average
+of the input predictions:
+ˆyt
+i =
+∑
+h∈Ht wi,g (h)zt
+i,h + vi,g (ft−1)ˆyt−1
+i∑
+h∈Ht wi,g (h)+ vi,g (ft−1) (3)
+Classiﬁcation: The ensemble prediction is ˆyt−1
+i (or zt
+i,h ) with
+probability
+vi,g (ft−1)∑
+h∈Ht wi,g (h)+vi,g (ft−1)
+(
+or wi,g (h)∑
+h∈Ht wi,g (h)+vi,g (ft−1)
+)
+Using the later realized performance in the targeted course j∗
+of student i, the weights of the base predictors and the previous-
+term ensemble predictor are updated according to their cumu-
+lative loss for group g students. Speciﬁcally, the weights to be
+applied to student i +1 are updated to
+wt
+i+1 ,g (ht)=e x p (−ηiLi(ht|g)) (4)
+vt−1
+i+1 ,g (ht)=e x p (−ηiLi(ft−1|g)), if g = gi (5)
+where ηi is a sequence of input constants. For g ̸= gi, the weights
+remain the same. Intuitively, the predictor with a larger cumu-
+lative loss will be assigned with a smaller weight and hence its
+prediction for future students will be considered less important
+in the ensemble synthesis. Fig. 4 illustrates the ensemble pre-
+diction and the weight update. Algorithm 1 provides the pseudo
+code of the proposed Ensemble-based Progressive Prediction
+(EPP) algorithm.
+C. Performance Analysis
+In this section, we characterize the performance of the pro-
+posed progressive predictor. We study only the case |G| =1
+Fig. 4. Ensemble Prediction and Weight Update.
+Algorithm 1: Ensemble-based Progressive Prediction
+(EPP).
+1: Initialization: L(ht)=0 ,L(ft)=0 ,∀t.
+2: for each student i do
+3: Observe backgrounds θi, student group gi
+4: for term t =1 to T do ⊿ Prediction Phase
+5: Observe performance state xt
+i
+6: Extract relevant state ˜xt
+i
+7: Receive prediction ˆyt−1
+i from ft−1
+8: Base predictor h ∈H t predicts zt
+h,i = ht(θi, ˜xt
+i)
+9: Ensemble predictor ft predicts
+10: ˆyt
+i = ft(ˆyt−1
+i ,{zt
+h,i }h|vt−1
+i ,wt
+i)
+11: end for
+12: Observe true label yi.
+13: for term t =1 to T do ⊿ Update Phase
+14: Compute prediction loss l(ˆyt
+i ,yi) and l(zt
+i,h t ,yi)
+15: Update Li(ht|gi) ← Li−1(ht|gi)+ l(zt
+i,h t ,yi)
+16: Li(ft−1|gi) ← Li−1(ft−1|gi)+ l(ˆyt
+i ,yi)
+17: Update weights wt
+i+1 and vt
+i+1 according to (4)
+18: end for
+19: end for
+since the extension is straightforward. We will focus on the en-
+semble predictor for a particular term t and compare it with the
+best base predictor among terms 1,2, ..., tin hindsight. Once the
+performance of ensemble predictor ft is characterized, charac-
+terizing the overall performance of the progressive predictor is
+also straightforward. However, since the ensemble prediction is
+deterministic in the regression case whereas it is probabilistic in
+the classiﬁcation case, we analyze the performance separately
+for these two cases.
+Regression Case: We deﬁne the regret of ensemble predictor
+ft up to student n as the difference between its cumulative loss
+Ln (ft) and the cumulative loss of the best base predictor L∗,t
+n ,
+denoted by Reg t(n)= Ln (ft) − L∗,t
+n .
+Proposition 1 (Regret for Regression): When the EPP algo-
+rithm runs with parameter ηi =
+√
+8(ln(H + 1))/i, then for
+any number n of students, the regret of ensemble predic-
+tor ft satisﬁes (1) Reg t(n) <O (√n) and (2) E[Regt(n)] ≤
+O((t − ∑ t
+τ =1 ρτ τ +1 )
+√
+nln(H +1 ) )assuming that the best
+base predictor h∗ is in term τ with probability ρτ (we must have∑ t
+τ =1 ρτ =1 ).
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","predictive power is less than the current-term predictor ht and
+hence should be treated differently. To address these two is-
+sues, we propose a progressive prediction architecture based on
+ensemble learning techniques. Speciﬁcally, for each term t we
+construct an ensemble predictor ft. The input to ft is the pre-
+diction results of the term t base predictors Ht and the ensemble
+prediction from the previous term. Due to the cascading struc-
+ture, the prediction results of all base predictors up to term t is
+implicitly taken into account.
+The term t ensemble predictor is learned using the exponen-
+tially weighted average forecaster (EW AF) algorithm. Speciﬁ-
+cally, each base predictor ht is associated with a weight vector
+wi(ht) and the previous term ensemble predictor ft−1 is asso-
+ciated with a weight vector vi(ft−1). All these weight vectors
+have a size |G| equal to the number of student groups. Therefore,
+weights are maintained for each student group. The weights are
+updated when the student performance in the targeted course
+j∗ is realized and hence are changing over the student index i.
+All weight vectors are initialized to be (1, ...,1). For student
+i, at the beginning of term t, the ensemble predictor ft makes
+a prediction ˆyt
+i based on a weighted average of the base pre-
+diction results zt
+h,i ,∀h ∈H t and the previous-term ensemble
+prediction results ˆyt−1
+i . Depending on whether the prediction is
+a regression problem or a classiﬁcation problem, the weighted
+averaging is deterministic or probabilistic as follows.
+Regression: The ensemble prediction is the weighted average
+of the input predictions:
+Classiﬁcation: The ensemble prediction is ˆyt−1
+i (or zt
+i,h ) with
+probability
+
+Using the later realized performance in the targeted course j∗
+of student i, the weights of the base predictors and the previous-
+term ensemble predictor are updated according to their cumu-
+lative loss for group g students. Speciﬁcally, the weights to be
+applied to student i +1 are updated to
+
+where ηi is a sequence of input constants. For g ̸= gi, the weights
+remain the same. Intuitively, the predictor with a larger cumu-
+lative loss will be assigned with a smaller weight and hence its
+prediction for future students will be considered less important
+in the ensemble synthesis. Fig. 4 illustrates the ensemble pre-
+diction and the weight update. Algorithm 1 provides the pseudo
+code of the proposed Ensemble-based Progressive Prediction
+(EPP) algorithm.
+C. Performance Analysis
+In this section, we characterize the performance of the pro-
+posed progressive predictor. We study only the case |G| =1
+Fig. 4. Ensemble Prediction and Weight Update.
+Algorithm 1: Ensemble-based Progressive Prediction
+(EPP).
+1: Initialization: L(ht)=0 ,L(ft)=0 ,∀t.
+2: for each student i do
+3: Observe backgrounds θi, student group gi
+4: for term t =1 to T do ⊿ Prediction Phase
+5: Observe performance state xt
+i
+6: Extract relevant state ˜xt
+i
+7: Receive prediction ˆyt−1
+i from ft−1
+8: Base predictor h ∈H t predicts zt
+h,i = ht(θi, ˜xt
+i)
+9: Ensemble predictor ft predicts
+10: ˆyt
+i = ft(ˆyt−1
+i ,{zt
+h,i }h|vt−1
+i ,wt
+i)
+11: end for
+12: Observe true label yi.
+13: for term t =1 to T do ⊿ Update Phase
+14: Compute prediction loss l(ˆyt
+i ,yi) and l(zt
+i,h t ,yi)
+15: Update Li(ht|gi) ← Li−1(ht|gi)+ l(zt
+i,h t ,yi)
+16: Li(ft−1|gi) ← Li−1(ft−1|gi)+ l(ˆyt
+i ,yi)
+17: Update weights wt
+i+1 and vt
+i+1 according to (4)
+18: end for
+19: end for
+since the extension is straightforward. We will focus on the en-
+semble predictor for a particular term t and compare it with the
+best base predictor among terms 1,2, ..., tin hindsight. Once the
+performance of ensemble predictor ft is characterized, charac-
+terizing the overall performance of the progressive predictor is
+also straightforward. However, since the ensemble prediction is
+deterministic in the regression case whereas it is probabilistic in
+the classiﬁcation case, we analyze the performance separately
+for these two cases.
+Regression Case: We deﬁne the regret of ensemble predictor
+ft up to student n as the difference between its cumulative loss
+Ln (ft) and the cumulative loss of the best base predictor L∗,t
+n ,
+denoted by Reg t(n)= Ln (ft) − L∗,t
+n .
+Proposition 1 (Regret for Regression): When the EPP algo-
+rithm runs with parameter ηi =
+√
+8(ln(H + 1))/i, then for
+any number n of students, the regret of ensemble predic-
+tor ft satisﬁes (1) Reg t(n) <O (√n) and (2) E[Regt(n)] ≤
+O((t − ∑ t
+τ =1 ρτ τ +1 )
+√
+nln(H +1 ) )assuming that the best
+base predictor h∗ is in term τ with probability ρτ (we must have∑ t
+τ =1 ρτ =1 )."
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"XU et al. : MACHINE LEARNING APPROACH FOR TRACKING AND PREDICTING STUDENT PERFORMANCE 749
+Proof: This proof is largely based on Theorem 2.3 in [18],
+which can be establish regret bounds on the performance differ-
+ence between ft and the best among Ht when we restrict to the
+ensemble learning problem in term t. In particular, we have
+Ln (ft) − min{Ln (ft−1),Ln (h),∀h ∈H t}
+≤ 2
+√ n
+2 ln(H +1 )+
+√
+ln(H +1 )
+8 (6)
+Now consider term t − 1, we have the same bound for ft−1
+Ln (ft−1) − min{Ln (ft−2),Ln (h),∀h ∈H t−1}
+≤ 2
+√ n
+2 ln(H +1 )+
+√
+ln(H +1 )
+8 (7)
+Combining both bounds, we have
+Ln (ft) − min{Ln (h),∀h ∈H t−1}
+=Ln (ft)−Ln (ft−1)+Ln (ft−1)−min{Ln (h),∀h ∈H t−1}
+=≤ 2
+(
+2
+√ n
+2 ln(H +1 )+
+√
+ln(H +1 )
+8
+)
+(8)
+By induction, we have ∀τ ≤ t
+Ln (ft) − min{Ln (h),∀h ∈H τ }
+≤ (t − τ +1 )
+(
+2
+√ n
+2 ln(H +1 )+
+√
+ln(H +1 )
+8
+)
+(9)
+Therefore,
+Regt(n) ≤ t
+(
+2
+√ n
+2 ln(H +1 )+
+√
+ln(H +1 )
+8
+)
+(10)
+and
+E[Regt(n)]
+≤ E(t − τ∗ +1 )
+(
+2
+√ n
+2 ln(H +1 )+
+√
+ln(H +1 )
+8
+)
+≤ (t −
+t∑
+τ =1
+ρτ τ +1 )
+(
+2
+√ n
+2 ln(H +1 )+
+√
+ln(H +1 )
+8
+)
+(11)
+where τ∗ is the term of the optimal base predictor in hindsight.
+Several remarks are made as follows.
+1) The regret bound is O(√n), which is sublinear in the
+number of students n. This implies that the average regret tends
+to zero when n →∞ , i.e. limn→∞ 1
+n Regt(n) → 0. This bound
+provides a worst-case performance guarantee for the ensemble
+predictor, stating that the ensemble predictor is no worse than
+the best base predictor in hindsight asymptotically.
+2) Another way to perform the ensemble learning in term t
+is to learn directly among all the base predictors up to term t.
+Therefore, the input to ft is zτ
+h,i ,∀h ∈H τ ,∀τ ≤ t. Fig. 5 illus-
+trates the difference between the direct method and the proposed
+progressive prediction method. However, the direct method not
+Fig. 5. Difference between direct method and progressive method.
+only induces signiﬁcantly larger complexity since the ensem-
+ble learning in each term becomes much more complicated but
+also may have worse expected regret performance. In particular,
+the expected regret bound for the direct method can be shown
+as E[Regt(n)] ≤ O(
+√
+nln(Ht)) which is independent of the
+probability distribution ρτ .
+3) Proposition 1 in fact highlights the importance of taking
+the student’s evolving progress into account when predicting the
+student’s future performance. Consider a particular term t.T h e
+base predictor Ht uses only the current performance state but not
+the previous performance state to make the prediction whereas
+the ensemble predictor ft implicitly uses all past performance
+states. The cumulative loss Ln (ht) clearly is no less than L∗,t
+n
+on average for any t. Since Ln (ft) is asymptotically no more
+than L∗,t
+n on average, it can be concluded that using the student’s
+evolving progress improves the prediction performance.
+Classiﬁcation Case: Since the prediction output in the clas-
+siﬁcation case is randomly sampled according to a distribution,
+we deﬁne regret in a slightly different way. Instead of using the
+realized cumulative loss, we use the expected cumulative loss
+when deﬁning regret: Reg t(n)= E[Ln (ft)] − L∗,t
+n . Because of
+the probabilistic prediction, the space of predictions and the loss
+functions are not convex in the classiﬁcation case and hence, re-
+sults of Theorem 2.3 in [18] are no longer applicable. Our prior
+work [32] establishes a similar result for the classiﬁcation case,
+which is utilized in the regret analysis in this paper.
+Proposition 2 (Theorem 2 in [32]): When the EPP algo-
+rithm runs with parameter ηi =
+√
+ln(H +1 )/i, then
+we have E[Ln (ft)] − min{Ln (ft−1),Ln (h),∀h ∈H t}≤
+2
+√
+nln(H +1 ).
+Using Proposition 2, we can perform a similar analysis for
+the classiﬁcation case and obtain the following proposition.
+Proposition 3 (Regret for Classiﬁcation): Assume that the
+best base predictor h∗ is in term τ with probability ρτ (we must
+have ∑ t
+τ =1 ρτ =1 ). When the EPP algorithm runs with param-
+eter ηi =
+√
+ln(H +1 )/i, then for any number n of students, the
+regret of ensemble predictor ft satisﬁes (1) Reg t(n) <O (√n)
+and (2) E[Regt(n)] ≤ O((t − ∑ t
+τ =1 ρτ τ +1 )
+√
+nln(H +1 ) ).
+The implications of Proposition 3 for the classiﬁcation case
+are similar to those of Proposition 1 for the regression case.
+VI. E XPERIMENTAL RESULTS
+A. Dataset
+Student data used to test our method is collected from the
+Mechanical and Aerospace Engineering department at UCLA
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","Proof: This proof is largely based on Theorem 2.3 in [18],
+which can be establish regret bounds on the performance differ-
+ence between ft and the best among Ht when we restrict to the
+ensemble learning problem in term t. In particular, we have
+
+Several remarks are made as follows.
+1) The regret bound is O(√n), which is sublinear in the
+number of students n. This implies that the average regret tends
+to zero when n →∞ , i.e. limn→∞ 1
+n Regt(n) → 0. This bound
+provides a worst-case performance guarantee for the ensemble
+predictor, stating that the ensemble predictor is no worse than
+the best base predictor in hindsight asymptotically.
+2) Another way to perform the ensemble learning in term t
+is to learn directly among all the base predictors up to term t.
+Therefore, the input to ft is zτ
+h,i ,∀h ∈H τ ,∀τ ≤ t. Fig. 5 illus-
+trates the difference between the direct method and the proposed
+progressive prediction method. However, the direct method not
+
+Fig. 5. Difference between direct method and progressive method.
+only induces signiﬁcantly larger complexity since the ensem-
+ble learning in each term becomes much more complicated but
+also may have worse expected regret performance. In particular,
+the expected regret bound for the direct method can be shown
+as E[Regt(n)] ≤ O(
+√
+nln(Ht)) which is independent of the
+probability distribution ρτ .
+3) Proposition 1 in fact highlights the importance of taking
+the student’s evolving progress into account when predicting the
+student’s future performance. Consider a particular term t.T h e
+base predictor Ht uses only the current performance state but not
+the previous performance state to make the prediction whereas
+the ensemble predictor ft implicitly uses all past performance
+states. The cumulative loss Ln (ht) clearly is no less than L∗,t
+n
+on average for any t. Since Ln (ft) is asymptotically no more
+than L∗,t
+n on average, it can be concluded that using the student’s
+evolving progress improves the prediction performance.
+Classiﬁcation Case: Since the prediction output in the clas-
+siﬁcation case is randomly sampled according to a distribution,
+we deﬁne regret in a slightly different way. Instead of using the
+realized cumulative loss, we use the expected cumulative loss
+when deﬁning regret: Reg t(n)= E[Ln (ft)] − L∗,t
+n . Because of
+the probabilistic prediction, the space of predictions and the loss
+functions are not convex in the classiﬁcation case and hence, re-
+sults of Theorem 2.3 in [18] are no longer applicable. Our prior
+work [32] establishes a similar result for the classiﬁcation case,
+which is utilized in the regret analysis in this paper.
+Proposition 2 (Theorem 2 in [32]): When the EPP algo-
+rithm runs with parameter ηi =
+√
+ln(H +1 )/i, then
+we have E[Ln (ft)] − min{Ln (ft−1),Ln (h),∀h ∈H t}≤
+2
+√
+nln(H +1 ).
+Using Proposition 2, we can perform a similar analysis for
+the classiﬁcation case and obtain the following proposition.
+Proposition 3 (Regret for Classiﬁcation): Assume that the
+best base predictor h∗ is in term τ with probability ρτ (we must
+have ∑ t
+τ =1 ρτ =1 ). When the EPP algorithm runs with param-
+eter ηi =
+√
+ln(H +1 )/i, then for any number n of students, the
+regret of ensemble predictor ft satisﬁes (1) Reg t(n) <O (√n)
+and (2) E[Regt(n)] ≤ O((t − ∑ t
+τ =1 ρτ τ +1 )
+√
+nln(H +1 ) ).
+The implications of Proposition 3 for the classiﬁcation case
+are similar to those of Proposition 1 for the regression case.
+VI. E XPERIMENTAL RESULTS
+A. Dataset
+Student data used to test our method is collected from the
+Mechanical and Aerospace Engineering department at UCLA"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"750 IEEE JOURNAL OF SELECTED TOPICS IN SIGNAL PROCESSING, VOL. 11, NO. 5, AUGUST 2017
+Fig. 6. Correlation between SA T Math and ﬁnal GPA.
+Fig. 7. Correlation between high school GPA and ﬁnal GPA.
+across students who graduated in three years (2013, 2014,
+2015). The dataset has 1169 anonymized undergraduate students
+enrolled in the program in two different areas (Mechanical En-
+gineering and Aerospace Engineering). All students completed
+their program. We excluded the transferred students to UCLA
+since the course information of these students before the transfer
+is missing. The data of each student contains the student’ pre-
+college traits (high school GPA and SA T scores), the courses
+(including lectures and labs) that the students take in each aca-
+demic quarter, the course credits and the obtained grades. We use
+only high school GPA and SA T scores as the static features of
+students due to the limitation of the dataset. Nevertheless, other
+features, if available, can be used in our framework. UCLA
+adopts a quarter system and hence, each academic term is a
+quarter. We consider only the fall, winter and spring quarters
+but not the summer quarter which has a different enrollment
+pattern and different course durations (i.e. shorter than courses
+in other quarters). We consider only letter-grade courses but not
+pass/fail courses.
+Fig. 6 shows the correlation between the SA T math score of
+the students and their ﬁnal GPA, and Fig. 7 shows the correlation
+between the high school GPA and the ﬁnal GPA. The general
+trend is that students with higher SA T scores also obtain higher
+ﬁnal GPA in the degree program. However, high school GPA
+is almost not correlated with the ﬁnal GPA in the college, sug-
+gesting that high school GPA has weaker predictive power than
+SA T scores. Fig. 8 further illustrates the correlation (obtained by
+linear ﬁtting) between SA T verbal/math/writing/combined and
+ﬁnal GPA. SA T combined score has the highest correlation with
+the ﬁnal GPA. SA T math is the most powerful predictor among
+Fig. 8. Correlation between SA T V erbal/Math/Writing/Combined and ﬁnal
+GPA
+Fig. 9. Distribution of course selection.
+individual SA T scores, which is reasonable since students are
+from an engineering department.
+Fig. 9 illustrates the distribution of the number of courses se-
+lected by students. The average number of courses that students
+take is 38. Although students take a similar number of courses,
+the courses that they take are extremely diverse. The total num-
+ber of distinct courses among all students is 811 while 759 of
+them are taken by less than 10% of the students. The diversity
+is mainly due to the elective courses, which can be vastly dif-
+ferent depending on students’ own interest. We observed that a
+signiﬁcantly large portion of the courses are taken by only one
+student in our dataset, making the distribution extremely biased
+towards the lower percentage end.
+B. Learning Correlated Courses
+We performed probabilistic matrix factorization on the stu-
+dent dataset to learn the course correlation. We explored differ-
+ent numbers of course clusters by setting K =5 ,10,20.F i g s .1 0
+and 11 show the discovered V matrix for core courses in a col-
+ormap representation, where the values are represented by color,
+for K =2 0 and K =5 , respectively.
+Below we provide a couple of case studies to show how
+the clustering results relate to and are different from course
+clustering using educational domain knowledge.
+MAE 182A: MAE 182A is the course “Mathematics of Engi-
+neering”. The prerequisite courses of MAE 182A are shown in
+Fig. 12 which are all math courses. Besides these courses, our
+methods discover several other correlated courses, including
+CHEM 20BH, EE 110L, MAE 102, MAE 105A and PHYS 1A,
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","across students who graduated in three years (2013, 2014,
+2015). The dataset has 1169 anonymized undergraduate students
+enrolled in the program in two different areas (Mechanical En-
+gineering and Aerospace Engineering). All students completed
+their program. We excluded the transferred students to UCLA
+since the course information of these students before the transfer
+is missing. The data of each student contains the student’ pre-
+college traits (high school GPA and SA T scores), the courses
+(including lectures and labs) that the students take in each aca-
+demic quarter, the course credits and the obtained grades. We use
+only high school GPA and SA T scores as the static features of
+students due to the limitation of the dataset. Nevertheless, other
+features, if available, can be used in our framework. UCLA
+adopts a quarter system and hence, each academic term is a
+quarter. We consider only the fall, winter and spring quarters
+but not the summer quarter which has a different enrollment
+pattern and different course durations (i.e. shorter than courses
+in other quarters). We consider only letter-grade courses but not
+pass/fail courses.
+Fig. 6 shows the correlation between the SA T math score of
+the students and their ﬁnal GPA, and Fig. 7 shows the correlation
+between the high school GPA and the ﬁnal GPA. The general
+trend is that students with higher SA T scores also obtain higher
+ﬁnal GPA in the degree program. However, high school GPA
+is almost not correlated with the ﬁnal GPA in the college, sug-
+gesting that high school GPA has weaker predictive power than
+SA T scores. Fig. 8 further illustrates the correlation (obtained by
+linear ﬁtting) between SA T verbal/math/writing/combined and
+ﬁnal GPA. SA T combined score has the highest correlation with
+the ﬁnal GPA. SA T math is the most powerful predictor among
+individual SA T scores, which is reasonable since students are
+from an engineering department.
+Fig. 9 illustrates the distribution of the number of courses se-
+lected by students. The average number of courses that students
+take is 38. Although students take a similar number of courses,
+the courses that they take are extremely diverse. The total num-
+ber of distinct courses among all students is 811 while 759 of
+them are taken by less than 10% of the students. The diversity
+is mainly due to the elective courses, which can be vastly dif-
+ferent depending on students’ own interest. We observed that a
+signiﬁcantly large portion of the courses are taken by only one
+student in our dataset, making the distribution extremely biased
+towards the lower percentage end.
+
+B. Learning Correlated Courses
+We performed probabilistic matrix factorization on the stu-
+dent dataset to learn the course correlation. We explored differ-
+ent numbers of course clusters by setting K =5 ,10,20.F i g s .1 0
+and 11 show the discovered V matrix for core courses in a col-
+ormap representation, where the values are represented by color,
+for K =2 0 and K =5 , respectively.
+Below we provide a couple of case studies to show how
+the clustering results relate to and are different from course
+clustering using educational domain knowledge.
+MAE 182A: MAE 182A is the course “Mathematics of Engi-
+neering”. The prerequisite courses of MAE 182A are shown in
+Fig. 12 which are all math courses. Besides these courses, our
+methods discover several other correlated courses, including
+CHEM 20BH, EE 110L, MAE 102, MAE 105A and PHYS 1A,"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"XU et al. : MACHINE LEARNING APPROACH FOR TRACKING AND PREDICTING STUDENT PERFORMANCE 751
+Fig. 10. Matrix Factorization Results (the V matrix restricted to the core
+courses) in Colormap ( K =2 0).
+Fig. 11. Matrix Factorization Results (the V matrix restricted to the core
+courses) in Colormap ( K =5 ).
+Fig. 12. Prerequisite courses of MAE 182A. (Dashed lines are co-requisite
+courses)
+even though they are not prerequisite courses of MAE 182A.
+Table I reports the correlation coefﬁcients obtained by using our
+matrix factorization method and the Pearson correlation coef-
+ﬁcients for a number of courses. As we can see, our method
+is effective in discovering the correlation among courses. In
+particular,
+EE 100 and EE 110L: These two courses are “Electrical and
+Electronics Circuits” and “Circuit Measurements Laboratory”.
+Fig. 13 shows their prerequisite courses. Besides the prerequisite
+courses, our method discovered three more courses that have
+predictive power, namely CHEM 20B/BH, MAE 103, MAE
+102, and MA T SCI 104. However, our method shows that MA TH
+32B is not a strongly correlated course even though it is a co-
+requisite course of PHYS 1B and PHYS 1C.
+TABLE I
+CORRELA TIONCOEFFICIENTS AND THE SLOPE OF THE LINEAR FIT
+Course Name MF Pearson Note
+MA TH 33A 0.3103 0.3278 Direct Pre-requisite
+MA TH 33B 0.4668 0.4505 Direct Pre-requisite
+MA TH 31B 0.0924 0.0874 Indirect Pre-requisite
+MA TH 32A 0.2624 0.1986 Indirect Pre-requisite
+MAE 105A 0.4862 0.4779 Additionally Discovered
+CHEM 20B 0.4205 0.4072 Additionally Discovered
+MAE 103 0.4205 0.3942 Additionally Discovered
+MA T SCI 104 0.4096 0.4041 Additionally Discovered
+MAE 105D 0.1775 0.1997 Excluded
+MAE 94 0.1243 0.1053 Excluded
+Fig. 13. Prerequisite courses of EE 100 and EE 110L.
+C. Prediction Performance
+We constructed four base predictors for each quarter im-
+plemented by four classic machine learning algorithms: lin-
+ear regression, logistic regression, random forest and k-Nearest
+Neighbors (kNN). Base predictors in quarter t are trained using
+course grade data up to quarter t restricted to the discovered
+relevant courses of the targeted course.
+We point out an important difference between the setup used
+in the simulation and that in the model. In our model, we as-
+sumed that students in the same area follow the exact same
+course sequence and take the exact (core) courses in each quar-
+ter. In practice, however, students may still take courses in
+slightly different orders. As a result, some students may take
+a targeted course later than the recommended quarter in which
+the course should be taken. Therefore, in the simulations, the
+prediction performance for a targeted course is shown for the
+entire program duration, namely 12 quarters.
+Figs. 14 and 15 show the mean square errors of the grade
+prediction for MAE 182A and EE 110L, respectively. In gen-
+eral, the prediction error decreases over the quarters for all the
+base predictors as well as the ensemble predictor. This is be-
+cause more information is accumulated over time. Note that the
+ﬁrst data point in all curves correspond to a model that uses
+only static matriculating measurements but not the evolving
+performance of students. Among the base predictors that we
+implemented, random forest performs the best, kNN performs
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","Fig. 10. Matrix Factorization Results (the V matrix restricted to the core
+courses) in Colormap ( K =2 0).
+Fig. 11. Matrix Factorization Results (the V matrix restricted to the core
+courses) in Colormap ( K =5 ).
+Fig. 12. Prerequisite courses of MAE 182A. (Dashed lines are co-requisite
+courses)
+even though they are not prerequisite courses of MAE 182A.
+Table I reports the correlation coefﬁcients obtained by using our
+matrix factorization method and the Pearson correlation coef-
+ﬁcients for a number of courses. As we can see, our method
+is effective in discovering the correlation among courses. In
+particular,
+EE 100 and EE 110L: These two courses are “Electrical and
+Electronics Circuits” and “Circuit Measurements Laboratory”.
+Fig. 13 shows their prerequisite courses. Besides the prerequisite
+courses, our method discovered three more courses that have
+predictive power, namely CHEM 20B/BH, MAE 103, MAE
+102, and MA T SCI 104. However, our method shows that MA TH
+32B is not a strongly correlated course even though it is a co-
+requisite course of PHYS 1B and PHYS 1C.
+TABLE I
+CORRELA TIONCOEFFICIENTS AND THE SLOPE OF THE LINEAR FIT
+Course Name MF Pearson Note
+MA TH 33A 0.3103 0.3278 Direct Pre-requisite
+MA TH 33B 0.4668 0.4505 Direct Pre-requisite
+MA TH 31B 0.0924 0.0874 Indirect Pre-requisite
+MA TH 32A 0.2624 0.1986 Indirect Pre-requisite
+MAE 105A 0.4862 0.4779 Additionally Discovered
+CHEM 20B 0.4205 0.4072 Additionally Discovered
+MAE 103 0.4205 0.3942 Additionally Discovered
+MA T SCI 104 0.4096 0.4041 Additionally Discovered
+MAE 105D 0.1775 0.1997 Excluded
+MAE 94 0.1243 0.1053 Excluded
+Fig. 13. Prerequisite courses of EE 100 and EE 110L.
+C. Prediction Performance
+We constructed four base predictors for each quarter im-
+plemented by four classic machine learning algorithms: lin-
+ear regression, logistic regression, random forest and k-Nearest
+Neighbors (kNN). Base predictors in quarter t are trained using
+course grade data up to quarter t restricted to the discovered
+relevant courses of the targeted course.
+We point out an important difference between the setup used
+in the simulation and that in the model. In our model, we as-
+sumed that students in the same area follow the exact same
+course sequence and take the exact (core) courses in each quar-
+ter. In practice, however, students may still take courses in
+slightly different orders. As a result, some students may take
+a targeted course later than the recommended quarter in which
+the course should be taken. Therefore, in the simulations, the
+prediction performance for a targeted course is shown for the
+entire program duration, namely 12 quarters.
+Figs. 14 and 15 show the mean square errors of the grade
+prediction for MAE 182A and EE 110L, respectively. In gen-
+eral, the prediction error decreases over the quarters for all the
+base predictors as well as the ensemble predictor. This is be-
+cause more information is accumulated over time. Note that the
+ﬁrst data point in all curves correspond to a model that uses
+only static matriculating measurements but not the evolving
+performance of students. Among the base predictors that we
+implemented, random forest performs the best, kNN performs"
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"752 IEEE JOURNAL OF SELECTED TOPICS IN SIGNAL PROCESSING, VOL. 11, NO. 5, AUGUST 2017
+Fig. 14. Prediction performance for MAE 182A. (Ensemble v.s. Base).
+Fig. 15. Prediction performance for EE 110L. (Ensemble v.s. Base).
+the worst in most cases. The proposed progressive prediction al-
+gorithm outperforms all base predictors since it not only utilizes
+the prediction of the base predictors in the current quarter but
+also utilizes the previous quarter prediction results. We also per-
+form the experiments on three other courses EE100, MAE105D
+and PHYSICS4BL in all of which the proposed ENN algorithm
+beats the base predictors.
+We further compare the prediction performance with algo-
+rithms taking different input features in order to show the im-
+pact of learning relevant courses. Speciﬁcally, we compare three
+benchmarks based on the educational domain knowledge: Same
+Department Only . The courses in a curriculum are offered by
+different departments. For instance, in the MAE curriculum,
+courses EE 100, EE 110L etc. are offered by Electrical Engi-
+neering department. Courses MA TH 33A, MA TH 33B etc. are
+offered by Mathematics department. In this benchmark, only
+courses offered by the same department as that of the targeted
+course are considered relevant; Direct Prerequisite Only In this
+benchmark, only the direct pre-requisite courses are considered
+as the relevant courses of the targeted course. For instance,
+the direct pre-requisite courses of MAE 182A are MA TH 33A
+and MA TH 33B; Series of Prerequisites . Direct prerequisite
+courses may also have their pre-requisite courses. In this bench-
+mark, the series of the prerequisite courses are considered as the
+relevant courses of the targeted course. For instance, for MAE
+182A, in addition to MA TH 33A and MA TH 33B, MA TH 32A
+and MA TH 31B are also considered as the input to the prediction
+algorithm.
+Figs. 16 and 17 compare the prediction performance. For
+MAE 182A, courses offered by the same department have
+Fig. 16. Prediction performance for MAE 182A. (Different Inputs).
+Fig. 17. Prediction performance for EE 110L. (Different Inputs).
+more predictive power than the prerequisite courses. For EE
+110L, prerequisite courses have more predictive power than
+courses offered by the same department. In both cases, our al-
+gorithm based on course clustering yields the best prediction
+performance.
+VII. C ONCLUSION
+In this paper, we proposed a novel method for predicting stu-
+dents’ future performance in degree programs given their cur-
+rent and past performance. A latent factor model-based course
+clustering method was developed to discover relevant courses
+for constructing base predictors. An ensemble-based progres-
+sive prediction architecture was developed to incorporate stu-
+dents’ evolving performance into the prediction. These data-
+driven methods can be used in conjunction with other peda-
+gogical methods for evaluating students’ performance and pro-
+vide valuable information for academic advisors to recommend
+subsequent courses to students and carry out pedagogical in-
+tervention measures if necessary. Additionally, this work will
+also impact curriculum design in degree programs and educa-
+tion policy design in general. Future work includes extending
+the performance prediction to elective courses and using the
+prediction results to recommend courses to students.
+REFERENCES
+[1] The White House, “Making college affordable,” 2016. [Online]. Available:
+https://www.whitehouse.gov/issues/education/higher-education/making-
+college-affordable
+[2] Complete College America, “Four-year myth: Making college more
+affordable,” 2016. [Online]. Available: http://completecollege.org/wp-
+content/uploads/2014/11/4-Year-Myth.pdf
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","Fig. 14. Prediction performance for MAE 182A. (Ensemble v.s. Base).
+Fig. 15. Prediction performance for EE 110L. (Ensemble v.s. Base).
+the worst in most cases. The proposed progressive prediction algorithm outperforms all base predictors since it not only utilizes the prediction of the base predictors in the current quarter but also utilizes the previous quarter prediction results. We also perform the experiments on three other courses EE100, MAE105D and PHYSICS4BL in all of which the proposed ENN algorithm beats the base predictors.
+We further compare the prediction performance with algorithms taking different input features in order to show the impact of learning relevant courses. Speciﬁcally, we compare three benchmarks based on the educational domain knowledge: Same
+Department Only . The courses in a curriculum are offered by different departments. For instance, in the MAE curriculum, courses EE 100, EE 110L etc. are offered by Electrical Engineering department. Courses MA TH 33A, MA TH 33B etc. are offered by Mathematics department. In this benchmark, only courses offered by the same department as that of the targeted course are considered relevant; Direct Prerequisite Only In this benchmark, only the direct pre-requisite courses are considered as the relevant courses of the targeted course. For instance, the direct pre-requisite courses of MAE 182A are MA TH 33A and MA TH 33B; Series of Prerequisites . Direct prerequisite courses may also have their pre-requisite courses. In this bench-mark, the series of the prerequisite courses are considered as the relevant courses of the targeted course. For instance, for MAE 182A, in addition to MA TH 33A and MA TH 33B, MA TH 32A and MA TH 31B are also considered as the input to the prediction algorithm.
+Figs. 16 and 17 compare the prediction performance. For MAE 182A, courses offered by the same department have
+Fig. 16. Prediction performance for MAE 182A. (Different Inputs).
+Fig. 17. Prediction performance for EE 110L. (Different Inputs).
+more predictive power than the prerequisite courses. For EE 110L, prerequisite courses have more predictive power than courses offered by the same department. In both cases, our algorithm based on course clustering yields the best prediction performance.
+VII. C ONCLUSION
+In this paper, we proposed a novel method for predicting students’ future performance in degree programs given their current and past performance. A latent factor model-based course clustering method was developed to discover relevant courses for constructing base predictors. An ensemble-based progressive prediction architecture was developed to incorporate students’ evolving performance into the prediction. These data-driven methods can be used in conjunction with other pedagogical methods for evaluating students’ performance and provide valuable information for academic advisors to recommend subsequent courses to students and carry out pedagogical intervention measures if necessary. Additionally, this work will also impact curriculum design in degree programs and education policy design in general. Future work includes extending the performance prediction to elective courses and using the prediction results to recommend courses to students."
+2017 - A Machine Learning Approach for Tracking and Predicting Student Performance in Degree Programs.pdf,"XU et al. : MACHINE LEARNING APPROACH FOR TRACKING AND PREDICTING STUDENT PERFORMANCE 753
+[3] H. Cen, K. Koedinger, and B. Junker, “Learning factors analysis–A gen-
+eral method for cognitive model evaluation and improvement,” in Interna-
+tional Conference on Intelligent Tutoring Systems . New Y ork, NY , USA:
+Springer, 2006, pp. 164–175.
+[4] M. Feng, N. Heffernan, and K. Koedinger, “Addressing the assessment
+challenge with an online system that tutors as it assesses,” User Model.
+User-Adapt. Interact. , vol. 19, no. 3, pp. 243–266, 2009.
+[5] H.-F. Y u et al., “Feature engineering and classiﬁer ensemble for KDD Cup
+2010,” in Proc. KDD Cup 2010 Workshop , 2010, pp. 1–16.
+[6] Z. A. Pardos and N. T. Heffernan, “Using HMMs and bagged decision
+trees to leverage rich features of user and skill from an intelligent tutoring
+system dataset,” J. Mach. Learn. Res. W & CP , pp. 1–16, 2010.
+[7] Y . Meier, J. Xu, O. Atan, and M. van der Schaar, “Personalized grade
+prediction: A data mining approach,” in Proc. 2015 IEEE Int. Conf. Data
+Mining, 2015, pp. 907–912.
+[8] C. G. Brinton and M. Chiang, “MOOC performance prediction via click-
+stream data and social learning networks,” in Proc. 2015 IEEE Conf.
+Comput. Commun. (INFOCOM) , 2015, pp. 2299–2307.
+[9] KDD Cup, “Educational data minding challenge,” 2010. [Online]. Avail-
+able: https://pslcdatashop.web.cmu.edu/KDDCup/
+[10] Y . Jiang, R. S. Baker, L. Paquette, M. San Pedro, and N. T. Heffernan,
+“Learning, moment-by-moment and over the long term,” in Proceedings
+of the International Conference on Artiﬁcial Intelligence in Education .
+New Y ork, NY , USA: Springer, 2015, pp. 654–657.
+[11] C. Marquez-V era, C. Romero, and S. V entura, “Predicting school failure
+using data mining,” in Proc. 2011 4th Int. Conf. Edu. Data Mining , 2010.
+[12] Y .-H. Wang and H.-C. Liao, “Data mining for adaptive learning in a TESL-
+based e-learning system,” Exp. Syst. Appl. , vol. 38, no. 6, pp. 6480–6485,
+2011.
+[13] N. Thai-Nghe et al. , “Multi-relational factorization models for predicting
+student performance,” in Proc. KDD Workshop Knowl. Discovery Edu.
+Data, 2011, pp. 27–40.
+[14] A. Toscher and M. Jahrer, “Collaborative ﬁltering applied to educational
+data mining,” in Proc. KDD cup workshop : Knowledge discovery in
+educational data , 2010, pp. 13–23.
+[15] R. Bekele and W. Menzel, “A bayesian approach to predict performance of
+a student (BAPPS): A case with Ethiopians students,” Algorithms, vol. 22,
+no. 23, pp. 1–6, 2005, Art. no. 24.
+[16] C. Tekin, J. Y oon, and M. van der Schaar, “Adaptive ensemble learning
+with conﬁdence bounds,” in IEEE Trans. Signal Process , vol. 65, no. 4,
+pp. 888–903, Feb. 2017.
+[17] Y . Meier, J. Xu, O. Atan, and M. van der Schaar, “Predicting grades,”
+IEEE Trans. Signal Process. , vol. 64, no. 4, pp. 959–972, Feb. 2016.
+[18] N. Cesa-Bianchi and G. Lugosi, Prediction, Learning, and Games .C a m -
+bridge, UK: Cambridge Univ. Press, 2006.
+[19] Y . Koren et al. , “Matrix factorization techniques for recommender sys-
+tems,” Computer, vol. 42, no. 8, pp. 30–37, 2009.
+[20] R. Salakhutdinov and A. Mnih, “Probabilistic matrix factorization,” in
+Proc. NIPS , vol. 20, 2011, pp. 1–8.
+[21] M.-C. Y uen, I. King, and K.-S. Leung, “Task recommendation in crowd-
+sourcing systems,” in Proc. 1st Int. Workshop Crowdsourcing Data Min-
+ing, 2012, pp. 22–26.
+[22] K. Christakopoulou and A. Banerjee, “Collaborative ranking with a
+push at the top,” in Proc. 24th Int. Conf. World Wide Web , 2015,
+pp. 205–215.
+[23] Y . Xu, Z. Chen, J. Yin, Z. Wu, and T. Yao, “Learning to recom-
+mend with user generated content,” in International Conference on Web-
+Age Information Management . New Y ork. NY , USA: Springer, 2015,
+pp. 221–232.
+[24] A. S. Lan, A. E. Waters, C. Studer, and R. G. Baraniuk, “Sparse factor
+analysis for learning and content analytics,” J. Mach. Learn. Res. , vol. 15,
+no. 1, pp. 1959–2008, 2014.
+[25] N. Thai-Nghe, L. Drumond, A. Krohn-Grimberghe, and L. Schmidt-
+Thieme, “Recommender system for predicting student performance,” Pro-
+cedia Comput. Sci. , vol. 1, no. 2, pp. 2811–2819, 2010.
+[26] J. I. Lee and E. Brunskill, “The impact on individualizing student models
+on necessary practice opportunities,” in Proc. Int. Edu. Data Mining Soc. ,
+2012.
+[27] T. Mandel, Y .-E. Liu, S. Levine, E. Brunskill, and Z. Popovic, “Ofﬂine
+policy evaluation across representations with applications to educational
+games,” in Proc. 2014 Int. Conf. Auton. Agents Multi-Agent Syst. , 2014,
+pp. 1077–1084.
+[28] E. Brunskill and S. Russell, “Partially observable sequential decision mak-
+ing for problem selection in an intelligent tutoring system,” in Proc. 2011
+4th Int. Conf. Edu. Data Mining , 2010, pp. 327–328.
+[29] J. Xu, T. Xing, and M. van der Schaar, “Personalized course sequence
+recommendations,”IEEE Trans. Signal Process., vol. 64, no. 20, pp. 5340–
+5352, Oct. 2016.
+[30] W. Hoiles and M. van der Schaar, “Bounded off-policy evaluation with
+missing data for course recommendation and curriculum design,” in Proc.
+33rd Int. Conf. Mach. Learn. , 2016, pp. 1596–1604.
+[31] M. Cucuringu, C. Marshak, D. Montag, and P . Rombach, “Rank aggrega-
+tion for course sequence discovery,” arXiv:1603.02695, 2016.
+[32] C. Tekin, J. Y oon, and M. van der Schaar, “Adaptive ensemble learning
+with conﬁdence bounds,” arXiv:1512.07446, 2015.
+Jie Xu received the B.S. and M.S. degrees from
+Tsinghua University, Beijing, China, in 2008 and
+2010, respectively, and the Ph.D. degree from Uni-
+versity of California, Los Angeles, CA, USA, all in
+electrical engineering. He is an Assistant Professor
+in the Department of Electrical and Computer En-
+gineering, University of Miami, Coral Gables, FL,
+USA. His primary research interests include game
+theory, multiagent systems, machine learning, and
+edge computing.
+Kyeong Ho Moon received the B.Sc. degree in
+electrical and computer engineering from Cornell
+University, New Y ork, NY , USA, in 2015. He is cur-
+rently working toward the M.Sc. and Ph.D. degrees in
+electrical engineering, University of California, Los
+Angeles, CA, USA. His research interests include
+machine learning, deep learning, and recurrent neu-
+ral networks, and their applications to medicine and
+education.
+Mihaela van der Schaar (F’09) is currently a
+Chancellor’s Professor of electrical engineering at
+the University of California, Los Angeles, CA, USA.
+She is also a Man Professor of quantitative ﬁnance
+in the Oxford-Man Institute of Quantitative Finance
+and the Department of Engineering Science, Oxford,
+U.K., Fellow of Christ Church College and Faculty
+Fellow of the Alan Turing Institute, London, U.K. She
+was a Distinguished Lecturer of the Communications
+Society (2011–2012), the Editor in Chief of the IEEE
+TRANSACTIONS ON MULTIMEDIA (2011–2013). Her
+research interests include engineering economics and game theory, multiagent
+learning, online learning, decision theory, network science, multiuser network-
+ing, big data and real-time stream mining, and multimedia.
+Authorized licensed use limited to: University of Eastern Finland. Downloaded on September 05,2024 at 07:19:29 UTC from IEEE Xplore.  Restrictions apply.","Jie Xu received the B.S. and M.S. degrees from
+Tsinghua University, Beijing, China, in 2008 and
+2010, respectively, and the Ph.D. degree from Uni-
+versity of California, Los Angeles, CA, USA, all in
+electrical engineering. He is an Assistant Professor
+in the Department of Electrical and Computer En-
+gineering, University of Miami, Coral Gables, FL,
+USA. His primary research interests include game
+theory, multiagent systems, machine learning, and
+edge computing.
+Kyeong Ho Moon received the B.Sc. degree in
+electrical and computer engineering from Cornell
+University, New Y ork, NY , USA, in 2015. He is cur-
+rently working toward the M.Sc. and Ph.D. degrees in
+electrical engineering, University of California, Los
+Angeles, CA, USA. His research interests include
+machine learning, deep learning, and recurrent neu-
+ral networks, and their applications to medicine and
+education.
+Mihaela van der Schaar (F’09) is currently a
+Chancellor’s Professor of electrical engineering at
+the University of California, Los Angeles, CA, USA.
+She is also a Man Professor of quantitative ﬁnance
+in the Oxford-Man Institute of Quantitative Finance
+and the Department of Engineering Science, Oxford,
+U.K., Fellow of Christ Church College and Faculty
+Fellow of the Alan Turing Institute, London, U.K. She
+was a Distinguished Lecturer of the Communications
+Society (2011–2012), the Editor in Chief of the IEEE
+TRANSACTIONS ON MULTIMEDIA (2011–2013). Her
+research interests include engineering economics and game theory, multiagent
+learning, online learning, decision theory, network science, multiuser network-
+ing, big data and real-time stream mining, and multimedia."

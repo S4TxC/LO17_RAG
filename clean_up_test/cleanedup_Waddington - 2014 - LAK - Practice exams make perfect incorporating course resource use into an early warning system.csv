@@ -1,0 +1,963 @@
+source,page_content,cleaned_page_content
+Waddington - 2014 - LAK - Practice exams make perfect incorporating course resource use into an early warning system.pdf,"Practice Exams Make Perfect: Incorporating Course 
+Resource Use into an Early Warning System 
+ 
+Richard Joseph Waddington1 
+University of Notre Dame 
+Institute for Educational Initiatives 
+1015 Flanner Hall 
+Notre Dame, IN 46545 
+(574) 631-3166 
+rwadding@nd.edu 
+ 
+SungJin Nam1 
+University of Michigan 
+School of Information 
+204 Washtenaw Ave.; 3236 USB 
+Ann Arbor, MI 48109 
+(734) 615-4455 
+sjnam@umich.edu 
+ 
+ABSTRACT 
+Early Warning Systems  (EWSs) are being developed and used 
+more frequently to aggregate multiple sources of data and provide 
+timely information to stakeholders about students in need of 
+academic support. As these systems grow more complex, there is 
+an increasing need to incorporate re levant and real -time course-
+related information that could be predictors of  a student’s success 
+or failure. This paper presents an investigation of how to 
+incorporate students’ use of course resources from a Learning 
+Management System (LMS) into an existing EWS . Specifically, 
+we focus our efforts  on understanding the relationship between 
+course resource use and a student’s final course grade. Using ten 
+semesters of LMS data from a requ isite Chemistry course, we 
+categorized course resources into four categories. We  used a 
+multinomial logistic regression model with semester fixed -effects 
+to estimate the relationship between  course resource use and the 
+likelihood that a student receives an “A” or “B” in the course 
+versus a “C.” Results suggest that stude nts who use Exam 
+Preparation or Lecture resources to a greater degree than their 
+peers are more likely to receive an “A” or “B” as a final grade. 
+We discuss the implications of our results for the further 
+development of this EWS and EWSs in general. 
+Categories and Subject Descriptors 
+H.4.2  [Information Systems Applications]: Types of Systems - 
+Decision Support 
+General Terms 
+Measurement, Documentation, Design, Human Factors. 
+Keywords 
+Learning Analytics, Early Warning System s, Modeling, Data 
+Analysis, Learning Management System s, Data Mining, 
+Multinomial Logistic Regression, Data Integration. 
+1. INTRODUCTION 
+Colleges and universities are expanding their use and 
+development of systems that aggregate multiple sources of student 
+data ( Campbell, DeBlois, & Oblinger, 2007; Siemens & Long, 
+2011). One class of these systems, Early Warning Systems 
+(EWSs), are designed to provide information to students, 
+instructors, advisors, and/or other intermediaries for the purposes 
+of identifying students in need of academic support ( Beck & 
+Davidson, 2001; Macfayden & Dawson, 2010 ). As EWSs grow in 
+use for providing timely information about student  performance, 
+researchers and developers must begin to evaluate the components 
+ingrained within these systems (Ferguson, 2012).  
+This paper presents an  initial investigation of how to incorporate 
+additional information from students’ use of course resources 
+from a Learning Management System (LMS) into an existing 
+EWS called Student Explorer (Krumm, Waddington, Teasley, & 
+Lonn, forthcoming). Student Explorer provides real -time data 
+from the LMS to academic advisors for use when mentoring 
+students. Advisors use Student Explorer to make decisions about 
+which students need the most  support. By having an indication of 
+whether or not stude nts are accessing and using important course 
+resources, such as practice exams or lecture notes, advisors may 
+be able to target their interventions for students more effectively. 
+Our work is guided by two primary research questions: (1) “What 
+is the relationship between  student LMS course resource use and 
+the likelihood that a student receives an “A” or “B” in CHEM 100 
+versus a “C?” and (2) How does  the relationship between course 
+resource use and  student grades differ by type of resource ? 
+Understanding the relationship between the use of course resource 
+types and student grades will shed light on whether or not course 
+resource data are important and how these data could be 
+incorporated int o multiple courses in Student Explorer. We first 
+outline the current landscape of the development of EWSs within 
+the learning analytics field before describing  Student Explorer. 
+Then, we detail the course resource LMS data, methods, analyses, 
+and results of this study. We conclude the paper by discussing the 
+implications of the results  situated in the context of general EWS 
+development and give consideration to the next steps for 
+incorporating student course resource use into Student Explorer. 
+2. CONCEPTUAL FRAMEWORK1 
+2.1 Early Warning Systems Research 
+Most Learning Analytics (LA) -based systems, including EWSs, 
+are designed to either provide information directly to students or  
+to an intermediary who then interacts with students (Krumm et al., 
+1 The authors collaborated on this project as members of the USE 
+Lab at the University of Michigan.  
+ 
+Permission to make digital or hard copies of all or part of this work for 
+personal or classroom use is granted without fee provided that copies are 
+not made or distributed for profit or commercial advantage and that 
+copies bear this notice and the full citation on the first page. Copyrights 
+for components of this work owned by others than ACM must be honored. 
+Abstracting with credit is permitted. To copy otherwise, or republish, to 
+post on servers or to redistribute to lists, requires prior specific 
+permission and/or a fee. Request permissions from 
+Permissions@acm.org. 
+LAK '14, March 24 – 28 2014, Indianapolis, IN, USA 
+Copyright 2014 ACM 978-1-4503-2664-3/14/03…$15.00. 
+http://dx.doi.org/10.1145/2567574.2567623  
+188","ABSTRACT
+Early Warning Systems  (EWSs) are being developed and used 
+more frequently to aggregate multiple sources of data and provide 
+timely information to stakeholders about students in need of 
+academic support. As these systems grow more complex, there is 
+an increasing need to incorporate re levant and real -time course-
+related information that could be predictors of  a student’s success 
+or failure. This paper presents an investigation of how to 
+incorporate students’ use of course resources from a Learning 
+Management System (LMS) into an existing EWS . Specifically, 
+we focus our efforts  on understanding the relationship between 
+course resource use and a student’s final course grade. Using ten 
+semesters of LMS data from a requ isite Chemistry course, we 
+categorized course resources into four categories. We  used a 
+multinomial logistic regression model with semester fixed -effects 
+to estimate the relationship between  course resource use and the 
+likelihood that a student receives an “A” or “B” in the course 
+versus a “C.” Results suggest that stude nts who use Exam 
+Preparation or Lecture resources to a greater degree than their 
+peers are more likely to receive an “A” or “B” as a final grade. 
+We discuss the implications of our results for the further 
+development of this EWS and EWSs in general. 
+Categories and Subject Descriptors 
+H.4.2  [Information Systems Applications]: Types of Systems - 
+Decision Support 
+General Terms 
+Measurement, Documentation, Design, Human Factors. 
+Keywords 
+Learning Analytics, Early Warning System s, Modeling, Data 
+Analysis, Learning Management System s, Data Mining, 
+Multinomial Logistic Regression, Data Integration. 
+1. INTRODUCTION 
+Colleges and universities are expanding their use and 
+development of systems that aggregate multiple sources of student 
+data ( Campbell, DeBlois, & Oblinger, 2007; Siemens & Long, 
+2011). One class of these systems, Early Warning Systems 
+(EWSs), are designed to provide information to students, 
+instructors, advisors, and/or other intermediaries for the purposes 
+of identifying students in need of academic support ( Beck & 
+Davidson, 2001; Macfayden & Dawson, 2010 ). As EWSs grow in 
+use for providing timely information about student  performance, 
+researchers and developers must begin to evaluate the components 
+ingrained within these systems (Ferguson, 2012).  
+This paper presents an  initial investigation of how to incorporate 
+additional information from students’ use of course resources 
+from a Learning Management System (LMS) into an existing 
+EWS called Student Explorer (Krumm, Waddington, Teasley, & 
+Lonn, forthcoming). Student Explorer provides real -time data 
+from the LMS to academic advisors for use when mentoring 
+students. Advisors use Student Explorer to make decisions about 
+which students need the most  support. By having an indication of 
+whether or not stude nts are accessing and using important course 
+resources, such as practice exams or lecture notes, advisors may 
+be able to target their interventions for students more effectively. 
+Our work is guided by two primary research questions: (1) “What 
+is the relationship between  student LMS course resource use and 
+the likelihood that a student receives an “A” or “B” in CHEM 100 
+versus a “C?” and (2) How does  the relationship between course 
+resource use and  student grades differ by type of resource ? 
+Understanding the relationship between the use of course resource 
+types and student grades will shed light on whether or not course 
+resource data are important and how these data could be 
+incorporated int o multiple courses in Student Explorer. We first 
+outline the current landscape of the development of EWSs within 
+the learning analytics field before describing  Student Explorer. 
+Then, we detail the course resource LMS data, methods, analyses, 
+and results of this study. We conclude the paper by discussing the 
+implications of the results  situated in the context of general EWS 
+development and give consideration to the next steps for 
+incorporating student course resource use into Student Explorer. 
+2. CONCEPTUAL FRAMEWORK
+2.1 Early Warning Systems Research 
+Most Learning Analytics (LA) -based systems, including EWSs, 
+are designed to either provide information directly to students or  
+to an intermediary who then interacts with students (Krumm et al."
+Waddington - 2014 - LAK - Practice exams make perfect incorporating course resource use into an early warning system.pdf,"forthcoming). The University of Michigan’s E 2Coach provides 
+information directly to students about their developing grade in an 
+introductory Physics course based on demographic and course 
+performance data (McKay, Miller, & Tritz, 2012). An  LA-based 
+system that provides  information to both an intermediary 
+(instructors) and to students is Purdue University’s Signals Project 
+(Campbell, DeBlois, & Oblinger, 2007). Signals combines student 
+demographic and course performance data into a prediction model 
+that indicates a student’s likelihood of failing of a course.  
+Both of these systems, along with other LA -based systems , are 
+primed to use  an array of information available in LMSs, given 
+their ubiquitous usage  in higher education (Dalhstrom , de Boor, 
+Grunwald, & Vockey, 2011). In their current form, many EWSs 
+rely upon “prediction” models, which combine  these sources of 
+information about into a measure of how a student is going to do . 
+As we describe below for Student Explorer, one of its  values is 
+that the system  provides information of how the student is 
+currently doing across an array of courses. 
+Part of our challenge, then, is to incorporate various types of 
+information related to student course performance across a diverse 
+set of courses by using a straightforward data mining  and 
+modeling approach. The information also needs to be interpretable 
+by users. Few, if any, EWSs incorporate the  course resources that 
+students are “hitting” (viewing, downloading, saving, etc.). 
+Therefore, we proceed by investigating  the relationship be tween 
+categories of course resources and student grades  in a single 
+course to first determine whether or not these data matter. Later, 
+we can consider how resource usage data might be incorporated 
+and interpreted in a way that is scalable across courses. 
+2.2 Overview of Student Explorer 
+Student Explorer is an EWS that provides near real-time data from 
+the LMS at a large research university to support the existing 
+work of academic advisors in the STEM (Science, Technology, 
+Engineering, and Mathematics) Academy (Krumm et al., 
+forthcoming). The aim of the STEM Academy is to increase the 
+academic success of historically underrepresented students in 
+STEM fields through a holistic student development progra m 
+(Krumm et al., forthcoming ). Student Explorer was developed 
+through a two-year collaborative effort between researchers and 
+the STEM Academy’s academic advisors and leaders using 
+principles of design-based research (Cobb, Confrey, diSessa, 
+Lehrer, & Schauble, 2003; Krumm, et al., forthcoming). 
+One of the goals of the STEM Academy is to help all of its 
+students maintain a minimum of a “B” average in their core 
+STEM courses. Prior to Student Explorer, advisors relied upon 
+students’ self -reported grades during monthly meetings. The 
+frequency of these meetings combined  with the reliance on self -
+reported grades did not allow for advisors to intervene in as timely 
+or targeted of a manner as hoped. Therefore, Student Explorer was 
+developed to more readily allow mentors to identify and engage 
+students in need of academic su pport in discussions about their 
+ongoing performance (Krumm et al., forthcoming). 
+Student Explorer aggregates grade and course LMS site visit for 
+each STEM Academy student in all of their courses where the 
+grade information is stored in the LMS. The grade and site visit 
+data are aggregated and displayed in a variety of visualizations, 
+including comparisons of students’ grades and site visits to their 
+peers over time. Perhaps the most useful feature reported by the 
+advisors is a three-level classification sc heme that combines 
+academic performance and site visit data to highlight with color 
+(red, yellow, green) those  students that are in the most immediate 
+need of support (Krumm, et al., forthcoming). 
+The classification scheme and i nformation about a student’s 
+developing grade in Student Explorer are valuable components for 
+advisors to quickly identify  which students are struggling . 
+However, the usefulness of displaying LMS data in an EWS goes 
+well beyond providing a single indicator  of student performance. 
+There is added value in incorporating additional performance -
+related LMS data into the EWS that would allow advisors or other 
+users to intervene in a more timely and targeted manner. 
+3. DATA AND METHODS 
+3.1 Data Description 
+STEM Academy advisors primarily focus on providing support 
+for courses in the STEM fields  and Freshmen receive the greatest 
+degree of support. Therefore, we focus on a first -year prerequisite 
+chemistry course (hereafter, “ CHEM 100 ”) in which all STEM 
+Academy students a re enrolled.  Our analysis focuses on all  
+students in CHEM 100, including non-STEM Academy students, 
+such that any observed relationship between resource use and 
+grades would be reflective of the population of students in the 
+course as opposed to a subset that could skew the results.  
+CHEM 100 is a “course designed around student interdependence 
+and inter-group collaboration” where “students perform chemistry 
+experiments in a group learning environment.” T he primary 
+objectives of the course include encouraging scientific and critical 
+thinking through teamwork, experiencing how experimental 
+results demonstrate various chemical principles, and engaging 
+students in the process of using the scientific method an d 
+reasoning. Although CHEM 100 is not a core Engineering course, 
+nor is it focused on content , these objectives suggest that success 
+in the course will be central to success in future STEM courses. 
+Prior to our analyses, we classified  course resources posted to the 
+LMS by a structure that could be adapted to changes in resources 
+over multiple semesters of CHEM 100 . Fortunately, t he overall 
+course structure and resources used in  CHEM 100 have remained 
+relatively stable over time. As a result, we were able to classify 
+the LMS course resources and look at the impacts of their use on a 
+student’s grade across ten semesters instead of relying upon one 
+semester of data. We are thus able to  draw conclusions about 
+categories of course re sources over time and can apply these 
+principles to future investigations of resource use in other 
+important STEM courses.  
+We chose to create broader  catego
+ ries of LMS course that allows 
+us to classify individual resource s based on specific keywords. 
+While much of CHEM 100 takes place in a lab oratory setting and 
+contains several resources related to laboratory assignments, the 
+course also uses exams and lecture notes. We settled on four 
+categories of course resource s, including: “Course Info,” 
+“Lecture,” “Assignments,” and “Exam Prep.” The category names 
+and corresponding LMS resource titles are displayed in Table 1. 
+These data contained records of students and course resources 
+across 10 semesters, from Fall 2007 through Winter 2012. In total, 
+there wer e 8,762 students enrolled in CHEM 100 that made 
+703,191 hits on course resource s. We excluded all individuals 
+receiving a D or Lower as few students received these grades. 
+3.2 Estimation Strategy 
+We used a model containing semester fixed-effects to estimate the 
+relationship between student LMS course resource use on the  
+189","The University of Michigan’s E 2Coach provides 
+information directly to students about their developing grade in an 
+introductory Physics course based on demographic and course 
+performance data. An  LA-based 
+system that provides  information to both an intermediary 
+(instructors) and to students is Purdue University’s Signals Project 
+Signals combines student 
+demographic and course performance data into a prediction model 
+that indicates a student’s likelihood of failing of a course.  
+Both of these systems, along with other LA -based systems , are 
+primed to use  an array of information available in LMSs, given 
+their ubiquitous usage  in higher education . In their current form, many EWSs 
+rely upon “prediction” models, which combine  these sources of 
+information about into a measure of how a student is going to do . 
+As we describe below for Student Explorer, one of its  values is 
+that the system  provides information of how the student is 
+currently doing across an array of courses. 
+Part of our challenge, then, is to incorporate various types of 
+information related to student course performance across a diverse 
+set of courses by using a straightforward data mining  and 
+modeling approach. The information also needs to be interpretable 
+by users. Few, if any, EWSs incorporate the  course resources that 
+students are “hitting” (viewing, downloading, saving, etc.). 
+Therefore, we proceed by investigating  the relationship be tween 
+categories of course resources and student grades  in a single 
+course to first determine whether or not these data matter. Later, 
+we can consider how resource usage data might be incorporated 
+and interpreted in a way that is scalable across courses. 
+2.2 Overview of Student Explorer 
+Student Explorer is an EWS that provides near real-time data from 
+the LMS at a large research university to support the existing 
+work of academic advisors in the STEM (Science, Technology, 
+Engineering, and Mathematics) Academy. The aim of the STEM Academy is to increase the 
+academic success of historically underrepresented students in 
+STEM fields through a holistic student development progra m 
+Student Explorer was developed 
+through a two-year collaborative effort between researchers and 
+the STEM Academy’s academic advisors and leaders using 
+principles of design-based research
+One of the goals of the STEM Academy is to help all of its 
+students maintain a minimum of a “B” average in their core 
+STEM courses. Prior to Student Explorer, advisors relied upon 
+students’ self -reported grades during monthly meetings. The 
+frequency of these meetings combined  with the reliance on self -
+reported grades did not allow for advisors to intervene in as timely 
+or targeted of a manner as hoped. Therefore, Student Explorer was 
+developed to more readily allow mentors to identify and engage 
+students in need of academic su pport in discussions about their 
+ongoing performance. 
+Student Explorer aggregates grade and course LMS site visit for 
+each STEM Academy student in all of their courses where the 
+grade information is stored in the LMS. The grade and site visit 
+data are aggregated and displayed in a variety of visualizations, 
+including comparisons of students’ grades and site visits to their 
+peers over time. Perhaps the most useful feature reported by the 
+advisors is a three-level classification sc heme that combines 
+academic performance and site visit data to highlight with color 
+(red, yellow, green) those  students that are in the most immediate 
+need of support. 
+The classification scheme and i nformation about a student’s 
+developing grade in Student Explorer are valuable components for 
+advisors to quickly identify  which students are struggling . 
+However, the usefulness of displaying LMS data in an EWS goes 
+well beyond providing a single indicator  of student performance. 
+There is added value in incorporating additional performance -
+related LMS data into the EWS that would allow advisors or other 
+users to intervene in a more timely and targeted manner. 
+3. DATA AND METHODS 
+3.1 Data Description 
+STEM Academy advisors primarily focus on providing support 
+for courses in the STEM fields  and Freshmen receive the greatest 
+degree of support. Therefore, we focus on a first -year prerequisite 
+chemistry course (hereafter, “ CHEM 100 ”) in which all STEM 
+Academy students a re enrolled.  Our analysis focuses on all  
+students in CHEM 100, including non-STEM Academy students, 
+such that any observed relationship between resource use and 
+grades would be reflective of the population of students in the 
+course as opposed to a subset that could skew the results.  
+CHEM 100 is a “course designed around student interdependence 
+and inter-group collaboration” where “students perform chemistry 
+experiments in a group learning environment.” T he primary 
+objectives of the course include encouraging scientific and critical 
+thinking through teamwork, experiencing how experimental 
+results demonstrate various chemical principles, and engaging 
+students in the process of using the scientific method an d 
+reasoning. Although CHEM 100 is not a core Engineering course, 
+nor is it focused on content , these objectives suggest that success 
+in the course will be central to success in future STEM courses. 
+Prior to our analyses, we classified  course resources posted to the 
+LMS by a structure that could be adapted to changes in resources 
+over multiple semesters of CHEM 100 . Fortunately, t he overall 
+course structure and resources used in  CHEM 100 have remained 
+relatively stable over time. As a result, we were able to classify 
+the LMS course resources and look at the impacts of their use on a 
+student’s grade across ten semesters instead of relying upon one 
+semester of data. We are thus able to  draw conclusions about 
+categories of course re sources over time and can apply these 
+principles to future investigations of resource use in other 
+important STEM courses.  
+We chose to create broader  catego
+ ries of LMS course that allows 
+us to classify individual resource s based on specific keywords. 
+While much of CHEM 100 takes place in a lab oratory setting and 
+contains several resources related to laboratory assignments, the 
+course also uses exams and lecture notes. We settled on four 
+categories of course resource s, including: “Course Info,” 
+“Lecture,” “Assignments,” and “Exam Prep.” The category names 
+and corresponding LMS resource titles are displayed in Table 1. 
+These data contained records of students and course resources 
+across 10 semesters, from Fall 2007 through Winter 2012. In total, 
+there wer e 8,762 students enrolled in CHEM 100 that made 
+703,191 hits on course resource s. We excluded all individuals 
+receiving a D or Lower as few students received these grades. 
+3.2 Estimation Strategy 
+We used a model containing semester fixed-effects to estimate the 
+relationship between student LMS course resource use on the"
+Waddington - 2014 - LAK - Practice exams make perfect incorporating course resource use into an early warning system.pdf,"Table 1. Categories of CHEM 100 LMS Course Resources  
+Category Resources 
+Course 
+Information 
+Schedules, Course Website, Announcements, 
+Syllabus, Instructor Information, Course Grades 
+Lecture 
+Lecture Notes, Discussion Tools, General 
+Resources, Online Learning Resources, Lecture 
+Audio Recordings, Cross Discipline Learning 
+Objects 
+Assignments Experiments, Pre-labs, Team Assignments, Team 
+Report Forms, Discussion 
+Exam 
+Preparation Sample Exams, Exam Review  
+likelihood that a student receives an “A” or “B” final grade versus 
+a “C” in CHEM 100. Functionally, the model takes the form of a 
+multinomial logistic regression model where the probability of the 
+two “desired” outcomes of interest ( receiving an “A” or “B” in  
+CHEM 100) are separately compared to the probability of the 
+“undesired” outcome of interest (receiving a “C” in CHEM 100). 
+𝑙𝑜𝑔
+Pr[𝑌𝑖𝑡=𝐴]
+Pr[𝑌𝑖𝑡=𝐶 𝑜𝑟 𝐿𝑒𝑠𝑠] = 𝛼 + 𝛽1𝐶𝑜𝑢𝑟𝑠𝑒𝐼𝑛𝑓𝑜𝑖𝑡 + 𝛽2𝐿𝑒𝑐𝑡𝑢𝑟𝑒𝑖𝑡 +  
+𝛽3𝐴𝑠𝑠𝑖𝑔𝑛𝑚𝑒𝑛𝑡𝑠𝑖𝑡 + 𝛽4𝐸𝑥𝑎𝑚𝑃𝑟𝑒𝑝𝑖𝑡 + ∑ 𝛿𝑡𝑆𝑡
+10
+𝑡=1   
+In the above equation, the probability that a student 𝑖 in semester 𝑡 
+receives an “A” in CHEM 100 as compared to a “C” is a function 
+of their within -course percentile rank in the use of various 
+categories of course resources (Course Info, Lecture, 
+Assignments, and Exam Prep). The  within-course percentile rank 
+of each course resource use category is (1) normed to their peers 
+use of the same resources and (2) mitigates against severe  
+skewness or any outliers in the distribution that may occur from 
+students who access the same resources multiple times. 
+We include d semester fixed -effects ( ∑ 𝛿𝑡𝑆𝑡
+10
+𝑡=1 ) in our model to 
+account for unobserved variation that occurs between semesters. 
+Pooling together the CHEM 100 data from multiple semesters 
+helps to uncover a trend in resource use over  time. While we 
+modeled the variation in course resource use and grades over 
+time, semester fixed -effects control for those factors potentially 
+related to the relationship between course resource use and grades 
+that change across semesters but are not observed in our data. 
+These factors include, but are not limited to differences in student 
+ability and any  instructor-related factors such as teaching 
+effectiveness or encouraging the use of resources in the LMS.  
+By including semester fixed-effects, we estimate the within -
+semester relationship between  a given student’s course resource 
+use and the likelihood of receiving a certain course grade. Thus, 
+𝛽
+1 through 𝛽4 represent our estimates of interest. We present our 
+results in terms of odds -ratios, or a comparison of the likelihood 
+of receiving an “A” (or “B”) versus a “C” in CHEM 100. Thus, 𝛽1 
+is the within -semester estimate of a one-percentile increase in the 
+use of Course Information resources on the likelihood  that a 
+student receives an “A” versus a “C”. We estimate the impacts of 
+each of the categories of course resources separately and the n 
+combine all the categories in the preferred model displayed above.  
+4. RESULTS 
+4.1 Descriptive Results 
+We first describe the distribution of students  and grades  across 
+semesters. Table 2 describes the students enrolled in CHEM 100 
+across ten semesters. We combined all variations of a grade in the 
+same letter category (e.g. “B” includes all B+, B, B- grades). 
+Table 2. Description of CHEM 100 Students 
+ Mean Min Max 
+Number of Students 968 467 1,348 
+Mean Resource Hits 72.2 45.2 97.5 
+% “A” Grades 20.5 17.3 24.4 
+% “B” Grades 57.5 50.0 63.0 
+% “C” Grades 22.0 13.5 30.7 
+Statistics calculated using ten semesters of CHEM 100 data. 
+More students enrolled in the course during  fall s emesters than 
+winter semesters. The  numbers of students in fall semesters were 
+relatively stable over five years , while enrolment numbers in 
+winter semesters nearly doubled from the Winter 2010 to Winter 
+2011 semesters. On average, 968 students were enrolled in the 
+course per semester, with  averages of 1,289 students in the fall 
+semesters and 647  students in the winter semesters. The average 
+number of resource hits per student was  the highest in the Fall 
+2011 semester, and the lowest in Winter 2011, ranging from 45.2 
+to 97.5 hits , with a mean of 72.2 across all semesters . These 
+values are proportional to the total number of resources available 
+for students to access , indicating  that the characteristics of the 
+course resources change across semesters although the categories 
+align well across semesters regardless of the number of resources.  
+The percentages  of students receiving each letter grade were 
+relatively stable across  the semesters . The overall mean 
+distribution of grades was 20.5% of students receiving an “A”, 
+57.5% a “B” and 22.0% a “C or Less.”  
+We next describe how the number of mean number of course 
+resources accessed varies by final student grade ( by category 
+across all semesters ) in Table 3. The results suggest that students 
+receiving better grades in the course (“A’s” or “B’s”) have a 
+higher mean number of course resource hits in comparison to 
+those students who receive a “B” or “C.” “Assignments” 
+resources were accessed the most across all grade groups, 
+followed by “Exam Preparation” resources. 
+Table 3. Mean Course Resource Hits by Final Grade 
+Resource 
+Category 
+“A” 
+Grades 
+“B” 
+Grades 
+“C” 
+Grades 
+Course Info 3.94 
+[6.66] 
+3.40 
+[5.32] 
+3.27 
+[5.49] 
+Lecture 6.64 
+[12.35] 
+5.57 
+[11.29] 
+5.15 
+[10.18] 
+Assignments 57.18 
+[40.30] 
+48.75 
+[32.89] 
+38.91 
+[29.21] 
+Exam Prep 18.74 
+[16.25] 
+14.82 
+[14.79] 
+12.78 
+[14.33] 
+All Resources 86.49 
+[57.50] 
+72.55 
+[48.15] 
+60.11 
+[43.02] 
+Standard deviations in brackets. 
+The standard devia tions of the raw number of resource accesses 
+are large, indicative of students access ing the same course 
+resources multiple times in the LMS  (as opposed to downloading 
+once and saving). Thus, w e use the percentile rank of each 
+student’s resource use . The current version of Student Explorer 
+uses percentile ranks for general LMS course site visits, because 
+STEM Academy advisors have found it easiest metric to make 
+sense of which students are  accessing the course site frequently 
+versus those in the “bottom quartile.” 
+190","Table 1. Categories of CHEM 100 LMS Course Resources  
+Category Resources 
+Course 
+Information 
+Schedules, Course Website, Announcements, 
+Syllabus, Instructor Information, Course Grades 
+Lecture 
+Lecture Notes, Discussion Tools, General 
+Resources, Online Learning Resources, Lecture 
+Audio Recordings, Cross Discipline Learning 
+Objects 
+Assignments Experiments, Pre-labs, Team Assignments, Team 
+Report Forms, Discussion 
+Exam 
+Preparation Sample Exams, Exam Review  
+likelihood that a student receives an “A” or “B” final grade versus 
+a “C” in CHEM 100. Functionally, the model takes the form of a 
+multinomial logistic regression model where the probability of the 
+two “desired” outcomes of interest ( receiving an “A” or “B” in  
+CHEM 100) are separately compared to the probability of the 
+“undesired” outcome of interest (receiving a “C” in CHEM 100). 
+In the above equation, the probability that a student 𝑖 in semester 𝑡 
+receives an “A” in CHEM 100 as compared to a “C” is a function 
+of their within -course percentile rank in the use of various 
+categories of course resources (Course Info, Lecture, 
+Assignments, and Exam Prep). The  within-course percentile rank 
+of each course resource use category is (1) normed to their peers 
+use of the same resources and (2) mitigates against severe  
+skewness or any outliers in the distribution that may occur from 
+students who access the same resources multiple times. 
+We include d semester fixed -effects ( ∑ 𝛿𝑡𝑆𝑡
+10
+𝑡=1 ) in our model to 
+account for unobserved variation that occurs between semesters. 
+Pooling together the CHEM 100 data from multiple semesters 
+helps to uncover a trend in resource use over  time. While we 
+modeled the variation in course resource use and grades over 
+time, semester fixed -effects control for those factors potentially 
+related to the relationship between course resource use and grades 
+that change across semesters but are not observed in our data. 
+These factors include, but are not limited to differences in student 
+ability and any  instructor-related factors such as teaching 
+effectiveness or encouraging the use of resources in the LMS.  
+By including semester fixed-effects, we estimate the within -
+semester relationship between  a given student’s course resource 
+use and the likelihood of receiving a certain course grade. Thus, 
+𝛽
+1 through 𝛽4 represent our estimates of interest. We present our 
+results in terms of odds -ratios, or a comparison of the likelihood 
+of receiving an “A” (or “B”) versus a “C” in CHEM 100. Thus, 𝛽1 
+is the within -semester estimate of a one-percentile increase in the 
+use of Course Information resources on the likelihood  that a 
+student receives an “A” versus a “C”. We estimate the impacts of 
+each of the categories of course resources separately and the n 
+combine all the categories in the preferred model displayed above.  
+4. RESULTS 
+4.1 Descriptive Results 
+We first describe the distribution of students  and grades  across 
+semesters. Table 2 describes the students enrolled in CHEM 100 
+across ten semesters. We combined all variations of a grade in the 
+same letter category (e.g. “B” includes all B+, B, B- grades). 
+Table 2. Description of CHEM 100 Students 
+ Mean Min Max 
+Number of Students 968 467 1,348 
+Mean Resource Hits 72.2 45.2 97.5 
+% “A” Grades 20.5 17.3 24.4 
+% “B” Grades 57.5 50.0 63.0 
+% “C” Grades 22.0 13.5 30.7 
+Statistics calculated using ten semesters of CHEM 100 data. 
+More students enrolled in the course during  fall s emesters than 
+winter semesters. The  numbers of students in fall semesters were 
+relatively stable over five years , while enrolment numbers in 
+winter semesters nearly doubled from the Winter 2010 to Winter 
+2011 semesters. On average, 968 students were enrolled in the 
+course per semester, with  averages of 1,289 students in the fall 
+semesters and 647  students in the winter semesters. The average 
+number of resource hits per student was  the highest in the Fall 
+2011 semester, and the lowest in Winter 2011, ranging from 45.2 
+to 97.5 hits , with a mean of 72.2 across all semesters . These 
+values are proportional to the total number of resources available 
+for students to access , indicating  that the characteristics of the 
+course resources change across semesters although the categories 
+align well across semesters regardless of the number of resources.  
+The percentages  of students receiving each letter grade were 
+relatively stable across  the semesters . The overall mean 
+distribution of grades was 20.5% of students receiving an “A”, 
+57.5% a “B” and 22.0% a “C or Less.”  
+We next describe how the number of mean number of course 
+resources accessed varies by final student grade ( by category 
+across all semesters ) in Table 3. The results suggest that students 
+receiving better grades in the course (“A’s” or “B’s”) have a 
+higher mean number of course resource hits in comparison to 
+those students who receive a “B” or “C.” “Assignments” 
+resources were accessed the most across all grade groups, 
+followed by “Exam Preparation” resources. 
+Table 3. Mean Course Resource Hits by Final Grade 
+Resource 
+Category 
+“A” 
+Grades 
+“B” 
+Grades 
+“C” 
+Grades 
+Course Info 3.94 
+[6.66] 
+3.40 
+[5.32] 
+3.27 
+[5.49] 
+Lecture 6.64 
+[12.35] 
+5.57 
+[11.29] 
+5.15 
+[10.18] 
+Assignments 57.18 
+[40.30] 
+48.75 
+[32.89] 
+38.91 
+[29.21] 
+Exam Prep 18.74 
+[16.25] 
+14.82 
+[14.79] 
+12.78 
+[14.33] 
+All Resources 86.49 
+[57.50] 
+72.55 
+[48.15] 
+60.11 
+[43.02] 
+Standard deviations in brackets. 
+The standard devia tions of the raw number of resource accesses 
+are large, indicative of students access ing the same course 
+resources multiple times in the LMS  (as opposed to downloading 
+once and saving). Thus, w e use the percentile rank of each 
+student’s resource use . The current version of Student Explorer 
+uses percentile ranks for general LMS course site visits, because 
+STEM Academy advisors have found it easiest metric to make 
+sense of which students are  accessing the course site frequently 
+versus those in the “bottom quartile.”"
+Waddington - 2014 - LAK - Practice exams make perfect incorporating course resource use into an early warning system.pdf,"4.2 Multinomial Logistic Regression Results 
+We used a multinomial logistic regression model with  semester 
+fixed-effects to estimate the relationship between  course resource 
+and a student’s final grade. Table 4 reflects a model where each 
+resource category is included in a separate regression model. 
+Table 4. Impact of Resource Use on Grades -  
+Separate Analyses by Resource Category 
+Resource 
+Category “A” vs. “C” “B” vs. “C” 
+Course Info  1.008*** 1.003*** 
+Lecture 1.017*** 1.007*** 
+Assignments 1.012*** 1.004*** 
+Exam Prep 1.026*** 1.016*** 
+   
+Semester FE Y Y 
+N 9,679 9,679 
+~p<0.100, *p<0.050, **p<0.010, ***p<0.001. Results 
+are interpreted as odds-ratios , representing the change 
+in the likelihood of receiving a n “A” (“B ”) versus a 
+“C” for each one-percentile increase in resource use. 
+We found a general positive relationship between increased use of 
+each type of resource category and final student grades, meaning 
+that a s resource use increases, a given student  is more likely to 
+receive an “A” (or “B”) instead of a “C ” in CHEM 100 within a 
+given semester. The impacts are stronger for “A” students in 
+comparison to “B” students. “Exam Preparation” resource use has 
+the largest estimated relationship with  course grades , while  
+“Course Information” resource use has the smallest . All of the 
+estimates are statistically significant at the 𝛼=0.001 level. 
+Although the separate analyses by category yield a glimpse of the 
+relationships between resource use and grades, less biased  
+estimates of these relationships were obtained by  combining all 
+resource categories in the same model. Table 5 displays the 
+estimates of the preferred multinomial logistic regression model. 
+Table 5. Impact of Resource Use on Grades -  
+Combined Analysis with All Resource Categories 
+Resource 
+Category “A” vs. “C” “B” vs. “C” 
+Course Info 0.993*** 0.996** 
+Lecture 1.008*** 1.000 
+Assignments 0.999 0.997 
+Exam Prep 1.024*** 1.018*** 
+   
+Semester FE Y Y 
+N 9,679 9,679 
+~p<0.100, *p<0.050, **p<0.010, ***p<0.001. Results 
+are interpreted as odds-ratios. 
+There remains a positive and statistically significant (p<0.001) 
+relationship between “Exam Preparation” resource use and 
+receiving an “A” or “B” versus a “C” in CHEM 100 within a 
+given semester. This result holds even after simultaneously 
+controlling for all other relationships between resource use and 
+final grades. Increased “Lecture” resource use is slightly 
+positively and statistically significantly  (p<0.001) related to the 
+likelihood of receiving an “A” versus a “C” in the course, but is 
+not significant for receiving a “B” versus a “C.” The relationship 
+between “Course Information” resources and final grades is 
+slightly negative, and there is not a statistically significant 
+relationship between “Assignment” resource use and final grades. 
+At first glance , these estimates seem miniscule. Taking the 
+estimate of “Exam Preparation” on grades, for  example, for each 
+one percentile point increase in “Exam  Preparation” resource use, 
+a student is 1.024 times as likely to  receive an “A” instead of a 
+“C.” At face value, the point estimate is small; however, it only 
+reflects a one percentile point increase in resource use. 
+To better illustrate the relationship between increased resource use 
+and final student grades, we describe the sce nario of a  student in 
+the course that could  receive feedback about their performance  
+from a STEM Academy advisor using Student Explorer . A few 
+weeks into the course, this  student is observed with a low grade 
+and is  at the 25
+th percentile (bottom quartile)  of resource use in 
+each category compared to their classmates. As an actionable step, 
+the STEM Academy advisor could suggest using more of the 
+course’s resources, particularly those of a given category. We can 
+use these models to estimate the  student’s likelihood of receiving 
+an “A” or “B” versus a “C” if they were to improve their resource 
+use and hypothetically “shift” to the 50 th percentile (median) from 
+the bottom quartile. Table 6 presents the se likelihoods for the 
+statistically significant estimates of resource use in the model. 
+Table 6. Changing Percentiles of Resource Use on Grades 
+Resource 
+Category 
+“A” vs. “C” 
+25th→50th 
+“B” vs. “C” 
+25th→50th 
+Course Info 0.856 0.907 
+Lecture 1.228 not sig. 
+Assignments not sig. not sig. 
+Exam Prep 1.811 1.565 
+For a student that “shifts” their use of “Exam Preparation” 
+resources from the bottom quartile of the class to the median, they 
+are estimated to become 1.81 times as likely to receive an “A” in 
+the course instead of a “C” than if they did not change their 
+resource use patter ns previously. Likewise, that same student is 
+1.57 times as likely to receive a “B” than previously  (see Figure 1 
+below for graphical interpretation ). Students shifting their use of 
+“Lecture” resources to the median are estimated to become 1.23 
+times as likely to receive an “A” than previously.  
+Figure 1. Exam Preparation Resource Use and Final Grades 
+ 
+ 
+5. DISCUSSION 
+5.1 Conclusions and Implications 
+Our first research question  asked: “What is the relationship 
+between student LMS course resource use and the likelihood that 
+a student receives an “A” or “B” in CHEM 100 versus a “C?” The 
+results indicate that course resource use is related to  course grades 
+over ten semesters , even after accounting for any unobserved 
+time-varying factors related to the relationship between course 
+Percentile of Resource Use 
+Probability of Receiving Grade 
+191","4.2 Multinomial Logistic Regression Results 
+We used a multinomial logistic regression model with semester fixed-effects to estimate the relationship between course resource and a student’s final grade. Table 4 reflects a model where each resource category is included in a separate regression model. 
+Table 4. Impact of Resource Use on Grades - Separate Analyses by Resource Category 
+We found a general positive relationship between increased use of each type of resource category and final student grades, meaning that a s resource use increases, a given student is more likely to receive an “A” (or “B”) instead of a “C” in CHEM 100 within a given semester. The impacts are stronger for “A” students in comparison to “B” students. “Exam Preparation” resource use has the largest estimated relationship with course grades, while “Course Information” resource use has the smallest. All of the estimates are statistically significant at the 𝛼=0.001 level. Although the separate analyses by category yield a glimpse of the relationships between resource use and grades, less biased estimates of these relationships were obtained by combining all resource categories in the same model. Table 5 displays the estimates of the preferred multinomial logistic regression model. 
+Table 5. Impact of Resource Use on Grades - Combined Analysis with All Resource Categories 
+There remains a positive and statistically significant (p<0.001) relationship between “Exam Preparation” resource use and receiving an “A” or “B” versus a “C” in CHEM 100 within a given semester. This result holds even after simultaneously controlling for all other relationships between resource use and final grades. Increased “Lecture” resource use is slightly positively and statistically significantly (p<0.001) related to the likelihood of receiving an “A” versus a “C” in the course, but is not significant for receiving a “B” versus a “C.” The relationship between “Course Information” resources and final grades is slightly negative, and there is not a statistically significant relationship between “Assignment” resource use and final grades. At first glance, these estimates seem miniscule. Taking the estimate of “Exam Preparation” on grades, for example, for each one percentile point increase in “Exam Preparation” resource use, a student is 1.024 times as likely to receive an “A” instead of a “C.” At face value, the point estimate is small; however, it only reflects a one percentile point increase in resource use. 
+To better illustrate the relationship between increased resource use and final student grades, we describe the sce nario of a student in the course that could receive feedback about their performance from a STEM Academy advisor using Student Explorer. A few weeks into the course, this student is observed with a low grade and is at the 25th percentile (bottom quartile) of resource use in each category compared to their classmates. As an actionable step, the STEM Academy advisor could suggest using more of the course’s resources, particularly those of a given category. We can use these models to estimate the student’s likelihood of receiving an “A” or “B” versus a “C” if they were to improve their resource use and hypothetically “shift” to the 50 th percentile (median) from the bottom quartile. Table 6 presents the se likelihoods for the statistically significant estimates of resource use in the model. 
+Table 6. Changing Percentiles of Resource Use on Grades 
+For a student that “shifts” their use of “Exam Preparation” resources from the bottom quartile of the class to the median, they are estimated to become 1.81 times as likely to receive an “A” in the course instead of a “C” than if they did not change their resource use patter ns previously. Likewise, that same student is 1.57 times as likely to receive a “B” than previously (see Figure 1 below for graphical interpretation). Students shifting their use of “Lecture” resources to the median are estimated to become 1.23 times as likely to receive an “A” than previously. 
+Figure 1. Exam Preparation Resource Use and Final Grades 
+5. DISCUSSION 
+5.1 Conclusions and Implications 
+Our first research question asked: “What is the relationship between student LMS course resource use and the likelihood that a student receives an “A” or “B” in CHEM 100 versus a “C?” The results indicate that course resource use is related to course grades over ten semesters, even after accounting for any unobserved time-varying factors related to the relationship between course"
+Waddington - 2014 - LAK - Practice exams make perfect incorporating course resource use into an early warning system.pdf,"resource use and grades. Furthermore, we determined  that the 
+increased use of “Exam Preparation” resources had the strongest 
+positive relationship with  grades, while the use of “Lecture” 
+resources was also  positively correlated with receiving an “A” in 
+CHEM 100. These results answered our second research question. 
+Our results are initially  suggestive of  a pattern for success in 
+CHEM 100 through the use of “Exam Preparation” and “Lecture” 
+resources. This fle xible framework to categorize resources, 
+affords us the opportunity to apply this framework to additional 
+courses. We might hypothesize that the use of resources related to 
+“Exam Preparation” and “Lecture” would be important across 
+STEM courses (particular ly required first - and second -year 
+courses), and the creation of resource categories  allows us to 
+actually test this hypothesis. 
+For CHEM 100  these results held across semesters . Although the 
+overall course structure remained the same, the instructors and 
+resources available to students changed with each semester. This 
+scenario would apply more  broadly across all STEM courses: 
+instructors and resources will change over time. This  is 
+problematic for  incorporating resource use  in an individualized, 
+course-by-course manner  into an EWS . However, our resource 
+categorization framework  can help to group resources across 
+courses, thereby reducing the  burdens placed on developers of 
+LA-based systems, as well as the instructors  and advisors that  
+make sense of these data. For Student Explorer, the categorization 
+approach may allow for the inclusion  of resource use across all 
+STEM courses  in Student Explorer’s classification system . This 
+would replace general LMS course site visits  and highlight to the 
+advisors more targeted ways in which students can improve. 
+5.2 Limitations and Future Work 
+We are limited in our ability to speak about the relationship 
+between course resource use and student grades more generally 
+because this study used only one course. T his is the first phase of 
+investigating how LMS course resource use could  be incorporated 
+into an existing EWS. Also, this paper is  meant to serve as a 
+springboard for future research and fodder for discussion at this 
+early phase of the design and improvement process. 
+We have several thoughts about how to expand this work in the 
+future. We need to be mindful of other approaches for aggregating 
+LMS course resource use data. Using percentile ranks allows for 
+peer-to-peer comparisons and protects  against some outliers, but 
+is not a perfect metric. Some students may use  the resources  as 
+effectively as their peers but download and save the resource to 
+their hard drives, which would represent one access in the LMS . 
+We will need  to consider alternative metrics, including the 
+proportion of materials used within each resource category , as 
+well as a weighting scheme to reduce the influence of the number 
+of accesses . Also, not al l courses may use materials  falling 
+directly into our resource  categories ( e.g., studio-based design 
+courses), so we must be flexible with our categorization scheme. 
+Our next steps involve expanding this analysis to other  required 
+first-year STEM courses across multiple semesters. We will also 
+need to examine how the relationship between resource use and 
+grades changes during the semester (i.e. before and after  exams), 
+in order to better focus advisors’ recommendations to students. 
+We also need to incorporate  additional data (e.g.  demographics, 
+ACT scores) with resource use into our classification scheme in 
+order to determine the overall added value of this information. 
+6. ACKNOWLEDGMENTS 
+We would like to graciously acknowledge the support and 
+feedback we received throughout the conceptualization and 
+analysis process from Dr. Stephanie Teasley, director of the USE 
+Lab at the University of Michigan. We are indebted to Dr. Steve 
+Lonn for helping us to access the course data and for all of his 
+feedback. We would also like to especially acknowledge the 
+contributions and feedback of Stephen Aguilar, Dr. Andrew 
+Krumm, Dr. Kara Makara, Dr. Barry Fishman, Dr. Christopher 
+Brooks, Amine Boudalia, and Gierad Laput. We are also grateful 
+to have the support and feedback from the director of the STEM 
+Academy, Dr. Cinda -Sue Davis, and the STEM Academy 
+advisors, Darryl Koch, Debbie Taylor, and Mark Jones. 
+7. REFERENCES 
+[1] Beck, H. P. & Davidson, W. D. (2001). Establishing an early 
+warning system: Predicting low grades in college students 
+from survey of academic orientations scores. Research in 
+Higher Education, 42(6), 709-723. 
+[2] Campbell, J., DeBlois, P., & Oblinger, D. (2007). Academic 
+analytics: A new tool for a new era. Educause Review, 42(4), 
+40−57. http://net.educause.edu/ir/library/pdf/ERM0742.pdf 
+[3] Cobb, P., Confrey, J., diSessa, A., Lehrer, R., & Schauble, L. 
+(2003). Design experiments in educational research. 
+Educational Researcher, 32(1), 9-13, 35-37. 
+[4] Dahlstrom, E., de Boor, T., Grunwald, P., & Vockley, M. 
+(2011). The ECAR national study of undergraduate students 
+and information technology, 2011. Boulder, CO: 
+EDUCAUSE. 
+[5] Ferguson, R. (2012). Learning analytics: Drivers, 
+developments, and challenges. International Journal of 
+Technology Enhanced Learning, 4(5/6), 304-317. 
+[6] Krumm, A. E., Waddington, R. J., Teasley, S. D., Lonn, S. 
+(f
+orthcoming). Using data from a learning management 
+system to support academic advising in undergraduate 
+engineering education. In J. Larusson & B. White (Eds.), 
+Learning analytics from research to practice: Methods, tools, 
+and approaches. New York, NY: Springer. 
+[7] Macfadyen, L. P., & Dawson, S. (2010). Mining LMS data to 
+develop an ""early warning system"" for educators: A proof of 
+concept. Computers & Education, 54(2), 588−599. 
+[8] Maton, K. I., Hrabowski III, F. A., & Schmitt, C. L. (2000). 
+African American college students excelling in the sciences: 
+College and postcollege outcomes in the Meyerhoff Scholars 
+Program. Journal of Research in Science Teaching, 37(7), 
+629-654. 
+[9] Matsui, J., Liu, R., & Kane, C. M. (2003). Evaluating a 
+science diversity program at UC Berkeley: More questions 
+than answers. Cell Biology Education, 2(2), 113-121. 
+doi:10.1187/cbe.02-10-0050 
+[10] McKay, T. Miller, K., & Tritz, J. (2012). What to do with 
+actionable intelligence: E2Coach as an intervention engine. 
+Paper presented at The 2nd International Conference on 
+Learning Analytics and Knowledge. Vancouver, Canada. 
+[11] Siemens, G. & Long, P. (2011). Penetrating the fog: 
+Analytics in learning and education. EDUCAUSE Review, 
+46(5).
+ 
+192","Furthermore, we determined that the increased use of “Exam Preparation” resources had the strongest positive relationship with grades, while the use of “Lecture” resources was also positively correlated with receiving an “A” in CHEM 100. These results answered our second research question. Our results are initially suggestive of a pattern for success in CHEM 100 through the use of “Exam Preparation” and “Lecture” resources. This fle xible framework to categorize resources, affords us the opportunity to apply this framework to additional courses. We might hypothesize that the use of resources related to “Exam Preparation” and “Lecture” would be important across STEM courses (particular ly required first - and second -year courses), and the creation of resource categories allows us to actually test this hypothesis.
+For CHEM 100 these results held across semesters . Although the overall course structure remained the same, the instructors and resources available to students changed with each semester. This scenario would apply more broadly across all STEM courses: instructors and resources will change over time. This is problematic for incorporating resource use in an individualized, course-by-course manner into an EWS . However, our resource categorization framework can help to group resources across courses, thereby reducing the burdens placed on developers of LA-based systems, as well as the instructors and advisors that make sense of these data. For Student Explorer, the categorization approach may allow for the inclusion of resource use across all STEM courses in Student Explorer’s classification system . This would replace general LMS course site visits and highlight to the advisors more targeted ways in which students can improve.
+
+5.2 Limitations and Future Work
+We are limited in our ability to speak about the relationship between course resource use and student grades more generally because this study used only one course. T his is the first phase of investigating how LMS course resource use could be incorporated into an existing EWS. Also, this paper is meant to serve as a springboard for future research and fodder for discussion at this early phase of the design and improvement process.
+We have several thoughts about how to expand this work in the future. We need to be mindful of other approaches for aggregating LMS course resource use data. Using percentile ranks allows for peer-to-peer comparisons and protects against some outliers, but is not a perfect metric. Some students may use the resources as effectively as their peers but download and save the resource to their hard drives, which would represent one access in the LMS . We will need to consider alternative metrics, including the proportion of materials used within each resource category , as well as a weighting scheme to reduce the influence of the number of accesses . Also, not al l courses may use materials falling directly into our resource categories ( e.g., studio-based design courses), so we must be flexible with our categorization scheme.
+Our next steps involve expanding this analysis to other required first-year STEM courses across multiple semesters. We will also need to examine how the relationship between resource use and grades changes during the semester (i.e. before and after exams), in order to better focus advisors’ recommendations to students. We also need to incorporate additional data (e.g. demographics, ACT scores) with resource use into our classification scheme in order to determine the overall added value of this information."
