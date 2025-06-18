@@ -3,6 +3,13 @@ from dotenv import load_dotenv
 import streamlit as st
 import difflib
 
+try:
+    import pysqlite3
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass
+
 # ─── 1. Chargement de la clé API ──────────────────────────────────────────────
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -17,7 +24,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 # ─── 2. Imports LangChain & Chroma ───────────────────────────────────────────
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain.prompts import PromptTemplate
 from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
@@ -115,19 +122,32 @@ st.set_page_config(page_title="Student RAG Chat", page_icon="🎓")
 st.title("🎓 Assistant de recherche académique")
 st.markdown("Pose une question sur les performances des étudiants.")
 
+if 'attempt_count' not in st.session_state:
+    st.session_state.attempt_count = 0
+
 question = st.text_input("💬 Votre question")
 
 if question:
     # Génération de la réponse RAG
     answer = rag_chain.invoke(question)
-    st.markdown("### 📘 Réponse")
-    st.markdown(answer)
 
-    # Affichage des noms de PDF et scores
-    if "fucking" not in answer.lower() and "not available" not in answer.lower():
+    # Vérifier si la réponse est valide
+    if "fucking" not in str(answer).lower() and "not available" not in str(answer).lower():
+        st.session_state.attempt_count = 0  # Réinitialiser le compteur
+        st.markdown("### 📘 Réponse")
+        st.markdown(answer)
+
+        # Affichage des noms de PDF et scores
         st.markdown("---")
         st.markdown("### 📚 Sources utilisées (PDF & Score)")
         for i, (pdf_name, score) in enumerate(get_pdf_sources_scores(question), 1):
             st.markdown(f"{i}. **{pdf_name}** — Score : {score:.4f}")
     else:
-        st.warning("⚠️ La question semble hors sujet ou non couverte.")
+        st.session_state.attempt_count += 1
+        if st.session_state.attempt_count < 5:
+            st.warning("Essayez à nouveau : question hors sujet ou non couverte.")
+        elif st.session_state.attempt_count < 10:
+            st.error("Le sujet est la performance des étudiants et la question doit correspondre aux recherches disponibles. Soyez précis.")
+        else:
+            st.markdown("### 📘 Réponse")
+            st.markdown(answer)
