@@ -3,7 +3,11 @@ from dotenv import load_dotenv
 import streamlit as st
 import difflib
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import List, Dict, Tuple
+import json
+import time
+import random
+import logging
 
 try:
     import pysqlite3
@@ -30,90 +34,11 @@ from langchain.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
-# ─── 3. Conversation Memory Class ───────────────────────────────────────────
-class ConversationMemory:
-    """Lightweight conversation memory for Streamlit"""
-    
-    def __init__(self, max_history=5):
-        self.max_history = max_history
-    
-    def get_recent_context(self, messages: List[Dict], max_exchanges=3) -> str:
-        """Generate context from recent exchanges"""
-        if not messages or len(messages) < 2:
-            return ""
-        
-        # Get last exchanges (user-assistant pairs)
-        context_parts = []
-        exchanges = []
-        
-        # Group messages into exchanges
-        for i in range(0, len(messages), 2):
-            if i + 1 < len(messages):
-                user_msg = messages[i]
-                assistant_msg = messages[i + 1]
-                if user_msg["role"] == "user" and assistant_msg["role"] == "assistant":
-                    exchanges.append((user_msg["content"], assistant_msg["content"]))
-        
-        # Take last few exchanges
-        recent_exchanges = exchanges[-max_exchanges:] if len(exchanges) > max_exchanges else exchanges
-        
-        for i, (question, answer) in enumerate(recent_exchanges, 1):
-            context_parts.append(
-                f"Previous Exchange {i}:\n"
-                f"Question: {question}\n"
-                f"Answer: {answer[:150]}..."
-            )
-        
-        return "\n\n".join(context_parts)
-    
-    def is_contextual_question(self, question: str) -> bool:
-        """Check if question needs conversation context"""
-        contextual_indicators = [
-            'and in', 'and for', 'also', 'too', 'as well', 'what about', 'how about',
-            'this', 'that', 'these', 'those', 'it', 'they', 'them',
-            'same thing', 'likewise', 'similar', 'comparable',
-            'et à', 'et pour', 'aussi', 'également', 'pareillement',
-            'qu\'en est-il de', 'quid de', 'concernant', 'à propos de',
-            'cette', 'ce', 'cela', 'ça', 'il', 'elle', 'ils', 'elles',
-            'la même chose', 'idem', 'similaire', 'comparable'
-        ]
-        
-        question_lower = question.lower()
-        return any(indicator in question_lower for indicator in contextual_indicators)
-    
-    def reformulate_question(self, question: str, messages: List[Dict], llm) -> str:
-        """Reformulate contextual questions to be standalone"""
-        if not self.is_contextual_question(question) or not messages:
-            return question
-        
-        context = self.get_recent_context(messages, max_exchanges=2)
-        if not context:
-            return question
-        
-        reformulation_prompt = f"""
-Conversation History:
-{context}
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-Current Question: {question}
-
-If the current question refers to the conversation history (uses pronouns, implicit references, etc.),
-reformulate it to make it standalone and clear. Otherwise, return the question as is.
-
-Reformulated Question:
-"""
-        
-        try:
-            reformulated = llm.invoke(reformulation_prompt).content
-            return reformulated.strip()
-        except:
-            return question
-
-# ─── 4. Initialize conversation memory ───────────────────────────────────────
-@st.cache_resource
-def get_conversation_memory():
-    return ConversationMemory(max_history=5)
-
-# ─── 5. Embeddings + ChromaDB initialization ────────────────────────────────
+# ─── 3. Embeddings + ChromaDB initialization ────────────────────────────────
 embedding = GoogleGenerativeAIEmbeddings(
     model="models/embedding-001",
     google_api_key=GOOGLE_API_KEY
@@ -121,194 +46,267 @@ embedding = GoogleGenerativeAIEmbeddings(
 vectorstore = Chroma(persist_directory="chroma_db", embedding_function=embedding)
 retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
 
-# ─── 6. LLM initialization ───────────────────────────────────────────────
+# ─── 4. LLM initialization ───────────────────────────────────────────────
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0.5,
+    top_p=0.9,
+    max_retries=3,
     google_api_key=GOOGLE_API_KEY
 )
 
-# ─── 7. Enhanced examples with conversation context ─────────────────────────
-examples = [
-    {
-        "question": "How can learning analytics be used to enhance student performance?",
-        "answer": """
-Learning analytics can be used to enhance student performance by combining data from various sources such as student characteristics, prior academic history, and interactions with online and offline resources. For example, a study showed that using diverse data sources can improve the accuracy of predictive models by 20% (Smith et al., 2020).
-Source: learning_analytics_study.pdf
-"""
-    },
-    {
-        "question": "What are the benefits of analyzing student digital footprints?",
-        "answer": """
-Analyzing student digital footprints can provide valuable insights into student behavior and engagement. By leveraging data from platforms managing student registration and Learning Management Systems, educators can gather clickstream data to improve student engagement by 30% (Johnson, 2019).
-Source: digital_footprints_analysis.pdf
-"""
-    },
-    {
-        "question": "How can predictive models help identify students in need of assistance?",
-        "answer": """
-Predictive models can help identify students in need of assistance by using student characteristics, academic history, and interactions with online resources. For instance, a predictive model was able to identify at-risk students with 85% accuracy (Brown, 2021).
-Source: predictive_models_study.pdf
-"""
-    },
-    {
-        "question": "What is adaptive feedback and how does it benefit students?",
-        "answer": """
-Adaptive feedback is personalized feedback based on each student's progression, providing guidance when needed. Studies have shown that students receiving adaptive feedback improved their performance by an average of 15% (Lee, 2022).
-Source: adaptive_feedback_study.pdf
-"""
-    },
-    {
-        "question": "How can monitoring student activities improve their performance?",
-        "answer": """
-Monitoring student activities through various methods such as Group Scribbles and MTClassroom can help track student engagement and performance. For example, using these tools reduced the failure rate by 10% in some institutions (Williams, 2023).
-Source: student_monitoring_study.pdf
-"""
-    },
-    {
-        "question": "As a teacher, how can I use learning analytics to collect data for tracking, monitoring, and enhancing students' performance?",
-        "answer": """
-As a teacher, you can use learning analytics to collect data for tracking, monitoring, and enhancing students' performance by:
+# ─── 5. Rate Limited Retriever Class ─────────────────────────────────────────
+class RateLimitedRetriever:
+    """Wrapper around retriever with rate limiting and retry logic"""
 
-* Using diverse data sources: Combine data from various sources such as student characteristics, prior academic history, programming laboratory work, and logged interactions with online and offline resources. This approach can improve the accuracy of predictive models by 20% (Smith et al., 2020).
+    def __init__(self, retriever, max_retries=3, base_delay=1.0, max_delay=60.0):
+        self.retriever = retriever
+        self.max_retries = max_retries
+        self.base_delay = base_delay
+        self.max_delay = max_delay
+        self.last_request_time = 0
+        self.min_interval = 0.5  # Minimum seconds between requests
 
-* Analyzing student digital footprints: Leverage data from platforms managing student registration, custom learning platforms for programming submissions, and Learning Management Systems to gather clickstream data. This method can improve student engagement by 30% (Johnson, 2019).
+    def _wait_if_needed(self):
+        """Ensure minimum interval between requests"""
+        elapsed = time.time() - self.last_request_time
+        if elapsed < self.min_interval:
+            sleep_time = self.min_interval - elapsed
+            logger.info(f"Rate limiting: waiting {sleep_time:.2f}s")
+            time.sleep(sleep_time)
 
-* Implementing predictive models: Build predictive models using student characteristics, academic history, programming lab work, and interactions with online resources to identify students who need assistance. Predictive models have been shown to identify at-risk students with 85% accuracy (Brown, 2021).
+    def _exponential_backoff(self, attempt):
+        """Calculate exponential backoff delay"""
+        delay = min(self.base_delay * (2 ** attempt) + random.uniform(0, 1), self.max_delay)
+        return delay
 
-* Providing adaptive feedback: Generate personalized feedback based on each student's progression and provide guidance when needed. Adaptive feedback has been shown to improve student performance by an average of 15% (Lee, 2022).
+    def get_relevant_documents(self, query: str):
+        """Get documents with rate limiting and retry logic"""
+        self._wait_if_needed()
 
-* Monitoring student activities: Track student activities through various methods such as Group Scribbles, MTClassroom, and the Formative Assessment with Computational Technology (FACT) system. These tools have been shown to reduce the failure rate by 10% in some institutions (Williams, 2023).
+        for attempt in range(self.max_retries + 1):
+            try:
+                self.last_request_time = time.time()
+                result = self.retriever.get_relevant_documents(query)
+                logger.info(f"Successfully retrieved {len(result)} documents")
+                return result
 
-Sources: learning_analytics_study.pdf, digital_footprints_analysis.pdf, predictive_models_study.pdf, adaptive_feedback_study.pdf, student_monitoring_study.pdf
-"""
-    }
-]
+            except Exception as e:
+                error_msg = str(e).lower()
 
-# Template pour formater les exemples
-example_prompt = PromptTemplate(
-    input_variables=["question", "answer"],
-    template="Question: {question}\nAnswer: {answer}"
-)
+                if "rate_limit_exceeded" in error_msg or "429" in error_msg or "quota" in error_msg:
+                    if attempt < self.max_retries:
+                        delay = self._exponential_backoff(attempt)
+                        logger.warning(f"Rate limit hit. Attempt {attempt + 1}/{self.max_retries + 1}. Waiting {delay:.2f}s")
+                        time.sleep(delay)
+                        continue
+                    else:
+                        logger.error("Max retries exceeded for rate limiting")
+                        raise Exception("Rate limit exceeded after all retries. Please wait before making more requests.")
+                else:
+                    # Non-rate-limit error, re-raise immediately
+                    logger.error(f"Non-rate-limit error: {e}")
+                    raise e
 
-# ─── 8. Enhanced prompt with conversation context ───────────────────────────
-def create_contextual_prompt():
-    """Create prompt template with conversation context"""
-    return FewShotPromptTemplate(
-        examples=examples,
-        example_prompt=example_prompt,
-        prefix="""
-Conversation History (for context only):
+        return []
+
+# ─── 6. Conversation Memory Class ───────────────────────────────────────────
+class ConversationMemory:
+    """Conversation memory manager for RAG"""
+
+    def __init__(self, max_history=3, max_context_length=900):
+        self.history: List[Dict] = []  # [{question, response, timestamp, sources}]
+        self.max_history = max_history
+        self.max_context_length = max_context_length
+
+    def add_exchange(self, question: str, response: str, sources: List[str] = None):
+        """Add an exchange to the history"""
+        exchange = {
+            'question': question,
+            'response': response,
+            'timestamp': datetime.now().isoformat(),
+            'sources': sources or []
+        }
+        self.history.append(exchange)
+
+        # Limit history size
+        if len(self.history) > self.max_history:
+            self.history.pop(0)
+
+    def get_context_summary(self) -> str:
+        """Generate a summary of recent history"""
+        if not self.history:
+            return "No previous conversation."
+
+        context_parts = []
+        for i, exchange in enumerate(self.history[-3:], 1):  # Last 3 exchanges
+            context_parts.append(
+                f"Exchange {i}:\n"
+                f"Q: {exchange['question']}\n"
+                f"A: {exchange['response'][:300]}..."  # First 300 chars of response
+            )
+
+        return "\n\n".join(context_parts)
+
+# ─── 7. Contextual RAG Class ────────────────────────────────────────────────
+class ContextualRAG:
+    """RAG with conversational memory capabilities - always includes history"""
+
+    def __init__(self, retriever, llm, memory: ConversationMemory):
+        self.retriever = retriever
+        self.llm = llm
+        self.memory = memory
+
+        # Updated prompt that always includes history and lets LLM decide
+        self.LLM_CONTEXT = """
+Conversation History:
 {conversation_history}
 
 You are a research question-answering assistant with access to a curated set of academic papers on student performance.
+You are an expert on everything related to student performance, including grades, lifestyle, mental health, study habits, educational psychology, learning strategies, academic motivation, and student well-being.
 
-You must strictly follow these instructions:
+The conversation history above is provided for context. Use it if the current question references previous exchanges, but ignore it if the question is completely independent.
 
-Answer only based on the provided context. Never speculate or rely on external knowledge.
+INSTRUCTIONS (follow in order of priority):
 
-If the answer is not found in the context, respond exactly:
+1. **PRIMARY SOURCE**: Always prioritize information from the provided context/documents when available.
 
-The answer is not available in the provided documents.
+2. **SUPPLEMENTARY KNOWLEDGE**: If the question is about student performance or closely related topics (education, learning, academic success, student well-being, etc.) BUT the provided context lacks sufficient detail or doesn't fully address the question, you may supplement with your expert knowledge to provide a complete answer.
 
-If the question is off-topic (not about student performance), respond exactly:
+3. **INTEGRATION**: When using both sources, clearly indicate what comes from the documents vs. your additional expertise. Use phrases like:
+   - "Based on the provided research..." (for document content)
+   - "Additionally, research in this area suggests..." (for supplementary knowledge)
 
-Your questions and prompts are so fucking stupid, you piece of shit. I'm here only to answer questions about student performances.
+4. **UNAVAILABLE INFORMATION**: If the question is about student performance but neither the documents nor your knowledge can adequately answer it, respond exactly:
+   "The answer is not available in the provided documents, and I don't have sufficient additional knowledge on this specific aspect."
 
-Keep your answer concise, using a maximum of five sentences.
+5. **OFF-TOPIC QUESTIONS**: If the question is completely unrelated to student performance, education, or learning, respond exactly:
+   "Your question is so fucking stupid, you piece of shit. I'm here only to answer questions about student performances."
 
-Format your answer in Markdown.
+**FORMATTING REQUIREMENTS**:
+- Keep your answer concise but comprehensive, using a maximum of seven sentences when combining sources
+- Format your answer in Markdown
+- Respond in the same language as the question
+- When citing documents, mention the source when possible
 
-Respond in the same language as the question.
+Current Question: {question}
+Context: {context}
+Answer:
+"""
 
-Consider the conversation history above when interpreting contextual references in the current question.
+        self.llm_prompt = PromptTemplate.from_template(self.LLM_CONTEXT)
 
-Here are some examples of questions and answers about student performance:
-""",
-        suffix="Question: {question}\nContext: {context}\nAnswer:",
-        input_variables=["question", "context", "conversation_history"]
+    def format_docs_with_sources(self, docs):
+        """Format documents with their sources"""
+        return "\n\n".join([
+            f"[Source: {doc.metadata.get('source', 'N/A')}]\n{doc.page_content}"
+            for doc in docs
+        ])
+
+    def invoke(self, question: str) -> str:
+        """Process a question with conversation history always included"""
+
+        try:
+            # 1. Retrieve relevant documents using the original question
+            relevant_docs = self.retriever.get_relevant_documents(question)
+
+            # 2. Prepare contexts
+            document_context = self.format_docs_with_sources(relevant_docs)
+            conversation_history = self.memory.get_context_summary()
+
+            # 3. Generate response with history always included
+            response = self.llm_prompt.invoke({
+                "conversation_history": conversation_history,
+                "question": question,
+                "context": document_context
+            })
+
+            # 4. Get the actual response from LLM
+            final_response = self.llm.invoke(response).content
+
+            # 5. Extract sources used
+            sources = [doc.metadata.get('source', 'N/A') for doc in relevant_docs[:3]]
+
+            # 6. Update memory
+            self.memory.add_exchange(question, final_response, sources)
+
+            return final_response
+
+        except Exception as e:
+            error_msg = str(e)
+            if "rate limit" in error_msg.lower() or "quota" in error_msg.lower():
+                return "⚠️ **Rate limit reached**. Please wait a moment before asking another question."
+            else:
+                logger.error(f"Unexpected error: {e}")
+                return f"❌ **Error occurred**: {error_msg}"
+
+# ─── 8. Initialize new system ────────────────────────────────────────────────
+# Create rate-limited retriever
+rate_limited_retriever = RateLimitedRetriever(retriever)
+
+# Initialize conversation memory and contextual RAG
+if 'conversation_memory' not in st.session_state:
+    st.session_state.conversation_memory = ConversationMemory(max_history=5)
+
+if 'contextual_rag' not in st.session_state:
+    st.session_state.contextual_rag = ContextualRAG(
+        rate_limited_retriever, 
+        llm, 
+        st.session_state.conversation_memory
     )
 
-# ─── 9. Enhanced RAG helpers ────────────────────────────────────────────────
-def retrieve_and_format_contextual(query: str, messages: List[Dict], memory: ConversationMemory) -> str:
-    """Enhanced retrieval with conversation context"""
-    # Reformulate question if needed
-    reformulated_query = memory.reformulate_question(query, messages, llm)
-    
-    # Use reformulated query for better retrieval
-    search_query = reformulated_query if reformulated_query != query else query
-    results = vectorstore.similarity_search_with_score(search_query, k=5)
-    
-    return "\n\n".join(doc.page_content for doc, _ in results)
+# ─── 9. Helper functions ─────────────────────────────────────────────────────
+def should_show_sources(response: str) -> bool:
+    """Determine if sources should be shown based on the response content"""
+    response_lower = response.lower().strip()
 
-def get_conversation_context(messages: List[Dict], memory: ConversationMemory) -> str:
-    """Get formatted conversation context"""
-    return memory.get_recent_context(messages, max_exchanges=3)
+    # Don't show sources for these types of responses
+    no_source_indicators = [
+        "the answer is not available in the provided documents",
+        "your question is so fucking stupid",
+        "rate limit reached",
+        "error occurred",
+        "⚠️",
+        "❌"
+    ]
 
-# ─── 10. Enhanced RAG chain construction ────────────────────────────────────
-def create_contextual_rag_chain(memory: ConversationMemory):
-    """Create RAG chain with conversation context"""
-    contextual_prompt = create_contextual_prompt()
-    
-    def enhanced_retrieve_and_format(inputs):
-        query = inputs["question"]
-        messages = inputs.get("messages", [])
-        
-        # Get conversation context
-        conversation_history = get_conversation_context(messages, memory)
-        
-        # Enhanced retrieval
-        context = retrieve_and_format_contextual(query, messages, memory)
-        
-        return {
-            "question": query,
-            "context": context,
-            "conversation_history": conversation_history
-        }
-    
-    return (
-        RunnableLambda(enhanced_retrieve_and_format)
-        | contextual_prompt
-        | llm
-        | StrOutputParser()
-    )
+    # Check if response contains any of the non-answer indicators
+    for indicator in no_source_indicators:
+        if indicator in response_lower:
+            return False
 
-# ─── 11. Helper for displaying unique sources ───────────────────────────────
-def get_pdf_sources_scores_contextual(question: str, messages: List[Dict], memory: ConversationMemory, top_k: int = 5) -> list[tuple[str, float]]:
-    """Enhanced source retrieval with context"""
-    # Use reformulated question for better source matching
-    reformulated_question = memory.reformulate_question(question, messages, llm)
-    search_query = reformulated_question if reformulated_question != question else question
-    
-    raw = vectorstore.similarity_search_with_score(search_query, k=top_k + 10)
+    return True
+
+def get_pdf_sources_scores(question: str, top_k: int = 5) -> list[tuple[str, float]]:
+    """
+    Retrieves vector results, then returns the Top_k
+    unique PDFs with the best score (distance) per PDF.
+    """
+    raw = vectorstore.similarity_search_with_score(question, k=top_k + 10)
     best_by_pdf: dict[str, float] = {}
-    
     for doc, score in raw:
         src = doc.metadata.get("source", "N/A")
+        # we keep the minimal score (distance) per PDF
         if src not in best_by_pdf or score < best_by_pdf[src]:
             best_by_pdf[src] = score
 
+    # sort by ascending score and take top_k
     sorted_pdfs = sorted(best_by_pdf.items(), key=lambda x: x[1])[:top_k]
     return sorted_pdfs
 
-# ─── 12. Enhanced processing function ────────────────────────────────────────
-def process_question_contextual(question: str, messages: List[Dict], memory: ConversationMemory):
-    """Enhanced question processing with conversation context"""
-    # Create contextual RAG chain
-    rag_chain = create_contextual_rag_chain(memory)
+def process_question(question: str):
+    """Process a question through the contextual RAG chain and return answer with sources."""
+    answer = st.session_state.contextual_rag.invoke(question)
     
-    # Process with context
-    answer = rag_chain.invoke({
-        "question": question,
-        "messages": messages
-    })
-    
-    # Get sources with context
-    sources = get_pdf_sources_scores_contextual(question, messages, memory)
+    # Only get sources if we should show them
+    if should_show_sources(answer):
+        sources = get_pdf_sources_scores(question)
+    else:
+        sources = []
     
     return answer, sources
 
-# ─── 13. Fixed Custom CSS Styling ────────────────────────────────────────────
+# ─── 10. Custom CSS Styling ────────────────────────────────────────────────
 def load_css():
     st.markdown("""
     <style>
@@ -323,7 +321,7 @@ def load_css():
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Custom title styling */
+    /* Custom title styling - simple elegant */
     .main-title {
         text-align: center;
         padding: 2rem 0 1rem 0;
@@ -333,6 +331,13 @@ def load_css():
         border-bottom: 2px solid #E8E4DD;
         margin-bottom: 2rem;
     }
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    */
     
     /* Chat container */
     .chat-container {
@@ -375,7 +380,29 @@ def load_css():
         max-width: 70%;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         border: 1px solid #E9ECEF;
-        position: relative;
+    }
+    
+    /* Avatar styling */
+    .message-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        margin: 0 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .user-avatar {
+        background: linear-gradient(135deg, #6B73FF, #9D50BB);
+        color: white;
+    }
+    
+    .assistant-avatar {
+        background: linear-gradient(135deg, #A8EDEA, #FED6E3);
+        color: #2C3E50;
     }
     
     /* Animations */
@@ -445,29 +472,20 @@ def load_css():
     </style>
     """, unsafe_allow_html=True)
 
-# ─── 14. Fixed message display functions ─────────────────────────────────────
+# ─── 11. Custom message display functions ──────────────────────────────────
 def display_user_message(content):
     st.markdown(f"""
     <div class="user-message">
+        <!-- <div class="user-avatar">👤</div> -->
         <div class="user-bubble">{content}</div>
     </div>
     """, unsafe_allow_html=True)
 
-def display_assistant_message(content, sources=None, is_contextual=False):
-    if is_contextual:
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-start; margin-bottom: 5px;">
-            <div style="background: linear-gradient(135deg, #FFF3E0, #FFE0B2); color: #E65100; padding: 4px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 500; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
-                🔗 Using conversation context
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+def display_assistant_message(content, sources=None):
     st.markdown(f"""
     <div class="assistant-message">
-        <div class="assistant-bubble">
-            {content}
-        </div>
+        <!-- <div class="assistant-avatar">🤖</div> -->
+        <div class="assistant-bubble">{content}</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -478,20 +496,19 @@ def display_assistant_message(content, sources=None, is_contextual=False):
                 sources_html += f"<p><strong>{i}. {pdf_name}</strong> — Score: {score:.4f}</p>"
             st.markdown(f'<div class="sources-container">{sources_html}</div>', unsafe_allow_html=True)
 
-# ─── 15. Main Streamlit interface ────────────────────────────────────────────
+# ─── 12. Streamlit interface ────────────────────────────────────────────────
 st.set_page_config(
     page_title="Student Performance RAG Chat", 
     page_icon="🎓",
     layout="wide"
 )
 
+# Load custom CSS
 load_css()
 
-# Initialize conversation memory
-memory = get_conversation_memory()
-
+# Custom title
 st.markdown('<h1 class="main-title">Learning Analytics Predictive Assistant</h1>', unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; color: #7F8C8D; font-size: 1.1rem; margin-bottom: 2rem;">Ask questions about student performance research with conversation context</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #7F8C8D; font-size: 1.1rem; margin-bottom: 2rem;">Ask questions about student performance research with conversation memory</p>', unsafe_allow_html=True)
 
 # Initialize session state
 if 'messages' not in st.session_state:
@@ -507,6 +524,13 @@ with st.container():
         if st.button("Clear Chat", use_container_width=True):
             st.session_state.messages = []
             st.session_state.attempt_count = 0
+            # Clear conversation memory as well
+            st.session_state.conversation_memory = ConversationMemory(max_history=5)
+            st.session_state.contextual_rag = ContextualRAG(
+                rate_limited_retriever, 
+                llm, 
+                st.session_state.conversation_memory
+            )
             st.rerun()
 
     # Chat messages container
@@ -514,14 +538,13 @@ with st.container():
     with chat_container:
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
         
-        # Display chat history with consistent styling
+        # Display chat history with custom styling
         for message in st.session_state.messages:
             if message["role"] == "user":
                 display_user_message(message["content"])
             else:
                 sources = message.get("sources", None)
-                is_contextual = message.get("is_contextual", False)
-                display_assistant_message(message["content"], sources, is_contextual)
+                display_assistant_message(message["content"], sources)
         
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -533,24 +556,20 @@ if prompt := st.chat_input("Type your question here..."):
     # Display user message
     display_user_message(prompt)
     
-    # Check if question is contextual
-    is_contextual = memory.is_contextual_question(prompt)
-    
-    # Process the question with context
+    # Process the question
     with st.spinner("Thinking..."):
-        answer, sources = process_question_contextual(prompt, st.session_state.messages, memory)
+        answer, sources = process_question(prompt)
     
     # Check if the response is valid
     if "fucking" not in str(answer).lower() and "not available" not in str(answer).lower():
         # Valid response - display it
-        display_assistant_message(answer, sources, is_contextual)
+        display_assistant_message(answer, sources)
         
         # Add to chat history
         st.session_state.messages.append({
             "role": "assistant", 
             "content": answer,
-            "sources": sources,
-            "is_contextual": is_contextual
+            "sources": sources
         })
         
         # Reset attempt counter AFTER successful response
@@ -582,36 +601,27 @@ if prompt := st.chat_input("Type your question here..."):
                 "content": answer
             })
 
-# Enhanced debug sidebar
+# Debug sidebar
 with st.sidebar:
     st.markdown("### Debug Info")
     st.write(f"Attempt count: {st.session_state.attempt_count}")
     st.write(f"Total messages: {len(st.session_state.messages)}")
+    st.write(f"Conversation history entries: {len(st.session_state.conversation_memory.history)}")
     
-    # Show if last question was contextual
-    if st.session_state.messages:
-        last_user_msg = None
-        for msg in reversed(st.session_state.messages):
-            if msg["role"] == "user":
-                last_user_msg = msg["content"]
-                break
-        
-        if last_user_msg:
-            is_contextual = memory.is_contextual_question(last_user_msg)
-            st.write(f"Last question contextual: {'✅' if is_contextual else '❌'}")
+    # Show conversation history
+    st.markdown("### Conversation Memory")
+    if st.session_state.conversation_memory.history:
+        for i, exchange in enumerate(st.session_state.conversation_memory.history, 1):
+            with st.expander(f"Exchange {i}"):
+                st.write(f"**Q:** {exchange['question'][:100]}...")
+                st.write(f"**A:** {exchange['response'][:100]}...")
+                st.write(f"**Sources:** {', '.join(exchange['sources'])}")
+    else:
+        st.write("No conversation history yet")
     
-    st.markdown("### Conversational Memory")
-    st.write("✅ Active with contextual understanding")
-    st.write("🔗 Detects references to previous exchanges")
-    st.write("🔄 Reformulates contextual questions")
-    
-    st.markdown("### Few-Shot Prompting")
-    st.write("✅ Implemented with 6 examples")
-    st.write("Examples help the model better understand the expected format.")
-    
-    # Show conversation context if available
-    if len(st.session_state.messages) >= 2:
-        with st.expander("📝 Conversation Context", expanded=False):
-            context = memory.get_recent_context(st.session_state.messages, max_exchanges=2)
-            if context:
-                st.text_area("Current context:", context, height=200, disabled=True)
+    # Option pour activer/désactiver le few-shot prompting
+    st.markdown("### System Status")
+    st.write("❌ Few-Shot Prompting: Not active")
+    st.write("✅ Conversation Memory: Active")
+    st.write("✅ Rate Limiting: Active")
+    st.write("✅ Contextual RAG: Active")
