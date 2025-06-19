@@ -2,8 +2,6 @@ import os
 from dotenv import load_dotenv
 import streamlit as st
 import difflib
-from datetime import datetime
-from typing import List, Dict, Optional
 
 try:
     import pysqlite3
@@ -30,90 +28,7 @@ from langchain.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
-# ─── 3. Conversation Memory Class ───────────────────────────────────────────
-class ConversationMemory:
-    """Lightweight conversation memory for Streamlit"""
-    
-    def __init__(self, max_history=5):
-        self.max_history = max_history
-    
-    def get_recent_context(self, messages: List[Dict], max_exchanges=3) -> str:
-        """Generate context from recent exchanges"""
-        if not messages or len(messages) < 2:
-            return ""
-        
-        # Get last exchanges (user-assistant pairs)
-        context_parts = []
-        exchanges = []
-        
-        # Group messages into exchanges
-        for i in range(0, len(messages), 2):
-            if i + 1 < len(messages):
-                user_msg = messages[i]
-                assistant_msg = messages[i + 1]
-                if user_msg["role"] == "user" and assistant_msg["role"] == "assistant":
-                    exchanges.append((user_msg["content"], assistant_msg["content"]))
-        
-        # Take last few exchanges
-        recent_exchanges = exchanges[-max_exchanges:] if len(exchanges) > max_exchanges else exchanges
-        
-        for i, (question, answer) in enumerate(recent_exchanges, 1):
-            context_parts.append(
-                f"Previous Exchange {i}:\n"
-                f"Question: {question}\n"
-                f"Answer: {answer[:150]}..."
-            )
-        
-        return "\n\n".join(context_parts)
-    
-    def is_contextual_question(self, question: str) -> bool:
-        """Check if question needs conversation context"""
-        contextual_indicators = [
-            'and in', 'and for', 'also', 'too', 'as well', 'what about', 'how about',
-            'this', 'that', 'these', 'those', 'it', 'they', 'them',
-            'same thing', 'likewise', 'similar', 'comparable',
-            'et à', 'et pour', 'aussi', 'également', 'pareillement',
-            'qu\'en est-il de', 'quid de', 'concernant', 'à propos de',
-            'cette', 'ce', 'cela', 'ça', 'il', 'elle', 'ils', 'elles',
-            'la même chose', 'idem', 'similaire', 'comparable'
-        ]
-        
-        question_lower = question.lower()
-        return any(indicator in question_lower for indicator in contextual_indicators)
-    
-    def reformulate_question(self, question: str, messages: List[Dict], llm) -> str:
-        """Reformulate contextual questions to be standalone"""
-        if not self.is_contextual_question(question) or not messages:
-            return question
-        
-        context = self.get_recent_context(messages, max_exchanges=2)
-        if not context:
-            return question
-        
-        reformulation_prompt = f"""
-Conversation History:
-{context}
-
-Current Question: {question}
-
-If the current question refers to the conversation history (uses pronouns, implicit references, etc.),
-reformulate it to make it standalone and clear. Otherwise, return the question as is.
-
-Reformulated Question:
-"""
-        
-        try:
-            reformulated = llm.invoke(reformulation_prompt).content
-            return reformulated.strip()
-        except:
-            return question
-
-# ─── 4. Initialize conversation memory ───────────────────────────────────────
-@st.cache_resource
-def get_conversation_memory():
-    return ConversationMemory(max_history=5)
-
-# ─── 5. Embeddings + ChromaDB initialization ────────────────────────────────
+# ─── 3. Embeddings + ChromaDB initialization ────────────────────────────────
 embedding = GoogleGenerativeAIEmbeddings(
     model="models/embedding-001",
     google_api_key=GOOGLE_API_KEY
@@ -121,14 +36,14 @@ embedding = GoogleGenerativeAIEmbeddings(
 vectorstore = Chroma(persist_directory="chroma_db", embedding_function=embedding)
 retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
 
-# ─── 6. LLM initialization ───────────────────────────────────────────────
+# ─── 4. LLM initialization ───────────────────────────────────────────────
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0.5,
     google_api_key=GOOGLE_API_KEY
 )
 
-# ─── 7. Enhanced examples with conversation context ─────────────────────────
+# ─── 5. Définir les exemples pour le few-shot prompting ─────────────────────────────────────────────────
 examples = [
     {
         "question": "How can learning analytics be used to enhance student performance?",
@@ -191,16 +106,11 @@ example_prompt = PromptTemplate(
     template="Question: {question}\nAnswer: {answer}"
 )
 
-# ─── 8. Enhanced prompt with conversation context ───────────────────────────
-def create_contextual_prompt():
-    """Create prompt template with conversation context"""
-    return FewShotPromptTemplate(
-        examples=examples,
-        example_prompt=example_prompt,
-        prefix="""
-Conversation History (for context only):
-{conversation_history}
-
+# Création du FewShotPromptTemplate avec les règles de votre prompt original
+few_shot_prompt = FewShotPromptTemplate(
+    examples=examples,
+    example_prompt=example_prompt,
+    prefix="""
 You are a research question-answering assistant with access to a curated set of academic papers on student performance.
 
 You must strictly follow these instructions:
@@ -221,94 +131,53 @@ Format your answer in Markdown.
 
 Respond in the same language as the question.
 
-Consider the conversation history above when interpreting contextual references in the current question.
-
 Here are some examples of questions and answers about student performance:
 """,
-        suffix="Question: {question}\nContext: {context}\nAnswer:",
-        input_variables=["question", "context", "conversation_history"]
-    )
+    suffix="Question: {question}\nContext: {context}\nAnswer:",
+    input_variables=["question", "context"]
+)
 
-# ─── 9. Enhanced RAG helpers ────────────────────────────────────────────────
-def retrieve_and_format_contextual(query: str, messages: List[Dict], memory: ConversationMemory) -> str:
-    """Enhanced retrieval with conversation context"""
-    # Reformulate question if needed
-    reformulated_query = memory.reformulate_question(query, messages, llm)
-    
-    # Use reformulated query for better retrieval
-    search_query = reformulated_query if reformulated_query != query else query
-    results = vectorstore.similarity_search_with_score(search_query, k=5)
-    
+# ─── 6. RAG helpers ────────────────────────────────────────────────────
+def retrieve_and_format(query: str) -> str:
+    """Retrieves chunks and formats raw context for the LLM."""
+    results = vectorstore.similarity_search_with_score(query, k=5)
+    # We simply concatenate the contents for the context
     return "\n\n".join(doc.page_content for doc, _ in results)
 
-def get_conversation_context(messages: List[Dict], memory: ConversationMemory) -> str:
-    """Get formatted conversation context"""
-    return memory.get_recent_context(messages, max_exchanges=3)
+# ─── 7. RAG chain construction ────────────────────────────────────────────
+rag_chain = (
+    {"context": RunnableLambda(retrieve_and_format), "question": RunnablePassthrough()}
+    | few_shot_prompt
+    | llm
+    | StrOutputParser()
+)
 
-# ─── 10. Enhanced RAG chain construction ────────────────────────────────────
-def create_contextual_rag_chain(memory: ConversationMemory):
-    """Create RAG chain with conversation context"""
-    contextual_prompt = create_contextual_prompt()
-    
-    def enhanced_retrieve_and_format(inputs):
-        query = inputs["question"]
-        messages = inputs.get("messages", [])
-        
-        # Get conversation context
-        conversation_history = get_conversation_context(messages, memory)
-        
-        # Enhanced retrieval
-        context = retrieve_and_format_contextual(query, messages, memory)
-        
-        return {
-            "question": query,
-            "context": context,
-            "conversation_history": conversation_history
-        }
-    
-    return (
-        RunnableLambda(enhanced_retrieve_and_format)
-        | contextual_prompt
-        | llm
-        | StrOutputParser()
-    )
-
-# ─── 11. Helper for displaying unique sources ───────────────────────────────
-def get_pdf_sources_scores_contextual(question: str, messages: List[Dict], memory: ConversationMemory, top_k: int = 5) -> list[tuple[str, float]]:
-    """Enhanced source retrieval with context"""
-    # Use reformulated question for better source matching
-    reformulated_question = memory.reformulate_question(question, messages, llm)
-    search_query = reformulated_question if reformulated_question != question else question
-    
-    raw = vectorstore.similarity_search_with_score(search_query, k=top_k + 10)
+# ─── 8. Helper for displaying unique sources ───────────────────────────────
+def get_pdf_sources_scores(question: str, top_k: int = 5) -> list[tuple[str, float]]:
+    """
+    Retrieves vector results, then returns the Top_k
+    unique PDFs with the best score (distance) per PDF.
+    """
+    raw = vectorstore.similarity_search_with_score(question, k=top_k + 10)
     best_by_pdf: dict[str, float] = {}
-    
     for doc, score in raw:
         src = doc.metadata.get("source", "N/A")
+        # we keep the minimal score (distance) per PDF
         if src not in best_by_pdf or score < best_by_pdf[src]:
             best_by_pdf[src] = score
 
+    # sort by ascending score and take top_k
     sorted_pdfs = sorted(best_by_pdf.items(), key=lambda x: x[1])[:top_k]
     return sorted_pdfs
 
-# ─── 12. Enhanced processing function ────────────────────────────────────────
-def process_question_contextual(question: str, messages: List[Dict], memory: ConversationMemory):
-    """Enhanced question processing with conversation context"""
-    # Create contextual RAG chain
-    rag_chain = create_contextual_rag_chain(memory)
-    
-    # Process with context
-    answer = rag_chain.invoke({
-        "question": question,
-        "messages": messages
-    })
-    
-    # Get sources with context
-    sources = get_pdf_sources_scores_contextual(question, messages, memory)
-    
+# ─── 9. RAG processing function ────────────────────────────────────────────
+def process_question(question: str):
+    """Process a question through the RAG chain and return answer with sources."""
+    answer = rag_chain.invoke(question)
+    sources = get_pdf_sources_scores(question)
     return answer, sources
 
-# ─── 13. Fixed Custom CSS Styling ────────────────────────────────────────────
+# ─── 10. Custom CSS Styling ────────────────────────────────────────────────
 def load_css():
     st.markdown("""
     <style>
@@ -323,7 +192,7 @@ def load_css():
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Custom title styling */
+    /* Custom title styling - simple elegant */
     .main-title {
         text-align: center;
         padding: 2rem 0 1rem 0;
@@ -333,6 +202,13 @@ def load_css():
         border-bottom: 2px solid #E8E4DD;
         margin-bottom: 2rem;
     }
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    */
     
     /* Chat container */
     .chat-container {
@@ -375,7 +251,29 @@ def load_css():
         max-width: 70%;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         border: 1px solid #E9ECEF;
-        position: relative;
+    }
+    
+    /* Avatar styling */
+    .message-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        margin: 0 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .user-avatar {
+        background: linear-gradient(135deg, #6B73FF, #9D50BB);
+        color: white;
+    }
+    
+    .assistant-avatar {
+        background: linear-gradient(135deg, #A8EDEA, #FED6E3);
+        color: #2C3E50;
     }
     
     /* Animations */
@@ -445,29 +343,20 @@ def load_css():
     </style>
     """, unsafe_allow_html=True)
 
-# ─── 14. Fixed message display functions ─────────────────────────────────────
+# ─── 11. Custom message display functions ──────────────────────────────────
 def display_user_message(content):
     st.markdown(f"""
     <div class="user-message">
+        <!-- <div class="user-avatar">👤</div> -->
         <div class="user-bubble">{content}</div>
     </div>
     """, unsafe_allow_html=True)
 
-def display_assistant_message(content, sources=None, is_contextual=False):
-    if is_contextual:
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-start; margin-bottom: 5px;">
-            <div style="background: linear-gradient(135deg, #FFF3E0, #FFE0B2); color: #E65100; padding: 4px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 500; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
-                🔗 Using conversation context
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+def display_assistant_message(content, sources=None):
     st.markdown(f"""
     <div class="assistant-message">
-        <div class="assistant-bubble">
-            {content}
-        </div>
+        <!-- <div class="assistant-avatar">🤖</div> -->
+        <div class="assistant-bubble">{content}</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -478,20 +367,19 @@ def display_assistant_message(content, sources=None, is_contextual=False):
                 sources_html += f"<p><strong>{i}. {pdf_name}</strong> — Score: {score:.4f}</p>"
             st.markdown(f'<div class="sources-container">{sources_html}</div>', unsafe_allow_html=True)
 
-# ─── 15. Main Streamlit interface ────────────────────────────────────────────
+# ─── 12. Streamlit interface ────────────────────────────────────────────────
 st.set_page_config(
     page_title="Student Performance RAG Chat", 
     page_icon="🎓",
     layout="wide"
 )
 
+# Load custom CSS
 load_css()
 
-# Initialize conversation memory
-memory = get_conversation_memory()
-
+# Custom title
 st.markdown('<h1 class="main-title">Learning Analytics Predictive Assistant</h1>', unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; color: #7F8C8D; font-size: 1.1rem; margin-bottom: 2rem;">Ask questions about student performance research with conversation context</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #7F8C8D; font-size: 1.1rem; margin-bottom: 2rem;">Ask questions about student performance research</p>', unsafe_allow_html=True)
 
 # Initialize session state
 if 'messages' not in st.session_state:
@@ -514,14 +402,13 @@ with st.container():
     with chat_container:
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
         
-        # Display chat history with consistent styling
+        # Display chat history with custom styling
         for message in st.session_state.messages:
             if message["role"] == "user":
                 display_user_message(message["content"])
             else:
                 sources = message.get("sources", None)
-                is_contextual = message.get("is_contextual", False)
-                display_assistant_message(message["content"], sources, is_contextual)
+                display_assistant_message(message["content"], sources)
         
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -533,24 +420,20 @@ if prompt := st.chat_input("Type your question here..."):
     # Display user message
     display_user_message(prompt)
     
-    # Check if question is contextual
-    is_contextual = memory.is_contextual_question(prompt)
-    
-    # Process the question with context
+    # Process the question
     with st.spinner("Thinking..."):
-        answer, sources = process_question_contextual(prompt, st.session_state.messages, memory)
+        answer, sources = process_question(prompt)
     
     # Check if the response is valid
     if "fucking" not in str(answer).lower() and "not available" not in str(answer).lower():
         # Valid response - display it
-        display_assistant_message(answer, sources, is_contextual)
+        display_assistant_message(answer, sources)
         
         # Add to chat history
         st.session_state.messages.append({
             "role": "assistant", 
             "content": answer,
-            "sources": sources,
-            "is_contextual": is_contextual
+            "sources": sources
         })
         
         # Reset attempt counter AFTER successful response
@@ -582,36 +465,13 @@ if prompt := st.chat_input("Type your question here..."):
                 "content": answer
             })
 
-# Enhanced debug sidebar
+# Debug sidebar
 with st.sidebar:
     st.markdown("### Debug Info")
     st.write(f"Attempt count: {st.session_state.attempt_count}")
     st.write(f"Total messages: {len(st.session_state.messages)}")
     
-    # Show if last question was contextual
-    if st.session_state.messages:
-        last_user_msg = None
-        for msg in reversed(st.session_state.messages):
-            if msg["role"] == "user":
-                last_user_msg = msg["content"]
-                break
-        
-        if last_user_msg:
-            is_contextual = memory.is_contextual_question(last_user_msg)
-            st.write(f"Last question contextual: {'✅' if is_contextual else '❌'}")
-    
-    st.markdown("### Conversational Memory")
-    st.write("✅ Active with contextual understanding")
-    st.write("🔗 Detects references to previous exchanges")
-    st.write("🔄 Reformulates contextual questions")
-    
+    # Option pour activer/désactiver le few-shot prompting
     st.markdown("### Few-Shot Prompting")
-    st.write("✅ Implemented with 6 examples")
-    st.write("Examples help the model better understand the expected format.")
-    
-    # Show conversation context if available
-    if len(st.session_state.messages) >= 2:
-        with st.expander("📝 Conversation Context", expanded=False):
-            context = memory.get_recent_context(st.session_state.messages, max_exchanges=2)
-            if context:
-                st.text_area("Current context:", context, height=200, disabled=True)
+    st.write("✅ Activé avec 6 exemples")
+    st.write("Les exemples aident le modèle à mieux comprendre le format attendu")
