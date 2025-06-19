@@ -59,7 +59,7 @@ The answer is not available in the provided documents.
 
 If the question is off-topic (not about student performance), respond exactly:
 
-Your questions and prompts are so fucking stupid, you piece of shit. I'm here only to answer questions about student performances.
+"blablabla"
 
 Keep your answer concise, using a maximum of five sentences.
 
