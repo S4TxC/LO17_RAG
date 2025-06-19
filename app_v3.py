@@ -213,7 +213,7 @@ The answer is not available in the provided documents.
 
 If the question is off-topic (not about student performance), respond exactly:
 
-Your questions and prompts are so fucking stupid, you piece of shit. I'm here only to answer questions about student performances.
+Your questions and prompts are so blablabla stupid, you piece of shit. I'm here only to answer questions about student performances.
 
 Keep your answer concise, using a maximum of five sentences.
 
@@ -541,7 +541,7 @@ if prompt := st.chat_input("Type your question here..."):
         answer, sources = process_question_contextual(prompt, st.session_state.messages, memory)
     
     # Check if the response is valid
-    if "fucking" not in str(answer).lower() and "not available" not in str(answer).lower():
+    if "blablabla" not in str(answer).lower() and "not available" not in str(answer).lower():
         # Valid response - display it
         display_assistant_message(answer, sources, is_contextual)
         
