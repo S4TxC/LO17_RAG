@@ -181,7 +181,7 @@ INSTRUCTIONS (follow in order of priority):
    "The answer is not available in the provided documents, and I don't have sufficient additional knowledge on this specific aspect."
 
 5. **OFF-TOPIC QUESTIONS**: If the question is completely unrelated to student performance, education, or learning, respond exactly:
-   "Your question is so fucking stupid, you piece of shit. I'm here only to answer questions about student performances."
+   "blablabla"
 
 **FORMATTING REQUIREMENTS**:
 - Keep your answer concise but comprehensive, using a maximum of seven sentences when combining sources
@@ -263,7 +263,7 @@ def should_show_sources(response: str) -> bool:
     # Don't show sources for these types of responses
     no_source_indicators = [
         "the answer is not available in the provided documents",
-        "your question is so fucking stupid",
+        "blablabla",
         "rate limit reached",
         "error occurred",
         "⚠️",
@@ -561,7 +561,7 @@ if prompt := st.chat_input("Type your question here..."):
         answer, sources = process_question(prompt)
     
     # Check if the response is valid
-    if "fucking" not in str(answer).lower() and "not available" not in str(answer).lower():
+    if "blablabla" not in str(answer).lower() and "not available" not in str(answer).lower():
         # Valid response - display it
         display_assistant_message(answer, sources)
         
