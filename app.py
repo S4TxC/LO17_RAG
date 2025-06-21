@@ -619,7 +619,6 @@ with st.sidebar:
     else:
         st.write("No conversation history yet")
     
-    # Option pour activer/désactiver le few-shot prompting
     st.markdown("### System Status")
     st.write("❌ Few-Shot Prompting: Not active")
     st.write("✅ Conversation Memory: Active")
